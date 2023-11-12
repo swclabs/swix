@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   api-server:
-    image: asyncfiber:latest
+    image: swift-api:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,9 +13,12 @@ services:
       - bridge
     ports:
       - 8000:8000
+    depends_on:
+      - redis
+      - postgres
 
   worker:
-    image: asyncfiber:latest
+    image: swift-api:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -25,6 +28,9 @@ services:
     networks:
       - bridge
     command: "./bin/exe w"
+    depends_on:
+      - redis
+      - postgres
 
   redis:
     image: redis
@@ -36,7 +42,7 @@ services:
     environment:
       - REDIS_HOST_PASSWORD=password
     volumes:
-      - ./data/redis:/data
+      - ./k8s/data/redis:/data
 
   postgres:
     image: postgres:latest
@@ -50,9 +56,9 @@ services:
     networks:
       - bridge
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - ./k8s/data/postgres:/var/lib/postgresql/data
 
 networks:
   bridge:
 volumes:
-  data:
+  k8s:
