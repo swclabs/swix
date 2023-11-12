@@ -1,0 +1,112 @@
+basePath: /
+definitions:
+  schema.SignInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  schema.SignInResponse:
+    properties:
+      email:
+        type: string
+      success:
+        type: boolean
+      token:
+        type: string
+    required:
+    - email
+    - success
+    - token
+    type: object
+  schema.SignUpRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - full_name
+    - password
+    - username
+    type: object
+  schema.SignUpResponse:
+    properties:
+      msg:
+        type: string
+      success:
+        type: boolean
+    required:
+    - msg
+    - success
+    type: object
+info:
+  contact: {}
+  description: This is a documentation for the Microservice API
+  title: Microservice API Documentation
+  version: 1.0.0
+paths:
+  /v1/auth/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Sign IN account.
+      parameters:
+      - description: Sign In
+        in: body
+        name: sign_up
+        required: true
+        schema:
+          $ref: '#/definitions/schema.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.SignInResponse'
+      tags:
+      - auth
+  /v1/auth/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: Register account for admin.
+      parameters:
+      - description: Sign Up
+        in: body
+        name: sign_up
+        required: true
+        schema:
+          $ref: '#/definitions/schema.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.SignUpResponse'
+      tags:
+      - auth
+  /v1/common/healthcheck:
+    get:
+      consumes:
+      - application/json
+      description: health check api server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - common
+swagger: "2.0"
