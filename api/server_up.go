@@ -38,7 +38,7 @@ func (s *Server) Run(addr string) error {
 	)
 	s.router(
 		router.Common,
-		router.Auth,
+		// router.Auth,
 		router.Docs,
 	)
 	return s.engine.Run(addr)
