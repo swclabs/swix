@@ -9,8 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var authService = service.NewAuth()
-
 // SignIn
 // @Description Sign IN account.
 // @Tags auth
@@ -20,6 +18,7 @@ var authService = service.NewAuth()
 // @Success 200 {object} schema.SignInResponse
 // @Router /v1/auth/sign-in [POST]
 func SignIn(c *gin.Context) {
+	var authService = service.NewAuth()
 	var request schema.SignInRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
@@ -56,6 +55,7 @@ func SignIn(c *gin.Context) {
 // @Success 200 {object} schema.SignUpResponse
 // @Router /v1/auth/sign-up [POST]
 func SignUp(c *gin.Context) {
+	var authService = service.NewAuth()
 	var request schema.SignUpRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
