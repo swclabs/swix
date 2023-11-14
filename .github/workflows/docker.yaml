@@ -6,7 +6,6 @@ on:
       - main
 
 env:
-  REGISTRY: duchungho
   IMAGE_NAME: swift-api
 
 jobs:
@@ -27,12 +26,16 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
+
+      - name: Get commit ID
+        id: commit_id
+        run: echo "::set-output name=COMMIT_ID::$(git rev-parse --short HEAD)"
 
       - name: Build and push the Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.commit_id.outputs.COMMIT_ID }}
           labels: ${{ steps.meta.outputs.labels }}
