@@ -38,5 +38,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.commit_id.outputs.COMMIT_ID }}
+          tags: v${{ steps.commit_id.outputs.COMMIT_ID }}
           labels: ${{ steps.meta.outputs.labels }}
