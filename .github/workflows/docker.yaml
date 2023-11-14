@@ -22,12 +22,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Extract metadata for the Docker image
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          images: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}
-
       - name: Get commit ID
         id: commit_id
         run: echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
@@ -38,5 +32,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: v-${{ steps.commit_id.outputs.COMMIT_ID }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.commit_id.outputs.COMMIT_ID }}
