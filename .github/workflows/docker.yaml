@@ -30,7 +30,8 @@ jobs:
 
       - name: Get commit ID
         id: commit_id
-        run: echo "::set-output name=COMMIT_ID::$(git rev-parse --short HEAD)"
+        run: echo "COMMIT_ID=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        # run: echo "::set-output name=COMMIT_ID::$(git rev-parse --short HEAD)"
 
       - name: Build and push the Docker image
         uses: docker/build-push-action@v2
