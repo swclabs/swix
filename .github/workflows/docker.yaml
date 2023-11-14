@@ -2,7 +2,8 @@ name: Tag Docker Image with Git
 
 on:
   push:
-    tags: [v*]
+    branches:
+      - main
 
 env:
   REGISTRY: duchungho
