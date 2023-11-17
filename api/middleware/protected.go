@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"example/swiftcart/pkg/utils"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,7 +10,7 @@ import (
 func Protected(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
-		c.AbortWithStatusJSON(400, gin.H{
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"msg":     "unauthorized",
 			"success": false,
 		})
@@ -17,7 +18,7 @@ func Protected(c *gin.Context) {
 	}
 	_, err := utils.ParseToken(authHeader)
 	if err != nil {
-		c.AbortWithStatusJSON(400, gin.H{
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 			"msg":     "unauthorized",
 			"success": false,
 		})

@@ -1,3 +1,13 @@
+// Copyright 2023 Swiftcart. All rights reserved.
+// Use of this source code is governed by a MIT license
+// that can be found in the LICENSE file.
+
+// Author:
+// - Ho Duc Hung : @ikierans
+// - Nguyen Van Khoa: @anthony2704
+// Description: This is Graduation project in computer science
+// 2023 - Ho Chi Minh City University of Technology, VNUHCM
+
 package main
 
 import (
@@ -66,7 +76,7 @@ func NewClient() *cli.App {
 		Name:        "swiftcart",
 		Usage:       "swiftcart",
 		Version:     "0.0.1",
-		Description: "API server",
+		Description: "swiftcart API server",
 		Commands:    Command,
 	}
 
