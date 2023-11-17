@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"example/komposervice/internal/schema"
-	"example/komposervice/internal/service"
+	"example/swiftcart/internal/schema"
+	"example/swiftcart/internal/service"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,7 +1,7 @@
 package router
 
 import (
-	_ "example/komposervice/docs"
+	_ "example/swiftcart/docs"
 
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"

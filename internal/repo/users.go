@@ -1,8 +1,8 @@
-package repository
+package repo
 
 import (
-	"example/komposervice/internal/model"
-	"example/komposervice/pkg/db"
+	"example/swiftcart/internal/model"
+	"example/swiftcart/pkg/db"
 	"time"
 
 	"gorm.io/gorm"

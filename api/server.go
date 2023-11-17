@@ -1,9 +1,9 @@
 package api
 
 import (
-	"example/komposervice/internal/config"
-	"example/komposervice/internal/tasks"
-	"example/komposervice/pkg/lib/worker"
+	"example/swiftcart/internal/config"
+	"example/swiftcart/internal/tasks"
+	"example/swiftcart/pkg/lib/worker"
 
 	"github.com/gin-gonic/gin"
 )

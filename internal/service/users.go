@@ -2,19 +2,19 @@ package service
 
 import (
 	"errors"
-	"example/komposervice/internal/model"
-	"example/komposervice/internal/repository"
-	"example/komposervice/internal/schema"
-	"example/komposervice/pkg/utils"
+	"example/swiftcart/internal/model"
+	"example/swiftcart/internal/repo"
+	"example/swiftcart/internal/schema"
+	"example/swiftcart/pkg/utils"
 )
 
 type Auth struct {
-	repo repository.IUsers
+	repo repo.IUsers
 }
 
 func NewAuth() IAuth {
 	return &Auth{
-		repo: repository.NewUsers(),
+		repo: repo.NewUsers(),
 	}
 }
 

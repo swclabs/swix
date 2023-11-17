@@ -1,8 +1,8 @@
 package main
 
 import (
-	"example/komposervice/api"
-	"example/komposervice/internal/config"
+	"example/swiftcart/api"
+	"example/swiftcart/internal/config"
 	"fmt"
 	"log"
 )

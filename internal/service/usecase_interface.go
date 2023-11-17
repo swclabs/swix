@@ -1,6 +1,6 @@
 package service
 
-import "example/komposervice/internal/schema"
+import "example/swiftcart/internal/schema"
 
 type IAuth interface {
 	SignUp(req schema.SignUpRequest) error

@@ -1,4 +1,4 @@
-module example/komposervice
+module example/swiftcart
 
 go 1.21.3
 

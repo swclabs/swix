@@ -1,9 +1,9 @@
 package service
 
 import (
-	"example/komposervice/internal/schema"
-	"example/komposervice/internal/tasks"
-	"example/komposervice/pkg/lib/worker"
+	"example/swiftcart/internal/schema"
+	"example/swiftcart/internal/tasks"
+	"example/swiftcart/pkg/lib/worker"
 )
 
 func Ping() {

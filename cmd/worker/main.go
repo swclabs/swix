@@ -1,7 +1,7 @@
 package main
 
 import (
-	"example/komposervice/api"
+	"example/swiftcart/api"
 	"log"
 )
 
