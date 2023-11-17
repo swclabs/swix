@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/auth/sign-in": {
+        "/v1/auth/login": {
             "post": {
-                "description": "Sign IN account.",
+                "description": "Login account.",
                 "consumes": [
                     "application/json"
                 ],
@@ -29,12 +29,12 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "description": "Sign In",
+                        "description": "Login",
                         "name": "sign_up",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.SignInRequest"
+                            "$ref": "#/definitions/schema.LoginRequest"
                         }
                     }
                 ],
@@ -42,13 +42,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.SignInResponse"
+                            "$ref": "#/definitions/schema.LoginResponse"
                         }
                     }
                 }
             }
         },
-        "/v1/auth/sign-up": {
+        "/v1/auth/signup": {
             "post": {
                 "description": "Register account for admin.",
                 "consumes": [
@@ -99,10 +99,67 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/users": {
+            "get": {
+                "description": "get information for users.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.InforResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "schema.SignInRequest": {
+        "schema.InforResponse": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "image",
+                "last_name",
+                "phone_number",
+                "role",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -117,7 +174,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schema.SignInResponse": {
+        "schema.LoginResponse": {
             "type": "object",
             "required": [
                 "email",
@@ -140,21 +197,25 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "email",
-                "full_name",
+                "first_name",
+                "last_name",
                 "password",
-                "username"
+                "phone_number"
             ],
             "properties": {
                 "email": {
                     "type": "string"
                 },
-                "full_name": {
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
                     "type": "string"
                 },
                 "password": {
                     "type": "string"
                 },
-                "username": {
+                "phone_number": {
                     "type": "string"
                 }
             }
@@ -183,8 +244,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Microservice API Documentation",
-	Description:      "This is a documentation for the Microservice API",
+	Title:            "Swiftcart API Documentation",
+	Description:      "This is a documentation for the Swiftcart API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

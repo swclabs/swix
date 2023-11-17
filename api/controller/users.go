@@ -4,22 +4,23 @@ import (
 	"example/swiftcart/internal/schema"
 	"example/swiftcart/internal/service"
 	"example/swiftcart/pkg/lib/validator"
+	"example/swiftcart/pkg/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-// SignIn
-// @Description Sign IN account.
+// Login
+// @Description Login account.
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Param sign_up body schema.SignInRequest true "Sign In"
-// @Success 200 {object} schema.SignInResponse
-// @Router /v1/auth/sign-in [POST]
-func SignIn(c *gin.Context) {
-	var authService = service.NewAuth()
-	var request schema.SignInRequest
+// @Param sign_up body schema.LoginRequest true "Login"
+// @Success 200 {object} schema.LoginResponse
+// @Router /v1/auth/login [POST]
+func Login(c *gin.Context) {
+	var users = service.NewUsers()
+	var request schema.LoginRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),
@@ -32,14 +33,14 @@ func SignIn(c *gin.Context) {
 		})
 		return
 	}
-	accessToken, err := authService.SignIn(request)
+	accessToken, err := users.Login(&request)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),
 		})
 		return
 	}
-	c.JSON(http.StatusOK, schema.SignInResponse{
+	c.JSON(http.StatusOK, schema.LoginResponse{
 		Success: true,
 		Token:   accessToken,
 		Email:   request.Email,
@@ -53,9 +54,9 @@ func SignIn(c *gin.Context) {
 // @Produce json
 // @Param sign_up body schema.SignUpRequest true "Sign Up"
 // @Success 200 {object} schema.SignUpResponse
-// @Router /v1/auth/sign-up [POST]
+// @Router /v1/auth/signup [POST]
 func SignUp(c *gin.Context) {
-	var authService = service.NewAuth()
+	var users = service.NewUsers()
 	var request schema.SignUpRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
@@ -69,7 +70,7 @@ func SignUp(c *gin.Context) {
 		})
 		return
 	}
-	if err := authService.SignUp(request); err != nil {
+	if err := users.SignUp(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),
 		})
@@ -79,4 +80,31 @@ func SignUp(c *gin.Context) {
 		Success: true,
 		Msg:     "user has been created",
 	})
+}
+
+// GetMe
+// @Description get information for users.
+// @Tags users
+// @Accept json
+// @Produce json
+// @Success 200 {object} schema.InforResponse
+// @Router /v1/users [GET]
+func GetMe(c *gin.Context) {
+	authHeader := c.GetHeader("Authorization")
+	email, err := utils.ParseToken(authHeader)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, schema.Error{
+			Msg: "Invalid authorization header",
+		})
+		return
+	}
+	var users = service.NewUsers()
+	response, err := users.Infor(email)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, schema.Error{
+			Msg: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, response)
 }

@@ -26,6 +26,7 @@ func GenerateToken(email string) (string, error) {
 	return tokenString, nil
 }
 
+// Return Email from JWT token
 func ParseToken(tokenString string) (string, error) {
 	tokenString = removeBearerPrefix(tokenString)
 	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {

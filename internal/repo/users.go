@@ -2,15 +2,15 @@ package repo
 
 import (
 	"example/swiftcart/internal/model"
+	"example/swiftcart/internal/schema"
 	"example/swiftcart/pkg/db"
-	"time"
 
 	"gorm.io/gorm"
 )
 
 type Users struct {
 	conn *gorm.DB
-	data *model.Users
+	data *model.User
 }
 
 func NewUsers() IUsers {
@@ -20,26 +20,32 @@ func NewUsers() IUsers {
 	}
 	return &Users{
 		conn: _conn,
-		data: &model.Users{},
+		data: &model.User{},
 	}
 }
 
-func (usr *Users) GetByEmail(email string) (*model.Users, error) {
+func (usr *Users) GetByEmail(email string) (*model.User, error) {
 	if err := usr.conn.Table("users").Where("email = ?", email).First(usr.data).Error; err != nil {
 		return nil, err
 	}
 	return usr.data, nil
 }
 
-func (usr *Users) Create(_usr *model.Users) error {
-	createAt := time.Now().UTC().Format(time.RFC3339)
+func (usr *Users) Insert(_usr *model.User) error {
 	return usr.conn.Exec(
-		`INSERT INTO users (username,hashed_password,full_name,email,password_changed_at,created_at)
-		VALUES (?,?,?,?,?,?)`,
-		_usr.Username, _usr.HashedPassword, _usr.FullName, _usr.Email, createAt, createAt,
+		`INSERT INTO users (email, phone_number, first_name, last_name, image) VALUES (?,?,?,?,?)`,
+		_usr.Email, _usr.PhoneNumber, _usr.FirstName, _usr.LastName, _usr.Image,
 	).Error
 }
 
-func (usr *Users) Empty() bool {
-	return usr.data.Email == ""
+func (usr *Users) Infor(email string) (*schema.InforResponse, error) {
+	data := new(schema.InforResponse)
+	if err := usr.conn.Raw(`
+		SELECT users.email, phone_number, first_name, last_name, image, username, role
+		FROM users JOIN accounts ON users.email = accounts.email
+		WHERE users.email = ?;
+	`, email).Scan(data).Error; err != nil {
+		return nil, err
+	}
+	return data, nil
 }

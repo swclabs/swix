@@ -1,3 +1,13 @@
+// Copyright 2023 Swiftcart. All rights reserved.
+// Use of this source code is governed by a MIT license
+// that can be found in the LICENSE file.
+
+// Author:
+// - Ho Duc Hung : @ikierans
+// - Nguyen Van Khoa: @anthony2704
+// Description: This is Graduation project in computer science
+// 2023 - Ho Chi Minh City University of Technology, VNUHCM
+
 package main
 
 import (
@@ -8,9 +18,9 @@ import (
 	"log"
 )
 
-// @title Microservice API Documentation
+// @title Swiftcart API Documentation
 // @version 1.0.0
-// @description This is a documentation for the Microservice API
+// @description This is a documentation for the Swiftcart API
 // @host
 // @basePath /
 func main() {

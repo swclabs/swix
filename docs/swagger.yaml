@@ -1,6 +1,31 @@
 basePath: /
 definitions:
-  schema.SignInRequest:
+  schema.InforResponse:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      image:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - first_name
+    - image
+    - last_name
+    - phone_number
+    - role
+    - username
+    type: object
+  schema.LoginRequest:
     properties:
       email:
         type: string
@@ -10,7 +35,7 @@ definitions:
     - email
     - password
     type: object
-  schema.SignInResponse:
+  schema.LoginResponse:
     properties:
       email:
         type: string
@@ -27,17 +52,20 @@ definitions:
     properties:
       email:
         type: string
-      full_name:
+      first_name:
+        type: string
+      last_name:
         type: string
       password:
         type: string
-      username:
+      phone_number:
         type: string
     required:
     - email
-    - full_name
+    - first_name
+    - last_name
     - password
-    - username
+    - phone_number
     type: object
   schema.SignUpResponse:
     properties:
@@ -51,32 +79,32 @@ definitions:
     type: object
 info:
   contact: {}
-  description: This is a documentation for the Microservice API
-  title: Microservice API Documentation
+  description: This is a documentation for the Swiftcart API
+  title: Swiftcart API Documentation
   version: 1.0.0
 paths:
-  /v1/auth/sign-in:
+  /v1/auth/login:
     post:
       consumes:
       - application/json
-      description: Sign IN account.
+      description: Login account.
       parameters:
-      - description: Sign In
+      - description: Login
         in: body
         name: sign_up
         required: true
         schema:
-          $ref: '#/definitions/schema.SignInRequest'
+          $ref: '#/definitions/schema.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.SignInResponse'
+            $ref: '#/definitions/schema.LoginResponse'
       tags:
       - auth
-  /v1/auth/sign-up:
+  /v1/auth/signup:
     post:
       consumes:
       - application/json
@@ -109,4 +137,18 @@ paths:
           description: OK
       tags:
       - common
+  /v1/users:
+    get:
+      consumes:
+      - application/json
+      description: get information for users.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.InforResponse'
+      tags:
+      - users
 swagger: "2.0"
