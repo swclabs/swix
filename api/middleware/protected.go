@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"example/komposervice/pkg/utils"
+	"example/swiftcart/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )

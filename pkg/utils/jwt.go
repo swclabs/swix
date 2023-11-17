@@ -2,7 +2,7 @@ package utils
 
 import (
 	"errors"
-	"example/komposervice/internal/config"
+	"example/swiftcart/internal/config"
 	"fmt"
 	"strings"
 	"time"

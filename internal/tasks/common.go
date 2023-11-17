@@ -8,7 +8,7 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-func HandleHealthCheck(c context.Context, task *asynq.Task) error {
+func HandleHealthCheck(_ context.Context, task *asynq.Task) error {
 	var num int64
 	if err := json.Unmarshal(task.Payload(), &num); err != nil {
 		return err

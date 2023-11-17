@@ -1,7 +1,7 @@
 package sentry
 
 import (
-	"example/komposervice/internal/config"
+	"example/swiftcart/internal/config"
 	"fmt"
 
 	sentrygin "github.com/getsentry/sentry-go/gin"

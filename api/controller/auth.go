@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"example/komposervice/internal/schema"
-	"example/komposervice/internal/service"
-	"example/komposervice/pkg/lib/validator"
+	"example/swiftcart/internal/schema"
+	"example/swiftcart/internal/service"
+	"example/swiftcart/pkg/lib/validator"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

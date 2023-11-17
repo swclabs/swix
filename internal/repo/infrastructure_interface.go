@@ -1,6 +1,6 @@
-package repository
+package repo
 
-import "example/komposervice/internal/model"
+import "example/swiftcart/internal/model"
 
 type IUsers interface {
 	GetByEmail(email string) (*model.Users, error)

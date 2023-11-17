@@ -2,7 +2,7 @@ package cache
 
 import (
 	"context"
-	"example/komposervice/internal/config"
+	"example/swiftcart/internal/config"
 	"fmt"
 
 	"github.com/redis/go-redis/v9"

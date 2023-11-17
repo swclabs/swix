@@ -1,15 +1,15 @@
 package api
 
 import (
-	"example/komposervice/api/middleware"
-	"example/komposervice/api/router"
-	"example/komposervice/internal/config"
-	"example/komposervice/internal/service"
-	"example/komposervice/internal/tasks"
-	"example/komposervice/pkg/lib/job"
-	"example/komposervice/pkg/lib/mailers"
-	"example/komposervice/pkg/lib/worker"
-	"example/komposervice/pkg/sentry"
+	"example/swiftcart/api/middleware"
+	"example/swiftcart/api/router"
+	"example/swiftcart/internal/config"
+	"example/swiftcart/internal/service"
+	"example/swiftcart/internal/tasks"
+	"example/swiftcart/pkg/lib/job"
+	"example/swiftcart/pkg/lib/mailers"
+	"example/swiftcart/pkg/lib/worker"
+	"example/swiftcart/pkg/sentry"
 	"time"
 )
 

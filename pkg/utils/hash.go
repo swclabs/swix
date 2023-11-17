@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"example/komposervice/internal/config"
+	"example/swiftcart/internal/config"
 	"strconv"
 
 	"golang.org/x/crypto/bcrypt"

@@ -6,15 +6,15 @@ import (
 	"os"
 	"sort"
 
-	"example/komposervice/api"
+	"example/swiftcart/api"
 
-	"example/komposervice/internal/config"
-	"example/komposervice/pkg/utils"
+	"example/swiftcart/internal/config"
+	"example/swiftcart/pkg/utils"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/urfave/cli/v2"
 
-	_ "example/komposervice/docs"
+	_ "example/swiftcart/docs"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -63,8 +63,8 @@ var Command = []*cli.Command{
 
 func NewClient() *cli.App {
 	_app := &cli.App{
-		Name:        "komposervice",
-		Usage:       "komposervice",
+		Name:        "swiftcart",
+		Usage:       "swiftcart",
 		Version:     "0.0.1",
 		Description: "API server",
 		Commands:    Command,

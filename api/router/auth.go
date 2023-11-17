@@ -1,7 +1,7 @@
 package router
 
 import (
-	"example/komposervice/api/controller"
+	"example/swiftcart/api/controller"
 
 	"github.com/gin-gonic/gin"
 )
