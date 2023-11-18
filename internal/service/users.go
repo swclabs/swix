@@ -58,6 +58,6 @@ func (usr *Users) Login(req *schema.LoginRequest) (string, error) {
 	return utils.GenerateToken(req.Email)
 }
 
-func (usr *Users) Infor(email string) (*schema.InforResponse, error) {
+func (usr *Users) Infor(email string) (*schema.UserInfor, error) {
 	return usr.userInf.Infor(email)
 }

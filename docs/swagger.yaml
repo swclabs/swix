@@ -1,30 +1,5 @@
 basePath: /
 definitions:
-  schema.InforResponse:
-    properties:
-      email:
-        type: string
-      first_name:
-        type: string
-      image:
-        type: string
-      last_name:
-        type: string
-      phone_number:
-        type: string
-      role:
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - first_name
-    - image
-    - last_name
-    - phone_number
-    - role
-    - username
-    type: object
   schema.LoginRequest:
     properties:
       email:
@@ -76,6 +51,31 @@ definitions:
     required:
     - msg
     - success
+    type: object
+  schema.UserInfor:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      image:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - first_name
+    - image
+    - last_name
+    - phone_number
+    - role
+    - username
     type: object
 info:
   contact: {}
@@ -148,7 +148,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.InforResponse'
+            $ref: '#/definitions/schema.UserInfor'
       tags:
       - users
 swagger: "2.0"

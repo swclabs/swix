@@ -38,8 +38,8 @@ func (usr *Users) Insert(_usr *model.User) error {
 	).Error
 }
 
-func (usr *Users) Infor(email string) (*schema.InforResponse, error) {
-	data := new(schema.InforResponse)
+func (usr *Users) Infor(email string) (*schema.UserInfor, error) {
+	data := new(schema.UserInfor)
 	if err := usr.conn.Raw(`
 		SELECT users.email, phone_number, first_name, last_name, image, username, role
 		FROM users JOIN accounts ON users.email = accounts.email

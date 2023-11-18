@@ -87,7 +87,7 @@ func SignUp(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Success 200 {object} schema.InforResponse
+// @Success 200 {object} schema.UserInfor
 // @Router /v1/users [GET]
 func GetMe(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")

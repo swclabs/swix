@@ -116,7 +116,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.InforResponse"
+                            "$ref": "#/definitions/schema.UserInfor"
                         }
                     }
                 }
@@ -124,41 +124,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "schema.InforResponse": {
-            "type": "object",
-            "required": [
-                "email",
-                "first_name",
-                "image",
-                "last_name",
-                "phone_number",
-                "role",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
         "schema.LoginRequest": {
             "type": "object",
             "required": [
@@ -232,6 +197,41 @@ const docTemplate = `{
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "schema.UserInfor": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "image",
+                "last_name",
+                "phone_number",
+                "role",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         }
