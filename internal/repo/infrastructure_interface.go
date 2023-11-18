@@ -8,7 +8,7 @@ import (
 type IUsers interface {
 	GetByEmail(email string) (*model.User, error)
 	Insert(usr *model.User) error
-	Infor(email string) (*schema.InforResponse, error)
+	Infor(email string) (*schema.UserInfor, error)
 }
 
 type IAccounts interface {
