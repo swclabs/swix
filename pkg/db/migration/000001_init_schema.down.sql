@@ -1,2 +1,16 @@
 DROP TABLE IF EXISTS "accounts";
 DROP TABLE IF EXISTS "users";
+DROP TABLE IF EXISTS "payments";
+DROP TABLE IF EXISTS "addresses";
+DROP TABLE IF EXISTS "comments";
+DROP TABLE IF EXISTS "products";
+DROP TABLE IF EXISTS "suppliers";
+DROP TABLE IF EXISTS "categories";
+DROP TABLE IF EXISTS "carts";
+DROP TABLE IF EXISTS "product_in_cart";
+DROP TABLE IF EXISTS "orders";
+DROP TABLE IF EXISTS "product_in_order";
+DROP TABLE IF EXISTS "deliveries";
+DROP TABLE IF EXISTS "receipts";
+DROP TABLE IF EXISTS "user_address";
+DROP TABLE IF EXISTS "supplier_address";
