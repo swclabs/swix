@@ -9,24 +9,24 @@ import (
 	"fmt"
 )
 
-type Users struct {
-	userInf repo.IUsers
+type AccountManagement struct {
+	user repo.IUsers
 	account repo.IAccounts
 }
 
-func NewUsers() IUser {
-	return &Users{
-		userInf: repo.NewUsers(),
+func NewAccountManagement() IAccountManagement {
+	return &AccountManagement{
+		user: repo.NewUsers(),
 		account: repo.NewAccounts(),
 	}
 }
 
-func (usr *Users) SignUp(req *schema.SignUpRequest) error {
+func (accountManagement *AccountManagement) SignUp(req *schema.SignUpRequest) error {
 	hash, err := utils.GenPassword(req.Password)
 	if err != nil {
 		return err
 	}
-	if err := usr.userInf.Insert(&model.User{
+	if err := accountManagement.user.Insert(&model.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -35,11 +35,11 @@ func (usr *Users) SignUp(req *schema.SignUpRequest) error {
 	}); err != nil {
 		return err
 	}
-	userInfo, err := usr.userInf.GetByEmail(req.Email)
+	userInfo, err := accountManagement.user.GetByEmail(req.Email)
 	if err != nil {
 		return err
 	}
-	return usr.account.Insert(&model.Account{
+	return accountManagement.account.Insert(&model.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.UserID),
 		Password: hash,
 		Role:     "Customer",
@@ -47,8 +47,8 @@ func (usr *Users) SignUp(req *schema.SignUpRequest) error {
 	})
 }
 
-func (usr *Users) Login(req *schema.LoginRequest) (string, error) {
-	account, err := usr.account.GetByEmail(req.Email)
+func (accountManagement *AccountManagement) Login(req *schema.LoginRequest) (string, error) {
+	account, err := accountManagement.account.GetByEmail(req.Email)
 	if err != nil {
 		return "", err
 	}
@@ -58,6 +58,6 @@ func (usr *Users) Login(req *schema.LoginRequest) (string, error) {
 	return utils.GenerateToken(req.Email)
 }
 
-func (usr *Users) Infor(email string) (*schema.UserInfor, error) {
-	return usr.userInf.Infor(email)
+func (accountManagement *AccountManagement) Info(email string) (*schema.UserInfo, error) {
+	return accountManagement.user.Info(email)
 }

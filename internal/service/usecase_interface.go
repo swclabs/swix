@@ -2,8 +2,8 @@ package service
 
 import "example/swiftcart/internal/schema"
 
-type IUser interface {
+type IAccountManagement interface {
 	SignUp(req *schema.SignUpRequest) error
 	Login(req *schema.LoginRequest) (string, error)
-	Infor(email string) (*schema.UserInfor, error)
+	Info(email string) (*schema.UserInfo, error)
 }
