@@ -38,8 +38,8 @@ func (usr *Users) Insert(_usr *model.User) error {
 	).Error
 }
 
-func (usr *Users) Infor(email string) (*schema.UserInfor, error) {
-	data := new(schema.UserInfor)
+func (usr *Users) Info(email string) (*schema.UserInfo, error) {
+	data := new(schema.UserInfo)
 	if err := usr.conn.Raw(`
 		SELECT users.email, phone_number, first_name, last_name, image, username, role
 		FROM users JOIN accounts ON users.email = accounts.email
@@ -48,4 +48,8 @@ func (usr *Users) Infor(email string) (*schema.UserInfor, error) {
 		return nil, err
 	}
 	return data, nil
+}
+
+func (usr *Users) SaveInfo(user *model.User) error {
+	return nil
 }

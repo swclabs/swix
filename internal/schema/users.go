@@ -24,7 +24,7 @@ type LoginResponse struct {
 	Email   string `json:"email" validate:"required"`
 }
 
-type UserInfor struct {
+type UserInfo struct {
 	Email       string `json:"email" validate:"required"`
 	PhoneNumber string `json:"phone_number" validate:"required"`
 	FirstName   string `json:"first_name" validate:"required"`

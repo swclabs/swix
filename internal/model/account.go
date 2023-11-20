@@ -1,5 +1,6 @@
 package model
 
+// Account table accounts
 type Account struct {
 	Username  string `json:"username" gorm:"column:username"`
 	Role      string `json:"role" gorm:"column:role"`

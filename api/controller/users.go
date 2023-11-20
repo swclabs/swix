@@ -19,7 +19,7 @@ import (
 // @Success 200 {object} schema.LoginResponse
 // @Router /v1/auth/login [POST]
 func Login(c *gin.Context) {
-	var users = service.NewUsers()
+	var account = service.NewAccountManagement()
 	var request schema.LoginRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
@@ -33,7 +33,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-	accessToken, err := users.Login(&request)
+	accessToken, err := account.Login(&request)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),
@@ -56,7 +56,7 @@ func Login(c *gin.Context) {
 // @Success 200 {object} schema.SignUpResponse
 // @Router /v1/auth/signup [POST]
 func SignUp(c *gin.Context) {
-	var users = service.NewUsers()
+	var account = service.NewAccountManagement()
 	var request schema.SignUpRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
@@ -70,7 +70,7 @@ func SignUp(c *gin.Context) {
 		})
 		return
 	}
-	if err := users.SignUp(&request); err != nil {
+	if err := account.SignUp(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),
 		})
@@ -87,7 +87,7 @@ func SignUp(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Success 200 {object} schema.UserInfor
+// @Success 200 {object} schema.UserInfo
 // @Router /v1/users [GET]
 func GetMe(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
@@ -98,8 +98,8 @@ func GetMe(c *gin.Context) {
 		})
 		return
 	}
-	var users = service.NewUsers()
-	response, err := users.Infor(email)
+	var account = service.NewAccountManagement()
+	response, err := account.Info(email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),

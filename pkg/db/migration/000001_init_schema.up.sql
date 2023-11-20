@@ -33,7 +33,7 @@ CREATE TABLE "addresses" (
 
 CREATE TABLE "comments" (
   "id" bigserial PRIMARY KEY,
-  "level" varchar NOT NULL DEFAULT('0'),
+  "level" bigint NOT NULL DEFAULT('0'),
   "content" varchar NOT NULL,
   "user_id" bigint NOT NULL,
   "product_id" bigint NOT NULL
@@ -46,7 +46,8 @@ CREATE TABLE "products" (
   "description" varchar NOT NULL,
   "name" varchar NOT NULL,
   "supplier_id" bigint NOT NULL,
-  "category_id" bigint NOT NULL
+  "category_id" bigint NOT NULL,
+  "available": bigint NOT NULL
 );
 
 CREATE TABLE "suppliers" (
@@ -78,6 +79,7 @@ CREATE TABLE "product_in_cart" (
 
 CREATE TABLE "orders" (
   "id" bigserial PRIMARY KEY,
+  "uuid" varchar NOT NULL,
   "time" timestamptz NOT NULL,
   "user_id" bigint NOT NULL,
   "total_price" bigint NOT NULL,
