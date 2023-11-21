@@ -4,6 +4,7 @@ import (
 	"example/swiftcart/internal/model"
 	"example/swiftcart/internal/schema"
 	"example/swiftcart/pkg/db"
+	"example/swiftcart/pkg/db/queries"
 
 	"gorm.io/gorm"
 )
@@ -33,18 +34,17 @@ func (usr *Users) GetByEmail(email string) (*model.User, error) {
 
 func (usr *Users) Insert(_usr *model.User) error {
 	return usr.conn.Exec(
-		`INSERT INTO users (email, phone_number, first_name, last_name, image) VALUES (?,?,?,?,?)`,
-		_usr.Email, _usr.PhoneNumber, _usr.FirstName, _usr.LastName, _usr.Image,
-	).Error
+		queries.INSERT_INTO_USERS,
+		_usr.Email,
+		_usr.PhoneNumber,
+		_usr.FirstName,
+		_usr.LastName,
+		_usr.Image).Error
 }
 
 func (usr *Users) Info(email string) (*schema.UserInfo, error) {
 	data := new(schema.UserInfo)
-	if err := usr.conn.Raw(`
-		SELECT users.email, phone_number, first_name, last_name, image, username, role
-		FROM users JOIN accounts ON users.email = accounts.email
-		WHERE users.email = ?;
-	`, email).Scan(data).Error; err != nil {
+	if err := usr.conn.Raw(queries.SELECT_USER_INFO, email).Scan(data).Error; err != nil {
 		return nil, err
 	}
 	return data, nil

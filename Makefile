@@ -11,7 +11,7 @@ j:
 	go run cmd/main.go j
 
 m:
-	go run cmd/main.go m
+	go run cmd/main.go m up
 	
-doc:
+swag:
 	swag init

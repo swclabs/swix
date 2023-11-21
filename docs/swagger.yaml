@@ -23,6 +23,11 @@ definitions:
     - success
     - token
     type: object
+  schema.OK:
+    properties:
+      msg:
+        type: string
+    type: object
   schema.SignUpRequest:
     properties:
       email:
@@ -52,7 +57,7 @@ definitions:
     - msg
     - success
     type: object
-  schema.UserInfor:
+  schema.UserInfo:
     properties:
       email:
         type: string
@@ -77,6 +82,25 @@ definitions:
     - role
     - username
     type: object
+  schema.UserUpdate:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - phone_number
+    - username
+    type: object
 info:
   contact: {}
   description: This is a documentation for the Swiftcart API
@@ -91,7 +115,7 @@ paths:
       parameters:
       - description: Login
         in: body
-        name: sign_up
+        name: login
         required: true
         schema:
           $ref: '#/definitions/schema.LoginRequest'
@@ -148,7 +172,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.UserInfor'
+            $ref: '#/definitions/schema.UserInfo'
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: update information for users.
+      parameters:
+      - description: Update User
+        in: body
+        name: UserInfo
+        required: true
+        schema:
+          $ref: '#/definitions/schema.UserUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/schema.OK'
       tags:
       - users
 swagger: "2.0"

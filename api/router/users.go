@@ -14,4 +14,5 @@ func Users(e *gin.Engine) {
 
 	usr := e.Group("/v1")
 	usr.GET("/users", middleware.Protected, controller.GetMe)
+	usr.PUT("/users", controller.UpdateUserInfo)
 }

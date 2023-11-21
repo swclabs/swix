@@ -30,7 +30,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Login",
-                        "name": "sign_up",
+                        "name": "login",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -116,7 +116,38 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.UserInfor"
+                            "$ref": "#/definitions/schema.UserInfo"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update information for users.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "parameters": [
+                    {
+                        "description": "Update User",
+                        "name": "UserInfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/schema.UserUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.OK"
                         }
                     }
                 }
@@ -154,6 +185,14 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.OK": {
+            "type": "object",
+            "properties": {
+                "msg": {
                     "type": "string"
                 }
             }
@@ -200,7 +239,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schema.UserInfor": {
+        "schema.UserInfo": {
             "type": "object",
             "required": [
                 "email",
@@ -228,6 +267,33 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "schema.UserUpdate": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "phone_number",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone_number": {
                     "type": "string"
                 },
                 "username": {
