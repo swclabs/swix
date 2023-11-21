@@ -11,7 +11,6 @@ import (
 // API documentation
 // Router documentation
 // Base on: http://${HOST}:${PORT}/docs/index.html#/
-
 func Docs(e *gin.Engine) {
 	e.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }
