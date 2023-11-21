@@ -33,3 +33,11 @@ type UserInfo struct {
 	Username    string `json:"username" validate:"required"`
 	Role        string `json:"role" validate:"required"`
 }
+
+type UserUpdate struct {
+	Email       string `json:"email" validate:"required"`
+	PhoneNumber string `json:"phone_number" validate:"required"`
+	FirstName   string `json:"first_name" validate:"required"`
+	LastName    string `json:"last_name" validate:"required"`
+	Username    string `json:"username" validate:"required"`
+}

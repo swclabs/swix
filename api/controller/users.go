@@ -15,7 +15,7 @@ import (
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Param sign_up body schema.LoginRequest true "Login"
+// @Param login body schema.LoginRequest true "Login"
 // @Success 200 {object} schema.LoginResponse
 // @Router /v1/auth/login [POST]
 func Login(c *gin.Context) {
@@ -72,7 +72,7 @@ func SignUp(c *gin.Context) {
 	var account = service.NewAccountManagement()
 	if err := account.SignUp(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
-			Msg: err.Error(),
+			Msg: "user data invalid",
 		})
 		return
 	}
@@ -107,4 +107,39 @@ func GetMe(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, response)
+}
+
+// UpdateUserInfo
+// @Description update information for users.
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param UserInfo body schema.UserUpdate true "Update User"
+// @Success 200 {object} schema.OK
+// @Router /v1/users [PUT]
+func UpdateUserInfo(c *gin.Context) {
+	var request schema.UserUpdate
+	if err := c.BindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, schema.Error{
+			Msg: err.Error(),
+		})
+		return
+	}
+	if _valid := validator.Validate(request); _valid != "" {
+		c.JSON(http.StatusBadRequest, schema.Error{
+			Msg: _valid,
+		})
+		return
+	}
+	var user = service.NewAccountManagement()
+	if err := user.UpdateUserInfo(&request); err != nil {
+		c.JSON(http.StatusBadRequest, schema.Error{
+			Msg: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, schema.OK{
+		Msg: "update user information successfully",
+	})
+
 }

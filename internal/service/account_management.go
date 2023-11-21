@@ -66,7 +66,7 @@ func (accountManagement *AccountManagement) ForgetPassword(email string) error {
 	panic("not implement")
 }
 
-func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserInfo) error {
+func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
 	panic("not implement")
 }
 

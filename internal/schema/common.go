@@ -7,3 +7,7 @@ type HealthCheckResponse struct {
 type Error struct {
 	Msg string `json:"msg"`
 }
+
+type OK struct {
+	Msg string `json:"msg"`
+}

@@ -30,12 +30,14 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
+// var migrateStatus = "up"
+
 var Command = []*cli.Command{
 	{
 		Name:    "migrate",
 		Aliases: []string{"m"},
 		Usage:   "migrate database",
-		Action: func(_ *cli.Context) error {
+		Action: func(c *cli.Context) error {
 			const migrateUrl = "file://pkg/db/migration/"
 			databaseUrl, err := utils.ConnectionURLBuilder("pg-migrate")
 			if err != nil {
@@ -45,8 +47,15 @@ var Command = []*cli.Command{
 			if err != nil {
 				return err
 			}
-			if err := _migrate.Up(); err != migrate.ErrNoChange {
-				return err
+			switch c.Args().First() {
+			case "up":
+				if err := _migrate.Up(); err != migrate.ErrNoChange {
+					return err
+				}
+			case "down":
+				if err := _migrate.Down(); err != migrate.ErrNoChange {
+					return err
+				}
 			}
 			return nil
 		},
@@ -71,6 +80,16 @@ var Command = []*cli.Command{
 	},
 }
 
+// var flags = []cli.Flag{
+// 	&cli.StringFlag{
+// 		Name:        "migstatus",
+// 		Value:       "up",
+// 		Aliases:     []string{"mt"},
+// 		Usage:       "change migrate status",
+// 		Destination: &migrateStatus,
+// 	},
+// }
+
 func NewClient() *cli.App {
 	_app := &cli.App{
 		Name:        "swiftcart",
@@ -78,6 +97,7 @@ func NewClient() *cli.App {
 		Version:     "0.0.1",
 		Description: "swiftcart API server",
 		Commands:    Command,
+		// Flags:       flags,
 	}
 
 	sort.Sort(cli.FlagsByName(_app.Flags))
