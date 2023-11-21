@@ -19,7 +19,6 @@ import (
 // @Success 200 {object} schema.LoginResponse
 // @Router /v1/auth/login [POST]
 func Login(c *gin.Context) {
-	var account = service.NewAccountManagement()
 	var request schema.LoginRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
@@ -33,6 +32,7 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
+	var account = service.NewAccountManagement()
 	accessToken, err := account.Login(&request)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
@@ -56,7 +56,6 @@ func Login(c *gin.Context) {
 // @Success 200 {object} schema.SignUpResponse
 // @Router /v1/auth/signup [POST]
 func SignUp(c *gin.Context) {
-	var account = service.NewAccountManagement()
 	var request schema.SignUpRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
@@ -70,6 +69,7 @@ func SignUp(c *gin.Context) {
 		})
 		return
 	}
+	var account = service.NewAccountManagement()
 	if err := account.SignUp(&request); err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),
@@ -99,7 +99,7 @@ func GetMe(c *gin.Context) {
 		return
 	}
 	var account = service.NewAccountManagement()
-	response, err := account.Info(email)
+	response, err := account.UserInfo(email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),

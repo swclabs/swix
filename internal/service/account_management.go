@@ -10,13 +10,13 @@ import (
 )
 
 type AccountManagement struct {
-	user repo.IUsers
+	user    repo.IUsers
 	account repo.IAccounts
 }
 
 func NewAccountManagement() IAccountManagement {
 	return &AccountManagement{
-		user: repo.NewUsers(),
+		user:    repo.NewUsers(),
 		account: repo.NewAccounts(),
 	}
 }
@@ -58,6 +58,18 @@ func (accountManagement *AccountManagement) Login(req *schema.LoginRequest) (str
 	return utils.GenerateToken(req.Email)
 }
 
-func (accountManagement *AccountManagement) Info(email string) (*schema.UserInfo, error) {
+func (accountManagement *AccountManagement) UserInfo(email string) (*schema.UserInfo, error) {
 	return accountManagement.user.Info(email)
+}
+
+func (accountManagement *AccountManagement) ForgetPassword(email string) error {
+	panic("not implement")
+}
+
+func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserInfo) error {
+	panic("not implement")
+}
+
+func (accountManagement *AccountManagement) UploadAvatar() error {
+	panic("not implement")
 }
