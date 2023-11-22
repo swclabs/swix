@@ -11,10 +11,11 @@
 package main
 
 import (
-	"example/swiftcart/api"
-	"example/swiftcart/internal/config"
 	"fmt"
 	"log"
+
+	"swclabs/swiftcart/api"
+	"swclabs/swiftcart/internal/config"
 )
 
 func main() {

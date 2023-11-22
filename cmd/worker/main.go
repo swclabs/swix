@@ -11,8 +11,9 @@
 package main
 
 import (
-	"example/swiftcart/api"
 	"log"
+
+	"swclabs/swiftcart/api"
 )
 
 func main() {

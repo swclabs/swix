@@ -1,9 +1,9 @@
 package service
 
 import (
-	"example/swiftcart/internal/schema"
-	"example/swiftcart/internal/tasks"
-	"example/swiftcart/pkg/lib/worker"
+	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/tasks"
+	"swclabs/swiftcart/pkg/x/worker"
 )
 
 func Ping() {

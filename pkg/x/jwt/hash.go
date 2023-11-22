@@ -1,8 +1,9 @@
-package utils
+package jwt
 
 import (
-	"example/swiftcart/internal/config"
 	"strconv"
+
+	"swclabs/swiftcart/internal/config"
 
 	"golang.org/x/crypto/bcrypt"
 )

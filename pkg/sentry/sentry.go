@@ -1,8 +1,9 @@
 package sentry
 
 import (
-	"example/swiftcart/internal/config"
 	"fmt"
+
+	"swclabs/swiftcart/internal/config"
 
 	sentrygin "github.com/getsentry/sentry-go/gin"
 

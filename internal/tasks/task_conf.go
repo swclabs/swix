@@ -1,8 +1,8 @@
 package tasks
 
 import (
-	"example/swiftcart/internal/config"
-	"example/swiftcart/pkg/lib/worker"
+	"swclabs/swiftcart/internal/config"
+	"swclabs/swiftcart/pkg/x/worker"
 )
 
 var (

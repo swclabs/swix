@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"example/swiftcart/internal/schema"
-	"example/swiftcart/internal/service"
+	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/service"
 
 	"github.com/gin-gonic/gin"
 )

@@ -2,11 +2,12 @@ package service
 
 import (
 	"errors"
-	"example/swiftcart/internal/model"
-	"example/swiftcart/internal/repo"
-	"example/swiftcart/internal/schema"
-	"example/swiftcart/pkg/utils"
 	"fmt"
+
+	"swclabs/swiftcart/internal/model"
+	"swclabs/swiftcart/internal/repo"
+	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/pkg/x/jwt"
 )
 
 type AccountManagement struct {
@@ -22,7 +23,7 @@ func NewAccountManagement() IAccountManagement {
 }
 
 func (accountManagement *AccountManagement) SignUp(req *schema.SignUpRequest) error {
-	hash, err := utils.GenPassword(req.Password)
+	hash, err := jwt.GenPassword(req.Password)
 	if err != nil {
 		return err
 	}
@@ -52,10 +53,10 @@ func (accountManagement *AccountManagement) Login(req *schema.LoginRequest) (str
 	if err != nil {
 		return "", err
 	}
-	if err := utils.ComparePassword(account.Password, req.Password); err != nil {
+	if err := jwt.ComparePassword(account.Password, req.Password); err != nil {
 		return "", errors.New("email or password incorrect")
 	}
-	return utils.GenerateToken(req.Email)
+	return jwt.GenerateToken(req.Email)
 }
 
 func (accountManagement *AccountManagement) UserInfo(email string) (*schema.UserInfo, error) {

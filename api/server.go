@@ -1,9 +1,9 @@
 package api
 
 import (
-	"example/swiftcart/internal/config"
-	"example/swiftcart/internal/tasks"
-	"example/swiftcart/pkg/lib/worker"
+	"swclabs/swiftcart/internal/config"
+	"swclabs/swiftcart/internal/tasks"
+	"swclabs/swiftcart/pkg/x/worker"
 
 	"github.com/gin-gonic/gin"
 )
