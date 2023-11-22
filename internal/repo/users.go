@@ -34,7 +34,7 @@ func (usr *Users) GetByEmail(email string) (*model.User, error) {
 
 func (usr *Users) Insert(_usr *model.User) error {
 	return usr.conn.Exec(
-		queries.INSERT_INTO_USERS,
+		queries.InsertIntoUsers,
 		_usr.Email,
 		_usr.PhoneNumber,
 		_usr.FirstName,
@@ -44,12 +44,12 @@ func (usr *Users) Insert(_usr *model.User) error {
 
 func (usr *Users) Info(email string) (*schema.UserInfo, error) {
 	data := new(schema.UserInfo)
-	if err := usr.conn.Raw(queries.SELECT_USER_INFO, email).Scan(data).Error; err != nil {
+	if err := usr.conn.Raw(queries.SelectUserInfo, email).Scan(data).Error; err != nil {
 		return nil, err
 	}
 	return data, nil
 }
 
 func (usr *Users) SaveInfo(user *model.User) error {
-	return nil
+	panic("not implemented")
 }
