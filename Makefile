@@ -15,3 +15,6 @@ m:
 	
 swag:
 	swag init
+
+t:
+	go test -v ./test

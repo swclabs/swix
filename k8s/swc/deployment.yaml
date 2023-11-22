@@ -15,7 +15,7 @@ spec:
         app: swc-api
     spec:
       containers:
-        - image: duchungho/swc-api:v0.0.2
+        - image: duchungho/swc-api:latest
           name: swc-api-server
           env:
             - name: HOST

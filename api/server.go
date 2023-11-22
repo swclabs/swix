@@ -8,11 +8,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type IServer interface {
+	middleware(...func(*gin.Engine))
+	backgroundTask(...func())
+	router(...func(*gin.Engine))
+	Scheduler()
+	Run(string) error
+}
+
+type IWorker interface {
+	Run() error
+}
+
 type Server struct {
 	engine *gin.Engine
 }
 
-func NewServer() *Server {
+func NewServer() IServer {
 	if config.StageStatus != "dev" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -43,7 +55,7 @@ type Worker struct {
 	engine *worker.Engine
 }
 
-func NewWorker(concurrency int) *Worker {
+func NewWorker(concurrency int) IWorker {
 	return &Worker{
 		engine: worker.NewServer(concurrency, tasks.Queue()),
 	}

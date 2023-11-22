@@ -24,3 +24,14 @@ type ProductInOrder struct {
 	ProductID int64 `json:"product_id" gorm:"column:product_id"`
 	Amount    int64 `json:"amount" gorm:"column:amount"`
 }
+
+// CREATE TABLE "favorite_product" (
+//	"id" bigserial PRIMARY KEY,
+//	"user_id" bigint NOT NULL,
+//	"product_id" bigint NOT NULL
+// );
+type FavoriteProduct struct {
+	ID        int64 `json:"id" gorm:"column:id"`
+	UserID    int64 `json:"user_id" gorm:"column:user_id"`
+	ProductID int64 `json:"product_id" gorm:"column:product_id"`
+}

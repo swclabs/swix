@@ -40,5 +40,5 @@ func (account *Accounts) Insert(acc *model.Account) error {
 }
 
 func (account *Accounts) ChangePassword(pw string) error {
-	return nil
+	panic("not implemented")
 }
