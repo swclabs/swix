@@ -2,8 +2,9 @@ package cache
 
 import (
 	"context"
-	"example/swiftcart/internal/config"
 	"fmt"
+
+	"swclabs/swiftcart/internal/config"
 
 	"github.com/redis/go-redis/v9"
 )

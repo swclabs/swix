@@ -1,16 +1,17 @@
 package api
 
 import (
-	"example/swiftcart/api/middleware"
-	"example/swiftcart/api/router"
-	"example/swiftcart/internal/config"
-	"example/swiftcart/internal/service"
-	"example/swiftcart/internal/tasks"
-	"example/swiftcart/pkg/lib/job"
-	"example/swiftcart/pkg/lib/mailers"
-	"example/swiftcart/pkg/lib/worker"
-	"example/swiftcart/pkg/sentry"
 	"time"
+
+	"swclabs/swiftcart/api/middleware"
+	"swclabs/swiftcart/api/router"
+	"swclabs/swiftcart/internal/config"
+	"swclabs/swiftcart/internal/service"
+	"swclabs/swiftcart/internal/tasks"
+	"swclabs/swiftcart/pkg/sentry"
+	"swclabs/swiftcart/pkg/x/job"
+	"swclabs/swiftcart/pkg/x/mailers"
+	"swclabs/swiftcart/pkg/x/worker"
 )
 
 func init() {

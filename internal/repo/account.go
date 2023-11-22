@@ -1,9 +1,10 @@
 package repo
 
 import (
-	"example/swiftcart/internal/model"
-	"example/swiftcart/pkg/db"
 	"time"
+
+	"swclabs/swiftcart/internal/model"
+	"swclabs/swiftcart/pkg/db"
 
 	"gorm.io/gorm"
 )

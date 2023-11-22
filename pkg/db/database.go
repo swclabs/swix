@@ -1,7 +1,7 @@
 package db
 
 import (
-	"example/swiftcart/pkg/utils"
+	"swclabs/swiftcart/pkg/utils"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

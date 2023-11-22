@@ -1,8 +1,8 @@
 package repo
 
 import (
-	"example/swiftcart/internal/model"
-	"example/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/model"
+	"swclabs/swiftcart/internal/schema"
 )
 
 type IUsers interface {

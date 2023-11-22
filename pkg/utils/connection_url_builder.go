@@ -1,8 +1,9 @@
 package utils
 
 import (
-	"example/swiftcart/internal/config"
 	"fmt"
+
+	"swclabs/swiftcart/internal/config"
 )
 
 // ConnectionURLBuilder func for building URL connection.

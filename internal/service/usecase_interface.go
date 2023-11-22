@@ -1,6 +1,8 @@
 package service
 
-import "example/swiftcart/internal/schema"
+import (
+	"swclabs/swiftcart/internal/schema"
+)
 
 // IAccountManagement : Module Account Management with use-case
 // Actor: admin & customer (user)

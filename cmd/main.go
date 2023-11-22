@@ -16,15 +16,15 @@ import (
 	"os"
 	"sort"
 
-	"example/swiftcart/api"
+	"swclabs/swiftcart/api"
 
-	"example/swiftcart/internal/config"
-	"example/swiftcart/pkg/utils"
+	"swclabs/swiftcart/internal/config"
+	"swclabs/swiftcart/pkg/utils"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/urfave/cli/v2"
 
-	_ "example/swiftcart/docs"
+	_ "swclabs/swiftcart/docs"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

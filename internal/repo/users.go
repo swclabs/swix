@@ -1,10 +1,10 @@
 package repo
 
 import (
-	"example/swiftcart/internal/model"
-	"example/swiftcart/internal/schema"
-	"example/swiftcart/pkg/db"
-	"example/swiftcart/pkg/db/queries"
+	"swclabs/swiftcart/internal/model"
+	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/pkg/db"
+	"swclabs/swiftcart/pkg/db/queries"
 
 	"gorm.io/gorm"
 )

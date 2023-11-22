@@ -1,11 +1,12 @@
-package utils
+package jwt
 
 import (
 	"errors"
-	"example/swiftcart/internal/config"
 	"fmt"
 	"strings"
 	"time"
+
+	"swclabs/swiftcart/internal/config"
 
 	"github.com/golang-jwt/jwt/v5"
 )

@@ -47,3 +47,11 @@ var (
 	Email            = os.Getenv("EMAIL")
 	EmailAppPassword = os.Getenv("EMAIL_APP_PASSWORD")
 )
+
+// Auth0
+var (
+	Auth0Domain = os.Getenv("AUTH0_DOMAIN")
+	Auth0ClientID = os.Getenv("AUTH0_CLIENT_ID")
+	Auth0ClientSecret = os.Getenv("AUTH0_CLIENT_SECRET")
+	Auth0CallbackUrl = os.Getenv("AUTH0_CALLBACK_URL")
+)

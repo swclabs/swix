@@ -1,7 +1,7 @@
 package router
 
 import (
-	_ "example/swiftcart/docs"
+	_ "swclabs/swiftcart/docs"
 
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"

@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"example/swiftcart/internal/config"
+	"swclabs/swiftcart/internal/config"
 
 	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-gonic/gin"

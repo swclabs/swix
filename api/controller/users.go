@@ -1,11 +1,12 @@
 package controller
 
 import (
-	"example/swiftcart/internal/schema"
-	"example/swiftcart/internal/service"
-	"example/swiftcart/pkg/lib/validator"
-	"example/swiftcart/pkg/utils"
 	"net/http"
+
+	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/service"
+	"swclabs/swiftcart/pkg/x/jwt"
+	"swclabs/swiftcart/pkg/x/validator"
 
 	"github.com/gin-gonic/gin"
 )
@@ -91,7 +92,7 @@ func SignUp(c *gin.Context) {
 // @Router /v1/users [GET]
 func GetMe(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
-	email, err := utils.ParseToken(authHeader)
+	email, err := jwt.ParseToken(authHeader)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: "Invalid authorization header",

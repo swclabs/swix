@@ -11,11 +11,12 @@
 package main
 
 import (
-	"example/swiftcart/api"
-	_ "example/swiftcart/docs"
-	"example/swiftcart/internal/config"
 	"fmt"
 	"log"
+
+	"swclabs/swiftcart/api"
+	_ "swclabs/swiftcart/docs"
+	"swclabs/swiftcart/internal/config"
 )
 
 // @title Swiftcart API Documentation
