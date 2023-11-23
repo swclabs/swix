@@ -36,7 +36,8 @@ CREATE TABLE "comments" (
   "level" bigint NOT NULL DEFAULT('0'),
   "content" varchar NOT NULL,
   "user_id" bigint NOT NULL,
-  "product_id" bigint NOT NULL
+  "product_id" bigint NOT NULL,
+  "rating" int
 );
 
 CREATE TABLE "products" (
@@ -47,7 +48,8 @@ CREATE TABLE "products" (
   "name" varchar NOT NULL,
   "supplier_id" bigint NOT NULL,
   "category_id" bigint NOT NULL,
-  "available" bigint NOT NULL
+  "available" bigint NOT NULL,
+  "star" varchar NOT NULL,
 );
 
 CREATE TABLE "suppliers" (
