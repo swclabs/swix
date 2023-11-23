@@ -1,4 +1,3 @@
 package schema
 
-type CartInfo struct {
-}
+type CartInfo struct{}
