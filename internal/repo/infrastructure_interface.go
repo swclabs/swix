@@ -15,7 +15,7 @@ type IUsers interface {
 type IAccounts interface {
 	GetByEmail(email string) (*model.Account, error)
 	Insert(acc *model.Account) error
-	ChangePassword(pw string) error
+	SaveInfo(acc *model.Account) error
 }
 
 type ICarts interface {

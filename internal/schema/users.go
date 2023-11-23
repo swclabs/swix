@@ -25,6 +25,7 @@ type LoginResponse struct {
 }
 
 type UserInfo struct {
+	Id          int64  `json:"id" validate:"required"`
 	Email       string `json:"email" validate:"required"`
 	PhoneNumber string `json:"phone_number" validate:"required"`
 	FirstName   string `json:"first_name" validate:"required"`
@@ -35,6 +36,7 @@ type UserInfo struct {
 }
 
 type UserUpdate struct {
+	Id          int64  `json:"id" validate:"required"`
 	Email       string `json:"email" validate:"required"`
 	PhoneNumber string `json:"phone_number" validate:"required"`
 	FirstName   string `json:"first_name" validate:"required"`
