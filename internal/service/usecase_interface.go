@@ -10,7 +10,6 @@ type IAccountManagement interface {
 	SignUp(req *schema.SignUpRequest) error
 	Login(req *schema.LoginRequest) (string, error)
 	UserInfo(email string) (*schema.UserInfo, error)
-	ForgetPassword(email string) error
 	UpdateUserInfo(req *schema.UserUpdate) error
 	UploadAvatar() error
 }

@@ -63,12 +63,14 @@ func (accountManagement *AccountManagement) UserInfo(email string) (*schema.User
 	return accountManagement.user.Info(email)
 }
 
-func (accountManagement *AccountManagement) ForgetPassword(email string) error {
-	panic("not implement")
-}
-
 func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
-	panic("not implement")
+	return accountManagement.user.SaveInfo(&model.User{
+		UserID:      req.Id,
+		Email:       req.Email,
+		PhoneNumber: req.PhoneNumber,
+		FirstName:   req.FirstName,
+		LastName:    req.LastName,
+	})
 }
 
 func (accountManagement *AccountManagement) UploadAvatar() error {

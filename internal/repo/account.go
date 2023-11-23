@@ -5,6 +5,7 @@ import (
 
 	"swclabs/swiftcart/internal/model"
 	"swclabs/swiftcart/pkg/db"
+	"swclabs/swiftcart/pkg/db/queries"
 
 	"gorm.io/gorm"
 )
@@ -34,12 +35,24 @@ func (account *Accounts) GetByEmail(email string) (*model.Account, error) {
 
 func (account *Accounts) Insert(acc *model.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
-	return account.conn.Exec(
-		"INSERT INTO accounts (username, role, email, password, created_at) VALUES (?, ?, ?, ?, ?)",
-		acc.Username, acc.Role, acc.Email, acc.Password, createdAt,
-	).Error
+	return account.conn.Exec(queries.InsertIntoAccounts, acc.Username, acc.Role, acc.Email, acc.Password, createdAt).Error
 }
 
-func (account *Accounts) ChangePassword(pw string) error {
-	panic("not implemented")
+func (account *Accounts) SaveInfo(acc *model.Account) error {
+	if acc.Username != "" {
+		if err := account.conn.Exec(queries.UpdateAccountsUsername, acc.Username, acc.Email).Error; err != nil {
+			return err
+		}
+	}
+	if acc.Password != "" {
+		if err := account.conn.Exec(queries.UpdateAccountsPassword, acc.Password, acc.Email).Error; err != nil {
+			return err
+		}
+	}
+	if acc.Role != "" {
+		if err := account.conn.Exec(queries.UpdateAccountsRole, acc.Role, acc.Email).Error; err != nil {
+			return err
+		}
+	}
+	return nil
 }

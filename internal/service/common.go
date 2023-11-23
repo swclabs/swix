@@ -7,7 +7,7 @@ import (
 )
 
 func Ping() {
-	// log.Println("PONG")
+
 }
 
 func HealthCheck() schema.HealthCheckResponse {
