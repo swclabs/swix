@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"errors"
 	"swclabs/swiftcart/internal/model"
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/pkg/db"
@@ -51,5 +52,28 @@ func (usr *Users) Info(email string) (*schema.UserInfo, error) {
 }
 
 func (usr *Users) SaveInfo(user *model.User) error {
-	panic("not implemented")
+	if user.Email == "" {
+		return errors.New("missing key: email ")
+	}
+	if user.FirstName != "" {
+		if err := usr.conn.Exec(queries.UpdateUsersFirstname, user.FirstName, user.Email).Error; err != nil {
+			return err
+		}
+	}
+	if user.LastName != "" {
+		if err := usr.conn.Exec(queries.UpdateUsersLastname, user.LastName, user.Email).Error; err != nil {
+			return err
+		}
+	}
+	if user.Image != "" {
+		if err := usr.conn.Exec(queries.UpdateUsersImage, user.Image, user.Email).Error; err != nil {
+			return err
+		}
+	}
+	if user.PhoneNumber != "" {
+		if err := usr.conn.Exec(queries.UpdateUsersPhoneNumber, user.PhoneNumber, user.Email).Error; err != nil {
+			return err
+		}
+	}
+	return nil
 }

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"mime/multipart"
 	"swclabs/swiftcart/internal/schema"
 )
 
@@ -11,7 +12,7 @@ type IAccountManagement interface {
 	Login(req *schema.LoginRequest) (string, error)
 	UserInfo(email string) (*schema.UserInfo, error)
 	UpdateUserInfo(req *schema.UserUpdate) error
-	UploadAvatar() error
+	UploadAvatar(email string, fileHeader *multipart.FileHeader) error
 }
 
 // IOrderManagement : Module Order Management
