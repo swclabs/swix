@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"errors"
 	"time"
 
 	"swclabs/swiftcart/internal/model"
@@ -39,6 +40,9 @@ func (account *Accounts) Insert(acc *model.Account) error {
 }
 
 func (account *Accounts) SaveInfo(acc *model.Account) error {
+	if acc.Email == "" {
+		return errors.New("missing key: email ")
+	}
 	if acc.Username != "" {
 		if err := account.conn.Exec(queries.UpdateAccountsUsername, acc.Username, acc.Email).Error; err != nil {
 			return err

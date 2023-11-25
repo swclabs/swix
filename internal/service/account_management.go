@@ -3,10 +3,12 @@ package service
 import (
 	"errors"
 	"fmt"
+	"mime/multipart"
 
 	"swclabs/swiftcart/internal/model"
 	"swclabs/swiftcart/internal/repo"
 	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/pkg/cloud"
 	"swclabs/swiftcart/pkg/x/jwt"
 )
 
@@ -73,6 +75,17 @@ func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserUpdat
 	})
 }
 
-func (accountManagement *AccountManagement) UploadAvatar() error {
-	panic("not implement")
+func (accountManagement *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
+	file, err := fileHeader.Open()
+	if err != nil {
+		return err
+	}
+	resp, err := cloud.UpdateImages(cloud.Connection(), file)
+	if err != nil {
+		return err
+	}
+	return accountManagement.user.SaveInfo(&model.User{
+		Email: email,
+		Image: resp.SecureURL,
+	})
 }
