@@ -50,7 +50,7 @@ var (
 
 // Auth0
 var (
-	Auth0Domain       = os.Getenv("AUTH0_DOMAIN")
+	FeHomepage        = os.Getenv("FE_HOMEPAGE")
 	Auth0ClientID     = os.Getenv("AUTH0_CLIENT_ID")
 	Auth0ClientSecret = os.Getenv("AUTH0_CLIENT_SECRET")
 	Auth0CallbackUrl  = os.Getenv("AUTH0_CALLBACK_URL")

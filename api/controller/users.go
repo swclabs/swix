@@ -42,7 +42,7 @@ func Login(c *gin.Context) {
 		return
 	}
 	session := sessions.Default(c)
-	session.Set("auth_access_token", accessToken)
+	session.Set("access_token", accessToken)
 	if err := session.Save(); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
@@ -98,7 +98,7 @@ func SignUp(c *gin.Context) {
 // @Router /v1/auth/logout [GET]
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
-	session.Delete("auth_access_token")
+	session.Delete("access_token")
 	if err := session.Save(); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
