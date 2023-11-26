@@ -27,7 +27,7 @@ func HealthCheck(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /v1/auth0/login [GET]
+// @Router /v1/oauth2/login [GET]
 func Auth0Login(c *gin.Context) {
 	auth := oauth2.New()
 	url := auth.AuthCodeURL(auth.State)

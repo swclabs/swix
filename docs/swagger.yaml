@@ -169,11 +169,11 @@ paths:
             $ref: '#/definitions/schema.SignUpResponse'
       tags:
       - auth
-  /v1/auth0/login:
+  /v1/common/healthcheck:
     get:
       consumes:
       - application/json
-      description: Auth0 Login form.
+      description: health check api server.
       produces:
       - application/json
       responses:
@@ -181,11 +181,11 @@ paths:
           description: OK
       tags:
       - common
-  /v1/common/healthcheck:
+  /v1/oauth2/login:
     get:
       consumes:
       - application/json
-      description: health check api server.
+      description: Auth0 Login form.
       produces:
       - application/json
       responses:

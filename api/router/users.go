@@ -13,7 +13,7 @@ func Users(e *gin.Engine) {
 	auth.POST("/login", controller.Login)
 	auth.GET("/logout", controller.Logout)
 
-	auth0 := e.Group("/v1/auth0")
+	auth0 := e.Group("/v1/oauth2")
 	auth0.GET("/login", controller.Auth0Login)
 
 	user := e.Group("/v1")
