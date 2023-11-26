@@ -103,9 +103,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/auth0/login": {
+        "/v1/common/healthcheck": {
             "get": {
-                "description": "Auth0 Login form.",
+                "description": "health check api server.",
                 "consumes": [
                     "application/json"
                 ],
@@ -122,9 +122,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/common/healthcheck": {
+        "/v1/oauth2/login": {
             "get": {
-                "description": "health check api server.",
+                "description": "Auth0 Login form.",
                 "consumes": [
                     "application/json"
                 ],
