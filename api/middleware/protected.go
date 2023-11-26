@@ -5,6 +5,7 @@ import (
 
 	"swclabs/swiftcart/pkg/x/jwt"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,4 +27,30 @@ func Protected(c *gin.Context) {
 		return
 	}
 	c.Next()
+}
+
+func SessionProtected(c *gin.Context) {
+	session := sessions.Default(c)
+	if session.Get("auth_access_token") != nil {
+		AccessToken := session.Get("auth_access_token").(string)
+		email, err := jwt.ParseToken(AccessToken)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+				"msg":     "unauthorized",
+				"success": false,
+			})
+			return
+		}
+		session.Set("email", email)
+		if err := session.Save(); err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+			return
+		}
+		c.Next()
+	} else {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"msg":     "unauthorized",
+			"success": false,
+		})
+	}
 }
