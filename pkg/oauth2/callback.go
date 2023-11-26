@@ -1,13 +1,14 @@
-package auth0
+package oauth2
 
 import (
 	"net/http"
+	"swclabs/swiftcart/internal/config"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
-func (auth *Authenticator) Auth0CallBack(ctx *gin.Context) {
+func (auth *Authenticator) OAuth2CallBack(ctx *gin.Context) {
 	session := sessions.Default(ctx)
 	if ctx.Query("state") != session.Get("state").(string) {
 		ctx.String(http.StatusBadRequest, "Invalid state parameter. %s", session.Get("state"))
@@ -21,14 +22,8 @@ func (auth *Authenticator) Auth0CallBack(ctx *gin.Context) {
 		return
 	}
 
-	idToken, err := auth.VerifyIDToken(ctx.Request.Context(), token)
+	profile, err := auth.VerifyTokenByte(token)
 	if err != nil {
-		ctx.String(http.StatusInternalServerError, "Failed to verify ID Token.")
-		return
-	}
-
-	var profile map[string]interface{}
-	if err := idToken.Claims(&profile); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -41,6 +36,6 @@ func (auth *Authenticator) Auth0CallBack(ctx *gin.Context) {
 	}
 
 	// Redirect to logged in page.
-	// ctx.Redirect(http.StatusTemporaryRedirect, "/user")
-	ctx.JSON(200, profile)
+	ctx.Redirect(http.StatusTemporaryRedirect, config.FeHomepage)
+	// ctx.JSON(200, profile)
 }

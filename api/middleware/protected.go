@@ -31,8 +31,8 @@ func Protected(c *gin.Context) {
 
 func SessionProtected(c *gin.Context) {
 	session := sessions.Default(c)
-	if session.Get("auth_access_token") != nil {
-		AccessToken := session.Get("auth_access_token").(string)
+	if session.Get("access_token") != nil {
+		AccessToken := session.Get("access_token").(string)
 		email, err := jwt.ParseToken(AccessToken)
 		if err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{

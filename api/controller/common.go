@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/internal/service"
-	"swclabs/swiftcart/pkg/auth0"
+	"swclabs/swiftcart/pkg/oauth2"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -29,13 +29,7 @@ func HealthCheck(c *gin.Context) {
 // @Success 200
 // @Router /v1/auth0/login [GET]
 func Auth0Login(c *gin.Context) {
-	auth, err := auth0.New()
-	if err != nil {
-		c.JSON(400, schema.Error{
-			Msg: err.Error(),
-		})
-		return
-	}
+	auth := oauth2.New()
 	url := auth.AuthCodeURL(auth.State)
 	session := sessions.Default(c)
 	session.Set("state", auth.State)
@@ -47,14 +41,8 @@ func Auth0Login(c *gin.Context) {
 }
 
 func Auth0Callback(c *gin.Context) {
-	auth, err := auth0.New()
-	if err != nil {
-		c.JSON(400, schema.Error{
-			Msg: err.Error(),
-		})
-		return
-	}
-	auth.Auth0CallBack(c)
+	auth := oauth2.New()
+	auth.OAuth2CallBack(c)
 }
 
 func WorkerCheck(c *gin.Context) {

@@ -27,6 +27,8 @@ require (
 )
 
 require (
+	cloud.google.com/go/compute v1.20.1 // indirect
+	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/bytedance/sonic v1.10.2 // indirect
