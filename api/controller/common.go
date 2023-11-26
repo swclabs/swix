@@ -1,9 +1,12 @@
 package controller
 
 import (
+	"net/http"
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/internal/service"
+	"swclabs/swiftcart/pkg/auth0"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +19,42 @@ import (
 // @Router /v1/common/healthcheck [GET]
 func HealthCheck(c *gin.Context) {
 	c.JSON(200, service.HealthCheck())
+}
+
+// Auth0Login.
+// @Description Auth0 Login form.
+// @Tags common
+// @Accept json
+// @Produce json
+// @Success 200
+// @Router /v1/auth0/login [GET]
+func Auth0Login(c *gin.Context) {
+	auth, err := auth0.New()
+	if err != nil {
+		c.JSON(400, schema.Error{
+			Msg: err.Error(),
+		})
+		return
+	}
+	url := auth.AuthCodeURL(auth.State)
+	session := sessions.Default(c)
+	session.Set("state", auth.State)
+	if err := session.Save(); err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.Redirect(http.StatusTemporaryRedirect, url)
+}
+
+func Auth0Callback(c *gin.Context) {
+	auth, err := auth0.New()
+	if err != nil {
+		c.JSON(400, schema.Error{
+			Msg: err.Error(),
+		})
+		return
+	}
+	auth.Auth0CallBack(c)
 }
 
 func WorkerCheck(c *gin.Context) {

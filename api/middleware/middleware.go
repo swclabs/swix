@@ -4,6 +4,8 @@ import (
 	"swclabs/swiftcart/internal/config"
 
 	sentrygin "github.com/getsentry/sentry-go/gin"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 )
 
@@ -25,6 +27,8 @@ func CORSMiddleware() gin.HandlerFunc {
 
 func GinMiddleware(a *gin.Engine) {
 	a.Use(CORSMiddleware())
+	store := cookie.NewStore([]byte("secret"))
+	a.Use(sessions.Sessions("mysession", store))
 }
 
 func Sentry(a *gin.Engine) {

@@ -5,9 +5,9 @@ import (
 
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/internal/service"
-	"swclabs/swiftcart/pkg/x/jwt"
 	"swclabs/swiftcart/pkg/x/validator"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,6 +39,12 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, schema.Error{
 			Msg: err.Error(),
 		})
+		return
+	}
+	session := sessions.Default(c)
+	session.Set("auth_access_token", accessToken)
+	if err := session.Save(); err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 	c.JSON(http.StatusOK, schema.LoginResponse{
@@ -83,6 +89,25 @@ func SignUp(c *gin.Context) {
 	})
 }
 
+// Logout
+// @Description logout user from the service
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Success 200 {object} schema.OK
+// @Router /v1/auth/logout [GET]
+func Logout(c *gin.Context) {
+	session := sessions.Default(c)
+	session.Delete("auth_access_token")
+	if err := session.Save(); err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusOK, schema.OK{
+		Msg: "user logged out",
+	})
+}
+
 // GetMe
 // @Description get information for users.
 // @Tags users
@@ -91,14 +116,8 @@ func SignUp(c *gin.Context) {
 // @Success 200 {object} schema.UserInfo
 // @Router /v1/users [GET]
 func GetMe(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	email, err := jwt.ParseToken(authHeader)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
-			Msg: "Invalid authorization header",
-		})
-		return
-	}
+	session := sessions.Default(c)
+	email := session.Get("email").(string)
 	var account = service.NewAccountManagement()
 	response, err := account.UserInfo(email)
 	if err != nil {

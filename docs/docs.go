@@ -48,6 +48,28 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/auth/logout": {
+            "get": {
+                "description": "logout user from the service",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/schema.OK"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/auth/signup": {
             "post": {
                 "description": "Register account for admin.",
@@ -77,6 +99,25 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/schema.SignUpResponse"
                         }
+                    }
+                }
+            }
+        },
+        "/v1/auth0/login": {
+            "get": {
+                "description": "Auth0 Login form.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "common"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -244,6 +285,7 @@ const docTemplate = `{
             "required": [
                 "email",
                 "first_name",
+                "id",
                 "image",
                 "last_name",
                 "phone_number",
@@ -256,6 +298,9 @@ const docTemplate = `{
                 },
                 "first_name": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "image": {
                     "type": "string"
@@ -279,6 +324,7 @@ const docTemplate = `{
             "required": [
                 "email",
                 "first_name",
+                "id",
                 "last_name",
                 "phone_number",
                 "username"
@@ -289,6 +335,9 @@ const docTemplate = `{
                 },
                 "first_name": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "last_name": {
                     "type": "string"
