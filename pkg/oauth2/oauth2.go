@@ -20,12 +20,14 @@ type I0Auth2 interface {
 }
 
 type GoogleOAuth2 struct {
-	Id         string `json:"id"`
-	Name       string `json:"name"`
-	GivenName  string `json:"given_name"`
-	FamilyName string `json:"family_name"`
-	Picture    string `json:"picture"`
-	Locale     string `json:"locale"`
+	Id            string `json:"id"`
+	Name          string `json:"name"`
+	GivenName     string `json:"given_name"`
+	FamilyName    string `json:"family_name"`
+	Picture       string `json:"picture"`
+	Locale        string `json:"locale"`
+	Email         string `json:"email"`
+	VerifiedEmail bool   `json:"verified_email"`
 }
 
 // Authenticator is used to authenticate our users.
@@ -41,7 +43,7 @@ func New() *Authenticator {
 		ClientSecret: config.Auth0ClientSecret,
 		RedirectURL:  config.Auth0CallbackUrl,
 		Endpoint:     google.Endpoint,
-		Scopes:       []string{oidc.ScopeOpenID, "profile"},
+		Scopes:       []string{oidc.ScopeOpenID, "profile", "email"},
 	}
 
 	return &Authenticator{

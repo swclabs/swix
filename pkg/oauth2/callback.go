@@ -2,7 +2,8 @@ package oauth2
 
 import (
 	"net/http"
-	"swclabs/swiftcart/internal/config"
+	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/service"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -22,20 +23,31 @@ func (auth *Authenticator) OAuth2CallBack(ctx *gin.Context) {
 		return
 	}
 
-	profile, err := auth.VerifyTokenByte(token)
+	profile, err := auth.VerifyToken(token)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
+	account := service.NewAccountManagement()
+	if err := account.OAuth2SaveUser(&schema.OAuth2SaveUser{
+		Email:     profile.Email,
+		FirstName: profile.GivenName,
+		LastName:  profile.FamilyName,
+		Image:     profile.Picture,
+	}); err != nil {
+		ctx.String(http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	session.Set("access_token", token.AccessToken)
-	session.Set("profile", profile)
+	// session.Set("profile", profile)
 	if err := session.Save(); err != nil {
 		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	// Redirect to logged in page.
-	ctx.Redirect(http.StatusTemporaryRedirect, config.FeHomepage)
-	// ctx.JSON(200, profile)
+	// ctx.Redirect(http.StatusTemporaryRedirect, config.FeHomepage)
+	ctx.JSON(200, profile)
 }

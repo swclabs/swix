@@ -13,6 +13,7 @@ type IAccountManagement interface {
 	UserInfo(email string) (*schema.UserInfo, error)
 	UpdateUserInfo(req *schema.UserUpdate) error
 	UploadAvatar(email string, fileHeader *multipart.FileHeader) error
+	OAuth2SaveUser(req *schema.OAuth2SaveUser) error
 }
 
 // IOrderManagement : Module Order Management

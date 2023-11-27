@@ -2,8 +2,10 @@ package queries
 
 const (
 	InsertIntoAccounts string = `
-		INSERT INTO accounts (username, role, email, password, created_at) 
-		VALUES (?, ?, ?, ?, ?);
+		INSERT INTO accounts (username, role, email, password, created_at, type) 
+		VALUES (?, ?, ?, ?, ?, ?)
+		ON CONFLICT (email) 
+		DO NOTHING;
 	`
 
 	UpdateAccountsUsername string = `

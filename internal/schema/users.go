@@ -43,3 +43,11 @@ type UserUpdate struct {
 	LastName    string `json:"last_name" validate:"required"`
 	Username    string `json:"username" validate:"required"`
 }
+
+type OAuth2SaveUser struct {
+	Email       string `json:"email" validate:"required"`
+	PhoneNumber string `json:"phone_number" validate:"required"`
+	FirstName   string `json:"first_name" validate:"required"`
+	LastName    string `json:"last_name" validate:"required"`
+	Image       string `json:"image" validate:"required"`
+}
