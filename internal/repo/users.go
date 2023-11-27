@@ -40,7 +40,8 @@ func (usr *Users) Insert(_usr *model.User) error {
 		_usr.PhoneNumber,
 		_usr.FirstName,
 		_usr.LastName,
-		_usr.Image).Error
+		_usr.Image,
+	).Error
 }
 
 func (usr *Users) Info(email string) (*schema.UserInfo, error) {
@@ -76,4 +77,15 @@ func (usr *Users) SaveInfo(user *model.User) error {
 		}
 	}
 	return nil
+}
+
+func (usr *Users) OAuth2SaveInfo(user *model.User) error {
+	return usr.conn.Exec(
+		queries.InsertIntoUsers,
+		user.Email,
+		user.PhoneNumber,
+		user.FirstName,
+		user.LastName,
+		user.Image,
+	).Error
 }

@@ -7,4 +7,5 @@ type Account struct {
 	Email     string `json:"email" gorm:"column:email"`
 	Password  string `json:"password" gorm:"column:password"`
 	CreatedAt string `json:"created_at" gorm:"column:created"`
+	Type      string `json:"type" gorm:"column:type"`
 }

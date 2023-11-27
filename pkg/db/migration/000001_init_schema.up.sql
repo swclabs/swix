@@ -1,8 +1,9 @@
 CREATE TABLE "accounts" (
   "username" varchar PRIMARY KEY,
   "role" varchar NOT NULL DEFAULT('customer'),
-  "email" varchar NOT NULL,
+  "email" varchar UNIQUE NOT NULL,
   "password" varchar NOT NULL,
+  "type" varchar NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
@@ -49,7 +50,7 @@ CREATE TABLE "products" (
   "supplier_id" bigint NOT NULL,
   "category_id" bigint NOT NULL,
   "available" bigint NOT NULL,
-  "star" varchar NOT NULL,
+  "star" varchar NOT NULL
 );
 
 CREATE TABLE "suppliers" (

@@ -36,4 +36,15 @@ const (
 		SET phone_number = ?
 		WHERE email = ?;
 	`
+
+	InsertUsersConflict string = `
+		INSERT INTO users (email, phone_number, first_name, last_name, image) 
+		VALUES (?,?,?,?,?) 
+		ON CONFLICT (email)
+		DO
+			UPDATE 
+			SET first_name = EXCLUDED.first_name, 
+				last_name = EXCLUDED.last_name,
+				image = EXCLUDED.image;
+	`
 )

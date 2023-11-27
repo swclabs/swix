@@ -9,6 +9,7 @@ import (
 	"swclabs/swiftcart/internal/repo"
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/pkg/cloud"
+	"swclabs/swiftcart/pkg/utils"
 	"swclabs/swiftcart/pkg/x/jwt"
 )
 
@@ -47,6 +48,7 @@ func (accountManagement *AccountManagement) SignUp(req *schema.SignUpRequest) er
 		Password: hash,
 		Role:     "Customer",
 		Email:    req.Email,
+		Type:     "swc",
 	})
 }
 
@@ -87,5 +89,32 @@ func (accountManagement *AccountManagement) UploadAvatar(email string, fileHeade
 	return accountManagement.user.SaveInfo(&model.User{
 		Email: email,
 		Image: resp.SecureURL,
+	})
+}
+
+func (accountManagement *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) error {
+	hash, err := jwt.GenPassword(utils.RandomString(18))
+	if err != nil {
+		return err
+	}
+	if err := accountManagement.user.OAuth2SaveInfo(&model.User{
+		Email:       req.Email,
+		PhoneNumber: req.PhoneNumber,
+		FirstName:   req.FirstName,
+		LastName:    req.LastName,
+		Image:       req.Image,
+	}); err != nil {
+		return err
+	}
+	userInfo, err := accountManagement.user.GetByEmail(req.Email)
+	if err != nil {
+		return err
+	}
+	return accountManagement.account.Insert(&model.Account{
+		Username: fmt.Sprintf("user#%d", userInfo.UserID),
+		Password: hash,
+		Role:     "Customer",
+		Email:    req.Email,
+		Type:     "oauth2-google",
 	})
 }

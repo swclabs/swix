@@ -10,6 +10,7 @@ type IUsers interface {
 	Insert(usr *model.User) error
 	Info(email string) (*schema.UserInfo, error)
 	SaveInfo(user *model.User) error
+	OAuth2SaveInfo(user *model.User) error
 }
 
 type IAccounts interface {

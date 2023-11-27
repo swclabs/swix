@@ -36,7 +36,7 @@ func (account *Accounts) GetByEmail(email string) (*model.Account, error) {
 
 func (account *Accounts) Insert(acc *model.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
-	return account.conn.Exec(queries.InsertIntoAccounts, acc.Username, acc.Role, acc.Email, acc.Password, createdAt).Error
+	return account.conn.Exec(queries.InsertIntoAccounts, acc.Username, acc.Role, acc.Email, acc.Password, createdAt, acc.Type).Error
 }
 
 func (account *Accounts) SaveInfo(acc *model.Account) error {
