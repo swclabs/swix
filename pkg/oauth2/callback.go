@@ -2,6 +2,7 @@ package oauth2
 
 import (
 	"net/http"
+	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/internal/service"
 
@@ -48,6 +49,6 @@ func (auth *Authenticator) OAuth2CallBack(ctx *gin.Context) {
 	}
 
 	// Redirect to logged in page.
-	// ctx.Redirect(http.StatusTemporaryRedirect, config.FeHomepage)
-	ctx.JSON(200, profile)
+	ctx.Redirect(http.StatusTemporaryRedirect, config.FeHomepage)
+	// ctx.JSON(200, profile)
 }

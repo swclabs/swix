@@ -173,17 +173,6 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "parameters": [
-                    {
-                        "description": "Update User",
-                        "name": "UserInfo",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/schema.UserUpdate"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",

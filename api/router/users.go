@@ -16,8 +16,9 @@ func Users(e *gin.Engine) {
 	auth0 := e.Group("/v1/oauth2")
 	auth0.GET("/login", controller.Auth0Login)
 
-	user := e.Group("/v1")
-	user.GET("/users", middleware.SessionProtected, controller.GetMe)
-	user.PUT("/users", controller.UpdateUserInfo)
+	user := e.Group("/v1/users")
+	user.GET("/", middleware.SessionProtected, controller.GetMe)
+	user.PUT("/", controller.UpdateUserInfo)
+	user.POST("/image", middleware.SessionProtected, controller.UpdateUserImage)
 
 }
