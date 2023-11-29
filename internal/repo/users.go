@@ -81,7 +81,7 @@ func (usr *Users) SaveInfo(user *model.User) error {
 
 func (usr *Users) OAuth2SaveInfo(user *model.User) error {
 	return usr.conn.Exec(
-		queries.InsertIntoUsers,
+		queries.InsertUsersConflict,
 		user.Email,
 		user.PhoneNumber,
 		user.FirstName,

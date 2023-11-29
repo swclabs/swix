@@ -10,7 +10,7 @@ CREATE TABLE "accounts" (
 CREATE TABLE "users" (
   "id" bigserial PRIMARY KEY,
   "email" varchar UNIQUE NOT NULL,
-  "phone_number" varchar UNIQUE NOT NULL,
+  "phone_number" varchar NOT NULL,
   "first_name" varchar NOT NULL,
   "last_name" varchar NOT NULL,
   "image" varchar

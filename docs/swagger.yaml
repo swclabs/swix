@@ -211,13 +211,6 @@ paths:
       consumes:
       - application/json
       description: update information for users.
-      parameters:
-      - description: Update User
-        in: body
-        name: UserInfo
-        required: true
-        schema:
-          $ref: '#/definitions/schema.UserUpdate'
       produces:
       - application/json
       responses:

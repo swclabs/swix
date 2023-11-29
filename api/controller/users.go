@@ -163,3 +163,32 @@ func UpdateUserInfo(c *gin.Context) {
 	})
 
 }
+
+// UpdateUserImage
+// @Description update information for users.
+// @Tags users
+// @Accept json
+// @Produce json
+// @Success 200 {object} schema.OK
+// @Router /v1/users [PUT]
+func UpdateUserImage(c *gin.Context) {
+	session := sessions.Default(c)
+	email := session.Get("email").(string)
+	file, err := c.FormFile("img")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, schema.Error{
+			Msg: err.Error(),
+		})
+		return
+	}
+	account := service.NewAccountManagement()
+	if err := account.UploadAvatar(email, file); err != nil {
+		c.JSON(http.StatusInternalServerError, schema.Error{
+			Msg: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, schema.OK{
+		Msg: "update user images successfully",
+	})
+}
