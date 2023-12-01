@@ -21,24 +21,23 @@ func init() {
 }
 
 func (s *Server) Scheduler() {
-	j := job.New()
-	j.Scheduler(service.Ping, 5*time.Second)
+	newJob := job.New()
+	go newJob.Scheduler(service.Ping, 5*time.Second)
 
-	if err := j.Launch(); err != nil {
-		panic(err)
-	}
+	newJob.Launch()
 }
 
 func (s *Server) Run(addr string) error {
-	s.backgroundTask(
-		s.Scheduler,
-	)
+	s.Scheduler()
+	s.backgroundTask()
 	s.middleware(
 		middleware.GinMiddleware,
 		middleware.Sentry,
 	)
 	s.router(
 		router.Common,
+		router.Auth,
+		router.OAuth2,
 		router.Users,
 		router.Docs,
 	)
