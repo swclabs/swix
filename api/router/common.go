@@ -11,6 +11,5 @@ func Common(e *gin.Engine) {
 	r.GET("/healthcheck", controller.HealthCheck)
 	r.GET("/worker", controller.WorkerCheck)
 	r.GET("/foo", controller.Foo)
-
 	e.GET("/callback", controller.Auth0Callback)
 }
