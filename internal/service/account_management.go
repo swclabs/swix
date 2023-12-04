@@ -8,6 +8,7 @@ import (
 	"swclabs/swiftcart/internal/model"
 	"swclabs/swiftcart/internal/repo"
 	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/tasks"
 	"swclabs/swiftcart/pkg/cloud"
 	"swclabs/swiftcart/pkg/utils"
 	"swclabs/swiftcart/pkg/x/jwt"
@@ -16,16 +17,20 @@ import (
 type AccountManagement struct {
 	user    repo.IUsers
 	account repo.IAccounts
+	tasks   *tasks.AccountManagement
 }
 
 func NewAccountManagement() IAccountManagement {
 	return &AccountManagement{
 		user:    repo.NewUsers(),
 		account: repo.NewAccounts(),
+		tasks:   tasks.NewAccountManagement(),
 	}
 }
 
 func (accountManagement *AccountManagement) SignUp(req *schema.SignUpRequest) error {
+	// Add task
+	// Begin:
 	hash, err := jwt.GenPassword(req.Password)
 	if err != nil {
 		return err
@@ -50,6 +55,7 @@ func (accountManagement *AccountManagement) SignUp(req *schema.SignUpRequest) er
 		Email:    req.Email,
 		Type:     "swc",
 	})
+	// End
 }
 
 func (accountManagement *AccountManagement) Login(req *schema.LoginRequest) (string, error) {
@@ -68,6 +74,8 @@ func (accountManagement *AccountManagement) UserInfo(email string) (*schema.User
 }
 
 func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
+	// Add task
+	// Begin
 	return accountManagement.user.SaveInfo(&model.User{
 		UserID:      req.Id,
 		Email:       req.Email,
@@ -75,6 +83,7 @@ func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserUpdat
 		FirstName:   req.FirstName,
 		LastName:    req.LastName,
 	})
+	// End
 }
 
 func (accountManagement *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
@@ -82,6 +91,8 @@ func (accountManagement *AccountManagement) UploadAvatar(email string, fileHeade
 	if err != nil {
 		return err
 	}
+	// Add task
+	// Begin:
 	resp, err := cloud.UpdateImages(cloud.Connection(), file)
 	if err != nil {
 		return err
@@ -90,6 +101,7 @@ func (accountManagement *AccountManagement) UploadAvatar(email string, fileHeade
 		Email: email,
 		Image: resp.SecureURL,
 	})
+	// End
 }
 
 func (accountManagement *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) error {
@@ -97,6 +109,8 @@ func (accountManagement *AccountManagement) OAuth2SaveUser(req *schema.OAuth2Sav
 	if err != nil {
 		return err
 	}
+	// Add task
+	// Begin:
 	if err := accountManagement.user.OAuth2SaveInfo(&model.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -117,4 +131,5 @@ func (accountManagement *AccountManagement) OAuth2SaveUser(req *schema.OAuth2Sav
 		Email:    req.Email,
 		Type:     "oauth2-google",
 	})
+	// End
 }

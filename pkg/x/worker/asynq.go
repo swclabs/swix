@@ -99,6 +99,10 @@ func NewTask(typename string, data interface{}) *asynq.Task {
 	return asynq.NewTask(typename, payload)
 }
 
+func NewTypename(funcname string) string {
+	return fmt.Sprintf("Worker#%s", funcname)
+}
+
 func Delay(delay *time.Duration, queue string, task *asynq.Task) error {
 	// Create a new Asynq client.
 	client := asynq.NewClient(broker)

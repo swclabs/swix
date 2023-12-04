@@ -8,6 +8,10 @@ import (
 	"github.com/hibiken/asynq"
 )
 
+const (
+	WorkerHealthCheck string = "Worker#HealthCheck"
+)
+
 func HandleHealthCheck(_ context.Context, task *asynq.Task) error {
 	var num int64
 	if err := json.Unmarshal(task.Payload(), &num); err != nil {
