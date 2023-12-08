@@ -5,7 +5,7 @@ import (
 
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/internal/service"
-	"swclabs/swiftcart/pkg/x/validator"
+	"swclabs/swiftcart/pkg/validator"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"

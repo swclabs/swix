@@ -8,10 +8,10 @@ import (
 	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/internal/service"
 	"swclabs/swiftcart/internal/tasks"
+	"swclabs/swiftcart/pkg/job"
+	"swclabs/swiftcart/pkg/mailers"
 	"swclabs/swiftcart/pkg/sentry"
-	"swclabs/swiftcart/pkg/x/job"
-	"swclabs/swiftcart/pkg/x/mailers"
-	"swclabs/swiftcart/pkg/x/worker"
+	"swclabs/swiftcart/pkg/worker"
 )
 
 func init() {

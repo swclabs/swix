@@ -1,9 +1,8 @@
 package tasks
 
 import (
-	"maps"
 	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/pkg/x/worker"
+	"swclabs/swiftcart/pkg/worker"
 )
 
 var (
@@ -28,23 +27,13 @@ func Queue() worker.Queue {
 	}
 }
 
-func WorkerGetPath(path ...worker.Path) worker.Path {
-	workerPath := worker.Path{}
-	for _, p := range path {
-		if p != nil {
-			maps.Copy(workerPath, p)
-		}
-	}
-	return workerPath
-}
-
 // Path : example
 //
 //	return worker.Path{
 //		WorkerHealthCheck: HandleHealthCheck,
 //	}
 func Path() worker.Path {
-	return WorkerGetPath(
+	return worker.GetPath(
 		// common path
 		worker.Path{
 			WorkerHealthCheck: HandleHealthCheck,

@@ -1,8 +1,8 @@
 package test
 
 import (
+	"swclabs/swiftcart/pkg/mailers"
 	"swclabs/swiftcart/pkg/template"
-	"swclabs/swiftcart/pkg/x/mailers"
 	"testing"
 )
 

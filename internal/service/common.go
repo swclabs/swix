@@ -3,7 +3,7 @@ package service
 import (
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/internal/tasks"
-	"swclabs/swiftcart/pkg/x/worker"
+	"swclabs/swiftcart/pkg/worker"
 )
 
 func Ping() {
