@@ -2,7 +2,7 @@ package tasks
 
 import (
 	"context"
-	"swclabs/swiftcart/pkg/x/worker"
+	"swclabs/swiftcart/pkg/worker"
 
 	"github.com/hibiken/asynq"
 )

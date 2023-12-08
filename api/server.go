@@ -3,7 +3,7 @@ package api
 import (
 	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/internal/tasks"
-	"swclabs/swiftcart/pkg/x/worker"
+	"swclabs/swiftcart/pkg/worker"
 
 	"github.com/gin-gonic/gin"
 )

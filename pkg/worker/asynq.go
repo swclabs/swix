@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"maps"
 	"reflect"
 	"runtime"
 	"strings"
@@ -101,6 +102,16 @@ func NewTask(typename string, data interface{}) *asynq.Task {
 
 func NewTypename(funcname string) string {
 	return fmt.Sprintf("Worker#%s", funcname)
+}
+
+func GetPath(path ...Path) Path {
+	workerPath := Path{}
+	for _, p := range path {
+		if p != nil {
+			maps.Copy(workerPath, p)
+		}
+	}
+	return workerPath
 }
 
 func Delay(delay *time.Duration, queue string, task *asynq.Task) error {

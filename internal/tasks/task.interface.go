@@ -12,3 +12,6 @@ type IAccountManagement interface {
 	OAuth2SaveUser(ctx context.Context, task *asynq.Task) error
 	NewUsers(ctx context.Context, task *asynq.Task) error
 }
+
+type IBaseAccountManagement interface {
+}
