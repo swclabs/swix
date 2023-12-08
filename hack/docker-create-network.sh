@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 docker network rm swc-api-network
 
 docker network create \
