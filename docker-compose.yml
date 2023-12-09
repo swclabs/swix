@@ -5,7 +5,7 @@ services:
     env_file:
       - .env.prod
     restart: always
-    command: "./bin/exe s"
+    command: "swctl s"
     networks:
       - bridge
     ports:
@@ -21,7 +21,7 @@ services:
     restart: always
     networks:
       - bridge
-    command: "./bin/exe w"
+    command: "swctl w"
     depends_on:
       - redis
       - postgres
@@ -36,7 +36,7 @@ services:
     environment:
       - REDIS_HOST_PASSWORD=password
     volumes:
-      - ./k8s/data/redis:/data
+      - ./pkg/db/data/redis:/data
 
   postgres:
     image: postgres:latest
@@ -50,9 +50,9 @@ services:
     networks:
       - bridge
     volumes:
-      - ./k8s/data/postgres:/var/lib/postgresql/data
+      - ./pkg/db/data/postgres:/var/lib/postgresql/data
 
 networks:
   bridge:
 volumes:
-  k8s:
+  pkg:

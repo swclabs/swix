@@ -11,9 +11,14 @@ RUN go mod download
 COPY . .
 
 ENV HOST 0.0.0.0
+ENV PORT 8000
 
 # Set necessary environment variables needed for our image and build the API server.
 ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-RUN go build -ldflags="-s -w" -o ./bin/exe ./cmd
-RUN rm -rf ./internal && rm -rf ./cmd && rm -rf ./pkg && rm -rf ./test && rm -rf ./docs
-RUN cp ./bin/exe /bin/exe
+RUN go build -ldflags="-s -w" -o /bin/swctl ./cmd
+
+# Remove all source code files
+RUN rm -r *
+
+# RUN rm -rf ./internal && rm -rf ./cmd && rm -rf ./pkg && rm -rf ./test && rm -rf ./docs
+# RUN cp ./bin/exe /bin/exe

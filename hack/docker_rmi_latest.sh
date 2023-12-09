@@ -7,9 +7,8 @@ fi
 
 DOCKER_USERNAME=$1
 DOCKER_IMAGE_NAME=$2
-COMMIT_ID=$(git rev-parse --short HEAD)
 
-COMMIT_TAG="$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$COMMIT_ID"
 LATEST_TAG="$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest"
 
-docker build  -t $COMMIT_TAG -f ./Dockerfile.prod .
+docker rmi -f $LATEST_TAG
+
