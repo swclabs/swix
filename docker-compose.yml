@@ -36,7 +36,7 @@ services:
     environment:
       - REDIS_HOST_PASSWORD=password
     volumes:
-      - ./k8s/data/redis:/data
+      - ./pkg/db/data/redis:/data
 
   postgres:
     image: postgres:latest
@@ -50,9 +50,9 @@ services:
     networks:
       - bridge
     volumes:
-      - ./k8s/data/postgres:/var/lib/postgresql/data
+      - ./pkg/db/data/postgres:/var/lib/postgresql/data
 
 networks:
   bridge:
 volumes:
-  k8s:
+  pkg:
