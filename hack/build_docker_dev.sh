@@ -12,4 +12,5 @@ COMMIT_ID=$(git rev-parse --short HEAD)
 COMMIT_TAG="$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$COMMIT_ID"
 LATEST_TAG="$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest"
 
-docker build  -t $COMMIT_TAG -f ./Dockerfile.prod .
+echo "build: $COMMIT_TAG"
+docker build  -t $COMMIT_TAG -f ./Dockerfile.dev .

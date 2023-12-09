@@ -1,9 +1,9 @@
 version: "3.1"
 services:
   api-server:
-    image: duchungho/swc-api:4b35adc
+    image: duchungho/swc-api:446ab5a
     restart: always
-    command: "/bin/exe s"
+    command: "swc s"
     networks:
       - bridge
     ports:

@@ -5,7 +5,7 @@ services:
     env_file:
       - .env.prod
     restart: always
-    command: "./bin/exe s"
+    command: "swctl s"
     networks:
       - bridge
     ports:
@@ -21,7 +21,7 @@ services:
     restart: always
     networks:
       - bridge
-    command: "./bin/exe w"
+    command: "swctl w"
     depends_on:
       - redis
       - postgres
