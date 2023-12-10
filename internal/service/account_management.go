@@ -8,7 +8,7 @@ import (
 	"swclabs/swiftcart/internal/repo"
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/internal/tasks"
-	"swclabs/swiftcart/pkg/cloud"
+	"swclabs/swiftcart/internal/tasks/plugin"
 	"swclabs/swiftcart/pkg/jwt"
 	"swclabs/swiftcart/pkg/utils"
 )
@@ -92,15 +92,20 @@ func (accountManagement *AccountManagement) UploadAvatar(email string, fileHeade
 	}
 	// Add task
 	// Begin:
-	resp, err := cloud.UpdateImages(cloud.Connection(), file)
-	if err != nil {
-		return err
-	}
-	return accountManagement.user.SaveInfo(&model.User{
-		Email: email,
-		Image: resp.SecureURL,
-	})
+	// resp, err := cloud.UpdateImages(cloud.Connection(), file)
+	// if err != nil {
+	// 	return err
+	// }
+	// return accountManagement.user.SaveInfo(&model.User{
+	// 	Email: email,
+	// 	Image: resp.SecureURL,
+	// })
 	// End
+	plugin.ImagePool.Process(plugin.Image{
+		Email: email,
+		File:  file,
+	})
+	return nil
 }
 
 func (accountManagement *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) error {

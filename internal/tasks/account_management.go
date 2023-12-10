@@ -2,10 +2,15 @@ package tasks
 
 import (
 	"context"
+	"mime/multipart"
+	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/pkg/worker"
 
 	"github.com/hibiken/asynq"
 )
+
+// DEBUG: NOT DELETE THIS LINE
+var _ IAccountManagement = NewAccountManagement()
 
 type AccountManagement struct {
 	CallUploadImage    string
@@ -26,29 +31,38 @@ func NewAccountManagement() *AccountManagement {
 func AccountManagementPath() worker.Path {
 	account := NewAccountManagement()
 	return worker.Path{
-		account.CallUploadImage:    account.UploadImage,
-		account.CallUpdateInfo:     account.UpdateInfo,
-		account.CallOAuth2SaveUser: account.OAuth2SaveUser,
-		account.CallNewUsers:       account.NewUsers,
+		account.CallUpdateInfo:     account.WorkerUpdateInfo,
+		account.CallOAuth2SaveUser: account.WorkerOAuth2SaveUser,
+		account.CallNewUsers:       account.WorkerNewUsers,
 	}
 }
 
-func (account *AccountManagement) UploadImage(ctx context.Context, task *asynq.Task) error {
+func (account *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (account *AccountManagement) UpdateInfo(ctx context.Context, task *asynq.Task) error {
+func (account *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (account *AccountManagement) OAuth2SaveUser(ctx context.Context, task *asynq.Task) error {
+func (account *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (account *AccountManagement) NewUsers(ctx context.Context, task *asynq.Task) error {
+func (account *AccountManagement) WorkerUpdateInfo(ctx context.Context, task *asynq.Task) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (account *AccountManagement) WorkerOAuth2SaveUser(ctx context.Context, task *asynq.Task) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (account *AccountManagement) WorkerNewUsers(ctx context.Context, task *asynq.Task) error {
 	//TODO implement me
 	panic("implement me")
 }
