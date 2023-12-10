@@ -12,7 +12,6 @@ func Users(e *gin.Engine) {
 	user.GET("/", middleware.SessionProtected, controller.GetMe)
 	user.PUT("/", controller.UpdateUserInfo)
 	user.POST("/image", middleware.SessionProtected, controller.UpdateUserImage)
-
 }
 
 func Auth(e *gin.Engine) {

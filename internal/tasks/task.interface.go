@@ -2,16 +2,20 @@ package tasks
 
 import (
 	"context"
+	"mime/multipart"
+	"swclabs/swiftcart/internal/schema"
 
 	"github.com/hibiken/asynq"
 )
 
 type IAccountManagement interface {
-	UploadImage(ctx context.Context, task *asynq.Task) error
-	UpdateInfo(ctx context.Context, task *asynq.Task) error
-	OAuth2SaveUser(ctx context.Context, task *asynq.Task) error
-	NewUsers(ctx context.Context, task *asynq.Task) error
-}
+	// base handle function
+	UpdateUserInfo(req *schema.UserUpdate) error
+	UploadAvatar(email string, fileHeader *multipart.FileHeader) error
+	OAuth2SaveUser(req *schema.OAuth2SaveUser) error
 
-type IBaseAccountManagement interface {
+	// worker handle function
+	WorkerUpdateInfo(ctx context.Context, task *asynq.Task) error
+	WorkerOAuth2SaveUser(ctx context.Context, task *asynq.Task) error
+	WorkerNewUsers(ctx context.Context, task *asynq.Task) error
 }

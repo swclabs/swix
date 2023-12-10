@@ -12,6 +12,8 @@ import (
 	"swclabs/swiftcart/pkg/mailers"
 	"swclabs/swiftcart/pkg/sentry"
 	"swclabs/swiftcart/pkg/worker"
+
+	_ "swclabs/swiftcart/internal/tasks/plugin"
 )
 
 func init() {
