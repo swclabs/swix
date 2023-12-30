@@ -1,3 +1,5 @@
+// Author: Duc Hung Ho @ikierans
+// Description: users repository implementation
 package repo
 
 import (
@@ -36,11 +38,7 @@ func (usr *Users) GetByEmail(email string) (*model.User, error) {
 func (usr *Users) Insert(_usr *model.User) error {
 	return usr.conn.Exec(
 		queries.InsertIntoUsers,
-		_usr.Email,
-		_usr.PhoneNumber,
-		_usr.FirstName,
-		_usr.LastName,
-		_usr.Image,
+		_usr.Email, _usr.PhoneNumber, _usr.FirstName, _usr.LastName, _usr.Image,
 	).Error
 }
 
@@ -57,22 +55,34 @@ func (usr *Users) SaveInfo(user *model.User) error {
 		return errors.New("missing key: email ")
 	}
 	if user.FirstName != "" {
-		if err := usr.conn.Exec(queries.UpdateUsersFirstname, user.FirstName, user.Email).Error; err != nil {
+		if err := usr.conn.Exec(
+			queries.UpdateUsersFirstname,
+			user.FirstName, user.Email,
+		).Error; err != nil {
 			return err
 		}
 	}
 	if user.LastName != "" {
-		if err := usr.conn.Exec(queries.UpdateUsersLastname, user.LastName, user.Email).Error; err != nil {
+		if err := usr.conn.Exec(
+			queries.UpdateUsersLastname,
+			user.LastName, user.Email,
+		).Error; err != nil {
 			return err
 		}
 	}
 	if user.Image != "" {
-		if err := usr.conn.Exec(queries.UpdateUsersImage, user.Image, user.Email).Error; err != nil {
+		if err := usr.conn.Exec(
+			queries.UpdateUsersImage,
+			user.Image, user.Email,
+		).Error; err != nil {
 			return err
 		}
 	}
 	if user.PhoneNumber != "" {
-		if err := usr.conn.Exec(queries.UpdateUsersPhoneNumber, user.PhoneNumber, user.Email).Error; err != nil {
+		if err := usr.conn.Exec(
+			queries.UpdateUsersPhoneNumber,
+			user.PhoneNumber, user.Email,
+		).Error; err != nil {
 			return err
 		}
 	}

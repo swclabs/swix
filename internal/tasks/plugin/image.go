@@ -1,3 +1,6 @@
+// Authors: Duc Hung Ho @ikierans
+// Description: Plugin for tasks package, run worker tasks in memory
+
 package plugin
 
 import (
@@ -30,8 +33,6 @@ func (image *Image) ImageHandler(data <-chan interface{}, wg *sync.WaitGroup) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			// fmt.Println(resp.SecureURL)
-			// fmt.Println(imageInfo.Email)
 			if err := repo.NewUsers().SaveInfo(&model.User{
 				Email: imageInfo.Email,
 				Image: resp.SecureURL,

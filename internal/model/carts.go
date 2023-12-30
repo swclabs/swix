@@ -1,6 +1,6 @@
 package model
 
-// Cart table Carts
+// Cart : table Carts
 type Cart struct {
 	ID         int64 `json:"id" gorm:"column:id"`
 	Quantity   int64 `json:"quantity" gorm:"column:quantity"`

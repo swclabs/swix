@@ -8,6 +8,9 @@
 // Description: This is Graduation project in computer science
 // 2023 - Ho Chi Minh City University of Technology, VNUHCM
 
+// RUN APPLICATION CLI, IF YOU DON'T WANT TO RUN CLI APP
+// SEE: server/main.go and worker/main.go
+
 package main
 
 import (
@@ -29,8 +32,6 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
-
-// var migrateStatus = "up"
 
 var Command = []*cli.Command{
 	{
@@ -80,16 +81,6 @@ var Command = []*cli.Command{
 	},
 }
 
-// var flags = []cli.Flag{
-// 	&cli.StringFlag{
-// 		Name:        "migstatus",
-// 		Value:       "up",
-// 		Aliases:     []string{"mt"},
-// 		Usage:       "change migrate status",
-// 		Destination: &migrateStatus,
-// 	},
-// }
-
 func NewClient() *cli.App {
 	_app := &cli.App{
 		Name:        "swiftcart",
@@ -97,7 +88,6 @@ func NewClient() *cli.App {
 		Version:     "0.0.1",
 		Description: "swiftcart API server",
 		Commands:    Command,
-		// Flags:       flags,
 	}
 
 	sort.Sort(cli.FlagsByName(_app.Flags))

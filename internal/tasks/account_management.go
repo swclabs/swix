@@ -2,7 +2,6 @@ package tasks
 
 import (
 	"context"
-	"mime/multipart"
 	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/pkg/worker"
 
@@ -38,11 +37,6 @@ func AccountManagementPath() worker.Path {
 }
 
 func (account *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (account *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
 	//TODO implement me
 	panic("implement me")
 }

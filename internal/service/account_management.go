@@ -1,3 +1,6 @@
+// Author: Duc Hung Ho @ikierans
+// Description: account management service implementation
+
 package service
 
 import (
@@ -27,14 +30,14 @@ func NewAccountManagement() IAccountManagement {
 	}
 }
 
-func (accountManagement *AccountManagement) SignUp(req *schema.SignUpRequest) error {
+func (manager *AccountManagement) SignUp(req *schema.SignUpRequest) error {
 	// Add task
 	// Begin:
 	hash, err := jwt.GenPassword(req.Password)
 	if err != nil {
 		return err
 	}
-	if err := accountManagement.user.Insert(&model.User{
+	if err := manager.user.Insert(&model.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -43,11 +46,11 @@ func (accountManagement *AccountManagement) SignUp(req *schema.SignUpRequest) er
 	}); err != nil {
 		return err
 	}
-	userInfo, err := accountManagement.user.GetByEmail(req.Email)
+	userInfo, err := manager.user.GetByEmail(req.Email)
 	if err != nil {
 		return err
 	}
-	return accountManagement.account.Insert(&model.Account{
+	return manager.account.Insert(&model.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.UserID),
 		Password: hash,
 		Role:     "Customer",
@@ -57,8 +60,8 @@ func (accountManagement *AccountManagement) SignUp(req *schema.SignUpRequest) er
 	// End
 }
 
-func (accountManagement *AccountManagement) Login(req *schema.LoginRequest) (string, error) {
-	account, err := accountManagement.account.GetByEmail(req.Email)
+func (manager *AccountManagement) Login(req *schema.LoginRequest) (string, error) {
+	account, err := manager.account.GetByEmail(req.Email)
 	if err != nil {
 		return "", err
 	}
@@ -68,14 +71,14 @@ func (accountManagement *AccountManagement) Login(req *schema.LoginRequest) (str
 	return jwt.GenerateToken(req.Email)
 }
 
-func (accountManagement *AccountManagement) UserInfo(email string) (*schema.UserInfo, error) {
-	return accountManagement.user.Info(email)
+func (manager *AccountManagement) UserInfo(email string) (*schema.UserInfo, error) {
+	return manager.user.Info(email)
 }
 
-func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
+func (manager *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
 	// Add task
 	// Begin
-	return accountManagement.user.SaveInfo(&model.User{
+	return manager.user.SaveInfo(&model.User{
 		UserID:      req.Id,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -85,22 +88,11 @@ func (accountManagement *AccountManagement) UpdateUserInfo(req *schema.UserUpdat
 	// End
 }
 
-func (accountManagement *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
+func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return err
 	}
-	// Add task
-	// Begin:
-	// resp, err := cloud.UpdateImages(cloud.Connection(), file)
-	// if err != nil {
-	// 	return err
-	// }
-	// return accountManagement.user.SaveInfo(&model.User{
-	// 	Email: email,
-	// 	Image: resp.SecureURL,
-	// })
-	// End
 	plugin.ImagePool.Process(plugin.Image{
 		Email: email,
 		File:  file,
@@ -108,14 +100,14 @@ func (accountManagement *AccountManagement) UploadAvatar(email string, fileHeade
 	return nil
 }
 
-func (accountManagement *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) error {
+func (manager *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) error {
 	hash, err := jwt.GenPassword(utils.RandomString(18))
 	if err != nil {
 		return err
 	}
 	// Add task
 	// Begin:
-	if err := accountManagement.user.OAuth2SaveInfo(&model.User{
+	if err := manager.user.OAuth2SaveInfo(&model.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -124,11 +116,11 @@ func (accountManagement *AccountManagement) OAuth2SaveUser(req *schema.OAuth2Sav
 	}); err != nil {
 		return err
 	}
-	userInfo, err := accountManagement.user.GetByEmail(req.Email)
+	userInfo, err := manager.user.GetByEmail(req.Email)
 	if err != nil {
 		return err
 	}
-	return accountManagement.account.Insert(&model.Account{
+	return manager.account.Insert(&model.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.UserID),
 		Password: hash,
 		Role:     "Customer",

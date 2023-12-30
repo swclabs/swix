@@ -22,15 +22,15 @@ func init() {
 	worker.SetBroker(config.RedisHost, config.RedisPort, config.RedisPassword)
 }
 
-func (s *Server) Scheduler() {
+func (s *Server) scheduler() {
 	newJob := job.New()
 	go newJob.Scheduler(service.Ping, 5*time.Second)
 
-	newJob.Launch()
+	newJob.Info()
 }
 
 func (s *Server) Run(addr string) error {
-	s.Scheduler()
+	s.scheduler()
 	s.backgroundTask()
 	s.middleware(
 		middleware.GinMiddleware,

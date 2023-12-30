@@ -8,6 +8,9 @@
 // Description: This is Graduation project in computer science
 // 2023 - Ho Chi Minh City University of Technology, VNUHCM
 
+// THIS IS FILE USED TO CREATE SWAGGER DOCS ONLY
+// PLEASE DO NOT EDIT, SEE cmd/main.go
+
 package main
 
 import (

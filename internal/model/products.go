@@ -1,6 +1,6 @@
 package model
 
-// Product Table products
+// Product : Table products
 type Product struct {
 	ID          int64  `json:"id" gorm:"column:id"`
 	Image       string `json:"image" gorm:"column:image"`
