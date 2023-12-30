@@ -1,3 +1,5 @@
+// plugin config file: DO NOT EDIT
+
 package plugin
 
 import (

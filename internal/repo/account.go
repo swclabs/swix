@@ -1,3 +1,5 @@
+// Author: Duc Hung Ho @ikierans
+// Description: account repository implementation
 package repo
 
 import (
@@ -36,7 +38,10 @@ func (account *Accounts) GetByEmail(email string) (*model.Account, error) {
 
 func (account *Accounts) Insert(acc *model.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
-	return account.conn.Exec(queries.InsertIntoAccounts, acc.Username, acc.Role, acc.Email, acc.Password, createdAt, acc.Type).Error
+	return account.conn.Exec(
+		queries.InsertIntoAccounts,
+		acc.Username, acc.Role, acc.Email, acc.Password, createdAt, acc.Type,
+	).Error
 }
 
 func (account *Accounts) SaveInfo(acc *model.Account) error {
@@ -44,17 +49,26 @@ func (account *Accounts) SaveInfo(acc *model.Account) error {
 		return errors.New("missing key: email ")
 	}
 	if acc.Username != "" {
-		if err := account.conn.Exec(queries.UpdateAccountsUsername, acc.Username, acc.Email).Error; err != nil {
+		if err := account.conn.Exec(
+			queries.UpdateAccountsUsername,
+			acc.Username, acc.Email,
+		).Error; err != nil {
 			return err
 		}
 	}
 	if acc.Password != "" {
-		if err := account.conn.Exec(queries.UpdateAccountsPassword, acc.Password, acc.Email).Error; err != nil {
+		if err := account.conn.Exec(
+			queries.UpdateAccountsPassword,
+			acc.Password, acc.Email,
+		).Error; err != nil {
 			return err
 		}
 	}
 	if acc.Role != "" {
-		if err := account.conn.Exec(queries.UpdateAccountsRole, acc.Role, acc.Email).Error; err != nil {
+		if err := account.conn.Exec(
+			queries.UpdateAccountsRole,
+			acc.Role, acc.Email,
+		).Error; err != nil {
 			return err
 		}
 	}

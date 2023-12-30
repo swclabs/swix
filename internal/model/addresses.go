@@ -1,6 +1,6 @@
 package model
 
-// Address :Table addresses
+// Address : Table addresses
 type Address struct {
 	ID       int64  `json:"id" gorm:"column:id"`
 	City     string `json:"city" gorm:"column:city"`

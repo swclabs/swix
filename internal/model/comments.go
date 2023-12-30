@@ -1,6 +1,6 @@
 package model
 
-// Comment Table comments
+// Comment : Table comments
 type Comment struct {
 	ID        int64  `json:"id" gorm:"column:id"`
 	Level     int64  `json:"level" gorm:"column:level"`

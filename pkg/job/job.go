@@ -34,7 +34,7 @@ func (job *Job) Scheduler(fn func(), _time time.Duration) {
 	}()
 }
 
-func (job *Job) Launch() {
+func (job *Job) Info() {
 	log.Info("Launching a job scheduler with the following settings:")
 	for k, v := range job.function {
 		log.Info("-", "function", k, "schedule", v)
