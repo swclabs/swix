@@ -2,12 +2,28 @@ package db
 
 import (
 	"swclabs/swiftcart/pkg/utils"
+	"sync"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
+var connection *gorm.DB = nil
+var lock *sync.Mutex = &sync.Mutex{}
+
 func Connection() (*gorm.DB, error) {
 	dsn, _ := utils.ConnectionURLBuilder("postgres")
-	return gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if connection == nil {
+		lock.Lock()
+		defer lock.Unlock()
+		if connection == nil {
+			conn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+			if err != nil {
+				return nil, err
+			}
+			connection = conn
+		}
+	}
+	return connection, nil
+	// return gorm.Open(postgres.Open(dsn), &gorm.Config{})
 }

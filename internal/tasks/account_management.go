@@ -2,7 +2,7 @@ package tasks
 
 import (
 	"context"
-	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/domain"
 	"swclabs/swiftcart/pkg/worker"
 
 	"github.com/hibiken/asynq"
@@ -36,12 +36,12 @@ func AccountManagementPath() worker.Path {
 	}
 }
 
-func (account *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
+func (account *AccountManagement) UpdateUserInfo(req *domain.UserUpdate) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (account *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) error {
+func (account *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) error {
 	//TODO implement me
 	panic("implement me")
 }

@@ -7,9 +7,8 @@ import (
 	"errors"
 	"fmt"
 	"mime/multipart"
-	"swclabs/swiftcart/internal/model"
+	"swclabs/swiftcart/internal/domain"
 	"swclabs/swiftcart/internal/repo"
-	"swclabs/swiftcart/internal/schema"
 	"swclabs/swiftcart/internal/tasks"
 	"swclabs/swiftcart/internal/tasks/plugin"
 	"swclabs/swiftcart/pkg/jwt"
@@ -17,12 +16,12 @@ import (
 )
 
 type AccountManagement struct {
-	user    repo.IUsers
-	account repo.IAccounts
+	user    domain.IUserRepository
+	account domain.IAccountRepository
 	tasks   *tasks.AccountManagement
 }
 
-func NewAccountManagement() IAccountManagement {
+func NewAccountManagement() domain.IAccountManagementService {
 	return &AccountManagement{
 		user:    repo.NewUsers(),
 		account: repo.NewAccounts(),
@@ -30,14 +29,14 @@ func NewAccountManagement() IAccountManagement {
 	}
 }
 
-func (manager *AccountManagement) SignUp(req *schema.SignUpRequest) error {
+func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
 	// Add task
 	// Begin:
 	hash, err := jwt.GenPassword(req.Password)
 	if err != nil {
 		return err
 	}
-	if err := manager.user.Insert(&model.User{
+	if err := manager.user.Insert(&domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -50,7 +49,7 @@ func (manager *AccountManagement) SignUp(req *schema.SignUpRequest) error {
 	if err != nil {
 		return err
 	}
-	return manager.account.Insert(&model.Account{
+	return manager.account.Insert(&domain.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.UserID),
 		Password: hash,
 		Role:     "Customer",
@@ -60,7 +59,7 @@ func (manager *AccountManagement) SignUp(req *schema.SignUpRequest) error {
 	// End
 }
 
-func (manager *AccountManagement) Login(req *schema.LoginRequest) (string, error) {
+func (manager *AccountManagement) Login(req *domain.LoginRequest) (string, error) {
 	account, err := manager.account.GetByEmail(req.Email)
 	if err != nil {
 		return "", err
@@ -71,14 +70,14 @@ func (manager *AccountManagement) Login(req *schema.LoginRequest) (string, error
 	return jwt.GenerateToken(req.Email)
 }
 
-func (manager *AccountManagement) UserInfo(email string) (*schema.UserInfo, error) {
+func (manager *AccountManagement) UserInfo(email string) (*domain.UserInfo, error) {
 	return manager.user.Info(email)
 }
 
-func (manager *AccountManagement) UpdateUserInfo(req *schema.UserUpdate) error {
+func (manager *AccountManagement) UpdateUserInfo(req *domain.UserUpdate) error {
 	// Add task
 	// Begin
-	return manager.user.SaveInfo(&model.User{
+	return manager.user.SaveInfo(&domain.User{
 		UserID:      req.Id,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -100,14 +99,14 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 	return nil
 }
 
-func (manager *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) error {
+func (manager *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) error {
 	hash, err := jwt.GenPassword(utils.RandomString(18))
 	if err != nil {
 		return err
 	}
 	// Add task
 	// Begin:
-	if err := manager.user.OAuth2SaveInfo(&model.User{
+	if err := manager.user.OAuth2SaveInfo(&domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -120,7 +119,7 @@ func (manager *AccountManagement) OAuth2SaveUser(req *schema.OAuth2SaveUser) err
 	if err != nil {
 		return err
 	}
-	return manager.account.Insert(&model.Account{
+	return manager.account.Insert(&domain.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.UserID),
 		Password: hash,
 		Role:     "Customer",

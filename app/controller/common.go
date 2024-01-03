@@ -2,7 +2,7 @@ package controller
 
 import (
 	"net/http"
-	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/domain"
 	"swclabs/swiftcart/internal/service"
 	"swclabs/swiftcart/pkg/oauth2"
 
@@ -47,7 +47,7 @@ func Auth0Callback(c *gin.Context) {
 
 func WorkerCheck(c *gin.Context) {
 	if err := service.WorkerCheck(); err != nil {
-		c.JSON(400, schema.Error{
+		c.JSON(400, domain.Error{
 			Msg: err.Error(),
 		})
 		return

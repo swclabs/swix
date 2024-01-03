@@ -6,7 +6,7 @@ package plugin
 import (
 	"log"
 	"mime/multipart"
-	"swclabs/swiftcart/internal/model"
+	"swclabs/swiftcart/internal/domain"
 	"swclabs/swiftcart/internal/repo"
 	"swclabs/swiftcart/pkg/cloud"
 	"sync"
@@ -33,7 +33,7 @@ func (image *Image) ImageHandler(data <-chan interface{}, wg *sync.WaitGroup) {
 			if err != nil {
 				log.Fatal(err)
 			}
-			if err := repo.NewUsers().SaveInfo(&model.User{
+			if err := repo.NewUsers().SaveInfo(&domain.User{
 				Email: imageInfo.Email,
 				Image: resp.SecureURL,
 			}); err != nil {
