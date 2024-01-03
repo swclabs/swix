@@ -170,7 +170,7 @@ func UpdateUserInfo(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
-// @Router /v1/users [PUT]
+// @Router /v1/users/image [PUT]
 func UpdateUserImage(c *gin.Context) {
 	session := sessions.Default(c)
 	email := session.Get("email").(string)

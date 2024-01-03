@@ -1,6 +1,6 @@
 package http
 
-import "swclabs/swiftcart/app"
+import "swclabs/swiftcart/delivery/app"
 
 type Adapter struct {
 	server *app.App

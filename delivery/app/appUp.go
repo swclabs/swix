@@ -3,14 +3,15 @@ package app
 import (
 	"time"
 
-	"swclabs/swiftcart/app/middleware"
-	"swclabs/swiftcart/app/router"
+	"swclabs/swiftcart/delivery/app/middleware"
+	"swclabs/swiftcart/delivery/app/router"
 	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/internal/service"
-	_ "swclabs/swiftcart/internal/tasks/plugin"
 	"swclabs/swiftcart/pkg/job"
 	"swclabs/swiftcart/pkg/mailers"
 	"swclabs/swiftcart/pkg/sentry"
+
+	_ "swclabs/swiftcart/internal/tasks/plugin"
 )
 
 func init() {

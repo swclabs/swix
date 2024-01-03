@@ -27,7 +27,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginRequest"
+                            "$ref": "#/definitions/domain.LoginRequest"
                         }
                     }
                 ],
@@ -35,7 +35,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginResponse"
+                            "$ref": "#/definitions/domain.LoginResponse"
                         }
                     }
                 }
@@ -57,7 +57,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.OK"
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -82,7 +82,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.SignUpRequest"
+                            "$ref": "#/definitions/domain.SignUpRequest"
                         }
                     }
                 ],
@@ -90,7 +90,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.SignUpResponse"
+                            "$ref": "#/definitions/domain.SignUpResponse"
                         }
                     }
                 }
@@ -150,7 +150,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.UserInfo"
+                            "$ref": "#/definitions/domain.UserInfo"
                         }
                     }
                 }
@@ -166,11 +166,44 @@
                 "tags": [
                     "users"
                 ],
+                "parameters": [
+                    {
+                        "description": "Update User",
+                        "name": "UserInfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.UserUpdate"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.OK"
+                            "$ref": "#/definitions/domain.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/image": {
+            "put": {
+                "description": "update information for users.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -178,7 +211,7 @@
         }
     },
     "definitions": {
-        "schema.LoginRequest": {
+        "domain.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -193,7 +226,7 @@
                 }
             }
         },
-        "schema.LoginResponse": {
+        "domain.LoginResponse": {
             "type": "object",
             "required": [
                 "email",
@@ -212,7 +245,7 @@
                 }
             }
         },
-        "schema.OK": {
+        "domain.OK": {
             "type": "object",
             "properties": {
                 "msg": {
@@ -220,7 +253,7 @@
                 }
             }
         },
-        "schema.SignUpRequest": {
+        "domain.SignUpRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -247,7 +280,7 @@
                 }
             }
         },
-        "schema.SignUpResponse": {
+        "domain.SignUpResponse": {
             "type": "object",
             "required": [
                 "msg",
@@ -262,7 +295,7 @@
                 }
             }
         },
-        "schema.UserInfo": {
+        "domain.UserInfo": {
             "type": "object",
             "required": [
                 "email",
@@ -301,7 +334,7 @@
                 }
             }
         },
-        "schema.UserUpdate": {
+        "domain.UserUpdate": {
             "type": "object",
             "required": [
                 "email",
