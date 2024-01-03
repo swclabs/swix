@@ -19,7 +19,8 @@ import (
 	"os"
 	"sort"
 
-	"swclabs/swiftcart/api"
+	"swclabs/swiftcart/delivery/http"
+	"swclabs/swiftcart/delivery/resolver"
 
 	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/pkg/utils"
@@ -66,7 +67,7 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			w := api.NewWorker(10)
+			w := resolver.NewWorker(10)
 			return w.Run()
 		},
 	},
@@ -75,8 +76,11 @@ var Command = []*cli.Command{
 		Aliases: []string{"s"},
 		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
-			server := api.NewServer()
-			return server.Run(fmt.Sprintf("%s:%s", config.Host, config.Port))
+			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
+			client := http.NewClient(addr)
+			ginFrameworkAdapter := http.NewGinAdapter()
+
+			return client.ConnectTo(ginFrameworkAdapter)
 		},
 	},
 }

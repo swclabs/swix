@@ -6,12 +6,10 @@ import (
 	_ "github.com/joho/godotenv/autoload" // load .env file automatically
 )
 
-// server environment variables
 var (
 	StageStatus       = os.Getenv("STAGE_STATUS")
 	Host              = os.Getenv("HOST")
 	Port              = os.Getenv("PORT")
-	ServerReadTimeout = os.Getenv("SERVER_READ_TIMEOUT")
 )
 
 // authentication environment variables

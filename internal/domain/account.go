@@ -1,6 +1,6 @@
-package model
+package domain
 
-// Account : table accounts
+// Account table
 type Account struct {
 	Username  string `json:"username" gorm:"column:username"`
 	Role      string `json:"role" gorm:"column:role"`
@@ -8,4 +8,10 @@ type Account struct {
 	Password  string `json:"password" gorm:"column:password"`
 	CreatedAt string `json:"created_at" gorm:"column:created"`
 	Type      string `json:"type" gorm:"column:type"`
+}
+
+type IAccountRepository interface {
+	GetByEmail(email string) (*Account, error)
+	Insert(acc *Account) error
+	SaveInfo(acc *Account) error
 }

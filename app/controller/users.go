@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"swclabs/swiftcart/internal/schema"
+	"swclabs/swiftcart/internal/domain"
 	"swclabs/swiftcart/internal/service"
 	"swclabs/swiftcart/pkg/validator"
 
@@ -16,19 +16,19 @@ import (
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Param login body schema.LoginRequest true "Login"
-// @Success 200 {object} schema.LoginResponse
+// @Param login body domain.LoginRequest true "Login"
+// @Success 200 {object} domain.LoginResponse
 // @Router /v1/auth/login [POST]
 func Login(c *gin.Context) {
-	var request schema.LoginRequest
+	var request domain.LoginRequest
 	if err := c.BindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 		return
 	}
 	if _valid := validator.Validate(request); _valid != "" {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: _valid,
 		})
 		return
@@ -36,7 +36,7 @@ func Login(c *gin.Context) {
 	var account = service.NewAccountManagement()
 	accessToken, err := account.Login(&request)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 		return
@@ -47,7 +47,7 @@ func Login(c *gin.Context) {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, schema.LoginResponse{
+	c.JSON(http.StatusOK, domain.LoginResponse{
 		Success: true,
 		Token:   accessToken,
 		Email:   request.Email,
@@ -59,31 +59,31 @@ func Login(c *gin.Context) {
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Param sign_up body schema.SignUpRequest true "Sign Up"
-// @Success 200 {object} schema.SignUpResponse
+// @Param sign_up body domain.SignUpRequest true "Sign Up"
+// @Success 200 {object} domain.SignUpResponse
 // @Router /v1/auth/signup [POST]
 func SignUp(c *gin.Context) {
-	var request schema.SignUpRequest
+	var request domain.SignUpRequest
 	if err := c.BindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 		return
 	}
 	if _valid := validator.Validate(request); _valid != "" {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: _valid,
 		})
 		return
 	}
 	var account = service.NewAccountManagement()
 	if err := account.SignUp(&request); err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "user data invalid",
 		})
 		return
 	}
-	c.JSON(http.StatusCreated, schema.SignUpResponse{
+	c.JSON(http.StatusCreated, domain.SignUpResponse{
 		Success: true,
 		Msg:     "user has been created",
 	})
@@ -94,7 +94,7 @@ func SignUp(c *gin.Context) {
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Success 200 {object} schema.OK
+// @Success 200 {object} domain.OK
 // @Router /v1/auth/logout [GET]
 func Logout(c *gin.Context) {
 	session := sessions.Default(c)
@@ -103,7 +103,7 @@ func Logout(c *gin.Context) {
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, schema.OK{
+	c.JSON(http.StatusOK, domain.OK{
 		Msg: "user logged out",
 	})
 }
@@ -113,7 +113,7 @@ func Logout(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Success 200 {object} schema.UserInfo
+// @Success 200 {object} domain.UserInfo
 // @Router /v1/users [GET]
 func GetMe(c *gin.Context) {
 	session := sessions.Default(c)
@@ -121,7 +121,7 @@ func GetMe(c *gin.Context) {
 	var account = service.NewAccountManagement()
 	response, err := account.UserInfo(email)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 		return
@@ -134,31 +134,31 @@ func GetMe(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Param UserInfo body schema.UserUpdate true "Update User"
-// @Success 200 {object} schema.OK
+// @Param UserInfo body domain.UserUpdate true "Update User"
+// @Success 200 {object} domain.OK
 // @Router /v1/users [PUT]
 func UpdateUserInfo(c *gin.Context) {
-	var request schema.UserUpdate
+	var request domain.UserUpdate
 	if err := c.BindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 		return
 	}
 	if _valid := validator.Validate(request); _valid != "" {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: _valid,
 		})
 		return
 	}
 	var user = service.NewAccountManagement()
 	if err := user.UpdateUserInfo(&request); err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 		return
 	}
-	c.JSON(http.StatusOK, schema.OK{
+	c.JSON(http.StatusOK, domain.OK{
 		Msg: "update user information successfully",
 	})
 
@@ -169,26 +169,26 @@ func UpdateUserInfo(c *gin.Context) {
 // @Tags users
 // @Accept json
 // @Produce json
-// @Success 200 {object} schema.OK
+// @Success 200 {object} domain.OK
 // @Router /v1/users [PUT]
 func UpdateUserImage(c *gin.Context) {
 	session := sessions.Default(c)
 	email := session.Get("email").(string)
 	file, err := c.FormFile("img")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, schema.Error{
+		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 		return
 	}
 	account := service.NewAccountManagement()
 	if err := account.UploadAvatar(email, file); err != nil {
-		c.JSON(http.StatusInternalServerError, schema.Error{
+		c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 		return
 	}
-	c.JSON(http.StatusOK, schema.OK{
+	c.JSON(http.StatusOK, domain.OK{
 		Msg: "update user images successfully",
 	})
 }

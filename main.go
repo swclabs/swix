@@ -17,7 +17,7 @@ import (
 	"fmt"
 	"log"
 
-	"swclabs/swiftcart/api"
+	"swclabs/swiftcart/delivery/http"
 	_ "swclabs/swiftcart/docs"
 	"swclabs/swiftcart/internal/config"
 )
@@ -28,8 +28,11 @@ import (
 // @host
 // @basePath /
 func main() {
-	server := api.NewServer()
-	if err := server.Run(fmt.Sprintf("%s:%s", config.Host, config.Port)); err != nil {
+	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
+	client := http.NewClient(addr)
+	ginFrameworkAdapter := http.NewGinAdapter()
+
+	if err := client.ConnectTo(ginFrameworkAdapter); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -1,19 +1,16 @@
-package service
+package domain
 
-import (
-	"mime/multipart"
-	"swclabs/swiftcart/internal/schema"
-)
+import "mime/multipart"
 
-// IAccountManagement : Module Account Management with use-case
+// IAccountManagementService : Module Account Management with use-case
 // Actor: admin & customer (user)
-type IAccountManagement interface {
-	SignUp(req *schema.SignUpRequest) error
-	Login(req *schema.LoginRequest) (string, error)
-	UserInfo(email string) (*schema.UserInfo, error)
-	UpdateUserInfo(req *schema.UserUpdate) error
+type IAccountManagementService interface {
+	SignUp(req *SignUpRequest) error
+	Login(req *LoginRequest) (string, error)
+	UserInfo(email string) (*UserInfo, error)
+	UpdateUserInfo(req *UserUpdate) error
 	UploadAvatar(email string, fileHeader *multipart.FileHeader) error
-	OAuth2SaveUser(req *schema.OAuth2SaveUser) error
+	OAuth2SaveUser(req *OAuth2SaveUser) error
 }
 
 // IOrderManagement : Module Order Management
@@ -35,6 +32,12 @@ type IPurchaseService interface {
 	AddCartInfo()
 }
 
+// IPaymentService : Module Payment
+// Actor: Admin & Customer (User)
+type IPaymentService interface {
+	GetPayments()
+}
+
 // IProductService : Module Product interactions
 // Actor: Admin & Customer (User)
 type IProductService interface {
@@ -45,12 +48,6 @@ type IProductService interface {
 	GetProductInfo()
 	Like()
 	Comment()
-}
-
-// IPaymentService : Module Payment
-// Actor: Admin & Customer (User)
-type IPaymentService interface {
-	GetPayments()
 }
 
 // IDeliveryService : Module Delivery
