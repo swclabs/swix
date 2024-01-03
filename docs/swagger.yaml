@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  schema.LoginRequest:
+  domain.LoginRequest:
     properties:
       email:
         type: string
@@ -10,7 +10,7 @@ definitions:
     - email
     - password
     type: object
-  schema.LoginResponse:
+  domain.LoginResponse:
     properties:
       email:
         type: string
@@ -23,12 +23,12 @@ definitions:
     - success
     - token
     type: object
-  schema.OK:
+  domain.OK:
     properties:
       msg:
         type: string
     type: object
-  schema.SignUpRequest:
+  domain.SignUpRequest:
     properties:
       email:
         type: string
@@ -47,7 +47,7 @@ definitions:
     - password
     - phone_number
     type: object
-  schema.SignUpResponse:
+  domain.SignUpResponse:
     properties:
       msg:
         type: string
@@ -57,7 +57,7 @@ definitions:
     - msg
     - success
     type: object
-  schema.UserInfo:
+  domain.UserInfo:
     properties:
       email:
         type: string
@@ -85,7 +85,7 @@ definitions:
     - role
     - username
     type: object
-  schema.UserUpdate:
+  domain.UserUpdate:
     properties:
       email:
         type: string
@@ -124,14 +124,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/schema.LoginRequest'
+          $ref: '#/definitions/domain.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.LoginResponse'
+            $ref: '#/definitions/domain.LoginResponse'
       tags:
       - auth
   /v1/auth/logout:
@@ -145,7 +145,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.OK'
+            $ref: '#/definitions/domain.OK'
       tags:
       - auth
   /v1/auth/signup:
@@ -159,14 +159,14 @@ paths:
         name: sign_up
         required: true
         schema:
-          $ref: '#/definitions/schema.SignUpRequest'
+          $ref: '#/definitions/domain.SignUpRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.SignUpResponse'
+            $ref: '#/definitions/domain.SignUpResponse'
       tags:
       - auth
   /v1/common/healthcheck:
@@ -204,9 +204,30 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.UserInfo'
+            $ref: '#/definitions/domain.UserInfo'
       tags:
       - users
+    put:
+      consumes:
+      - application/json
+      description: update information for users.
+      parameters:
+      - description: Update User
+        in: body
+        name: UserInfo
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UserUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - users
+  /v1/users/image:
     put:
       consumes:
       - application/json
@@ -217,7 +238,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/schema.OK'
+            $ref: '#/definitions/domain.OK'
       tags:
       - users
 swagger: "2.0"

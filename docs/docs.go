@@ -34,7 +34,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginRequest"
+                            "$ref": "#/definitions/domain.LoginRequest"
                         }
                     }
                 ],
@@ -42,7 +42,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.LoginResponse"
+                            "$ref": "#/definitions/domain.LoginResponse"
                         }
                     }
                 }
@@ -64,7 +64,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.OK"
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -89,7 +89,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/schema.SignUpRequest"
+                            "$ref": "#/definitions/domain.SignUpRequest"
                         }
                     }
                 ],
@@ -97,7 +97,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.SignUpResponse"
+                            "$ref": "#/definitions/domain.SignUpResponse"
                         }
                     }
                 }
@@ -157,7 +157,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.UserInfo"
+                            "$ref": "#/definitions/domain.UserInfo"
                         }
                     }
                 }
@@ -173,11 +173,44 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
+                "parameters": [
+                    {
+                        "description": "Update User",
+                        "name": "UserInfo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.UserUpdate"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/schema.OK"
+                            "$ref": "#/definitions/domain.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/image": {
+            "put": {
+                "description": "update information for users.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -185,7 +218,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "schema.LoginRequest": {
+        "domain.LoginRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -200,7 +233,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schema.LoginResponse": {
+        "domain.LoginResponse": {
             "type": "object",
             "required": [
                 "email",
@@ -219,7 +252,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schema.OK": {
+        "domain.OK": {
             "type": "object",
             "properties": {
                 "msg": {
@@ -227,7 +260,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schema.SignUpRequest": {
+        "domain.SignUpRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -254,7 +287,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schema.SignUpResponse": {
+        "domain.SignUpResponse": {
             "type": "object",
             "required": [
                 "msg",
@@ -269,7 +302,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schema.UserInfo": {
+        "domain.UserInfo": {
             "type": "object",
             "required": [
                 "email",
@@ -308,7 +341,7 @@ const docTemplate = `{
                 }
             }
         },
-        "schema.UserUpdate": {
+        "domain.UserUpdate": {
             "type": "object",
             "required": [
                 "email",
