@@ -1,5 +1,5 @@
 // Package repo
-// Author: Duc Hung Ho @ikierans
+// Author: Duc Hung Ho @kieranhoo
 // Description: account repository implementation
 package repo
 
