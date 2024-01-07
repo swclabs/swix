@@ -1,7 +1,6 @@
 package mailers
 
 import (
-	"log"
 	"sync"
 
 	"gopkg.in/gomail.v2"
@@ -16,16 +15,16 @@ var lockInit *sync.Mutex = &sync.Mutex{}
 var lock *sync.Mutex = &sync.Mutex{}
 
 func init() {
-	if Env.AppPassword == "" || Env.Email == "" {
-		log.Fatal("missing app password or email address specified")
-	}
-	if mailer == nil {
-		lockInit.Lock()
-		defer lockInit.Unlock()
+	if Env.AppPassword != "" && Env.Email != "" {
 		if mailer == nil {
-			mailer = gomail.NewMessage()
-			dialer = gomail.NewDialer(Host, Port, Env.Email, Env.AppPassword)
+			lockInit.Lock()
+			defer lockInit.Unlock()
+			if mailer == nil {
+				mailer = gomail.NewMessage()
+				dialer = gomail.NewDialer(Host, Port, Env.Email, Env.AppPassword)
+			}
 		}
+		return
 	}
 }
 
