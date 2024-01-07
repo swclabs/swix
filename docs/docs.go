@@ -105,7 +105,7 @@ const docTemplate = `{
         },
         "/v1/common/healthcheck": {
             "get": {
-                "description": "health check app server.",
+                "description": "health check api server.",
                 "consumes": [
                     "application/json"
                 ],

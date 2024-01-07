@@ -16,7 +16,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"swclabs/swiftcart/bootstrap"
+	"swclabs/swiftcart/app"
 	_ "swclabs/swiftcart/docs"
 	"swclabs/swiftcart/internal/config"
 )
@@ -28,8 +28,8 @@ import (
 // @basePath /
 func main() {
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-	client := bootstrap.NewClient(addr)
-	ginFrameworkAdapter := bootstrap.NewGinAdapter()
+	client := app.NewClient(addr)
+	ginFrameworkAdapter := app.NewGinAdapter()
 
 	if err := client.ConnectTo(ginFrameworkAdapter); err != nil {
 		log.Fatal(err)

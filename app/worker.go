@@ -1,8 +1,8 @@
-package bootstrap
+package app
 
 import (
 	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/internal/tasks"
+	"swclabs/swiftcart/internal/delivery/msg"
 	"swclabs/swiftcart/pkg/worker"
 )
 
@@ -20,11 +20,11 @@ type Worker struct {
 
 func NewWorker(concurrency int) IWorker {
 	return &Worker{
-		engine: worker.NewServer(concurrency, tasks.Queue()),
+		engine: worker.NewServer(concurrency, msg.Queue()),
 	}
 }
 
 func (w *Worker) Run() error {
-	w.engine.HandleFunctions(tasks.Path())
+	w.engine.HandleFunctions(msg.Path())
 	return w.engine.Run()
 }

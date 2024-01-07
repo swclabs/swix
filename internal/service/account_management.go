@@ -9,8 +9,8 @@ import (
 	"mime/multipart"
 	"swclabs/swiftcart/internal/domain"
 	"swclabs/swiftcart/internal/repo"
+	"swclabs/swiftcart/internal/resolver"
 	"swclabs/swiftcart/internal/tasks"
-	"swclabs/swiftcart/internal/tasks/plugin"
 	"swclabs/swiftcart/pkg/jwt"
 	"swclabs/swiftcart/pkg/utils"
 )
@@ -18,20 +18,17 @@ import (
 type AccountManagement struct {
 	user    domain.IUserRepository
 	account domain.IAccountRepository
-	tasks   *tasks.AccountManagement
+	Task    tasks.AccountManagementTask
 }
 
 func NewAccountManagement() domain.IAccountManagementService {
 	return &AccountManagement{
 		user:    repo.NewUsers(),
 		account: repo.NewAccounts(),
-		tasks:   tasks.NewAccountManagement(),
 	}
 }
 
 func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
-	// Add task
-	// Begin:
 	hash, err := jwt.GenPassword(req.Password)
 	if err != nil {
 		return err
@@ -56,7 +53,6 @@ func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
 		Email:    req.Email,
 		Type:     "swc",
 	})
-	// End
 }
 
 func (manager *AccountManagement) Login(req *domain.LoginRequest) (string, error) {
@@ -75,8 +71,6 @@ func (manager *AccountManagement) UserInfo(email string) (*domain.UserInfo, erro
 }
 
 func (manager *AccountManagement) UpdateUserInfo(req *domain.UserUpdate) error {
-	// Add task
-	// Begin
 	return manager.user.SaveInfo(&domain.User{
 		UserID:      req.Id,
 		Email:       req.Email,
@@ -84,7 +78,6 @@ func (manager *AccountManagement) UpdateUserInfo(req *domain.UserUpdate) error {
 		FirstName:   req.FirstName,
 		LastName:    req.LastName,
 	})
-	// End
 }
 
 func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
@@ -92,7 +85,7 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 	if err != nil {
 		return err
 	}
-	plugin.ImagePool.Process(plugin.Image{
+	resolver.ImagePool.Process(resolver.Image{
 		Email: email,
 		File:  file,
 	})
@@ -104,8 +97,6 @@ func (manager *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) err
 	if err != nil {
 		return err
 	}
-	// Add task
-	// Begin:
 	if err := manager.user.OAuth2SaveInfo(&domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -126,5 +117,4 @@ func (manager *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) err
 		Email:    req.Email,
 		Type:     "oauth2-google",
 	})
-	// End
 }

@@ -2,12 +2,12 @@ package test
 
 import (
 	"fmt"
-	"swclabs/swiftcart/internal/tasks"
+	"swclabs/swiftcart/internal/delivery/msg"
 	"testing"
 )
 
 func TestAccountPath(t *testing.T) {
-	mapp := tasks.Path()
+	mapp := msg.Path()
 	for k := range mapp {
 		fmt.Printf("%s\n", k)
 	}

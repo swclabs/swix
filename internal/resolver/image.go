@@ -1,7 +1,7 @@
 // Authors: Duc Hung Ho @kieranhoo
 // Description: Plugin for tasks package, run worker tasks in memory
 
-package plugin
+package resolver
 
 import (
 	"log"
