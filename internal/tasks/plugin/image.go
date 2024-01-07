@@ -1,4 +1,4 @@
-// Authors: Duc Hung Ho @ikierans
+// Authors: Duc Hung Ho @kieranhoo
 // Description: Plugin for tasks package, run worker tasks in memory
 
 package plugin

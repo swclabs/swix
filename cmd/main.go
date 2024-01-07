@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 
 // Author:
-// - Ho Duc Hung : @ikierans
+// - Ho Duc Hung : @kieranhoo
 // - Nguyen Van Khoa: @anthony2704
 // Description: This is Graduation project in computer science
 // 2023 - Ho Chi Minh City University of Technology, VNUHCM

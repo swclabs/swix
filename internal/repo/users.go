@@ -1,4 +1,4 @@
-// Author: Duc Hung Ho @ikierans
+// Author: Duc Hung Ho @kieranhoo
 // Description: users repository implementation
 package repo
 
