@@ -11,14 +11,15 @@ import (
 )
 
 // HealthCheck .
-// @Description health check app server.
+// @Description health check api server.
 // @Tags common
 // @Accept json
 // @Produce json
 // @Success 200
 // @Router /v1/common/healthcheck [GET]
 func HealthCheck(c *gin.Context) {
-	c.JSON(200, service.HealthCheck())
+	common := service.NewCommonService()
+	c.JSON(200, common.HealthCheck())
 }
 
 // Auth0Login .
@@ -46,13 +47,14 @@ func Auth0Callback(c *gin.Context) {
 }
 
 func WorkerCheck(c *gin.Context) {
-	if err := service.WorkerCheck(); err != nil {
+	common := service.NewCommonService()
+	if err := common.Task.WorkerCheck(); err != nil {
 		c.JSON(400, domain.Error{
 			Msg: err.Error(),
 		})
 		return
 	}
-	c.JSON(200, service.HealthCheck())
+	c.JSON(200, common.HealthCheck())
 }
 
 func Foo(ctx *gin.Context) {

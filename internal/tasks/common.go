@@ -1,22 +1,23 @@
 package tasks
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-
-	"github.com/hibiken/asynq"
+	"swclabs/swiftcart/internal/delivery/msg/queue"
+	"swclabs/swiftcart/pkg/worker"
 )
 
-const (
-	WorkerHealthCheck string = "Worker#HealthCheck"
-)
+type CommonTask struct {
+	WorkerHealthCheck string
+}
 
-func HandleHealthCheck(_ context.Context, task *asynq.Task) error {
-	var num int64
-	if err := json.Unmarshal(task.Payload(), &num); err != nil {
-		return err
+func NewCommonTask() *CommonTask {
+	return &CommonTask{
+		WorkerHealthCheck: "Worker#HealthCheck",
 	}
-	fmt.Printf("HealthCheck Number: %d\n", int(num))
-	return nil
+}
+
+func (common *CommonTask) WorkerCheck() error {
+	return worker.Exec(queue.CriticalQueue, worker.NewTask(
+		common.WorkerHealthCheck,
+		1,
+	))
 }

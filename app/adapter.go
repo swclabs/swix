@@ -1,16 +1,16 @@
-package bootstrap
+package app
 
 import (
-	"swclabs/swiftcart/app"
+	"swclabs/swiftcart/internal/delivery/http"
 )
 
 type Adapter struct {
-	server *app.Server
+	server *http.Server
 }
 
 func NewGinAdapter() *Adapter {
 	return &Adapter{
-		server: app.New(),
+		server: http.New(),
 	}
 }
 

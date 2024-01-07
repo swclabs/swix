@@ -1,4 +1,4 @@
-package app
+package http
 
 import (
 	"swclabs/swiftcart/internal/config"

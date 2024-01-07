@@ -1,6 +1,6 @@
-// plugin config file: DO NOT EDIT
+// resolver config file: DO NOT EDIT
 
-package plugin
+package resolver
 
 import (
 	"sync"

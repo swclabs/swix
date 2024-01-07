@@ -1,8 +1,8 @@
-package app
+package http
 
 import (
-	"swclabs/swiftcart/app/middleware"
-	"swclabs/swiftcart/app/router"
+	"swclabs/swiftcart/internal/delivery/http/middleware"
+	"swclabs/swiftcart/internal/delivery/http/router"
 	"time"
 
 	"swclabs/swiftcart/internal/config"
@@ -11,7 +11,7 @@ import (
 	"swclabs/swiftcart/pkg/mailers"
 	"swclabs/swiftcart/pkg/sentry"
 
-	_ "swclabs/swiftcart/internal/tasks/plugin"
+	_ "swclabs/swiftcart/internal/resolver"
 )
 
 func init() {

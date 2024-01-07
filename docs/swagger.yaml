@@ -173,7 +173,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: health check app server.
+      description: health check api server.
       produces:
       - application/json
       responses:

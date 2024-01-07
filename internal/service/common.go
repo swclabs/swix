@@ -1,24 +1,32 @@
 package service
 
 import (
+	"fmt"
 	"swclabs/swiftcart/internal/domain"
 	"swclabs/swiftcart/internal/tasks"
-	"swclabs/swiftcart/pkg/worker"
 )
 
 func Ping() {
 
 }
 
-func HealthCheck() domain.HealthCheckResponse {
+type CommonService struct {
+	Task *tasks.CommonTask
+}
+
+func NewCommonService() *CommonService {
+	return &CommonService{
+		Task: tasks.NewCommonTask(),
+	}
+}
+
+func (common *CommonService) HealthCheck() domain.HealthCheckResponse {
 	return domain.HealthCheckResponse{
 		Status: "ok",
 	}
 }
 
-func WorkerCheck() error {
-	return worker.Exec(tasks.CriticalQueue, worker.NewTask(
-		tasks.WorkerHealthCheck,
-		1,
-	))
+func (common *CommonService) WorkerCheck(num int64) error {
+	fmt.Printf("HealthCheck Number: %d\n", int(num))
+	return nil
 }

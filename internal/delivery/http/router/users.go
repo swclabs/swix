@@ -1,8 +1,8 @@
 package router
 
 import (
-	"swclabs/swiftcart/app/controller"
-	"swclabs/swiftcart/app/middleware"
+	"swclabs/swiftcart/internal/delivery/http/controller"
+	"swclabs/swiftcart/internal/delivery/http/middleware"
 
 	"github.com/gin-gonic/gin"
 )

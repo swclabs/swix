@@ -1,4 +1,4 @@
-package bootstrap
+package app
 
 type IHttpServer interface {
 	ListenOn(addr string) error
