@@ -18,10 +18,7 @@ import (
 	"log"
 	"os"
 	"sort"
-
-	"swclabs/swiftcart/delivery/http"
-	"swclabs/swiftcart/delivery/resolver"
-
+	"swclabs/swiftcart/bootstrap"
 	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/pkg/utils"
 
@@ -67,18 +64,18 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			w := resolver.NewWorker(10)
+			w := bootstrap.NewWorker(10)
 			return w.Run()
 		},
 	},
 	{
 		Name:    "server",
 		Aliases: []string{"s"},
-		Usage:   "run api server",
+		Usage:   "run app server",
 		Action: func(_ *cli.Context) error {
 			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-			client := http.NewClient(addr)
-			ginFrameworkAdapter := http.NewGinAdapter()
+			client := bootstrap.NewClient(addr)
+			ginFrameworkAdapter := bootstrap.NewGinAdapter()
 
 			return client.ConnectTo(ginFrameworkAdapter)
 		},

@@ -1,4 +1,4 @@
-package resolver
+package bootstrap
 
 import (
 	"swclabs/swiftcart/internal/config"

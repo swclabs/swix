@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type IApp interface {
+type IServer interface {
 	middleware(...func(*gin.Engine))
 	backgroundTask(...func())
 	router(...func(*gin.Engine))
@@ -14,33 +14,33 @@ type IApp interface {
 	Run(string) error
 }
 
-type App struct {
+type Server struct {
 	engine *gin.Engine
 }
 
-func New() *App {
+func New() *Server {
 	if config.StageStatus != "dev" {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	return &App{
+	return &Server{
 		engine: gin.Default(),
 	}
 }
 
-func (app *App) middleware(mdws ...func(*gin.Engine)) {
+func (server *Server) middleware(mdws ...func(*gin.Engine)) {
 	for _, m := range mdws {
-		m(app.engine)
+		m(server.engine)
 	}
 }
 
-func (app *App) backgroundTask(tasks ...func()) {
+func (server *Server) backgroundTask(tasks ...func()) {
 	for _, t := range tasks {
 		go t()
 	}
 }
 
-func (app *App) router(routers ...func(*gin.Engine)) {
+func (server *Server) router(routers ...func(*gin.Engine)) {
 	for _, r := range routers {
-		r(app.engine)
+		r(server.engine)
 	}
 }
