@@ -1,10 +1,10 @@
 package app
 
 import (
+	"swclabs/swiftcart/app/middleware"
+	"swclabs/swiftcart/app/router"
 	"time"
 
-	"swclabs/swiftcart/delivery/app/middleware"
-	"swclabs/swiftcart/delivery/app/router"
 	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/internal/service"
 	"swclabs/swiftcart/pkg/job"
@@ -19,26 +19,26 @@ func init() {
 	mailers.Config(config.Email, config.EmailAppPassword)
 }
 
-func (app *App) scheduler() {
+func (server *Server) scheduler() {
 	newJob := job.New()
 	go newJob.Scheduler(service.Ping, 5*time.Second)
 
 	newJob.Info()
 }
 
-func (app *App) Run(addr string) error {
-	app.scheduler()
-	app.backgroundTask()
-	app.middleware(
+func (server *Server) Run(addr string) error {
+	server.scheduler()
+	server.backgroundTask()
+	server.middleware(
 		middleware.GinMiddleware,
 		middleware.Sentry,
 	)
-	app.router(
+	server.router(
 		router.Common,
 		router.Auth,
 		router.OAuth2,
 		router.Users,
 		router.Docs,
 	)
-	return app.engine.Run(addr)
+	return server.engine.Run(addr)
 }

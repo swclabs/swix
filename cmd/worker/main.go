@@ -12,12 +12,11 @@ package main
 
 import (
 	"log"
-
-	"swclabs/swiftcart/delivery/resolver"
+	"swclabs/swiftcart/bootstrap"
 )
 
 func main() {
-	w := resolver.NewWorker(10)
+	w := bootstrap.NewWorker(10)
 	if err := w.Run(); err != nil {
 		log.Fatal(err)
 	}

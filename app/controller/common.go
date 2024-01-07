@@ -10,8 +10,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// HealthCheck.
-// @Description health check api server.
+// HealthCheck .
+// @Description health check app server.
 // @Tags common
 // @Accept json
 // @Produce json
@@ -21,7 +21,7 @@ func HealthCheck(c *gin.Context) {
 	c.JSON(200, service.HealthCheck())
 }
 
-// Auth0Login.
+// Auth0Login .
 // @Description Auth0 Login form.
 // @Tags common
 // @Accept json

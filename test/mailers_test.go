@@ -7,5 +7,5 @@ import (
 )
 
 func TestEmail(t *testing.T) {
-	mailers.SendHTML(template.ConfirmOrder, "iduchungho@gmail.com")
+	mailers.SendSampleHTML(template.ConfirmOrder, "iduchungho@gmail.com")
 }
