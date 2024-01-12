@@ -1,7 +1,7 @@
 package app
 
 import (
-	"swclabs/swiftcart/internal/delivery/http"
+	"swclabs/swiftcart/delivery/http"
 )
 
 type Adapter struct {

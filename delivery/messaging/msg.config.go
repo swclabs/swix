@@ -1,8 +1,8 @@
-package msg
+package messaging
 
 import (
-	"swclabs/swiftcart/internal/delivery/msg/handler"
-	"swclabs/swiftcart/internal/delivery/msg/queue"
+	"swclabs/swiftcart/delivery/messaging/handler"
+	"swclabs/swiftcart/delivery/messaging/queue"
 	"swclabs/swiftcart/pkg/worker"
 )
 
