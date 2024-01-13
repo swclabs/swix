@@ -1,8 +1,8 @@
 package http
 
 import (
-	"swclabs/swiftcart/delivery/http/middleware"
-	"swclabs/swiftcart/delivery/http/router"
+	"swclabs/swiftcart/internal/http/middleware"
+	"swclabs/swiftcart/internal/http/router"
 	"time"
 
 	"swclabs/swiftcart/internal/config"

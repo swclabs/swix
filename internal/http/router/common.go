@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"swclabs/swiftcart/delivery/http/controller"
+	"swclabs/swiftcart/internal/http/controller"
 )
 
 func Common(e *gin.Engine) {
