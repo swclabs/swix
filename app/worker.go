@@ -1,8 +1,8 @@
 package app
 
 import (
-	"swclabs/swiftcart/delivery/messaging"
 	"swclabs/swiftcart/internal/config"
+	"swclabs/swiftcart/internal/messaging"
 	"swclabs/swiftcart/pkg/worker"
 )
 
@@ -25,6 +25,6 @@ func NewWorker(concurrency int) IWorker {
 }
 
 func (w *Worker) Run() error {
-	w.engine.HandleFunctions(messaging.Path())
+	w.engine.HandleFunctions(messaging.Controller())
 	return w.engine.Run()
 }

@@ -1,20 +1,19 @@
 package messaging
 
 import (
-	"swclabs/swiftcart/delivery/messaging/handler"
-	"swclabs/swiftcart/delivery/messaging/queue"
+	"swclabs/swiftcart/internal/messaging/handler"
+	"swclabs/swiftcart/internal/messaging/queue"
 	"swclabs/swiftcart/pkg/worker"
 )
 
-// Path : example
+// Controller : example
 //
 //	return worker.Path{
 //		WorkerHealthCheck: HandleHealthCheck,
 //	}
-func Path() worker.Path {
+func Controller() worker.Path {
 	return worker.GetPath(
-		// common path
-		handler.CommonPath(),
+		handler.CommonPath(), // common path
 	)
 }
 

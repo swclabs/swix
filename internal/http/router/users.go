@@ -1,9 +1,10 @@
 package router
 
 import (
+	"swclabs/swiftcart/internal/http/controller"
+	"swclabs/swiftcart/internal/http/middleware"
+
 	"github.com/gin-gonic/gin"
-	"swclabs/swiftcart/delivery/http/controller"
-	"swclabs/swiftcart/delivery/http/middleware"
 )
 
 func Users(e *gin.Engine) {

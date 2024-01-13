@@ -10,6 +10,8 @@ import (
 	"github.com/hibiken/asynq"
 )
 
+var common = NewCommonHandler()
+
 type CommonHandler struct {
 	taskName *tasks.CommonTask
 	handler  *service.CommonService
@@ -23,7 +25,6 @@ func NewCommonHandler() *CommonHandler {
 }
 
 func CommonPath() worker.Path {
-	common := NewCommonHandler()
 	return worker.Path{
 		common.taskName.WorkerHealthCheck: common.HandleHealthCheck,
 	}
