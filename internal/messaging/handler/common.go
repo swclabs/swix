@@ -4,20 +4,17 @@ import (
 	"context"
 	"encoding/json"
 	"swclabs/swiftcart/internal/service"
-	"swclabs/swiftcart/internal/tasks"
 
 	"github.com/hibiken/asynq"
 )
 
 type CommonHandler struct {
-	taskName *tasks.CommonTask
-	handler  *service.CommonService
+	handler *service.CommonService
 }
 
 func NewCommonHandler() *CommonHandler {
 	return &CommonHandler{
-		taskName: tasks.NewCommonTask(),
-		handler:  service.NewCommonService(),
+		handler: service.NewCommonService(),
 	}
 }
 
