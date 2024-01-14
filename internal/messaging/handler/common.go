@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"swclabs/swiftcart/internal/service"
 	"swclabs/swiftcart/internal/tasks"
-	"swclabs/swiftcart/pkg/worker"
 
 	"github.com/hibiken/asynq"
 )
@@ -21,12 +20,6 @@ func NewCommonHandler() *CommonHandler {
 	return &CommonHandler{
 		taskName: tasks.NewCommonTask(),
 		handler:  service.NewCommonService(),
-	}
-}
-
-func CommonPath() worker.Path {
-	return worker.Path{
-		common.taskName.WorkerHealthCheck: common.HandleHealthCheck,
 	}
 }
 

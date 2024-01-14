@@ -2,16 +2,11 @@ package handler
 
 import (
 	"context"
-	"swclabs/swiftcart/pkg/worker"
 
 	"github.com/hibiken/asynq"
 )
 
 type AccountManagement struct {
-}
-
-func AccountManagementPath() worker.Path {
-	return worker.Path{}
 }
 
 func (account *AccountManagement) WorkerUpdateInfo(ctx context.Context, task *asynq.Task) error {

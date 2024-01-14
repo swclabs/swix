@@ -15,16 +15,15 @@ type IWorker interface {
 }
 
 type Worker struct {
-	engine *worker.Engine
+	engine *messaging.Messaging
 }
 
 func NewWorker(concurrency int) IWorker {
 	return &Worker{
-		engine: worker.NewServer(concurrency, messaging.Queue()),
+		engine: messaging.NewMessaging(),
 	}
 }
 
 func (w *Worker) Run() error {
-	w.engine.HandleFunctions(messaging.Controller())
-	return w.engine.Run()
+	return w.engine.Run(10)
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"maps"
 	"reflect"
 	"runtime"
 	"strings"
@@ -14,16 +13,21 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-type Queue map[string]int
-type Path map[string]func(context.Context, *asynq.Task) error
+type Priority map[string]int
+type Queue map[string]func(context.Context, *asynq.Task) error
 type Engine struct {
-	server *asynq.Server
-	mux    *asynq.ServeMux
-	path   Path
-	queue  Queue
+	server   *asynq.Server
+	mux      *asynq.ServeMux
+	priority Priority
+	queue    Queue
 }
 
 var broker asynq.RedisClientOpt
+
+func getName(input string) string {
+	paths := strings.Split(input, "/")
+	return paths[len(paths)-1]
+}
 
 func SetBroker(host, port, password string) {
 	broker = asynq.RedisClientOpt{
@@ -32,46 +36,52 @@ func SetBroker(host, port, password string) {
 	}
 }
 
-func NewServer(concurrency int, queue Queue) *Engine {
+func NewServer(priorityQueue Priority) *Engine {
+	// asynq.NewServer(broker, asynq.Config{
+	// 	// Specify how many concurrent workers to use.
+	// 	Concurrency: concurrency,
+	// 	// Specify multiple queues with different priority.
+	// 	Queues: Queue{},
+	// })
 	return &Engine{
-		server: asynq.NewServer(broker, asynq.Config{
-			// Specify how many concurrent workers to use.
-			Concurrency: concurrency,
-			// Specify multiple queues with different priority.
-			Queues: queue,
-		}),
-		mux:   asynq.NewServeMux(),
-		queue: queue,
+		server:   nil,
+		mux:      asynq.NewServeMux(),
+		queue:    Queue{},
+		priority: priorityQueue,
 	}
 }
 
-func (w *Engine) HandleFunctions(path Path) {
-	w.path = path
-	for k, v := range path {
+func (w *Engine) Queue(taskName string, fn func(context.Context, *asynq.Task) error) {
+	w.queue[taskName] = fn
+}
+
+func (w *Engine) handleFunctions() {
+	for k, v := range w.queue {
 		w.mux.HandleFunc(k, v)
 	}
 }
 
-func getName(input string) string {
-	paths := strings.Split(input, "/")
-	return paths[len(paths)-1]
-}
+func (w *Engine) Run(concurrency int) error {
+	// Create a new Asynq server
+	w.server = asynq.NewServer(broker, asynq.Config{
+		// Specify how many concurrent workers to use.
+		Concurrency: concurrency,
+		// Specify multiple queues with different priority.
+		Queues: w.priority,
+	})
+	w.handleFunctions()
 
-func (w *Engine) Run() error {
 	log.Info("Launching a asynchronous worker with the following settings:")
 	log.Info("Broker:", "redis", broker.Addr)
-	for q, p := range w.queue {
+	for q, p := range w.priority {
 		log.Info("-", "queue", q, "priority", p)
 	}
 	log.Info("Handle Function: ")
-	for types, handler := range w.path {
+	for types, handler := range w.queue {
 		log.Info("-", "typename", types, "handler", getName(runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name()))
 	}
 	fmt.Println()
-	if err := w.server.Run(w.mux); err != nil {
-		return err
-	}
-	return nil
+	return w.server.Run(w.mux)
 }
 
 func Exec(queue string, task *asynq.Task) error {
@@ -98,20 +108,6 @@ func Exec(queue string, task *asynq.Task) error {
 func NewTask(typename string, data interface{}) *asynq.Task {
 	payload, _ := json.Marshal(data)
 	return asynq.NewTask(typename, payload)
-}
-
-func NewTypename(funcname string) string {
-	return fmt.Sprintf("Worker#%s", funcname)
-}
-
-func GetPath(path ...Path) Path {
-	workerPath := Path{}
-	for _, p := range path {
-		if p != nil {
-			maps.Copy(workerPath, p)
-		}
-	}
-	return workerPath
 }
 
 func Delay(delay *time.Duration, queue string, task *asynq.Task) error {
