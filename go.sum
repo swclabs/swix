@@ -33,8 +33,8 @@ github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d/go.mod h1:8EPpV
 github.com/chenzhuoyu/iasm v0.9.0/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
 github.com/chenzhuoyu/iasm v0.9.1 h1:tUHQJXo3NhBqw6s33wkGn9SP3bvrWLdlVIJ3hQBL7P0=
 github.com/chenzhuoyu/iasm v0.9.1/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
-github.com/cloudinary/cloudinary-go/v2 v2.6.2 h1:omxX76s6v4xg56BfKigI6otn0gyyI6+CAhDQND9zSVQ=
-github.com/cloudinary/cloudinary-go/v2 v2.6.2/go.mod h1:jtSxa6xbzvu4IwChRJVDcXwVXrTRczhbvq3Z1VSoFdk=
+github.com/cloudinary/cloudinary-go/v2 v2.7.0 h1:8Fuh/SOen6IQgqH8CLso2E+kuKi2xjbdiyXOspwXFTM=
+github.com/cloudinary/cloudinary-go/v2 v2.7.0/go.mod h1:jtSxa6xbzvu4IwChRJVDcXwVXrTRczhbvq3Z1VSoFdk=
 github.com/coreos/go-oidc/v3 v3.9.0 h1:0J/ogVOd4y8P0f0xUh8l9t07xRP/d8tccvjHl2dcsSo=
 github.com/coreos/go-oidc/v3 v3.9.0/go.mod h1:rTKz2PYwftcrtoCzV5g5kvfJoWcm0Mk8AF8y1iAQro4=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
