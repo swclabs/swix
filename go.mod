@@ -4,7 +4,7 @@ go 1.21.3
 
 require (
 	github.com/charmbracelet/log v0.3.1
-	github.com/cloudinary/cloudinary-go/v2 v2.6.2
+	github.com/cloudinary/cloudinary-go/v2 v2.7.0
 	github.com/coreos/go-oidc/v3 v3.9.0
 	github.com/getsentry/sentry-go v0.26.0
 	github.com/gin-contrib/sessions v0.0.5
