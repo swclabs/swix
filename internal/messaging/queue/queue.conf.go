@@ -1,8 +1,6 @@
 package queue
 
-import (
-	"swclabs/swiftcart/internal/config"
-)
+import "swclabs/swiftcart/internal/config"
 
 var (
 	CriticalQueue = "critical"
@@ -17,3 +15,7 @@ func init() {
 		LowQueue = "low_dev"
 	}
 }
+
+const (
+	WorkerHealthCheck string = "Worker.HealthCheck"
+)

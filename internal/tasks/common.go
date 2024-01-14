@@ -6,18 +6,15 @@ import (
 )
 
 type CommonTask struct {
-	WorkerHealthCheck string
 }
 
 func NewCommonTask() *CommonTask {
-	return &CommonTask{
-		WorkerHealthCheck: "Worker#HealthCheck",
-	}
+	return &CommonTask{}
 }
 
 func (common *CommonTask) WorkerCheck() error {
 	return worker.Exec(queue.CriticalQueue, worker.NewTask(
-		common.WorkerHealthCheck,
+		queue.WorkerHealthCheck,
 		1,
 	))
 }
