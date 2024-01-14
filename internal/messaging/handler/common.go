@@ -9,8 +9,6 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-var common = NewCommonHandler()
-
 type CommonHandler struct {
 	taskName *tasks.CommonTask
 	handler  *service.CommonService

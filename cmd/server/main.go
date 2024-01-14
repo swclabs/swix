@@ -13,7 +13,7 @@ package main
 import (
 	"fmt"
 	"log"
-	"swclabs/swiftcart/app"
+	"swclabs/swiftcart/internal/app"
 	"swclabs/swiftcart/internal/config"
 )
 
