@@ -12,12 +12,12 @@ package main
 
 import (
 	"log"
-	"swclabs/swiftcart/app"
+	"swclabs/swiftcart/internal/app"
 )
 
 func main() {
-	w := app.NewWorker(10)
-	if err := w.Run(); err != nil {
+	w := app.NewWorker()
+	if err := w.Run(10); err != nil {
 		log.Fatal(err)
 	}
 }

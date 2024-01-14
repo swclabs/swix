@@ -11,7 +11,7 @@ import (
 	"swclabs/swiftcart/pkg/mailers"
 	"swclabs/swiftcart/pkg/sentry"
 
-	_ "swclabs/swiftcart/internal/resolver"
+	_ "swclabs/swiftcart/internal/misc/resolver"
 )
 
 func init() {

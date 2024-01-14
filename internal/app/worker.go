@@ -11,19 +11,19 @@ func init() {
 }
 
 type IWorker interface {
-	Run() error
+	Run(concurrency int) error
 }
 
 type Worker struct {
 	engine *messaging.Messaging
 }
 
-func NewWorker(concurrency int) IWorker {
+func NewWorker() IWorker {
 	return &Worker{
 		engine: messaging.NewMessaging(),
 	}
 }
 
-func (w *Worker) Run() error {
-	return w.engine.Run(10)
+func (w *Worker) Run(concurrency int) error {
+	return w.engine.Run(concurrency)
 }

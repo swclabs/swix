@@ -18,7 +18,7 @@ import (
 	"log"
 	"os"
 	"sort"
-	"swclabs/swiftcart/app"
+	"swclabs/swiftcart/internal/app"
 	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/pkg/utils"
 
@@ -64,8 +64,8 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			w := app.NewWorker(10)
-			return w.Run()
+			w := app.NewWorker()
+			return w.Run(10)
 		},
 	},
 	{
