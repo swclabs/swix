@@ -10,7 +10,7 @@ type Messaging struct {
 	engine *worker.Engine
 }
 
-func NewMessaging() *Messaging {
+func New() *Messaging {
 	return &Messaging{
 		engine: worker.NewServer(worker.Priority{
 			queue.CriticalQueue: 6, // processed 60% of the time
