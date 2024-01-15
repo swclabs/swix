@@ -6,10 +6,6 @@ import (
 	"swclabs/swiftcart/internal/tasks"
 )
 
-func Ping() {
-
-}
-
 type CommonService struct {
 	Task *tasks.CommonTask
 }

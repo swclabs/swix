@@ -18,8 +18,8 @@ import (
 	"log"
 	"os"
 	"sort"
-	"swclabs/swiftcart/internal/app"
 	"swclabs/swiftcart/internal/config"
+	"swclabs/swiftcart/internal/delivery"
 	"swclabs/swiftcart/pkg/utils"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -64,7 +64,7 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			w := app.NewWorker()
+			w := delivery.NewWorker()
 			return w.Run(10)
 		},
 	},
@@ -74,8 +74,8 @@ var Command = []*cli.Command{
 		Usage:   "run app server",
 		Action: func(_ *cli.Context) error {
 			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-			client := app.NewClient(addr)
-			ginFrameworkAdapter := app.NewGinAdapter()
+			client := delivery.NewClient(addr)
+			ginFrameworkAdapter := delivery.NewGinAdapter()
 
 			return client.ConnectTo(ginFrameworkAdapter)
 		},
@@ -84,10 +84,10 @@ var Command = []*cli.Command{
 
 func NewClient() *cli.App {
 	_app := &cli.App{
-		Name:        "swiftcart",
-		Usage:       "swiftcart",
+		Name:        "Swiftcart",
+		Usage:       "Swiftcart",
 		Version:     "0.0.1",
-		Description: "swiftcart API server",
+		Description: "Swiftcart API server",
 		Commands:    Command,
 	}
 

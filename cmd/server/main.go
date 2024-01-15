@@ -13,14 +13,14 @@ package main
 import (
 	"fmt"
 	"log"
-	"swclabs/swiftcart/internal/app"
 	"swclabs/swiftcart/internal/config"
+	"swclabs/swiftcart/internal/delivery"
 )
 
 func main() {
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-	client := app.NewClient(addr)
-	ginFrameworkAdapter := app.NewGinAdapter()
+	client := delivery.NewClient(addr)
+	ginFrameworkAdapter := delivery.NewGinAdapter()
 
 	if err := client.ConnectTo(ginFrameworkAdapter); err != nil {
 		log.Fatal(err)

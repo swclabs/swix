@@ -1,4 +1,4 @@
-package app
+package delivery
 
 import (
 	"swclabs/swiftcart/internal/config"
@@ -20,7 +20,7 @@ type Worker struct {
 
 func NewWorker() IWorker {
 	return &Worker{
-		engine: messaging.NewMessaging(),
+		engine: messaging.New(),
 	}
 }
 

@@ -10,7 +10,6 @@ type IServer interface {
 	middleware(...func(*gin.Engine))
 	backgroundTask(...func())
 	router(...func(*gin.Engine))
-	scheduler()
 	Run(string) error
 }
 
