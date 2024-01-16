@@ -1,4 +1,4 @@
-name: build test account management module
+name: Build test account management module
 
 on:
   push:
