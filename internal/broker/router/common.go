@@ -1,8 +1,8 @@
 package router
 
 import (
-	"swclabs/swiftcart/internal/messaging/handler"
-	"swclabs/swiftcart/internal/messaging/queue"
+	"swclabs/swiftcart/internal/broker/handler"
+	"swclabs/swiftcart/internal/broker/queue"
 	"swclabs/swiftcart/pkg/worker"
 )
 

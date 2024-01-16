@@ -10,6 +10,8 @@ type IServer interface {
 	middleware(...func(*gin.Engine))
 	backgroundTask(...func())
 	router(...func(*gin.Engine))
+	InitMiddleware()
+	InitAccountManagement()
 	Run(string) error
 }
 
@@ -21,9 +23,11 @@ func New() *Server {
 	if config.StageStatus != "dev" {
 		gin.SetMode(gin.ReleaseMode)
 	}
-	return &Server{
+	server := &Server{
 		engine: gin.Default(),
 	}
+	server.InitMiddleware()
+	return server
 }
 
 func (server *Server) middleware(mdws ...func(*gin.Engine)) {

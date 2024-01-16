@@ -10,25 +10,36 @@ import (
 	"swclabs/swiftcart/pkg/sentry"
 )
 
+var _ IServer = &Server{}
+
 func init() {
 	sentry.Init()
 	mailers.Config(config.Email, config.EmailAppPassword)
 }
 
-func (server *Server) Run(addr string) error {
-	server.backgroundTask(func() {
-		resolver.StartImageHandler(5)
-	})
+func (server *Server) InitMiddleware() {
 	server.middleware(
 		middleware.GinMiddleware,
 		middleware.Sentry,
 	)
 	server.router(
 		router.Common,
-		router.Auth,
-		router.OAuth2,
-		router.Users,
 		router.Docs,
 	)
+}
+
+func (server *Server) InitAccountManagement() {
+	server.backgroundTask(func() {
+		resolver.StartImageHandler(5)
+	})
+	var accountManagement = router.NewAccountManagement()
+	server.router(
+		accountManagement.Users,
+		accountManagement.Auth,
+		accountManagement.OAuth2,
+	)
+}
+
+func (server *Server) Run(addr string) error {
 	return server.engine.Run(addr)
 }
