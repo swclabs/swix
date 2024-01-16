@@ -1,4 +1,4 @@
-name: Build API Server
+name: build test account management module
 
 on:
   push:
