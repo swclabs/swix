@@ -1,8 +1,8 @@
 package delivery
 
 import (
+	"swclabs/swiftcart/internal/broker"
 	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/internal/messaging"
 	"swclabs/swiftcart/pkg/worker"
 )
 
@@ -15,12 +15,12 @@ type IWorker interface {
 }
 
 type Worker struct {
-	engine *messaging.Messaging
+	engine *broker.Broker
 }
 
 func NewWorker() IWorker {
 	return &Worker{
-		engine: messaging.New(),
+		engine: broker.New(),
 	}
 }
 

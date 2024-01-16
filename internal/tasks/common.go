@@ -1,7 +1,7 @@
 package tasks
 
 import (
-	"swclabs/swiftcart/internal/messaging/queue"
+	"swclabs/swiftcart/internal/broker/queue"
 	"swclabs/swiftcart/pkg/worker"
 )
 

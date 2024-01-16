@@ -29,9 +29,9 @@ import (
 func main() {
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 	client := delivery.NewClient(addr)
-	ginFrameworkAdapter := delivery.NewGinAdapter()
+	adapter := delivery.Create(delivery.Adapter)
 
-	if err := client.ConnectTo(ginFrameworkAdapter); err != nil {
+	if err := client.ConnectTo(adapter); err != nil {
 		log.Fatal(err)
 	}
 }

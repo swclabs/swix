@@ -1,8 +1,9 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"swclabs/swiftcart/internal/http/controller"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Common(e *gin.Engine) {
@@ -10,5 +11,4 @@ func Common(e *gin.Engine) {
 	r.GET("/healthcheck", controller.HealthCheck)
 	r.GET("/worker", controller.WorkerCheck)
 	r.GET("/foo", controller.Foo)
-	e.GET("/callback", controller.Auth0Callback)
 }

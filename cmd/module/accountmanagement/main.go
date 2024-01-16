@@ -20,45 +20,13 @@ import (
 	"sort"
 	"swclabs/swiftcart/internal/config"
 	"swclabs/swiftcart/internal/delivery"
-	"swclabs/swiftcart/pkg/utils"
 
-	"github.com/golang-migrate/migrate/v4"
 	"github.com/urfave/cli/v2"
 
 	_ "swclabs/swiftcart/docs"
-
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 var Command = []*cli.Command{
-	{
-		Name:    "migrate",
-		Aliases: []string{"m"},
-		Usage:   "migrate database",
-		Action: func(c *cli.Context) error {
-			const migrateUrl = "file://pkg/db/migration/"
-			databaseUrl, err := utils.ConnectionURLBuilder("pg-migrate")
-			if err != nil {
-				return err
-			}
-			_migrate, err := migrate.New(migrateUrl, databaseUrl)
-			if err != nil {
-				return err
-			}
-			switch c.Args().First() {
-			case "up":
-				if err := _migrate.Up(); err != migrate.ErrNoChange {
-					return err
-				}
-			case "down":
-				if err := _migrate.Down(); err != migrate.ErrNoChange {
-					return err
-				}
-			}
-			return nil
-		},
-	},
 	{
 		Name:    "worker",
 		Aliases: []string{"w"},
@@ -75,7 +43,7 @@ var Command = []*cli.Command{
 		Action: func(_ *cli.Context) error {
 			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 			client := delivery.NewClient(addr)
-			adapter := delivery.Create(delivery.Adapter)
+			adapter := delivery.Create(delivery.AccountManagementAdapter)
 
 			return client.ConnectTo(adapter)
 		},
@@ -87,7 +55,7 @@ func NewClient() *cli.App {
 		Name:        "Swiftcart",
 		Usage:       "Swiftcart",
 		Version:     "0.0.1",
-		Description: "Swiftcart API server",
+		Description: "Swiftcart Account Management API server",
 		Commands:    Command,
 	}
 

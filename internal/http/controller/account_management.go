@@ -11,6 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type AccountManagement struct {
+	service domain.IAccountManagementService
+}
+
+func NewAccountManagement() *AccountManagement {
+	return &AccountManagement{
+		service: service.NewAccountManagement(),
+	}
+}
+
 // Login
 // @Description Login account.
 // @Tags auth
@@ -19,7 +29,7 @@ import (
 // @Param login body domain.LoginRequest true "Login"
 // @Success 200 {object} domain.LoginResponse
 // @Router /v1/auth/login [POST]
-func Login(c *gin.Context) {
+func (account *AccountManagement) Login(c *gin.Context) {
 	var request domain.LoginRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, domain.Error{
@@ -33,8 +43,8 @@ func Login(c *gin.Context) {
 		})
 		return
 	}
-	var account = service.NewAccountManagement()
-	accessToken, err := account.Login(&request)
+	// var account = service.NewAccountManagement()
+	accessToken, err := account.service.Login(&request)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -62,7 +72,7 @@ func Login(c *gin.Context) {
 // @Param sign_up body domain.SignUpRequest true "Sign Up"
 // @Success 200 {object} domain.SignUpResponse
 // @Router /v1/auth/signup [POST]
-func SignUp(c *gin.Context) {
+func (account *AccountManagement) SignUp(c *gin.Context) {
 	var request domain.SignUpRequest
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, domain.Error{
@@ -76,8 +86,7 @@ func SignUp(c *gin.Context) {
 		})
 		return
 	}
-	var account = service.NewAccountManagement()
-	if err := account.SignUp(&request); err != nil {
+	if err := account.service.SignUp(&request); err != nil {
 		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "user data invalid",
 		})
@@ -96,7 +105,7 @@ func SignUp(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} domain.OK
 // @Router /v1/auth/logout [GET]
-func Logout(c *gin.Context) {
+func (account *AccountManagement) Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Delete("access_token")
 	if err := session.Save(); err != nil {
@@ -115,11 +124,10 @@ func Logout(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} domain.UserInfo
 // @Router /v1/users [GET]
-func GetMe(c *gin.Context) {
+func (account *AccountManagement) GetMe(c *gin.Context) {
 	session := sessions.Default(c)
 	email := session.Get("email").(string)
-	var account = service.NewAccountManagement()
-	response, err := account.UserInfo(email)
+	response, err := account.service.UserInfo(email)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -137,7 +145,7 @@ func GetMe(c *gin.Context) {
 // @Param UserInfo body domain.UserUpdate true "Update User"
 // @Success 200 {object} domain.OK
 // @Router /v1/users [PUT]
-func UpdateUserInfo(c *gin.Context) {
+func (account *AccountManagement) UpdateUserInfo(c *gin.Context) {
 	var request domain.UserUpdate
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(http.StatusBadRequest, domain.Error{
@@ -151,8 +159,7 @@ func UpdateUserInfo(c *gin.Context) {
 		})
 		return
 	}
-	var user = service.NewAccountManagement()
-	if err := user.UpdateUserInfo(&request); err != nil {
+	if err := account.service.UpdateUserInfo(&request); err != nil {
 		c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -171,7 +178,7 @@ func UpdateUserInfo(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} domain.OK
 // @Router /v1/users/image [PUT]
-func UpdateUserImage(c *gin.Context) {
+func (account *AccountManagement) UpdateUserImage(c *gin.Context) {
 	session := sessions.Default(c)
 	email := session.Get("email").(string)
 	file, err := c.FormFile("img")
@@ -181,8 +188,7 @@ func UpdateUserImage(c *gin.Context) {
 		})
 		return
 	}
-	account := service.NewAccountManagement()
-	if err := account.UploadAvatar(email, file); err != nil {
+	if err := account.service.UploadAvatar(email, file); err != nil {
 		c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})

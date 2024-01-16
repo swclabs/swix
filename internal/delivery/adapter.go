@@ -4,16 +4,10 @@ import (
 	"swclabs/swiftcart/internal/http"
 )
 
-type Adapter struct {
-	server *http.Server
+func Adapter(server *http.Server) {
+	server.InitAccountManagement()
 }
 
-func NewGinAdapter() *Adapter {
-	return &Adapter{
-		server: http.New(),
-	}
-}
-
-func (adapter *Adapter) ListenOn(port string) error {
-	return adapter.server.Run(port)
+func AccountManagementAdapter(server *http.Server) {
+	server.InitAccountManagement()
 }

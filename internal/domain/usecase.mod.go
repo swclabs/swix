@@ -15,17 +15,17 @@ type IAccountManagementService interface {
 
 // IOrderManagement : Module Order Management
 // Actor: admin
-type IOrderManagement interface {
+type IOrderManagementService interface {
 }
 
 // IProductManagement : Module Product Management
 // Actor: Admin
-type IProductManagement interface {
+type IProductManagementService interface {
 }
 
-// IPurchaseService : Module Purchase
+// IPurchasingService : Module Purchasing
 // Actor: Admin & Customer (User)
-type IPurchaseService interface {
+type IPurchasingService interface {
 	AddToCart()
 	GetOrders()
 	GetCartItems()
