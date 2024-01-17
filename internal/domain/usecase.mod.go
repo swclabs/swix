@@ -13,12 +13,12 @@ type IAccountManagementService interface {
 	OAuth2SaveUser(req *OAuth2SaveUser) error
 }
 
-// IOrderManagement : Module Order Management
+// IOrderManagementService : Module Order Management
 // Actor: admin
 type IOrderManagementService interface {
 }
 
-// IProductManagement : Module Product Management
+// IProductManagementService : Module Product Management
 // Actor: Admin
 type IProductManagementService interface {
 }

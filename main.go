@@ -28,10 +28,10 @@ import (
 // @basePath /
 func main() {
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-	client := delivery.NewClient(addr)
-	adapter := delivery.Create(delivery.Adapter)
+	server := delivery.NewServer(addr)
+	adapter := delivery.NewAdapter()
 
-	if err := client.ConnectTo(adapter); err != nil {
+	if err := server.Connect(adapter); err != nil {
 		log.Fatal(err)
 	}
 }

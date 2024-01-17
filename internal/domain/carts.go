@@ -8,7 +8,9 @@ type Cart struct {
 	UserID     int64 `json:"user_id" gorm:"column:user_id"`
 }
 
-type CartInfo struct{}
+// CartInfo schema
+type CartInfo struct {
+}
 
 type ICartRepository interface {
 	Add(productID int64) error

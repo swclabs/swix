@@ -1,6 +1,6 @@
 package domain
 
-// Product : Table products
+// Product Table
 type Product struct {
 	ID          int64  `json:"id" gorm:"column:id"`
 	Image       string `json:"image" gorm:"column:image"`
