@@ -1,6 +1,6 @@
 package queue
 
-import "swclabs/swiftcart/internal/config"
+import "github.com/swclabs/swipe-api/internal/config"
 
 var (
 	CriticalQueue = "critical"

@@ -1,4 +1,4 @@
-module swclabs/swiftcart
+module github.com/swclabs/swipe-api
 
 go 1.21.3
 

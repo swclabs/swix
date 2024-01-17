@@ -2,8 +2,9 @@ package service
 
 import (
 	"fmt"
-	"swclabs/swiftcart/internal/domain"
-	"swclabs/swiftcart/internal/tasks"
+
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/tasks"
 )
 
 type CommonService struct {

@@ -13,8 +13,9 @@ package main
 import (
 	"fmt"
 	"log"
-	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/internal/delivery"
+
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/internal/delivery"
 )
 
 func main() {

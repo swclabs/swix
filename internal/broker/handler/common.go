@@ -3,7 +3,8 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"swclabs/swiftcart/internal/service"
+
+	"github.com/swclabs/swipe-api/internal/service"
 
 	"github.com/hibiken/asynq"
 )

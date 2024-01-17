@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"swclabs/swiftcart/internal/config"
+	"github.com/swclabs/swipe-api/internal/config"
 
 	"github.com/redis/go-redis/v9"
 )

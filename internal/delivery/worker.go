@@ -1,9 +1,9 @@
 package delivery
 
 import (
-	"swclabs/swiftcart/internal/broker"
-	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/pkg/worker"
+	"github.com/swclabs/swipe-api/internal/broker"
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/pkg/worker"
 )
 
 type IWorker interface {

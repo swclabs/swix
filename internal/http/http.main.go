@@ -1,13 +1,13 @@
 package http
 
 import (
-	"swclabs/swiftcart/internal/http/middleware"
-	"swclabs/swiftcart/internal/http/router"
-	"swclabs/swiftcart/internal/misc/resolver"
+	"github.com/swclabs/swipe-api/internal/http/middleware"
+	"github.com/swclabs/swipe-api/internal/http/router"
+	"github.com/swclabs/swipe-api/internal/misc/resolver"
 
-	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/pkg/mailers"
-	"swclabs/swiftcart/pkg/sentry"
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/pkg/mailers"
+	"github.com/swclabs/swipe-api/pkg/sentry"
 )
 
 var _ IServer = &_Server{}

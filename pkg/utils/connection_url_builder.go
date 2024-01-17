@@ -3,7 +3,7 @@ package utils
 import (
 	"fmt"
 
-	"swclabs/swiftcart/internal/config"
+	"github.com/swclabs/swipe-api/internal/config"
 )
 
 // ConnectionURLBuilder func for building URL connection.

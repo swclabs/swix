@@ -2,8 +2,9 @@ package test
 
 import (
 	"fmt"
-	"swclabs/swiftcart/pkg/utils"
 	"testing"
+
+	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
 func TestRandomString(t *testing.T) {

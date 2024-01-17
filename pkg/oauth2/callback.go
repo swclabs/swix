@@ -2,9 +2,10 @@ package oauth2
 
 import (
 	"net/http"
-	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/internal/domain"
-	"swclabs/swiftcart/internal/service"
+
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/service"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"

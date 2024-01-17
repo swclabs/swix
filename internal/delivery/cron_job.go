@@ -1,9 +1,10 @@
 package delivery
 
 import (
-	"swclabs/swiftcart/internal/misc/cron"
-	"swclabs/swiftcart/pkg/job"
 	"time"
+
+	"github.com/swclabs/swipe-api/internal/misc/cron"
+	"github.com/swclabs/swipe-api/pkg/job"
 )
 
 func _StartCommonJob() {

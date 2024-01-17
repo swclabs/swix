@@ -5,7 +5,7 @@ import (
 	"maps"
 	"testing"
 
-	"swclabs/swiftcart/pkg/jwt"
+	"github.com/swclabs/swipe-api/pkg/jwt"
 )
 
 func TestHash(t *testing.T) {

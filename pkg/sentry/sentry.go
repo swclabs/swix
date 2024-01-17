@@ -3,7 +3,7 @@ package sentry
 import (
 	"fmt"
 
-	"swclabs/swiftcart/internal/config"
+	"github.com/swclabs/swipe-api/internal/config"
 
 	sentrygin "github.com/getsentry/sentry-go/gin"
 

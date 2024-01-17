@@ -7,9 +7,9 @@ import (
 	"errors"
 	"time"
 
-	"swclabs/swiftcart/internal/domain"
-	"swclabs/swiftcart/pkg/db"
-	"swclabs/swiftcart/pkg/db/queries"
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/pkg/db"
+	"github.com/swclabs/swipe-api/pkg/db/queries"
 
 	"gorm.io/gorm"
 )
