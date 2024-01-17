@@ -6,24 +6,21 @@ import (
 	"swclabs/swiftcart/pkg/worker"
 )
 
-func init() {
-	worker.SetBroker(config.RedisHost, config.RedisPort, config.RedisPassword)
-}
-
 type IWorker interface {
 	Run(concurrency int) error
 }
 
-type Worker struct {
+type _Worker struct {
 	engine *broker.Broker
 }
 
 func NewWorker() IWorker {
-	return &Worker{
+	worker.SetBroker(config.RedisHost, config.RedisPort, config.RedisPassword)
+	return &_Worker{
 		engine: broker.New(),
 	}
 }
 
-func (w *Worker) Run(concurrency int) error {
+func (w *_Worker) Run(concurrency int) error {
 	return w.engine.Run(concurrency)
 }

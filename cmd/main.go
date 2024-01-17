@@ -74,20 +74,20 @@ var Command = []*cli.Command{
 		Usage:   "run app server",
 		Action: func(_ *cli.Context) error {
 			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-			client := delivery.NewClient(addr)
-			adapter := delivery.Create(delivery.Adapter)
+			server := delivery.NewServer(addr)
+			adapter := delivery.NewAdapter()
 
-			return client.ConnectTo(adapter)
+			return server.Connect(adapter)
 		},
 	},
 }
 
 func NewClient() *cli.App {
 	newApp := &cli.App{
-		Name:        "Swiftcart",
-		Usage:       "Swiftcart",
+		Name:        "SwiftCart",
+		Usage:       "SwiftCart",
 		Version:     "0.0.1",
-		Description: "Swiftcart API server",
+		Description: "SwiftCart API server",
 		Commands:    Command,
 	}
 

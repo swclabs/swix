@@ -1,19 +1,19 @@
 package delivery
 
-import (
-	"swclabs/swiftcart/internal/http"
-)
-
-type HttpServer struct {
-	Server *http.Server
+type IServer interface {
+	Connect(adapter IAdapter) error
 }
 
-func NewHttpServer() *HttpServer {
-	return &HttpServer{
-		Server: http.New(),
+type _Server struct {
+	address string
+}
+
+func NewServer(addr string) IServer {
+	return &_Server{
+		address: addr,
 	}
 }
 
-func (adapter *HttpServer) ListenOn(port string) error {
-	return adapter.Server.Run(port)
+func (server *_Server) Connect(adapter IAdapter) error {
+	return adapter.Run(server.address)
 }
