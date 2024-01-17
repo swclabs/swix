@@ -1,8 +1,8 @@
 package tasks
 
 import (
-	"swclabs/swiftcart/internal/broker/queue"
-	"swclabs/swiftcart/pkg/worker"
+	"github.com/swclabs/swipe-api/internal/broker/queue"
+	"github.com/swclabs/swipe-api/pkg/worker"
 )
 
 type CommonTask struct {

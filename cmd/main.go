@@ -18,14 +18,15 @@ import (
 	"log"
 	"os"
 	"sort"
-	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/internal/delivery"
-	"swclabs/swiftcart/pkg/utils"
+
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/internal/delivery"
+	"github.com/swclabs/swipe-api/pkg/utils"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/urfave/cli/v2"
 
-	_ "swclabs/swiftcart/docs"
+	_ "github.com/swclabs/swipe-api/docs"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

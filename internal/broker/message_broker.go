@@ -1,9 +1,9 @@
 package broker
 
 import (
-	"swclabs/swiftcart/internal/broker/queue"
-	"swclabs/swiftcart/internal/broker/router"
-	"swclabs/swiftcart/pkg/worker"
+	"github.com/swclabs/swipe-api/internal/broker/queue"
+	"github.com/swclabs/swipe-api/internal/broker/router"
+	"github.com/swclabs/swipe-api/pkg/worker"
 )
 
 type Broker struct {

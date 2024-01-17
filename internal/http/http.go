@@ -1,7 +1,7 @@
 package http
 
 import (
-	"swclabs/swiftcart/internal/config"
+	"github.com/swclabs/swipe-api/internal/config"
 
 	"github.com/gin-gonic/gin"
 )

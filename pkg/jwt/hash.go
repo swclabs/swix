@@ -3,7 +3,7 @@ package jwt
 import (
 	"strconv"
 
-	"swclabs/swiftcart/internal/config"
+	"github.com/swclabs/swipe-api/internal/config"
 
 	"golang.org/x/crypto/bcrypt"
 )

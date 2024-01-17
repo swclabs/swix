@@ -1,9 +1,10 @@
 package test
 
 import (
-	"swclabs/swiftcart/pkg/mailers"
-	"swclabs/swiftcart/pkg/template"
 	"testing"
+
+	"github.com/swclabs/swipe-api/pkg/mailers"
+	"github.com/swclabs/swipe-api/pkg/template"
 )
 
 func TestEmail(t *testing.T) {

@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	"swclabs/swiftcart/pkg/jwt"
+	"github.com/swclabs/swipe-api/pkg/jwt"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"

@@ -18,12 +18,13 @@ import (
 	"log"
 	"os"
 	"sort"
-	"swclabs/swiftcart/internal/config"
-	"swclabs/swiftcart/internal/delivery"
+
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/internal/delivery"
 
 	"github.com/urfave/cli/v2"
 
-	_ "swclabs/swiftcart/docs"
+	_ "github.com/swclabs/swipe-api/docs"
 )
 
 var Command = []*cli.Command{

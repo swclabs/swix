@@ -7,12 +7,13 @@ import (
 	"errors"
 	"fmt"
 	"mime/multipart"
-	"swclabs/swiftcart/internal/domain"
-	"swclabs/swiftcart/internal/misc/resolver"
-	"swclabs/swiftcart/internal/repo"
-	"swclabs/swiftcart/internal/tasks"
-	"swclabs/swiftcart/pkg/jwt"
-	"swclabs/swiftcart/pkg/utils"
+
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/misc/resolver"
+	"github.com/swclabs/swipe-api/internal/repo"
+	"github.com/swclabs/swipe-api/internal/tasks"
+	"github.com/swclabs/swipe-api/pkg/jwt"
+	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
 type AccountManagement struct {

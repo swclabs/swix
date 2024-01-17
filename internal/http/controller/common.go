@@ -2,9 +2,10 @@ package controller
 
 import (
 	"net/http"
-	"swclabs/swiftcart/internal/domain"
-	"swclabs/swiftcart/internal/service"
-	"swclabs/swiftcart/pkg/oauth2"
+
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/service"
+	"github.com/swclabs/swipe-api/pkg/oauth2"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"

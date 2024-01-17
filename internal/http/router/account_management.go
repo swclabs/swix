@@ -1,8 +1,8 @@
 package router
 
 import (
-	"swclabs/swiftcart/internal/http/controller"
-	"swclabs/swiftcart/internal/http/middleware"
+	"github.com/swclabs/swipe-api/internal/http/controller"
+	"github.com/swclabs/swipe-api/internal/http/middleware"
 
 	"github.com/gin-gonic/gin"
 )

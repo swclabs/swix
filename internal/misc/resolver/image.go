@@ -6,10 +6,11 @@ package resolver
 import (
 	"log"
 	"mime/multipart"
-	"swclabs/swiftcart/internal/domain"
-	"swclabs/swiftcart/internal/repo"
-	"swclabs/swiftcart/pkg/cloud"
 	"sync"
+
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/repo"
+	"github.com/swclabs/swipe-api/pkg/cloud"
 )
 
 var ImagePool *Pool

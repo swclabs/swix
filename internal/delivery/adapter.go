@@ -1,7 +1,7 @@
 package delivery
 
 import (
-	"swclabs/swiftcart/internal/http"
+	"github.com/swclabs/swipe-api/internal/http"
 )
 
 type IAdapter interface {
