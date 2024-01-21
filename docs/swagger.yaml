@@ -113,6 +113,26 @@ info:
   title: Swiftcart API Documentation
   version: 1.0.0
 paths:
+  /v1/auth:
+    get:
+      consumes:
+      - application/json
+      description: check email address before login
+      parameters:
+      - description: email address
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - auth
   /v1/auth/login:
     post:
       consumes:

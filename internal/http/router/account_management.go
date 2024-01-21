@@ -8,7 +8,7 @@ import (
 )
 
 type AccountManagement struct {
-	controller *controller.AccountManagement
+	controller controller.IAccountManagement
 }
 
 func NewAccountManagement() *AccountManagement {
@@ -26,6 +26,7 @@ func (account *AccountManagement) Users(e *gin.Engine) {
 
 func (account *AccountManagement) Auth(e *gin.Engine) {
 	auth := e.Group("/v1/auth")
+	auth.GET("/", account.controller.CheckLoginEmail)
 	auth.POST("/signup", account.controller.SignUp)
 	auth.POST("/login", account.controller.Login)
 	auth.GET("/logout", account.controller.Logout)

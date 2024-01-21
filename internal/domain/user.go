@@ -26,8 +26,8 @@ type IUserRepository interface {
 
 // SignUpRequest schema
 type SignUpRequest struct {
-	Email       string `json:"email" validate:"required"`
-	PhoneNumber string `json:"phone_number" validate:"required"`
+	Email       string `json:"email" validate:"email,required"`
+	PhoneNumber string `json:"phone_number" validate:"number,required"`
 	FirstName   string `json:"first_name" validate:"required"`
 	LastName    string `json:"last_name" validate:"required"`
 	Password    string `json:"password" validate:"required"`
@@ -41,7 +41,7 @@ type SignUpResponse struct {
 
 // LoginRequest schema
 type LoginRequest struct {
-	Email    string `json:"email" validate:"required"`
+	Email    string `json:"email" validate:"email,required"`
 	Password string `json:"password" validate:"required"`
 }
 
@@ -49,14 +49,14 @@ type LoginRequest struct {
 type LoginResponse struct {
 	Success bool   `json:"success" validate:"required"`
 	Token   string `json:"token" validate:"required"`
-	Email   string `json:"email" validate:"required"`
+	Email   string `json:"email" validate:"email,required"`
 }
 
 // UserInfo schema
 type UserInfo struct {
 	Id          int64  `json:"id" validate:"required"`
-	Email       string `json:"email" validate:"required"`
-	PhoneNumber string `json:"phone_number" validate:"required"`
+	Email       string `json:"email" validate:"email,required"`
+	PhoneNumber string `json:"phone_number" validate:"number,required"`
 	FirstName   string `json:"first_name" validate:"required"`
 	LastName    string `json:"last_name" validate:"required"`
 	Image       string `json:"image" validate:"required"`
@@ -67,8 +67,8 @@ type UserInfo struct {
 // UserUpdate schema
 type UserUpdate struct {
 	Id          int64  `json:"id" validate:"required"`
-	Email       string `json:"email" validate:"required"`
-	PhoneNumber string `json:"phone_number" validate:"required"`
+	Email       string `json:"email" validate:"email,required"`
+	PhoneNumber string `json:"phone_number" validate:"number,required"`
 	FirstName   string `json:"first_name" validate:"required"`
 	LastName    string `json:"last_name" validate:"required"`
 	Username    string `json:"username" validate:"required"`
@@ -77,7 +77,7 @@ type UserUpdate struct {
 // OAuth2SaveUser schema
 type OAuth2SaveUser struct {
 	Email       string `json:"email" validate:"required"`
-	PhoneNumber string `json:"phone_number" validate:"required"`
+	PhoneNumber string `json:"phone_number" validate:"number,required"`
 	FirstName   string `json:"first_name" validate:"required"`
 	LastName    string `json:"last_name" validate:"required"`
 	Image       string `json:"image" validate:"required"`
