@@ -15,10 +15,20 @@ type AccountManagement struct {
 	service domain.IAccountManagementService
 }
 
-func NewAccountManagement() *AccountManagement {
+func NewAccountManagement() IAccountManagement {
 	return &AccountManagement{
 		service: service.NewAccountManagement(),
 	}
+}
+
+type IAccountManagement interface {
+	Login(c *gin.Context)
+	SignUp(c *gin.Context)
+	Logout(c *gin.Context)
+	GetMe(c *gin.Context)
+	UpdateUserImage(c *gin.Context)
+	CheckLoginEmail(c *gin.Context)
+	UpdateUserInfo(c *gin.Context)
 }
 
 // Login
@@ -196,5 +206,32 @@ func (account *AccountManagement) UpdateUserImage(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, domain.OK{
 		Msg: "update user images successfully",
+	})
+}
+
+// CheckLoginEmail
+// @Description check email address before login
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param email query string true "email address"
+// @Success 200 {object} domain.OK
+// @Router /v1/auth [GET]
+func (account *AccountManagement) CheckLoginEmail(c *gin.Context) {
+	email := c.Query("email")
+	if email == "" {
+		c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing query parameter: email",
+		})
+		return
+	}
+	if err := account.service.CheckLoginEmail(email); err != nil {
+		c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, domain.OK{
+		Msg: "email: " + email,
 	})
 }

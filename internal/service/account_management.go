@@ -119,3 +119,11 @@ func (manager *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) err
 		Type:     "oauth2-google",
 	})
 }
+
+func (manager *AccountManagement) CheckLoginEmail(email string) error {
+	_, err := manager.account.GetByEmail(email)
+	if err != nil {
+		return errors.New("account not found: " + email)
+	}
+	return nil
+}

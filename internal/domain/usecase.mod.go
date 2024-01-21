@@ -7,6 +7,7 @@ import "mime/multipart"
 type IAccountManagementService interface {
 	SignUp(req *SignUpRequest) error
 	Login(req *LoginRequest) (string, error)
+	CheckLoginEmail(email string) error
 	UserInfo(email string) (*UserInfo, error)
 	UpdateUserInfo(req *UserUpdate) error
 	UploadAvatar(email string, fileHeader *multipart.FileHeader) error

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/log"
+	"github.com/swclabs/swipe-api/pkg/logger"
 )
 
 type Job struct {
@@ -35,8 +35,8 @@ func (job *Job) Scheduler(fn func(), _time time.Duration) {
 }
 
 func (job *Job) Info() {
-	log.Info("Launching a job scheduler with the following settings:")
-	for k, v := range job.function {
-		log.Info("-", "function", k, "schedule", v)
+	logger.Banner("Launching a job scheduler with the following settings:")
+	for fn, sche := range job.function {
+		logger.CronLogger(fn, sche)
 	}
 }

@@ -7,7 +7,14 @@ import (
 	"github.com/swclabs/swipe-api/pkg/job"
 )
 
-func _StartCommonJob() {
+func (account *_AccountManagementAdapter) _StartAccountManagementJob() {
+	newJob := job.New()
+	go newJob.Scheduler(cron.Ping, 5*time.Second)
+
+	newJob.Info()
+}
+
+func (adapter *_Adapter) _StartCommonJob() {
 	newJob := job.New()
 	go newJob.Scheduler(cron.Ping, 5*time.Second)
 

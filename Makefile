@@ -18,3 +18,8 @@ swag:
 
 t:
 	go test -v ./test
+
+env-up:
+	docker compose -f docker-compose.env.yml up -d
+env-down:
+	docker compose down

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/charmbracelet/log"
 	"github.com/hibiken/asynq"
+	"github.com/swclabs/swipe-api/pkg/logger"
 )
 
 type Priority map[string]int
@@ -71,14 +71,14 @@ func (w *Engine) Run(concurrency int) error {
 	})
 	w.handleFunctions()
 
-	log.Info("Launching a asynchronous worker with the following settings:")
-	log.Info("Broker:", "redis", broker.Addr)
+	logger.Banner("Launching a asynchronous worker with the following settings:")
+	logger.Broker("redis", broker.Addr)
 	for q, p := range w.priority {
-		log.Info("-", "queue", q, "priority", p)
+		logger.Queue(q, p)
 	}
-	log.Info("Handle Function: ")
+	logger.Banner("Handle Function: ")
 	for types, handler := range w.queue {
-		log.Info("-", "typename", types, "handler", getName(runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name()))
+		logger.HandleFunc(types, getName(runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name()))
 	}
 	fmt.Println()
 	return w.server.Run(w.mux)

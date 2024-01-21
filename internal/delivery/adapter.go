@@ -13,11 +13,12 @@ type _Adapter struct {
 }
 
 func NewAdapter() IAdapter {
-	// initialize cron job
-	_StartCommonJob()
-	return &_Adapter{
+	adapter := &_Adapter{
 		server: http.New(),
 	}
+	// initialize cron job
+	adapter._StartCommonJob()
+	return adapter
 }
 
 func (adapter *_Adapter) Run(addr string) error {
@@ -30,11 +31,12 @@ type _AccountManagementAdapter struct {
 }
 
 func NewAccountManagementAdapter() IAdapter {
-	// initialize cron job
-	_StartCommonJob()
-	return &_AccountManagementAdapter{
+	account := &_AccountManagementAdapter{
 		server: http.New(),
 	}
+	// initialize cron job
+	account._StartAccountManagementJob()
+	return account
 }
 
 func (account *_AccountManagementAdapter) Run(addr string) error {
