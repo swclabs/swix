@@ -53,8 +53,8 @@ var Command = []*cli.Command{
 
 func NewClient() *cli.App {
 	newApp := &cli.App{
-		Name:        "SwiftCart",
-		Usage:       "SwiftCart",
+		Name:        "swipe",
+		Usage:       "SwiftCart Project",
 		Version:     "0.0.1",
 		Description: "SwiftCart Account Management API server",
 		Commands:    Command,

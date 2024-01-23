@@ -3,7 +3,7 @@ services:
   api-server:
     image: duchungho/swc-api:446ab5a
     restart: always
-    command: "swctl s"
+    command: "swipe s"
     networks:
       - bridge
     ports:
