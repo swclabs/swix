@@ -1,5 +1,7 @@
 FROM golang:1.21-alpine AS builder
 
+ARG APP_MODULE=""
+
 # Move to working directory (/build).
 WORKDIR /build
 
@@ -12,5 +14,5 @@ COPY . .
 
 # Set necessary environment variables needed for our image and build the API server.
 ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-RUN go build -ldflags="-s -w" -o /bin/swipe ./cmd
+RUN go build -ldflags="-s -w" -o /bin/swipe ./cmd/${APP_MODULE}
 RUN rm -r *

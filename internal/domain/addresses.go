@@ -1,7 +1,7 @@
 package domain
 
-// Address Table
-type Address struct {
+// Addresses Table
+type Addresses struct {
 	ID       int64  `json:"id" gorm:"column:id"`
 	City     string `json:"city" gorm:"column:city"`
 	Ward     string `json:"ward" gorm:"column:ward"`

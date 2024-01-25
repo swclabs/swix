@@ -8,11 +8,19 @@ m:
 	go run cmd/main.go m up
 d: 
 	swag init
-up-b: 
+dev-b: 
 	docker compose -f docker-compose.dev.yml up --build -d
-up: 
+dev: 
 	docker compose -f docker-compose.dev.yml up -d
-env-up:
-	docker compose -f docker-compose.env.yml up -d
-down: 
+dev-down:
+	docker compose -f docker-compose.dev.yml down
+all-b:
+	docker compose up --build -d
+all:
+	docker compose up -d
+all-down:
 	docker compose down
+db:
+	docker compose -f docker-compose.db.yml up -d
+db-down:
+	docker compose -f docker-compose.db.yml down

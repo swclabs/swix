@@ -1,4 +1,4 @@
 # See https://github.com/helm/chart-testing#configuration
 remote: origin
 chart-dirs:
-  - hack/k8s
+  - infra/k8s

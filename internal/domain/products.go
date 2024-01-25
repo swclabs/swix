@@ -1,7 +1,7 @@
 package domain
 
 // Product Table
-type Product struct {
+type Products struct {
 	ID          int64  `json:"id" gorm:"column:id"`
 	Image       string `json:"image" gorm:"column:image"`
 	Price       string `json:"price" gorm:"column:price"`
@@ -39,4 +39,8 @@ type IProductInCartRepository interface {
 	AddProduct(product *ProductInCart) error
 	RemoveProduct(productID, cartID int64) error
 	Save(product *ProductInCart) error
+}
+
+type IProductRepository interface {
+	New(prd *Products) error
 }

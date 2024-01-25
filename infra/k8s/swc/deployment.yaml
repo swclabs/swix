@@ -28,7 +28,7 @@ spec:
                 secretKeyRef:
                   name: swc-api-secret
                   key: swc-api-port
-          command: ["./bin/exe"]
+          command: ["swipe"]
           args: ["s"]
           ports:
             - containerPort: 8000
