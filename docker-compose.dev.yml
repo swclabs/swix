@@ -1,6 +1,6 @@
 version: "3.1"
 services:
-  api-server:
+  swipe-server:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -12,14 +12,14 @@ services:
       - DB_HOST=postgres
       - REDIS_HOST=redis
     networks:
-      - bridge
+      - swipe_bridge
     ports:
       - 8000:8000
     depends_on:
       - redis
       - postgres
 
-  worker:
+  swipe-worker:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -27,7 +27,7 @@ services:
       - .env
     restart: always
     networks:
-      - bridge
+      - swipe_bridge
     command: "swipe w"
     environment:
       - DB_HOST=postgres
@@ -41,7 +41,7 @@ services:
     ports:
       - 6379:6379
     networks:
-      - bridge
+      - swipe_bridge
     command: /bin/sh -c "redis-server --requirepass password"
     environment:
       - REDIS_HOST_PASSWORD=password
@@ -58,11 +58,11 @@ services:
       - 5432:5432
     restart: on-failure:3
     networks:
-      - bridge
+      - swipe_bridge
     volumes:
       - ./pkg/db/data/postgres:/var/lib/postgresql/data
 
 networks:
-  bridge:
+  swipe_bridge:
 volumes:
   pkg:

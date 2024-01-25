@@ -2,8 +2,6 @@ package http
 
 import (
 	"github.com/swclabs/swipe-api/internal/http/middleware"
-	"github.com/swclabs/swipe-api/internal/http/router"
-	"github.com/swclabs/swipe-api/internal/misc/resolver"
 
 	"github.com/swclabs/swipe-api/internal/config"
 	"github.com/swclabs/swipe-api/pkg/mailers"
@@ -22,22 +20,12 @@ func (server *_Server) prepare() {
 		middleware.GinMiddleware,
 		middleware.Sentry,
 	)
-	server.router(
-		router.Common,
-		router.Docs,
-	)
 }
 
-func (server *_Server) InitAccountManagement() {
-	server.backgroundTask(func() {
-		resolver.StartImageHandler(5)
-	})
-	var accountManagement = router.NewAccountManagement()
-	server.router(
-		accountManagement.Users,
-		accountManagement.Auth,
-		accountManagement.OAuth2,
-	)
+func (server *_Server) Bootstrap(fn ...func(server IServer)) {
+	for _, _fn := range fn {
+		_fn(server)
+	}
 }
 
 func (server *_Server) Run(addr string) error {

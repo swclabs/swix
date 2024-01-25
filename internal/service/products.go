@@ -2,3 +2,7 @@
 // Description: products service implementation
 
 package service
+
+type Products struct {
+	
+}

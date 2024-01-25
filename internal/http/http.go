@@ -11,7 +11,7 @@ type IServer interface {
 	backgroundTask(tasks ...func())
 	router(routers ...func(*gin.Engine))
 	prepare()
-	InitAccountManagement()
+	Bootstrap(fn ...func(server IServer))
 	Run(string) error
 }
 

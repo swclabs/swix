@@ -37,12 +37,6 @@ func SetBroker(host, port, password string) {
 }
 
 func NewServer(priorityQueue Priority) *Engine {
-	// asynq.NewServer(broker, asynq.Config{
-	// 	// Specify how many concurrent workers to use.
-	// 	Concurrency: concurrency,
-	// 	// Specify multiple queues with different priority.
-	// 	Queues: Queue{},
-	// })
 	return &Engine{
 		server:   nil,
 		mux:      asynq.NewServeMux(),

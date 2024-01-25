@@ -4,8 +4,6 @@ services:
     image: redis
     ports:
       - 6379:6379
-    networks:
-      - bridge
     command: /bin/sh -c "redis-server --requirepass password"
     environment:
       - REDIS_HOST_PASSWORD=password
@@ -21,12 +19,8 @@ services:
     ports:
       - 5432:5432
     restart: on-failure:3
-    networks:
-      - bridge
     volumes:
       - ./pkg/db/data/postgres:/var/lib/postgresql/data
 
-networks:
-  bridge:
 volumes:
   pkg:
