@@ -7,7 +7,7 @@ require (
 	github.com/charmbracelet/log v0.3.1
 	github.com/cloudinary/cloudinary-go/v2 v2.7.0
 	github.com/coreos/go-oidc/v3 v3.9.0
-	github.com/getsentry/sentry-go v0.26.0
+	github.com/getsentry/sentry-go v0.27.0
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-playground/validator/v10 v10.17.0
