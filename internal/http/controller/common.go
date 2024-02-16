@@ -17,7 +17,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /v1/common/healthcheck [GET]
+// @Router /common/healthcheck [GET]
 func HealthCheck(c *gin.Context) {
 	common := service.NewCommonService()
 	c.JSON(200, common.HealthCheck())
@@ -29,7 +29,7 @@ func HealthCheck(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /v1/oauth2/login [GET]
+// @Router /oauth2/login [GET]
 func Auth0Login(c *gin.Context) {
 	auth := oauth2.New()
 	url := auth.AuthCodeURL(auth.State)

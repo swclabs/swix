@@ -58,7 +58,7 @@ func NewProductManagementAdapter() IAdapter {
 	product := &_ProductManagementAdapter{
 		server: http.New(),
 	}
-	product.server.Bootstrap(http.ProductManagementModule)
+	product.server.Bootstrap(http.CommonModule)
 	return product
 }
 

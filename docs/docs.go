@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/auth": {
+        "/auth": {
             "get": {
                 "description": "check email address before login",
                 "consumes": [
@@ -46,7 +46,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/auth/login": {
+        "/auth/login": {
             "post": {
                 "description": "Login account.",
                 "consumes": [
@@ -79,7 +79,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/auth/logout": {
+        "/auth/logout": {
             "get": {
                 "description": "logout user from the service",
                 "consumes": [
@@ -101,7 +101,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/auth/signup": {
+        "/auth/signup": {
             "post": {
                 "description": "Register account for admin.",
                 "consumes": [
@@ -134,7 +134,40 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/common/healthcheck": {
+        "/categories": {
+            "post": {
+                "description": "Insert new category",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "category"
+                ],
+                "parameters": [
+                    {
+                        "description": "Categories Request",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CategoriesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.LoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/common/healthcheck": {
             "get": {
                 "description": "health check api server.",
                 "consumes": [
@@ -153,7 +186,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/oauth2/login": {
+        "/oauth2/login": {
             "get": {
                 "description": "Auth0 Login form.",
                 "consumes": [
@@ -172,7 +205,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users": {
+        "/users": {
             "get": {
                 "description": "get information for users.",
                 "consumes": [
@@ -225,7 +258,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/image": {
+        "/users/image": {
             "put": {
                 "description": "update information for users.",
                 "consumes": [
@@ -249,6 +282,21 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "domain.CategoriesRequest": {
+            "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.LoginRequest": {
             "type": "object",
             "required": [

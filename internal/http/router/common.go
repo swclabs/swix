@@ -7,7 +7,7 @@ import (
 )
 
 func Common(e *gin.Engine) {
-	r := e.Group("/v1/common")
+	r := e.Group("common")
 	r.GET("/healthcheck", controller.HealthCheck)
 	r.GET("/worker", controller.WorkerCheck)
 	r.GET("/foo", controller.Foo)

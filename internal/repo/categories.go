@@ -7,6 +7,7 @@ import (
 
 	"github.com/swclabs/swipe-api/internal/domain"
 	"github.com/swclabs/swipe-api/pkg/db"
+	"github.com/swclabs/swipe-api/pkg/db/queries"
 	"gorm.io/gorm"
 )
 
@@ -27,5 +28,5 @@ func NewCategories() domain.ICategoriesRepository {
 }
 
 func (category *Categories) New(ctg *domain.Categories) error {
-	return nil
+	return category.conn.Table("categories").Exec(queries.InsertIntoCategory, ctg.Name, ctg.Description).Error
 }

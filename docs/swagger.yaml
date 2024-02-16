@@ -1,5 +1,15 @@
 basePath: /
 definitions:
+  domain.CategoriesRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - description
+    - name
+    type: object
   domain.LoginRequest:
     properties:
       email:
@@ -113,7 +123,7 @@ info:
   title: Swiftcart API Documentation
   version: 1.0.0
 paths:
-  /v1/auth:
+  /auth:
     get:
       consumes:
       - application/json
@@ -133,7 +143,7 @@ paths:
             $ref: '#/definitions/domain.OK'
       tags:
       - auth
-  /v1/auth/login:
+  /auth/login:
     post:
       consumes:
       - application/json
@@ -154,7 +164,7 @@ paths:
             $ref: '#/definitions/domain.LoginResponse'
       tags:
       - auth
-  /v1/auth/logout:
+  /auth/logout:
     get:
       consumes:
       - application/json
@@ -168,7 +178,7 @@ paths:
             $ref: '#/definitions/domain.OK'
       tags:
       - auth
-  /v1/auth/signup:
+  /auth/signup:
     post:
       consumes:
       - application/json
@@ -189,7 +199,28 @@ paths:
             $ref: '#/definitions/domain.SignUpResponse'
       tags:
       - auth
-  /v1/common/healthcheck:
+  /categories:
+    post:
+      consumes:
+      - application/json
+      description: Insert new category
+      parameters:
+      - description: Categories Request
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CategoriesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.LoginResponse'
+      tags:
+      - category
+  /common/healthcheck:
     get:
       consumes:
       - application/json
@@ -201,7 +232,7 @@ paths:
           description: OK
       tags:
       - common
-  /v1/oauth2/login:
+  /oauth2/login:
     get:
       consumes:
       - application/json
@@ -213,7 +244,7 @@ paths:
           description: OK
       tags:
       - common
-  /v1/users:
+  /users:
     get:
       consumes:
       - application/json
@@ -247,7 +278,7 @@ paths:
             $ref: '#/definitions/domain.OK'
       tags:
       - users
-  /v1/users/image:
+  /users/image:
     put:
       consumes:
       - application/json
