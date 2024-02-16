@@ -22,6 +22,7 @@ type IOrderManagementService interface {
 // IProductManagementService : Module Product Management
 // Actor: Admin
 type IProductManagementService interface {
+	InsertCategory(ctg *Categories) error
 }
 
 // IPurchasingService : Module Purchasing

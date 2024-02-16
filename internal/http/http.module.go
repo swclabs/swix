@@ -1,8 +1,8 @@
 package http
 
 import (
+	"github.com/swclabs/swipe-api/internal/helper/resolver"
 	"github.com/swclabs/swipe-api/internal/http/router"
-	"github.com/swclabs/swipe-api/internal/misc/resolver"
 )
 
 func CommonModule(server IServer) {
@@ -25,5 +25,8 @@ func AccountManagementModule(server IServer) {
 }
 
 func ProductManagementModule(server IServer) {
-
+	var productManagement = router.NewProductManagement()
+	server.router(
+		productManagement.Category,
+	)
 }

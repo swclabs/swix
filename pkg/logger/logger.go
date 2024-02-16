@@ -13,7 +13,7 @@ func Banner(msg string) {
 
 	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
 		ReportCaller:    false,
-		ReportTimestamp: true,
+		ReportTimestamp: false,
 		TimeFormat:      time.DateTime,
 		Prefix:          "[SWIPE]",
 	})
@@ -31,7 +31,7 @@ func CronLogger(function, schedule string) {
 
 	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
 		ReportCaller:    false,
-		ReportTimestamp: true,
+		ReportTimestamp: false,
 		TimeFormat:      time.DateTime,
 		Prefix:          "[SWIPE-cron]",
 	})

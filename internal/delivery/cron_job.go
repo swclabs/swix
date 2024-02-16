@@ -3,7 +3,7 @@ package delivery
 import (
 	"time"
 
-	"github.com/swclabs/swipe-api/internal/misc/cron"
+	"github.com/swclabs/swipe-api/internal/helper/cron"
 	"github.com/swclabs/swipe-api/pkg/job"
 )
 

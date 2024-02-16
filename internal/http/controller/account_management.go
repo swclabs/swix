@@ -38,7 +38,7 @@ type IAccountManagement interface {
 // @Produce json
 // @Param login body domain.LoginRequest true "Login"
 // @Success 200 {object} domain.LoginResponse
-// @Router /v1/auth/login [POST]
+// @Router /auth/login [POST]
 func (account *AccountManagement) Login(c *gin.Context) {
 	var request domain.LoginRequest
 	if err := c.BindJSON(&request); err != nil {
@@ -81,7 +81,7 @@ func (account *AccountManagement) Login(c *gin.Context) {
 // @Produce json
 // @Param sign_up body domain.SignUpRequest true "Sign Up"
 // @Success 200 {object} domain.SignUpResponse
-// @Router /v1/auth/signup [POST]
+// @Router /auth/signup [POST]
 func (account *AccountManagement) SignUp(c *gin.Context) {
 	var request domain.SignUpRequest
 	if err := c.BindJSON(&request); err != nil {
@@ -114,7 +114,7 @@ func (account *AccountManagement) SignUp(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
-// @Router /v1/auth/logout [GET]
+// @Router /auth/logout [GET]
 func (account *AccountManagement) Logout(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Delete("access_token")
@@ -133,7 +133,7 @@ func (account *AccountManagement) Logout(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.UserInfo
-// @Router /v1/users [GET]
+// @Router /users [GET]
 func (account *AccountManagement) GetMe(c *gin.Context) {
 	session := sessions.Default(c)
 	email := session.Get("email").(string)
@@ -154,7 +154,7 @@ func (account *AccountManagement) GetMe(c *gin.Context) {
 // @Produce json
 // @Param UserInfo body domain.UserUpdate true "Update User"
 // @Success 200 {object} domain.OK
-// @Router /v1/users [PUT]
+// @Router /users [PUT]
 func (account *AccountManagement) UpdateUserInfo(c *gin.Context) {
 	var request domain.UserUpdate
 	if err := c.BindJSON(&request); err != nil {
@@ -187,7 +187,7 @@ func (account *AccountManagement) UpdateUserInfo(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
-// @Router /v1/users/image [PUT]
+// @Router /users/image [PUT]
 func (account *AccountManagement) UpdateUserImage(c *gin.Context) {
 	session := sessions.Default(c)
 	email := session.Get("email").(string)
@@ -216,7 +216,7 @@ func (account *AccountManagement) UpdateUserImage(c *gin.Context) {
 // @Produce json
 // @Param email query string true "email address"
 // @Success 200 {object} domain.OK
-// @Router /v1/auth [GET]
+// @Router /auth [GET]
 func (account *AccountManagement) CheckLoginEmail(c *gin.Context) {
 	email := c.Query("email")
 	if email == "" {

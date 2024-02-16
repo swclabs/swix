@@ -1,7 +1,10 @@
 package http
 
 import (
+	"fmt"
+
 	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/pkg/logger"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,6 +29,7 @@ func New() IServer {
 	server := &_Server{
 		engine: gin.Default(),
 	}
+	logger.Banner(fmt.Sprintf("Starting Swipe on port ::%s", config.Port))
 	server.prepare()
 	return server
 }

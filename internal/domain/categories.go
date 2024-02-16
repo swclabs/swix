@@ -1,5 +1,10 @@
 package domain
 
+type CategoriesRequest struct {
+	Name        string `json:"name" validate:"required"`
+	Description string `json:"description" validate:"required"`
+}
+
 // Categories Table
 type Categories struct {
 	Id          string `json:"id" gorm:"column:id"`
