@@ -1,10 +1,9 @@
 package router
 
 import (
+	"github.com/labstack/echo/v4"
 	"github.com/swclabs/swipe-api/internal/http/controller"
 	"github.com/swclabs/swipe-api/internal/http/middleware"
-
-	"github.com/gin-gonic/gin"
 )
 
 type AccountManagement struct {
@@ -17,22 +16,22 @@ func NewAccountManagement() *AccountManagement {
 	}
 }
 
-func (account *AccountManagement) Users(e *gin.Engine) {
+func (account *AccountManagement) Users(e *echo.Echo) {
 	user := e.Group("/users")
-	user.GET("/", middleware.SessionProtected, account.controller.GetMe)
-	user.PUT("/", account.controller.UpdateUserInfo)
-	user.POST("/image", middleware.SessionProtected, account.controller.UpdateUserImage)
+	user.GET("", account.controller.GetMe, middleware.SessionProtected)
+	user.PUT("", account.controller.UpdateUserInfo)
+	user.POST("/image", account.controller.UpdateUserImage, middleware.SessionProtected)
 }
 
-func (account *AccountManagement) Auth(e *gin.Engine) {
+func (account *AccountManagement) Auth(e *echo.Echo) {
 	auth := e.Group("/auth")
-	auth.GET("/", account.controller.CheckLoginEmail)
+	auth.GET("", account.controller.CheckLoginEmail)
 	auth.POST("/signup", account.controller.SignUp)
 	auth.POST("/login", account.controller.Login)
 	auth.GET("/logout", account.controller.Logout)
 }
 
-func (account *AccountManagement) OAuth2(e *gin.Engine) {
+func (account *AccountManagement) OAuth2(e *echo.Echo) {
 	auth0 := e.Group("/oauth2")
 	auth0.GET("/login", controller.Auth0Login)
 	e.GET("/callback", controller.Auth0Callback)

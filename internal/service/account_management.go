@@ -12,7 +12,7 @@ import (
 	"github.com/swclabs/swipe-api/internal/repo"
 	"github.com/swclabs/swipe-api/internal/tasks"
 	"github.com/swclabs/swipe-api/internal/helper/resolver"
-	"github.com/swclabs/swipe-api/pkg/jwt"
+	"github.com/swclabs/swipe-api/pkg/tools"
 	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
@@ -30,7 +30,7 @@ func NewAccountManagement() domain.IAccountManagementService {
 }
 
 func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
-	hash, err := jwt.GenPassword(req.Password)
+	hash, err := tools.GenPassword(req.Password)
 	if err != nil {
 		return err
 	}
@@ -61,10 +61,10 @@ func (manager *AccountManagement) Login(req *domain.LoginRequest) (string, error
 	if err != nil {
 		return "", err
 	}
-	if err := jwt.ComparePassword(account.Password, req.Password); err != nil {
+	if err := tools.ComparePassword(account.Password, req.Password); err != nil {
 		return "", errors.New("email or password incorrect")
 	}
-	return jwt.GenerateToken(req.Email)
+	return tools.GenerateToken(req.Email)
 }
 
 func (manager *AccountManagement) UserInfo(email string) (*domain.UserInfo, error) {
@@ -94,7 +94,7 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 }
 
 func (manager *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) error {
-	hash, err := jwt.GenPassword(utils.RandomString(18))
+	hash, err := tools.GenPassword(utils.RandomString(18))
 	if err != nil {
 		return err
 	}

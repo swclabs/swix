@@ -1,40 +1,31 @@
 package http
 
 import (
-	"fmt"
-
-	"github.com/swclabs/swipe-api/internal/config"
-	"github.com/swclabs/swipe-api/pkg/logger"
-
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
 )
 
 type IServer interface {
-	middleware(mdws ...func(*gin.Engine))
+	middleware(mdws ...func(*echo.Echo))
 	backgroundTask(tasks ...func())
-	router(routers ...func(*gin.Engine))
-	prepare()
+	router(routers ...func(*echo.Echo))
+	setting()
 	Bootstrap(fn ...func(server IServer))
 	Run(string) error
 }
 
 type _Server struct {
-	engine *gin.Engine
+	engine *echo.Echo
 }
 
 func New() IServer {
-	if config.StageStatus != "dev" {
-		gin.SetMode(gin.ReleaseMode)
-	}
 	server := &_Server{
-		engine: gin.Default(),
+		engine: echo.New(),
 	}
-	logger.Banner(fmt.Sprintf("Starting Swipe on port ::%s", config.Port))
-	server.prepare()
+	server.setting()
 	return server
 }
 
-func (server *_Server) middleware(mdws ...func(*gin.Engine)) {
+func (server *_Server) middleware(mdws ...func(*echo.Echo)) {
 	for _, m := range mdws {
 		m(server.engine)
 	}
@@ -46,7 +37,7 @@ func (server *_Server) backgroundTask(tasks ...func()) {
 	}
 }
 
-func (server *_Server) router(routers ...func(*gin.Engine)) {
+func (server *_Server) router(routers ...func(*echo.Echo)) {
 	for _, r := range routers {
 		r(server.engine)
 	}

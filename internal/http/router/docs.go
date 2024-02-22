@@ -1,16 +1,15 @@
 package router
 
 import (
+	"github.com/labstack/echo/v4"
 	_ "github.com/swclabs/swipe-api/docs"
 
-	"github.com/gin-gonic/gin"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 // API documentation
 // Router documentation
 // Base on: http://${HOST}:${PORT}/docs/index.html#/
-func Docs(e *gin.Engine) {
-	e.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+func Docs(e *echo.Echo) {
+	e.GET("/docs/*any", echoSwagger.WrapHandler)
 }

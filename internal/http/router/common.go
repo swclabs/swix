@@ -1,12 +1,11 @@
 package router
 
 import (
+	"github.com/labstack/echo/v4"
 	"github.com/swclabs/swipe-api/internal/http/controller"
-
-	"github.com/gin-gonic/gin"
 )
 
-func Common(e *gin.Engine) {
+func Common(e *echo.Echo) {
 	r := e.Group("common")
 	r.GET("/healthcheck", controller.HealthCheck)
 	r.GET("/worker", controller.WorkerCheck)

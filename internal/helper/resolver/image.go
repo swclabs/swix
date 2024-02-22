@@ -11,14 +11,15 @@ import (
 	"github.com/swclabs/swipe-api/internal/domain"
 	"github.com/swclabs/swipe-api/internal/repo"
 	"github.com/swclabs/swipe-api/pkg/cloud"
+	"github.com/swclabs/swipe-api/pkg/tools"
 )
 
-var ImagePool *Pool
+var ImagePool *tools.Pool
 
 func StartImageHandler(concurrent int) {
-	ImagePool = NewPool()
+	ImagePool = tools.NewPool()
 	img := Image{}
-	NewTask(ImagePool, img.ImageHandler, concurrent).Run()
+	tools.NewTask(ImagePool, img.ImageHandler, concurrent).Run()
 }
 
 type Image struct {

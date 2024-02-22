@@ -1,4 +1,4 @@
-package job
+package tools
 
 import (
 	"reflect"
@@ -6,14 +6,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/swclabs/swipe-api/pkg/logger"
+	"github.com/swclabs/swipe-api/pkg/tools/logger"
 )
 
 type Job struct {
 	function map[string]string
 }
 
-func New() *Job {
+func NewJob() *Job {
 	return &Job{
 		function: make(map[string]string),
 	}

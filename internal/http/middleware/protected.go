@@ -1,56 +1,64 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 
-	"github.com/swclabs/swipe-api/pkg/jwt"
-
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/pkg/tools"
+	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
-func Protected(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"msg":     "unauthorized",
-			"success": false,
-		})
-		return
-	}
-	_, err := jwt.ParseToken(authHeader)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"msg":     "unauthorized",
-			"success": false,
-		})
-		return
-	}
-	c.Next()
-}
-
-func SessionProtected(c *gin.Context) {
-	session := sessions.Default(c)
-	if session.Get("access_token") != nil {
-		AccessToken := session.Get("access_token").(string)
-		email, err := jwt.ParseToken(AccessToken)
-		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+func Protected(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// authHeader := c.Request().Header["Authorization"]
+		authHeader := c.Request().Header.Get("Authorization")
+		if authHeader == "" {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
 				"msg":     "unauthorized",
 				"success": false,
 			})
-			return
 		}
-		session.Set("email", email)
-		if err := session.Save(); err != nil {
-			c.String(http.StatusInternalServerError, err.Error())
-			return
+		_, err := tools.ParseToken(authHeader)
+		if err != nil {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
+				"msg":     "unauthorized",
+				"success": false,
+			})
 		}
-		c.Next()
-	} else {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"msg":     "unauthorized",
-			"success": false,
-		})
+		return next(c)
+	}
+}
+
+func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// session := sessions.Default(c)
+		AccessToken := utils.Session(c, utils.BaseSessions, "access_token")
+		log.Println(AccessToken)
+		if AccessToken != nil {
+			email, err := tools.ParseToken(AccessToken.(string))
+			if err != nil {
+				return c.JSON(http.StatusUnauthorized, map[string]interface{}{
+					"msg":     "unauthorized",
+					"success": false,
+				})
+			}
+			// session.Set("email", email)
+			// if err := session.Save(); err != nil {
+			// 	return c.String(http.StatusInternalServerError, err.Error())
+			// }
+			if err := utils.SaveSession(c, utils.BaseSessions, "email", email); err != nil {
+				return c.JSON(http.StatusInternalServerError, domain.Error{
+					Msg: err.Error(),
+				})
+			}
+		} else {
+			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
+				"msg":     "unauthorized",
+				"success": false,
+			})
+		}
+		return next(c)
 	}
 }

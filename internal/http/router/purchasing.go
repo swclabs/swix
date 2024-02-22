@@ -1,10 +1,10 @@
 package router
 
-import "github.com/gin-gonic/gin"
+import "github.com/labstack/echo/v4"
 
 type Purchasing struct {
 }
 
-func (purchasing *Purchasing) Product(e *gin.Engine) {
+func (purchasing *Purchasing) Product(e *echo.Echo) {
 
 }

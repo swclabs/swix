@@ -7,15 +7,16 @@ import (
 )
 
 var (
-	StageStatus       = os.Getenv("STAGE_STATUS")
-	Host              = os.Getenv("HOST")
-	Port              = os.Getenv("PORT")
+	StageStatus = os.Getenv("STAGE_STATUS")
+	Host        = os.Getenv("HOST")
+	Port        = os.Getenv("PORT")
 )
 
 // authentication environment variables
 var (
 	JwtSecret = os.Getenv("JWT_SECRET_KEY")
 	JwtCost   = os.Getenv("JWT_COST")
+	Secret    = os.Getenv("SECRET")
 )
 
 // database environment variables
