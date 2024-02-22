@@ -9,7 +9,7 @@ require (
 	github.com/coreos/go-oidc/v3 v3.9.0
 	github.com/getsentry/sentry-go v0.27.0
 	github.com/gin-gonic/gin v1.9.1
-	github.com/go-playground/validator/v10 v10.17.0
+	github.com/go-playground/validator/v10 v10.18.0
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/golang-migrate/migrate/v4 v4.16.2
 	github.com/gorilla/sessions v1.2.2
@@ -21,7 +21,7 @@ require (
 	github.com/swaggo/echo-swagger v1.4.1
 	github.com/swaggo/swag v1.16.2
 	github.com/urfave/cli/v2 v2.27.1
-	golang.org/x/crypto v0.18.0
+	golang.org/x/crypto v0.19.0
 	golang.org/x/oauth2 v0.16.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gorm.io/driver/postgres v1.5.4
@@ -69,7 +69,7 @@ require (
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
-	github.com/leodido/go-urn v1.2.4 // indirect
+	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/lib/pq v1.10.3 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
@@ -95,8 +95,8 @@ require (
 	go.uber.org/atomic v1.10.0 // indirect
 	golang.org/x/arch v0.6.0 // indirect
 	golang.org/x/exp v0.0.0-20231006140011-7918f672742d // indirect
-	golang.org/x/net v0.20.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
