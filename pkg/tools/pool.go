@@ -1,6 +1,4 @@
-// resolver config file: DO NOT EDIT
-
-package resolver
+package tools
 
 import (
 	"sync"

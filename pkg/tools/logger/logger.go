@@ -49,7 +49,7 @@ func Queue(queue string, priority int) {
 
 	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
 		ReportCaller:    false,
-		ReportTimestamp: true,
+		ReportTimestamp: false,
 		TimeFormat:      time.DateTime,
 		Prefix:          "[SWIPE-queue]",
 	})
@@ -73,7 +73,7 @@ func Broker(name, host string) {
 
 	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
 		ReportCaller:    false,
-		ReportTimestamp: true,
+		ReportTimestamp: false,
 		TimeFormat:      time.DateTime,
 		Prefix:          "[SWIPE-broker]",
 	})
@@ -91,7 +91,7 @@ func HandleFunc(typename string, handle string) {
 
 	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
 		ReportCaller:    false,
-		ReportTimestamp: true,
+		ReportTimestamp: false,
 		TimeFormat:      time.DateTime,
 		Prefix:          "[SWIPE-worker]",
 	})

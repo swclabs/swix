@@ -4,14 +4,13 @@ import (
 	"maps"
 	"testing"
 
-	"github.com/swclabs/swipe-api/pkg/jwt"
+	"github.com/swclabs/swipe-api/pkg/tools"
 	"github.com/swclabs/swipe-api/pkg/utils"
-	"github.com/swclabs/swipe-api/pkg/validator"
 )
 
 func TestHash(t *testing.T) {
-	pass, _ := jwt.GenPassword("12345")
-	if err := jwt.ComparePassword(pass, "12345"); err != nil {
+	pass, _ := tools.GenPassword("12345")
+	if err := tools.ComparePassword(pass, "12345"); err != nil {
 		t.Fatalf("ERROR: %s", err.Error())
 	}
 }
@@ -42,7 +41,7 @@ func TestValidEmail(t *testing.T) {
 		"good@exmaple.com",
 		"bad-example",
 	} {
-		isEmail := validator.IsEmail(email)
+		isEmail := utils.IsEmail(email)
 		if i == 0 && !isEmail {
 			t.Error("should have valid email: " + email)
 		}

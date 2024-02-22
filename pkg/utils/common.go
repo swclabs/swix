@@ -2,7 +2,13 @@ package utils
 
 import (
 	"math/rand"
+	"net/mail"
 )
+
+func IsEmail(email string) bool {
+	_, err := mail.ParseAddress(email)
+	return err == nil
+}
 
 func RandomString(length int) string {
 	charset := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

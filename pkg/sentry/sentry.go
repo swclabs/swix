@@ -3,12 +3,10 @@ package sentry
 import (
 	"fmt"
 
-	"github.com/swclabs/swipe-api/internal/config"
-
-	sentrygin "github.com/getsentry/sentry-go/gin"
-
 	"github.com/getsentry/sentry-go"
-	"github.com/gin-gonic/gin"
+	sentryecho "github.com/getsentry/sentry-go/echo"
+	"github.com/labstack/echo/v4"
+	"github.com/swclabs/swipe-api/internal/config"
 )
 
 func Init() {
@@ -27,9 +25,9 @@ func Init() {
 	}
 }
 
-func CaptureMessage(ctx *gin.Context, message string) {
+func CaptureMessage(c echo.Context, message string) {
 	if config.StageStatus != "dev" {
-		if hub := sentrygin.GetHubFromContext(ctx); hub != nil {
+		if hub := sentryecho.GetHubFromContext(c); hub != nil {
 			hub.WithScope(func(scope *sentry.Scope) {
 				// scope.SetExtra("unwantedQuery", "someQueryDataMaybe")
 				hub.CaptureMessage(message)

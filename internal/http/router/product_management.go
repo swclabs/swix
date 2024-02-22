@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
 	"github.com/swclabs/swipe-api/internal/http/controller"
 )
 
@@ -15,14 +15,14 @@ func NewProductManagement() *ProductManagement {
 	}
 }
 
-func (product *ProductManagement) Product(e *gin.Engine) {
-	e.POST("/products")
-	e.GET("/products")
-	e.PUT("/products/:id")
-	e.DELETE("/products/:id")
+func (product *ProductManagement) Product(e *echo.Echo) {
+	// e.POST("/products")
+	// e.GET("/products")
+	// e.PUT("/products/:id")
+	// e.DELETE("/products/:id")
 }
 
-func (product *ProductManagement) Category(e *gin.Engine) {
+func (product *ProductManagement) Category(e *echo.Echo) {
 	e.POST("/categories", product.controller.InsertCategory)
 	// router.GET("/categories")
 	// router.PUT("/categories/:id")
