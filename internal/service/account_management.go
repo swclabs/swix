@@ -5,15 +5,13 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"mime/multipart"
 
 	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/helper/resolver"
 	"github.com/swclabs/swipe-api/internal/repo"
 	"github.com/swclabs/swipe-api/internal/tasks"
-	"github.com/swclabs/swipe-api/internal/helper/resolver"
 	"github.com/swclabs/swipe-api/pkg/tools"
-	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
 type AccountManagement struct {
@@ -30,30 +28,15 @@ func NewAccountManagement() domain.IAccountManagementService {
 }
 
 func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
-	hash, err := tools.GenPassword(req.Password)
-	if err != nil {
-		return err
-	}
-	if err := manager.user.Insert(&domain.User{
+	// TODO: update transaction
+	return manager.user.SignUp(&domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
 		LastName:    req.LastName,
-		Image:       "", // TODO:
-	}); err != nil {
-		return err
-	}
-	userInfo, err := manager.user.GetByEmail(req.Email)
-	if err != nil {
-		return err
-	}
-	return manager.account.Insert(&domain.Account{
-		Username: fmt.Sprintf("user#%d", userInfo.UserID),
-		Password: hash,
-		Role:     "Customer",
-		Email:    req.Email,
-		Type:     "swc",
-	})
+		Image:       "",
+	}, req.Password)
+
 }
 
 func (manager *AccountManagement) Login(req *domain.LoginRequest) (string, error) {
@@ -94,29 +77,12 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 }
 
 func (manager *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) error {
-	hash, err := tools.GenPassword(utils.RandomString(18))
-	if err != nil {
-		return err
-	}
-	if err := manager.user.OAuth2SaveInfo(&domain.User{
+	return manager.user.SaveOAuth2(&domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
 		LastName:    req.LastName,
 		Image:       req.Image,
-	}); err != nil {
-		return err
-	}
-	userInfo, err := manager.user.GetByEmail(req.Email)
-	if err != nil {
-		return err
-	}
-	return manager.account.Insert(&domain.Account{
-		Username: fmt.Sprintf("user#%d", userInfo.UserID),
-		Password: hash,
-		Role:     "Customer",
-		Email:    req.Email,
-		Type:     "oauth2-google",
 	})
 }
 

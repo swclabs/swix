@@ -8,7 +8,7 @@ type IServer interface {
 	middleware(mdws ...func(*echo.Echo))
 	backgroundTask(tasks ...func())
 	router(routers ...func(*echo.Echo))
-	setting()
+	initMiddleware()
 	Bootstrap(fn ...func(server IServer))
 	Run(string) error
 }
@@ -21,7 +21,8 @@ func New() IServer {
 	server := &_Server{
 		engine: echo.New(),
 	}
-	server.setting()
+	server.initMiddleware()
+	server.Bootstrap(CommonModule)
 	return server
 }
 

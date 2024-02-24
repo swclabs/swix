@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -35,7 +34,6 @@ func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// session := sessions.Default(c)
 		AccessToken := utils.Session(c, utils.BaseSessions, "access_token")
-		log.Println(AccessToken)
 		if AccessToken != nil {
 			email, err := tools.ParseToken(AccessToken.(string))
 			if err != nil {
@@ -53,12 +51,11 @@ func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
 					Msg: err.Error(),
 				})
 			}
-		} else {
-			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
-				"msg":     "unauthorized",
-				"success": false,
-			})
+			return next(c)
 		}
-		return next(c)
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{
+			"msg":     "unauthorized",
+			"success": false,
+		})
 	}
 }

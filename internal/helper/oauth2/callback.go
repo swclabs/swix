@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-api/internal/config"
 	"github.com/swclabs/swipe-api/internal/domain"
 	"github.com/swclabs/swipe-api/internal/service"
+	"github.com/swclabs/swipe-api/pkg/tools"
 	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
@@ -56,18 +56,20 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
-	// session.Set("access_token", token.AccessToken)
-	// // session.Set("profile", profile)
-	// if err := session.Save(); err != nil {
-	// 	return ctx.String(http.StatusInternalServerError, err.Error())
-	// }
-	if err := utils.SaveSession(ctx, utils.BaseSessions, "access_token", token.AccessToken); err != nil {
+	accessToken, err := tools.GenerateToken(profile.Email)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+
+	if err := utils.SaveSession(ctx, utils.BaseSessions, "access_token", accessToken); err != nil {
 		return ctx.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}
 
 	// Redirect to logged in page.
-	return ctx.Redirect(http.StatusTemporaryRedirect, config.FeHomepage)
-	// ctx.JSON(200, profile)
+	// return ctx.Redirect(http.StatusTemporaryRedirect, config.FeHomepage)
+	return ctx.JSON(200, profile)
 }

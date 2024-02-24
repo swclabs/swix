@@ -4,8 +4,8 @@ import (
 	"github.com/swclabs/swipe-api/internal/http/middleware"
 
 	"github.com/swclabs/swipe-api/internal/config"
-	"github.com/swclabs/swipe-api/pkg/tools/mailers"
 	"github.com/swclabs/swipe-api/pkg/sentry"
+	"github.com/swclabs/swipe-api/pkg/tools/mailers"
 )
 
 var _ IServer = &_Server{}
@@ -15,10 +15,11 @@ func init() {
 	mailers.Config(config.Email, config.EmailAppPassword)
 }
 
-func (server *_Server) setting() {
+func (server *_Server) initMiddleware() {
 	server.middleware(
 		middleware.BaseSetting,
 		middleware.CookieSetting,
+		middleware.Sentry,
 	)
 }
 
