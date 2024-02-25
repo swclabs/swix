@@ -42,17 +42,25 @@ make all
 ### Other command
 
 `make s` : run api server in dev mode
+
 `make w` : run worker server in dev mode
+
 `make m` : migrate database
+
 `make d` : generate api documentation
 
 `make dev` : run application on docker but not build
+
 `make dev-b` : build and run application on docker in dev mode & no database
+
 `make dev-down` : remove all application containers from docker
 
 `make all` : run application on docker but not build
+
 `make all-b` : build and run application & database on docker
+
 `make all-down` : remove all application containers from docker
 
 `make db` : start database on docker
+
 `make db-down` : remove database container on docker
