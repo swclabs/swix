@@ -15,6 +15,7 @@ Update your environment variables. see [.env.example](./.env.example)
 ### Monolithic
 
 If you want to use makefile, see Other Command Below
+
 Build applications
 
 ```bash
