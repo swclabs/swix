@@ -18,7 +18,6 @@ func NewAdapter() IAdapter {
 	}
 	// initialize cron job
 	adapter._StartCommonJob()
-	adapter.server.Bootstrap(http.CommonModule)
 	return adapter
 }
 
@@ -41,7 +40,6 @@ func NewAccountManagementAdapter() IAdapter {
 	}
 	// initialize cron job
 	account._StartAccountManagementJob()
-	account.server.Bootstrap(http.CommonModule)
 	return account
 }
 
@@ -58,7 +56,6 @@ func NewProductManagementAdapter() IAdapter {
 	product := &_ProductManagementAdapter{
 		server: http.New(),
 	}
-	product.server.Bootstrap(http.CommonModule)
 	return product
 }
 

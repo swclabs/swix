@@ -5,6 +5,7 @@ package repo
 
 import (
 	"errors"
+	"log"
 	"time"
 
 	"github.com/swclabs/swipe-api/internal/domain"
@@ -22,7 +23,7 @@ type Accounts struct {
 func NewAccounts() domain.IAccountRepository {
 	_conn, err := db.Connection()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return &Accounts{
 		conn: _conn,
@@ -39,10 +40,15 @@ func (account *Accounts) GetByEmail(email string) (*domain.Account, error) {
 
 func (account *Accounts) Insert(acc *domain.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
-	return account.conn.Exec(
+	// return account.conn.Exec(
+	// 	queries.InsertIntoAccounts,
+	// 	acc.Username, acc.Role, acc.Email, acc.Password, createdAt, acc.Type,
+	// ).Error
+	return db.SafeWriteQuery(
+		account.conn,
 		queries.InsertIntoAccounts,
 		acc.Username, acc.Role, acc.Email, acc.Password, createdAt, acc.Type,
-	).Error
+	)
 }
 
 func (account *Accounts) SaveInfo(acc *domain.Account) error {
@@ -50,26 +56,51 @@ func (account *Accounts) SaveInfo(acc *domain.Account) error {
 		return errors.New("missing key: email ")
 	}
 	if acc.Username != "" {
-		if err := account.conn.Exec(
+		// if err := account.conn.Exec(
+		// 	queries.UpdateAccountsUsername,
+		// 	acc.Username, acc.Email,
+		// ).Error; err != nil {
+		// 	return err
+		// }
+
+		if err := db.SafeWriteQuery(
+			account.conn,
 			queries.UpdateAccountsUsername,
 			acc.Username, acc.Email,
-		).Error; err != nil {
+		); err != nil {
 			return err
 		}
+
 	}
 	if acc.Password != "" {
-		if err := account.conn.Exec(
+		// if err := account.conn.Exec(
+		// 	queries.UpdateAccountsPassword,
+		// 	acc.Password, acc.Email,
+		// ).Error; err != nil {
+		// 	return err
+		// }
+
+		if err := db.SafeWriteQuery(
+			account.conn,
 			queries.UpdateAccountsPassword,
 			acc.Password, acc.Email,
-		).Error; err != nil {
+		); err != nil {
 			return err
 		}
 	}
 	if acc.Role != "" {
-		if err := account.conn.Exec(
+		// if err := account.conn.Exec(
+		// 	queries.UpdateAccountsRole,
+		// 	acc.Role, acc.Email,
+		// ).Error; err != nil {
+		// 	return err
+		// }
+
+		if err := db.SafeWriteQuery(
+			account.conn,
 			queries.UpdateAccountsRole,
 			acc.Role, acc.Email,
-		).Error; err != nil {
+		); err != nil {
 			return err
 		}
 	}

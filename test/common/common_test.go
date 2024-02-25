@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"maps"
 	"testing"
 
@@ -49,4 +50,12 @@ func TestValidEmail(t *testing.T) {
 			t.Error("should have invalid email: " + email)
 		}
 	}
+}
+
+func TestStmt(t *testing.T) {
+	queryHandler := func(sql string, args ...interface{}) {
+		fmt.Print(sql)
+		fmt.Println(args...)
+	}
+	queryHandler("select * from", "table", "row", "column")
 }

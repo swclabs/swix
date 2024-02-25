@@ -16,12 +16,16 @@ type UserAddress struct {
 	AddressID string `json:"address_id" gorm:"column:address_id"`
 }
 
+// User Repository interface
+// implement at /internal/repo/user.go
 type IUserRepository interface {
 	GetByEmail(email string) (*User, error)
 	Insert(usr *User) error
 	Info(email string) (*UserInfo, error)
 	SaveInfo(user *User) error
 	OAuth2SaveInfo(user *User) error
+	SignUp(user *User, password string) error
+	SaveOAuth2(data *User) error
 }
 
 // SignUpRequest schema

@@ -32,12 +32,6 @@ func HealthCheck(c echo.Context) error {
 func Auth0Login(c echo.Context) error {
 	auth := oauth2.New()
 	url := auth.AuthCodeURL(auth.State)
-	// session := sessions.Default(c)
-	// session.Set("state", auth.State)
-	// if err := session.Save(); err != nil {
-	// 	c.String(http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
 	if err := utils.SaveSession(c, utils.BaseSessions, "state", auth.State); err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),

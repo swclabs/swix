@@ -6,7 +6,7 @@ import (
 )
 
 func Common(e *echo.Echo) {
-	r := e.Group("common")
+	r := e.Group("/common")
 	r.GET("/healthcheck", controller.HealthCheck)
 	r.GET("/worker", controller.WorkerCheck)
 	r.GET("/foo", controller.Foo)
