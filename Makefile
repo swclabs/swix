@@ -1,4 +1,8 @@
-build: 
+# Makefile for swipe-api
+# a: Duc Hung Ho
+
+build:
+	go mod download
 	go build -ldflags="-s -w" -o ./bin/swipe ./cmd
 s: 
 	go run cmd/main.go s
