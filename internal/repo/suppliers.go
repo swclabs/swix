@@ -5,6 +5,7 @@ import (
 
 	"github.com/swclabs/swipe-api/internal/domain"
 	"github.com/swclabs/swipe-api/pkg/db"
+	"github.com/swclabs/swipe-api/pkg/db/queries"
 	"gorm.io/gorm"
 )
 
@@ -24,6 +25,11 @@ func NewSuppliers() domain.ISuppliersRepository {
 	}
 }
 
-func (supplier *Suppliers) New(prd *domain.Suppliers, addr *domain.Addresses) error {
-	return nil
+func (supplier *Suppliers) New(supp *domain.Suppliers, addr *domain.Addresses) error {
+	return supplier.conn.Transaction(func(tx *gorm.DB) error {
+		return db.SafeWriteQuery(supplier.conn,
+			queries.InsertIntoSuppliers,
+			supp.Name, supp.PhoneNumber, supp.Email,
+		)
+	})
 }

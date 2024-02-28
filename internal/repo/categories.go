@@ -28,5 +28,5 @@ func NewCategories() domain.ICategoriesRepository {
 }
 
 func (category *Categories) New(ctg *domain.Categories) error {
-	return category.conn.Table("categories").Exec(queries.InsertIntoCategory, ctg.Name, ctg.Description).Error
+	return db.SafeWriteQuery(category.conn, queries.InsertIntoCategory, ctg.Name, ctg.Description)
 }

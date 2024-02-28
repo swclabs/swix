@@ -8,13 +8,9 @@ import (
 type CommonTask struct {
 }
 
-func NewCommonTask() *CommonTask {
-	return &CommonTask{}
-}
-
-func (common *CommonTask) WorkerCheck() error {
+func (common *CommonTask) DelayWorkerCheck() error {
 	return worker.Exec(queue.CriticalQueue, worker.NewTask(
-		queue.WorkerHealthCheck,
+		worker.GetTaskName(common.DelayWorkerCheck),
 		1,
 	))
 }

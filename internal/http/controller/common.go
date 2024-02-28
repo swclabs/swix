@@ -5,8 +5,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/swclabs/swipe-api/internal/domain"
-	"github.com/swclabs/swipe-api/internal/service"
 	"github.com/swclabs/swipe-api/internal/helper/oauth2"
+	"github.com/swclabs/swipe-api/internal/service"
 	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
@@ -47,7 +47,7 @@ func Auth0Callback(c echo.Context) error {
 
 func WorkerCheck(c echo.Context) error {
 	common := service.NewCommonService()
-	if err := common.Task.WorkerCheck(); err != nil {
+	if err := common.DelayWorkerCheck(); err != nil {
 		return c.JSON(400, domain.Error{
 			Msg: err.Error(),
 		})

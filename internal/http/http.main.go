@@ -6,6 +6,7 @@ import (
 	"github.com/swclabs/swipe-api/internal/config"
 	"github.com/swclabs/swipe-api/pkg/sentry"
 	"github.com/swclabs/swipe-api/pkg/tools/mailers"
+	"github.com/swclabs/swipe-api/pkg/tools/worker"
 )
 
 var _ IServer = &_Server{}
@@ -13,6 +14,7 @@ var _ IServer = &_Server{}
 func init() {
 	sentry.Init()
 	mailers.Config(config.Email, config.EmailAppPassword)
+	worker.SetBroker(config.RedisHost, config.RedisPort, config.RedisPassword)
 }
 
 func (server *_Server) initMiddleware() {

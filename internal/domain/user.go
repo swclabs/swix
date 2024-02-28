@@ -16,7 +16,7 @@ type UserAddress struct {
 	AddressID string `json:"address_id" gorm:"column:address_id"`
 }
 
-// User Repository interface
+// IUserRepository User Repository interface
 // implement at /internal/repo/user.go
 type IUserRepository interface {
 	GetByEmail(email string) (*User, error)

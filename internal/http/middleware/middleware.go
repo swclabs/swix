@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"net/http"
+
 	sentryecho "github.com/getsentry/sentry-go/echo"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -9,27 +11,14 @@ import (
 	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
-// func CORSMiddleware() gin.HandlerFunc {
-// 	return func(c *gin.Context) {
-// 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-// 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-// 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-// 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-
-// 		if c.Request.Method == "OPTIONS" {
-// 			c.AbortWithStatus(204)
-// 			return
-// 		}
-
-// 		c.Next()
-// 	}
-// }
-
-// func GinMiddleware(a *gin.Engine) {
-// 	a.Use(CORSMiddleware())
-// 	store := cookie.NewStore([]byte("secret"))
-// 	a.Use(sessions.Sessions("mysession", store))
-// }
+func CORS() echo.MiddlewareFunc {
+	DefaultCORSConfig := middleware.CORSConfig{
+		Skipper:      middleware.DefaultSkipper,
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	}
+	return middleware.CORSWithConfig(DefaultCORSConfig)
+}
 
 func Sentry(e *echo.Echo) {
 	if config.StageStatus != "dev" {
@@ -46,7 +35,7 @@ func CookieSetting(e *echo.Echo) {
 }
 
 func BaseSetting(e *echo.Echo) {
-	e.Use(middleware.CORS())
+	e.Use(CORS())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 }

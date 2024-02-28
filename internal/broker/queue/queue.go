@@ -15,7 +15,3 @@ func init() {
 		LowQueue = "low_dev"
 	}
 }
-
-const (
-	WorkerHealthCheck string = "Worker.HealthCheck"
-)

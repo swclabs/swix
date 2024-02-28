@@ -29,7 +29,9 @@ CREATE TABLE "addresses" (
   "city" varchar NOT NULL,
   "ward" varchar NOT NULL,
   "district" varchar NOT NULL,
-  "street" varchar NOT NULL
+  "street" varchar NOT NULL,
+  "user_id" bigint,
+  "supplier_id" bigint
 );
 
 CREATE TABLE "comments" (
@@ -56,7 +58,7 @@ CREATE TABLE "products" (
 CREATE TABLE "suppliers" (
   "id" bigserial PRIMARY KEY,
   "name" varchar NOT NULL,
-  "phone_number" varchar UNIQUE NOT NULL,
+  "phone_number" varchar NOT NULL,
   "email" varchar UNIQUE NOT NULL
 );
 
