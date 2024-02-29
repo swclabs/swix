@@ -8,13 +8,11 @@ import (
 )
 
 type CommonService struct {
-	Task *tasks.CommonTask
+	tasks.CommonTask
 }
 
 func NewCommonService() *CommonService {
-	return &CommonService{
-		Task: tasks.NewCommonTask(),
-	}
+	return &CommonService{}
 }
 
 func (common *CommonService) HealthCheck() domain.HealthCheckResponse {

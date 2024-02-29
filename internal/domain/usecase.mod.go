@@ -57,3 +57,8 @@ type IProductService interface {
 type IDeliveryService interface {
 	GetDeliveryInfo()
 }
+
+type ICommonService interface {
+	HealthCheck() HealthCheckResponse
+	WorkerCheck(num int64) error
+}

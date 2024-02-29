@@ -15,6 +15,7 @@ import (
 
 type Priority map[string]int
 type Queue map[string]func(context.Context, *asynq.Task) error
+type HandleFunc func(ctx context.Context, task *asynq.Task) error
 type Engine struct {
 	server   *asynq.Server
 	mux      *asynq.ServeMux
@@ -24,9 +25,14 @@ type Engine struct {
 
 var broker asynq.RedisClientOpt
 
-func getName(input string) string {
-	paths := strings.Split(input, "/")
+func getName(input interface{}) string {
+	str := runtime.FuncForPC(reflect.ValueOf(input).Pointer()).Name()
+	paths := strings.Split(str, "/")
 	return paths[len(paths)-1]
+}
+
+func GetTaskName(input interface{}) string {
+	return getName(input)
 }
 
 func SetBroker(host, port, password string) {
@@ -45,7 +51,8 @@ func NewServer(priorityQueue Priority) *Engine {
 	}
 }
 
-func (w *Engine) Queue(taskName string, fn func(context.Context, *asynq.Task) error) {
+func (w *Engine) Queue(hfn func() (taskName string, fn HandleFunc)) {
+	taskName, fn := hfn()
 	w.queue[taskName] = fn
 }
 
@@ -72,7 +79,7 @@ func (w *Engine) Run(concurrency int) error {
 	}
 	logger.Banner("Handle Function: ")
 	for types, handler := range w.queue {
-		logger.HandleFunc(types, getName(runtime.FuncForPC(reflect.ValueOf(handler).Pointer()).Name()))
+		logger.HandleFunc(types, getName(handler))
 	}
 	fmt.Println()
 	return w.server.Run(w.mux)
@@ -99,9 +106,9 @@ func Exec(queue string, task *asynq.Task) error {
 
 }
 
-func NewTask(typename string, data interface{}) *asynq.Task {
+func NewTask(taskName string, data interface{}) *asynq.Task {
 	payload, _ := json.Marshal(data)
-	return asynq.NewTask(typename, payload)
+	return asynq.NewTask(taskName, payload)
 }
 
 func Delay(delay *time.Duration, queue string, task *asynq.Task) error {

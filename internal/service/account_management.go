@@ -15,12 +15,12 @@ import (
 )
 
 type AccountManagement struct {
+	tasks.AccountManagement
 	user    domain.IUserRepository
 	account domain.IAccountRepository
-	Task    tasks.AccountManagementTask
 }
 
-func NewAccountManagement() domain.IAccountManagementService {
+func NewAccountManagement() *AccountManagement {
 	return &AccountManagement{
 		user:    repo.NewUsers(),
 		account: repo.NewAccounts(),

@@ -13,7 +13,7 @@ func CommonModule(server IServer) {
 }
 
 func AccountManagementModule(server IServer) {
-	server.backgroundTask(func() {
+	server._BackgroundTask(func() {
 		resolver.StartImageHandler(5)
 	})
 	var accountManagement = router.NewAccountManagement()

@@ -11,7 +11,7 @@ import (
 )
 
 type AccountManagement struct {
-	service domain.IAccountManagementService
+	service *service.AccountManagement
 }
 
 func NewAccountManagement() IAccountManagement {

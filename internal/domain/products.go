@@ -9,6 +9,7 @@ type Products struct {
 	Name        string `json:"name" gorm:"column:name"`
 	SupplierID  int64  `json:"supplier_id" gorm:"column:supplier_id"`
 	CategoryID  int64  `json:"category_id" gorm:"column:category_id"`
+	Available   int64  `json:"available" gorm:"column:available"`
 }
 
 // ProductInCart Table

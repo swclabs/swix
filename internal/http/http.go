@@ -1,14 +1,17 @@
 package http
 
 import (
+	"os"
+
 	"github.com/labstack/echo/v4"
 )
 
 type IServer interface {
 	middleware(mdws ...func(*echo.Echo))
-	backgroundTask(tasks ...func())
 	router(routers ...func(*echo.Echo))
-	initMiddleware()
+	_BackgroundTask(tasks ...func())
+	_InitMiddleware()
+	_LoggerWriter(*os.File)
 	Bootstrap(fn ...func(server IServer))
 	Run(string) error
 }
@@ -21,7 +24,7 @@ func New() IServer {
 	server := &_Server{
 		engine: echo.New(),
 	}
-	server.initMiddleware()
+	server._InitMiddleware()
 	server.Bootstrap(CommonModule)
 	return server
 }
@@ -32,7 +35,7 @@ func (server *_Server) middleware(mdws ...func(*echo.Echo)) {
 	}
 }
 
-func (server *_Server) backgroundTask(tasks ...func()) {
+func (server *_Server) _BackgroundTask(tasks ...func()) {
 	for _, t := range tasks {
 		go t()
 	}

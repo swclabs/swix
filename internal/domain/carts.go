@@ -1,7 +1,7 @@
 package domain
 
-// Cart table
-type Cart struct {
+// Carts table
+type Carts struct {
 	ID         int64 `json:"id" gorm:"column:id"`
 	Quantity   int64 `json:"quantity" gorm:"column:quantity"`
 	TotalPrice int64 `json:"total_price" gorm:"column:total_price"`

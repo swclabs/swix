@@ -7,6 +7,7 @@ import (
 
 	"github.com/swclabs/swipe-api/internal/domain"
 	"github.com/swclabs/swipe-api/pkg/db"
+	"github.com/swclabs/swipe-api/pkg/db/queries"
 	"gorm.io/gorm"
 )
 
@@ -27,5 +28,8 @@ func NewProducts() domain.IProductRepository {
 }
 
 func (product *Products) New(prd *domain.Products) error {
-	return nil
+	return db.SafeWriteQuery(product.conn,
+		queries.InsertIntoProducts,
+		prd.Image, prd.Name, prd.Description, prd.Available, prd.SupplierID, prd.CategoryID,
+	)
 }

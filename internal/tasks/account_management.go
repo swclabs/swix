@@ -1,7 +1,35 @@
 package tasks
 
-type AccountManagementTask struct{}
+import (
+	"github.com/swclabs/swipe-api/internal/broker/queue"
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/pkg/tools/worker"
+)
 
-func NewAccountManagementTask() *AccountManagementTask {
-	return &AccountManagementTask{}
+type AccountManagement struct {
+}
+
+func NewAccountManagement() *AccountManagement {
+	return &AccountManagement{}
+}
+
+func (t *AccountManagement) DelaySignUp(req *domain.SignUpRequest) error {
+	return worker.Exec(queue.CriticalQueue, worker.NewTask(
+		worker.GetTaskName(t.DelaySignUp),
+		req,
+	))
+}
+
+func (t *AccountManagement) DelayUpdateUserInfo(req *domain.UserUpdate) error {
+	return worker.Exec(queue.CriticalQueue, worker.NewTask(
+		worker.GetTaskName(t.DelayUpdateUserInfo),
+		req,
+	))
+}
+
+func (t *AccountManagement) DelayOAuth2SaveUser(req *domain.OAuth2SaveUser) error {
+	return worker.Exec(queue.CriticalQueue, worker.NewTask(
+		worker.GetTaskName(t.DelayOAuth2SaveUser),
+		req,
+	))
 }
