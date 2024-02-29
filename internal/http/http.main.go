@@ -1,6 +1,9 @@
 package http
 
 import (
+	"errors"
+	"os"
+
 	"github.com/swclabs/swipe-api/internal/http/middleware"
 
 	"github.com/swclabs/swipe-api/internal/config"
@@ -17,7 +20,11 @@ func init() {
 	worker.SetBroker(config.RedisHost, config.RedisPort, config.RedisPassword)
 }
 
-func (server *_Server) initMiddleware() {
+func (server *_Server) _LoggerWriter(file *os.File) {
+	middleware.Logger(file, server.engine)
+}
+
+func (server *_Server) _InitMiddleware() {
 	server.middleware(
 		middleware.BaseSetting,
 		middleware.CookieSetting,
@@ -32,5 +39,14 @@ func (server *_Server) Bootstrap(fn ...func(server IServer)) {
 }
 
 func (server *_Server) Run(addr string) error {
+	if config.StageStatus != "dev" {
+		const filePath = "api.log"
+		file, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+		if err != nil {
+			return errors.New("error opening file: " + err.Error())
+		}
+		defer file.Close()
+		server._LoggerWriter(file)
+	}
 	return server.engine.Start(addr)
 }

@@ -27,7 +27,10 @@ func (msg *Broker) router(queue ...func(eng *worker.Engine)) {
 }
 
 func (msg *Broker) Run(concurrency int) error {
-	msg.router(router.Common)
+	msg.router(
+		router.Common,
+		router.AccountManagement,
+	)
 
 	return msg.engine.Run(concurrency)
 }

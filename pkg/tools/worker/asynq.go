@@ -25,14 +25,14 @@ type Engine struct {
 
 var broker asynq.RedisClientOpt
 
-func GetName(input interface{}) string {
+func getName(input interface{}) string {
 	str := runtime.FuncForPC(reflect.ValueOf(input).Pointer()).Name()
 	paths := strings.Split(str, "/")
 	return paths[len(paths)-1]
 }
 
 func GetTaskName(input interface{}) string {
-	return GetName(input)
+	return getName(input)
 }
 
 func SetBroker(host, port, password string) {
@@ -79,7 +79,7 @@ func (w *Engine) Run(concurrency int) error {
 	}
 	logger.Banner("Handle Function: ")
 	for types, handler := range w.queue {
-		logger.HandleFunc(types, GetName(handler))
+		logger.HandleFunc(types, getName(handler))
 	}
 	fmt.Println()
 	return w.server.Run(w.mux)

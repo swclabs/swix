@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"net/http"
+	"os"
 
 	sentryecho "github.com/getsentry/sentry-go/echo"
 	"github.com/labstack/echo-contrib/session"
@@ -29,13 +30,23 @@ func Sentry(e *echo.Echo) {
 	}
 }
 
+func Logger(file *os.File, e *echo.Echo) {
+
+	conf := middleware.DefaultLoggerConfig
+	conf.Output = file
+
+	e.Use(middleware.LoggerWithConfig(conf))
+}
+
 func CookieSetting(e *echo.Echo) {
 	store := utils.NewSession()
 	e.Use(session.Middleware(store))
 }
 
 func BaseSetting(e *echo.Echo) {
+	// accept any domain
 	e.Use(CORS())
+	// use logger to write logs to api.log file
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 }
