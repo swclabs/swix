@@ -22,7 +22,7 @@ require (
 	github.com/swaggo/swag v1.16.2
 	github.com/urfave/cli/v2 v2.27.1
 	golang.org/x/crypto v0.20.0
-	golang.org/x/oauth2 v0.16.0
+	golang.org/x/oauth2 v0.17.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gorm.io/driver/postgres v1.5.4
 	gorm.io/gorm v1.25.5
