@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"hungho@gmail.com\",\r\n  \"first_name\": \"Hưng\",\r\n  \"last_name\": \"Hồ Đức\",\r\n  \"password\": \"12345\",\r\n  \"phone_number\": \"1234567891\"\r\n}",
+							"raw": "{\r\n  \"email\": \"hunghoduc@gmail.com\",\r\n  \"first_name\": \"Hưng\",\r\n  \"last_name\": \"Hồ Đức\",\r\n  \"password\": \"12345\",\r\n  \"phone_number\": \"12345678912\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -24,14 +24,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/auth/signup",
+							"raw": "http://localhost:8000/auth/signup",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"v1",
 								"auth",
 								"signup"
 							]
@@ -55,14 +54,13 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/users/image",
+							"raw": "http://localhost:8000/users/image",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"v1",
 								"users",
 								"image"
 							]
@@ -76,14 +74,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/v1/auth/logout",
+							"raw": "http://localhost:8000/auth/logout",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"v1",
 								"auth",
 								"logout"
 							]
@@ -98,7 +95,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"duchungho@gmail.com\",\r\n  \"password\": \"12345\"\r\n}",
+							"raw": "{\r\n  \"email\": \"hungho1@gmail.com\",\r\n  \"password\": \"12345\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -106,14 +103,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/auth/login",
+							"raw": "http://localhost:8000/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"v1",
 								"auth",
 								"login"
 							]
@@ -132,7 +128,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImlkdWNodW5naG9AZ21haWwuY29tIiwiZXhwIjoxNzAwNzk3MTU1fQ.EgambtJ_fQk6OwjjOYdnYxZg5_W-kTG3xZP-g3WbBSA",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imh1bmdobzFAZ21haWwuY29tIiwiZXhwIjoxNzA4Njc1NzE0fQ.-I4rPTQ1snal1oenKsQEazpIdMGXUa-6RVHoNjCd-7Y",
 									"type": "string"
 								}
 							]
@@ -149,21 +145,112 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/v1/users",
+							"raw": "http://localhost:8000/users",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"v1",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"auth"
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "category",
+			"item": [
+				{
+					"name": "categories",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Phụ kiện\",\r\n  \"description\": \"Phụ kiện điện thoại\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/categories",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/common/healthcheck",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"common",
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "workercheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/common/worker",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"common",
+						"worker"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
