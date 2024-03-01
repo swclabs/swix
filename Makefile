@@ -1,5 +1,6 @@
 # Makefile for swipe-api
 # a: Duc Hung Ho
+# m: hunghd.dev@gmail.com
 
 build:
 	go mod download
