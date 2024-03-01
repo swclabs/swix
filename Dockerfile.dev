@@ -19,6 +19,3 @@ RUN go build -ldflags="-s -w" -o /bin/swipe ./cmd
 
 # Remove all source code files
 RUN rm -r *
-
-# RUN rm -rf ./internal && rm -rf ./cmd && rm -rf ./pkg && rm -rf ./test && rm -rf ./docs
-# RUN cp ./bin/exe /bin/exe

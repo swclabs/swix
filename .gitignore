@@ -19,10 +19,14 @@ vendor/
 
 # Go workspace file
 go.work
+
+# Environment variables file
 .env
 .env.prod
 .env.p
-bin
 .idea
+
+# Binary files
+bin
 data
 exe
