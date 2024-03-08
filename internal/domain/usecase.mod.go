@@ -12,6 +12,7 @@ type IAccountManagementService interface {
 	UpdateUserInfo(req *UserUpdate) error
 	UploadAvatar(email string, fileHeader *multipart.FileHeader) error
 	OAuth2SaveUser(req *OAuth2SaveUser) error
+	UpdateUserAddress(data *Addresses) error
 }
 
 // IOrderManagementService : Module Order Management

@@ -10,3 +10,7 @@ type Addresses struct {
 	UserId     string `json:"user_id" gorm:"column:user_id"`
 	SupplierId string `json:"supplier_id" gorm:"column:supplier_id"`
 }
+
+type IAddressRepository interface {
+	New(data *Addresses) error
+}
