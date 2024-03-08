@@ -93,3 +93,7 @@ func (manager *AccountManagement) CheckLoginEmail(email string) error {
 	}
 	return nil
 }
+
+func (manager *AccountManagement) UpdateUserAddress(data *domain.Addresses) error {
+	panic("implement me")
+}
