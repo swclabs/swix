@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/hibiken/asynq"
-	"github.com/swclabs/swipe-api/pkg/tools/logger"
+	"github.com/swclabs/swipe-server/pkg/tools/logger"
 )
 
 type Priority map[string]int

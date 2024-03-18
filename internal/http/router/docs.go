@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/labstack/echo/v4"
-	_ "github.com/swclabs/swipe-api/docs"
+	_ "github.com/swclabs/swipe-server/docs"
 
 	echoSwagger "github.com/swaggo/echo-swagger"
 )

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/swclabs/swipe-api/pkg/tools/logger"
+	"github.com/swclabs/swipe-server/pkg/tools/logger"
 )
 
 type Job struct {

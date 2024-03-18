@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-api/internal/domain"
-	"github.com/swclabs/swipe-api/internal/service"
-	"github.com/swclabs/swipe-api/pkg/tools"
+	"github.com/swclabs/swipe-server/internal/domain"
+	"github.com/swclabs/swipe-server/internal/service"
+	"github.com/swclabs/swipe-server/pkg/tools"
 )
 
 type IProductManagement interface {

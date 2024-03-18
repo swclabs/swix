@@ -1,6 +1,6 @@
 # SwiftCart
 
-SwiftCart (code: `swipe-api`) is a api server for [SwiftCart Application](https://github.com/swclabs/swipe-app) & [SwiftCart Dashboard](https://github.com/swclabs/swipe-dashboard). `swipe-api` provides functions, and services through API and microservices. Designed for server, `swipe-api` provides cli commands to run api services and redis-based distributed systems cluster.
+SwiftCart (code: `swipe-server`) is a api server for [SwiftCart Application](https://github.com/swclabs/swipe-app) & [SwiftCart Dashboard](https://github.com/swclabs/swipe-dashboard). `swipe-server` provides functions, and services through API and microservices. Designed for server, `swipe-server` provides cli commands to run api services and redis-based distributed systems cluster.
 
 ## Installing
 

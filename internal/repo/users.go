@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/swclabs/swipe-api/internal/domain"
-	"github.com/swclabs/swipe-api/pkg/db"
-	"github.com/swclabs/swipe-api/pkg/db/queries"
-	"github.com/swclabs/swipe-api/pkg/tools"
-	"github.com/swclabs/swipe-api/pkg/utils"
+	"github.com/swclabs/swipe-server/internal/domain"
+	"github.com/swclabs/swipe-server/pkg/db"
+	"github.com/swclabs/swipe-server/pkg/db/queries"
+	"github.com/swclabs/swipe-server/pkg/tools"
+	"github.com/swclabs/swipe-server/pkg/utils"
 
 	"gorm.io/gorm"
 )

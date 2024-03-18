@@ -3,9 +3,9 @@ package repo
 import (
 	"log"
 
-	"github.com/swclabs/swipe-api/internal/domain"
-	"github.com/swclabs/swipe-api/pkg/db"
-	"github.com/swclabs/swipe-api/pkg/db/queries"
+	"github.com/swclabs/swipe-server/internal/domain"
+	"github.com/swclabs/swipe-server/pkg/db"
+	"github.com/swclabs/swipe-server/pkg/db/queries"
 	"gorm.io/gorm"
 )
 

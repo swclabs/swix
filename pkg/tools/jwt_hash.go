@@ -3,7 +3,7 @@ package tools
 import (
 	"strconv"
 
-	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-server/internal/config"
 
 	"golang.org/x/crypto/bcrypt"
 )
