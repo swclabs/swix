@@ -14,6 +14,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -49,11 +50,11 @@ var Command = []*cli.Command{
 			}
 			switch c.Args().First() {
 			case "up":
-				if err := _migrate.Up(); err != migrate.ErrNoChange {
+				if err := _migrate.Up(); !errors.Is(err, migrate.ErrNoChange) {
 					return err
 				}
 			case "down":
-				if err := _migrate.Down(); err != migrate.ErrNoChange {
+				if err := _migrate.Down(); !errors.Is(err, migrate.ErrNoChange) {
 					return err
 				}
 			}
