@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/swclabs/swipe-server/internal/domain"
-	"github.com/swclabs/swipe-server/internal/repo"
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/repo"
 )
 
 type ProductManagement struct {

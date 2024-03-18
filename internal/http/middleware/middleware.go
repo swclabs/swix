@@ -8,8 +8,8 @@ import (
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/swclabs/swipe-server/internal/config"
-	"github.com/swclabs/swipe-server/pkg/utils"
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
 func CORS() echo.MiddlewareFunc {

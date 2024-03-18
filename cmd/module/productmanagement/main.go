@@ -19,12 +19,12 @@ import (
 	"os"
 	"sort"
 
-	"github.com/swclabs/swipe-server/internal/config"
-	"github.com/swclabs/swipe-server/internal/delivery"
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/internal/delivery"
 
 	"github.com/urfave/cli/v2"
 
-	_ "github.com/swclabs/swipe-server/docs"
+	_ "github.com/swclabs/swipe-api/docs"
 )
 
 var Command = []*cli.Command{

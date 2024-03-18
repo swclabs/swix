@@ -5,8 +5,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/swclabs/swipe-server/internal/config"
-	"github.com/swclabs/swipe-server/pkg/utils"
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/pkg/utils"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-gonic/gin"
