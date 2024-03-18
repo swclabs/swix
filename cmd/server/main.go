@@ -14,8 +14,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/swclabs/swipe-api/internal/config"
-	"github.com/swclabs/swipe-api/internal/delivery"
+	"github.com/swclabs/swipe-server/internal/config"
+	"github.com/swclabs/swipe-server/internal/delivery"
 )
 
 func main() {

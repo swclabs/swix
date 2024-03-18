@@ -6,7 +6,7 @@ import (
 	"github.com/getsentry/sentry-go"
 	sentryecho "github.com/getsentry/sentry-go/echo"
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-server/internal/config"
 )
 
 func Init() {

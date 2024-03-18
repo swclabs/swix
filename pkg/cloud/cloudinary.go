@@ -6,7 +6,7 @@ import (
 	"log"
 	"sync"
 
-	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-server/internal/config"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"

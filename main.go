@@ -16,9 +16,9 @@ package main
 import (
 	"fmt"
 	"log"
-	_ "github.com/swclabs/swipe-api/docs"
-	"github.com/swclabs/swipe-api/internal/delivery"
-	"github.com/swclabs/swipe-api/internal/config"
+	_ "github.com/swclabs/swipe-server/docs"
+	"github.com/swclabs/swipe-server/internal/delivery"
+	"github.com/swclabs/swipe-server/internal/config"
 )
 
 // @title Swiftcart API Documentation

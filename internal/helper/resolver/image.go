@@ -8,10 +8,10 @@ import (
 	"mime/multipart"
 	"sync"
 
-	"github.com/swclabs/swipe-api/internal/domain"
-	"github.com/swclabs/swipe-api/internal/repo"
-	"github.com/swclabs/swipe-api/pkg/cloud"
-	"github.com/swclabs/swipe-api/pkg/tools"
+	"github.com/swclabs/swipe-server/internal/domain"
+	"github.com/swclabs/swipe-server/internal/repo"
+	"github.com/swclabs/swipe-server/pkg/cloud"
+	"github.com/swclabs/swipe-server/pkg/tools"
 )
 
 var ImagePool *tools.Pool

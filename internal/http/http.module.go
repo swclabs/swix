@@ -1,8 +1,8 @@
 package http
 
 import (
-	"github.com/swclabs/swipe-api/internal/helper/resolver"
-	"github.com/swclabs/swipe-api/internal/http/router"
+	"github.com/swclabs/swipe-server/internal/helper/resolver"
+	"github.com/swclabs/swipe-server/internal/http/router"
 )
 
 func CommonModule(server IServer) {

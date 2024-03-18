@@ -1,4 +1,4 @@
-# Makefile for swipe-api
+# Makefile for swipe-server
 # a: Duc Hung Ho
 # m: hunghd.dev@gmail.com
 

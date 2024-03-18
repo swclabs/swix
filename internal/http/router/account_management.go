@@ -2,8 +2,8 @@ package router
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-api/internal/http/controller"
-	"github.com/swclabs/swipe-api/internal/http/middleware"
+	"github.com/swclabs/swipe-server/internal/http/controller"
+	"github.com/swclabs/swipe-server/internal/http/middleware"
 )
 
 type AccountManagement struct {
