@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-server/internal/domain"
-	"github.com/swclabs/swipe-server/internal/service"
-	"github.com/swclabs/swipe-server/pkg/tools"
-	"github.com/swclabs/swipe-server/pkg/utils"
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/service"
+	"github.com/swclabs/swipe-api/pkg/tools"
+	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
 func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {

@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/swclabs/swipe-server/internal/broker/handler"
-	"github.com/swclabs/swipe-server/pkg/tools/worker"
+	"github.com/swclabs/swipe-api/internal/broker/handler"
+	"github.com/swclabs/swipe-api/pkg/tools/worker"
 )
 
 var _AccountManagement = handler.NewAccountManagement()

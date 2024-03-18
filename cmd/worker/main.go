@@ -13,7 +13,7 @@ package main
 import (
 	"log"
 
-	"github.com/swclabs/swipe-server/internal/delivery"
+	"github.com/swclabs/swipe-api/internal/delivery"
 )
 
 func main() {

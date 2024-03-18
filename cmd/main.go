@@ -20,14 +20,14 @@ import (
 	"os"
 	"sort"
 
-	"github.com/swclabs/swipe-server/internal/config"
-	"github.com/swclabs/swipe-server/internal/delivery"
-	"github.com/swclabs/swipe-server/pkg/utils"
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/internal/delivery"
+	"github.com/swclabs/swipe-api/pkg/utils"
 
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/urfave/cli/v2"
 
-	_ "github.com/swclabs/swipe-server/docs"
+	_ "github.com/swclabs/swipe-api/docs"
 
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"

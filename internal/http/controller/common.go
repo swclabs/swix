@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-server/internal/domain"
-	"github.com/swclabs/swipe-server/internal/helper/oauth2"
-	"github.com/swclabs/swipe-server/internal/service"
-	"github.com/swclabs/swipe-server/pkg/utils"
+	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/helper/oauth2"
+	"github.com/swclabs/swipe-api/internal/service"
+	"github.com/swclabs/swipe-api/pkg/utils"
 )
 
 // HealthCheck .

@@ -4,12 +4,12 @@ import (
 	"errors"
 	"os"
 
-	"github.com/swclabs/swipe-server/internal/http/middleware"
+	"github.com/swclabs/swipe-api/internal/http/middleware"
 
-	"github.com/swclabs/swipe-server/internal/config"
-	"github.com/swclabs/swipe-server/pkg/sentry"
-	"github.com/swclabs/swipe-server/pkg/tools/mailers"
-	"github.com/swclabs/swipe-server/pkg/tools/worker"
+	"github.com/swclabs/swipe-api/internal/config"
+	"github.com/swclabs/swipe-api/pkg/sentry"
+	"github.com/swclabs/swipe-api/pkg/tools/mailers"
+	"github.com/swclabs/swipe-api/pkg/tools/worker"
 )
 
 var _ IServer = &_Server{}
