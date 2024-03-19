@@ -1,33 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: swc-api-deployment
+  name: swipe-api-deployment
   labels:
-    app: swc-api
+    app: swipe-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: swc-api
+      app: swipe-api
   template:
     metadata:
       labels:
-        app: swc-api
+        app: swipe-api
     spec:
       containers:
-        - image: duchungho/swc-api:latest
-          name: swc-api-server
+        - image: duchungho/swipe-api:latest
+          name: swipe-api-server
           env:
             - name: HOST
               valueFrom:
                 secretKeyRef:
-                  name: swc-api-secret
-                  key: swc-api-host
+                  name: swipe-api-secret
+                  key: swipe-api-host
             - name: PORT
               valueFrom:
                 secretKeyRef:
-                  name: swc-api-secret
-                  key: swc-api-port
+                  name: swipe-api-secret
+                  key: swipe-api-port
           command: ["swipe"]
           args: ["s"]
           ports:

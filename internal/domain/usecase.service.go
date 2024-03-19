@@ -15,24 +15,25 @@ type IAccountManagementService interface {
 	UpdateUserAddress(data *Addresses) error
 }
 
+// IProductManagementService : Module Product Management
+// Actor: Admin
+type IProductManagementService interface {
+	InsertCategory(ctg *Categories) error
+	UploadImage(Id int64, fileHeader *multipart.FileHeader) error
+}
+
 // IOrderManagementService : Module Order Management
 // Actor: admin
 type IOrderManagementService interface {
 }
 
-// IProductManagementService : Module Product Management
-// Actor: Admin
-type IProductManagementService interface {
-	InsertCategory(ctg *Categories) error
-}
-
 // IPurchasingService : Module Purchasing
 // Actor: Admin & Customer (User)
 type IPurchasingService interface {
-	AddToCart()
-	GetOrders()
-	GetCartItems()
-	AddCartInfo()
+	// AddToCart()
+	// GetOrders()
+	// GetCartItems()
+	// AddCartInfo()
 }
 
 // IPaymentService : Module Payment
@@ -44,13 +45,13 @@ type IPaymentService interface {
 // IProductService : Module Product interactions
 // Actor: Admin & Customer (User)
 type IProductService interface {
-	GetProducts()
-	SearchProduct()
-	GetByCategory()
-	SortBy()
-	GetProductInfo()
-	Like()
-	Comment()
+	// GetProducts()
+	// SearchProduct()
+	// GetByCategory()
+	// SortBy()
+	// GetProductInfo()
+	// Like()
+	// Comment()
 }
 
 // IDeliveryService : Module Delivery

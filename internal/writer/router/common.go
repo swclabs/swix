@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/swclabs/swipe-api/internal/broker/handler"
+	"github.com/swclabs/swipe-api/internal/writer/handler"
 	"github.com/swclabs/swipe-api/pkg/tools/worker"
 )
 

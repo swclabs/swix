@@ -1,8 +1,11 @@
-// Author: Duc Hung Ho @kieranhoo
-// Description: products service implementation
-
 package service
 
-type Products struct {
-	
+import (
+	"github.com/swclabs/swipe-api/internal/domain"
+)
+
+type ProductService struct{}
+
+func NewProductService() domain.IProductService {
+	return &ProductService{}
 }

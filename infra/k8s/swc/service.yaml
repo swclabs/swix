@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: api-service
   labels:
-    app: swc-api
+    app: swipe-api
 spec:
   selector:
-    app: swc-api
+    app: swipe-api
   type: LoadBalancer
   ports:
     - protocol: TCP

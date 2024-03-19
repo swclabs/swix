@@ -16,7 +16,7 @@ This document describes how you can use the scripts from [`internal`](.) directo
 
 ## Attention
 
-[`broker`](./broker/): This directory implements worker functions linked to the [`delivery`](./delivery/) directory, utilizing message passing via Redis protocol. The worker server will run continuously and execute upon receiving requests from the central server.
+[`writer`](./writer/): This directory implements worker functions linked to the [`delivery`](./delivery/) directory, utilizing message passing via Redis protocol. The worker server will run continuously and execute upon receiving requests from the central server.
 
 [`http`](./http/): This directory implements the functionalities of the central server with the primary protocol being HTTP through APIs.
 

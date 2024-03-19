@@ -1,8 +1,8 @@
 package tasks
 
 import (
-	"github.com/swclabs/swipe-api/internal/broker/queue"
 	"github.com/swclabs/swipe-api/internal/domain"
+	"github.com/swclabs/swipe-api/internal/writer/queue"
 	"github.com/swclabs/swipe-api/pkg/tools/worker"
 )
 

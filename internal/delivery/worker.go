@@ -1,7 +1,7 @@
 package delivery
 
 import (
-	"github.com/swclabs/swipe-api/internal/broker"
+	"github.com/swclabs/swipe-api/internal/writer"
 	"github.com/swclabs/swipe-api/internal/config"
 	"github.com/swclabs/swipe-api/pkg/tools/worker"
 )
