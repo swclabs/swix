@@ -1,7 +1,7 @@
 version: "3.1"
 services:
   swipe-server:
-    image: duchungho/swc-api:latest
+    image: duchungho/swipe-api:latest
     env_file:
       - .env.prod
     restart: always
@@ -11,7 +11,7 @@ services:
     ports:
       - 8000:8000
   swipe-worker:
-    image: duchungho/swc-api:latest
+    image: duchungho/swipe-api:latest
     env_file:
       - .env.prod
     restart: always

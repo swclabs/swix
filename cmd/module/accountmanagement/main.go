@@ -1,11 +1,7 @@
-// Copyright 2023 Swiftcart. All rights reserved.
-// Use of this source code is governed by a MIT license
-// that can be found in the LICENSE file.
-
 // Author:
 // - Ho Duc Hung : @kieranhoo
 // - Nguyen Van Khoa: @anthony2704
-// Description: This is Graduation project in computer science
+// This is Graduation project in computer science
 // 2023 - Ho Chi Minh City University of Technology, VNUHCM
 
 // RUN APPLICATION CLI, IF YOU DON'T WANT TO RUN CLI APP
