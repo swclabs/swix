@@ -12,11 +12,9 @@ This document describes how you can use the scripts from [`internal`](.) directo
 
 [`service`](./service/): This is the third layer of the architecture, where the business logic of the application is implemented.
 
-[`delivery`](./delivery/): This is the final layer of the system, where requests from end users are received and responded to.
-
 ## Attention
 
-[`writer`](./writer/): This directory implements worker functions linked to the [`delivery`](./delivery/) directory, utilizing message passing via Redis protocol. The worker server will run continuously and execute upon receiving requests from the central server.
+[`workers`](./workers/): This directory implements worker functions linked to the [`delivery`](./delivery/) directory, utilizing message passing via Redis protocol. The worker server will run continuously and execute upon receiving requests from the central server.
 
 [`http`](./http/): This directory implements the functionalities of the central server with the primary protocol being HTTP through APIs.
 

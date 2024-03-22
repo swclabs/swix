@@ -3,6 +3,7 @@ module github.com/swclabs/swipe-api
 go 1.21.3
 
 require (
+	github.com/a-h/templ v0.2.639
 	github.com/charmbracelet/lipgloss v0.9.1
 	github.com/charmbracelet/log v0.3.1
 	github.com/cloudinary/cloudinary-go/v2 v2.7.0

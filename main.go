@@ -16,8 +16,10 @@ package main
 import (
 	"fmt"
 	"log"
+
+	"github.com/swclabs/swipe-api/delivery"
+	"github.com/swclabs/swipe-api/delivery/adapter"
 	_ "github.com/swclabs/swipe-api/docs"
-	"github.com/swclabs/swipe-api/internal/delivery"
 	"github.com/swclabs/swipe-api/internal/config"
 )
 
@@ -29,7 +31,7 @@ import (
 func main() {
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 	server := delivery.NewServer(addr)
-	adapter := delivery.NewAdapter()
+	adapter := adapter.NewAdapter()
 
 	if err := server.Connect(adapter); err != nil {
 		log.Fatal(err)

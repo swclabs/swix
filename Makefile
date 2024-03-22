@@ -13,6 +13,8 @@ m:
 	go run cmd/main.go m up
 d: 
 	swag init
+templ:
+	templ generate
 dev-b: 
 	docker compose -f docker-compose.dev.yml up --build -d
 dev: 
