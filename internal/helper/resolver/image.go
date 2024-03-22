@@ -8,8 +8,8 @@ import (
 	"mime/multipart"
 	"sync"
 
-	"github.com/swclabs/swipe-api/internal/domain"
-	"github.com/swclabs/swipe-api/internal/repo"
+	"github.com/swclabs/swipe-api/internal/core/domain"
+	"github.com/swclabs/swipe-api/internal/core/repo"
 	"github.com/swclabs/swipe-api/pkg/cloud"
 	"github.com/swclabs/swipe-api/pkg/tools"
 )

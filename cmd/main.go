@@ -16,8 +16,9 @@ import (
 	"os"
 	"sort"
 
+	"github.com/swclabs/swipe-api/delivery"
+	"github.com/swclabs/swipe-api/delivery/adapter"
 	"github.com/swclabs/swipe-api/internal/config"
-	"github.com/swclabs/swipe-api/internal/delivery"
 	"github.com/swclabs/swipe-api/pkg/utils"
 
 	"github.com/golang-migrate/migrate/v4"
@@ -73,7 +74,7 @@ var Command = []*cli.Command{
 		Action: func(_ *cli.Context) error {
 			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 			server := delivery.NewServer(addr)
-			adapter := delivery.NewAdapter()
+			adapter := adapter.NewAdapter()
 
 			return server.Connect(adapter)
 		},
