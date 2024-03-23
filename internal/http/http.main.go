@@ -2,6 +2,7 @@ package http
 
 import (
 	"errors"
+	"log"
 	"os"
 
 	"github.com/swclabs/swipe-api/internal/http/middleware"
@@ -44,7 +45,12 @@ func (server *_Server) Run(addr string) error {
 		if err != nil {
 			return errors.New("error opening file: " + err.Error())
 		}
-		defer file.Close()
+		defer func(file *os.File) {
+			err := file.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}(file)
 		server._LoggerWriter(file)
 	}
 	return server.engine.Start(addr)

@@ -11,6 +11,7 @@ import (
 
 type IProductManagement interface {
 	InsertCategory(c echo.Context) error
+	UploadProductImage(c echo.Context) error
 }
 
 type ProductManagement struct {
@@ -25,7 +26,7 @@ func NewProductManagement() IProductManagement {
 
 // InsertCategory
 // @Description Insert new category
-// @Tags category
+// @Tags product_management
 // @Accept json
 // @Produce json
 // @Param login body domain.CategoriesRequest true "Categories Request"
@@ -53,5 +54,38 @@ func (product *ProductManagement) InsertCategory(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, domain.OK{
 		Msg: "category has been created",
+	})
+}
+
+// UploadProductImage
+// @Description Insert new product image
+// @Tags product_management
+// @Accept json
+// @Produce json
+// @Param id path string true "id of product"
+// @Param img formData file true "image of product"
+// @Success 200 {object} domain.OK
+// @Failure 400 {object} domain.Error
+// @Router /products/img/:id [POST]
+func (product *ProductManagement) UploadProductImage(c echo.Context) error {
+	file, err := c.FormFile("img")
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	id := c.Param("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing param 'id' in yours request",
+		})
+	}
+	if err := product.services.UploadImage(id, file); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, domain.OK{
+		Msg: "update successfully",
 	})
 }

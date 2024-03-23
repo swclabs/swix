@@ -28,5 +28,6 @@ func ProductManagementModule(server IServer) {
 	var productManagement = router.NewProductManagement()
 	server.router(
 		productManagement.Category,
+		productManagement.Product,
 	)
 }
