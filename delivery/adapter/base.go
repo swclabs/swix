@@ -25,7 +25,7 @@ func NewAdapter() IAdapter {
 	return adapter
 }
 
-// Run: run all services one server
+// Run : run all services one server
 func (adapter *_Adapter) Run(addr string) error {
 	adapter.server.Bootstrap(
 		http.AccountManagementModule,

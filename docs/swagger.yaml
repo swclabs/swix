@@ -10,6 +10,11 @@ definitions:
     - description
     - name
     type: object
+  domain.Error:
+    properties:
+      msg:
+        type: string
+    type: object
   domain.LoginRequest:
     properties:
       email:
@@ -244,6 +249,35 @@ paths:
           description: OK
       tags:
       - common
+  /products/img/:id:
+    post:
+      consumes:
+      - application/json
+      description: Insert new product image
+      parameters:
+      - description: id of product
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: image of product
+        in: formData
+        name: img
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domain.Error'
+      tags:
+      - product_management
   /users:
     get:
       consumes:

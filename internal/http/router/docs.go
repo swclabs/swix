@@ -7,6 +7,7 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+// Docs
 // API documentation
 // Router documentation
 // Base on: http://${HOST}:${PORT}/docs/index.html#/

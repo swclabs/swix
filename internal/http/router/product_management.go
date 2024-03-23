@@ -18,8 +18,11 @@ func NewProductManagement() *ProductManagement {
 func (product *ProductManagement) Product(e *echo.Echo) {
 	// e.POST("/products")
 	// e.GET("/products")
-	// e.PUT("/products/:id")
+	//e.PUT("/products/:id")
 	// e.DELETE("/products/:id")
+
+	e.POST("/products/img/:id", product.controller.UploadProductImage)
+
 }
 
 func (product *ProductManagement) Category(e *echo.Echo) {

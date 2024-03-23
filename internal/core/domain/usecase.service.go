@@ -19,7 +19,7 @@ type IAccountManagementService interface {
 // Actor: Admin
 type IProductManagementService interface {
 	InsertCategory(ctg *Categories) error
-	UploadImage(Id int64, fileHeader *multipart.FileHeader) error
+	UploadImage(Id string, fileHeader *multipart.FileHeader) error
 }
 
 // IOrderManagementService : Module Order Management
