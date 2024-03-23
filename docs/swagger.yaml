@@ -224,7 +224,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.LoginResponse'
       tags:
-      - category
+      - product_management
   /common/healthcheck:
     get:
       consumes:
