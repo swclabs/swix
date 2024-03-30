@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-api/internal/core/domain"
-	"github.com/swclabs/swipe-api/pkg/tools"
-	"github.com/swclabs/swipe-api/pkg/utils"
+	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/pkg/tools"
+	"swclabs/swipe-api/pkg/utils"
 )
 
 func Protected(next echo.HandlerFunc) echo.HandlerFunc {

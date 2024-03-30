@@ -9,7 +9,7 @@ package main
 import (
 	"log"
 
-	"github.com/swclabs/swipe-api/delivery"
+	"swclabs/swipe-api/delivery"
 )
 
 func main() {

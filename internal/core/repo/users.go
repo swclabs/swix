@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/swclabs/swipe-api/internal/core/domain"
-	"github.com/swclabs/swipe-api/pkg/db"
-	"github.com/swclabs/swipe-api/pkg/db/queries"
-	"github.com/swclabs/swipe-api/pkg/tools"
-	"github.com/swclabs/swipe-api/pkg/utils"
+	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/pkg/db"
+	"swclabs/swipe-api/pkg/db/queries"
+	"swclabs/swipe-api/pkg/tools"
+	"swclabs/swipe-api/pkg/utils"
 
 	"gorm.io/gorm"
 )
@@ -132,6 +132,44 @@ func (usr *Users) SaveInfo(user *domain.User) error {
 	return nil
 }
 
+func (usr *Users) UpdateProperties(query string, user *domain.User) error {
+	switch query {
+	case queries.UpdateUsersLastname:
+		if err := db.SafeWriteQuery(
+			usr.conn,
+			queries.UpdateUsersLastname,
+			user.LastName, user.Email,
+		); err != nil {
+			return err
+		}
+	case queries.UpdateUsersFirstname:
+		if err := db.SafeWriteQuery(
+			usr.conn,
+			queries.UpdateUsersFirstname,
+			user.FirstName, user.Email,
+		); err != nil {
+			return err
+		}
+	case queries.UpdateUsersPhoneNumber:
+		if err := db.SafeWriteQuery(
+			usr.conn,
+			queries.UpdateUsersPhoneNumber,
+			user.PhoneNumber, user.Email,
+		); err != nil {
+			return err
+		}
+	case queries.UpdateUsersImage:
+		if err := db.SafeWriteQuery(
+			usr.conn,
+			queries.UpdateUsersImage,
+			user.Image, user.Email,
+		); err != nil {
+			return err
+		}
+	}
+	return errors.New("unknown :" + query)
+}
+
 func (usr *Users) OAuth2SaveInfo(user *domain.User) error {
 	// return usr.conn.Exec(
 	// 	queries.InsertUsersConflict,
@@ -153,7 +191,7 @@ func (usr *Users) OAuth2SaveInfo(user *domain.User) error {
 	)
 }
 
-func (usr *Users) SignUp(user *domain.User, password string) error {
+func (usr *Users) TransactionSignUp(user *domain.User, password string) error {
 	account := NewAccounts()
 	return usr.conn.Transaction(func(tx *gorm.DB) error {
 		hash, err := tools.GenPassword(password)
@@ -177,7 +215,7 @@ func (usr *Users) SignUp(user *domain.User, password string) error {
 	})
 }
 
-func (usr *Users) SaveOAuth2(user *domain.User) error {
+func (usr *Users) TransactionSaveOAuth2(user *domain.User) error {
 	account := NewAccounts()
 	return usr.conn.Transaction(func(tx *gorm.DB) error {
 		hash, err := tools.GenPassword(utils.RandomString(18))

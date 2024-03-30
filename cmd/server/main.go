@@ -10,9 +10,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/swclabs/swipe-api/delivery"
-	"github.com/swclabs/swipe-api/delivery/adapter"
-	"github.com/swclabs/swipe-api/internal/config"
+	"swclabs/swipe-api/delivery"
+	"swclabs/swipe-api/delivery/adapter"
+	"swclabs/swipe-api/internal/config"
 )
 
 func main() {

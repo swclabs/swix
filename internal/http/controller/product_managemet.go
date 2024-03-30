@@ -3,15 +3,17 @@ package controller
 import (
 	"net/http"
 
+	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/internal/core/service"
+	"swclabs/swipe-api/pkg/tools"
+
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-api/internal/core/domain"
-	"github.com/swclabs/swipe-api/internal/core/service"
-	"github.com/swclabs/swipe-api/pkg/tools"
 )
 
 type IProductManagement interface {
 	InsertCategory(c echo.Context) error
 	UploadProductImage(c echo.Context) error
+	UploadProduct(c echo.Context) error
 }
 
 type ProductManagement struct {
@@ -74,12 +76,14 @@ func (product *ProductManagement) UploadProductImage(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
+	// get id params
 	id := c.Param("id")
 	if id == "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "missing param 'id' in yours request",
 		})
 	}
+	// call services
 	if err := product.services.UploadImage(id, file); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -87,5 +91,45 @@ func (product *ProductManagement) UploadProductImage(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, domain.OK{
 		Msg: "update successfully",
+	})
+}
+
+// UploadProduct
+// @Description create new product
+// @Tags product_management
+// @Accept json
+// @Produce json
+// @Param img formData file true "image of product"
+// @Param product body domain.ProductRequest true "Product Request"
+// @Success 200 {object} domain.OK
+// @Router /products [POST]
+func (product *ProductManagement) UploadProduct(c echo.Context) error {
+	file, err := c.FormFile("img")
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	// bind json to structure
+	var productReq domain.ProductRequest
+	if err := c.Bind(&productReq); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	// check validate struct
+	if valid := tools.Validate(&productReq); valid != "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: valid,
+		})
+	}
+	// call services
+	if err := product.services.UploadProduct(file, &productReq); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, domain.OK{
+		Msg: "upload product successfully",
 	})
 }

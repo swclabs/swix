@@ -1,4 +1,4 @@
-module github.com/swclabs/swipe-api
+module swclabs/swipe-api
 
 go 1.21.3
 

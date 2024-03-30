@@ -205,6 +205,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/products": {
+            "post": {
+                "description": "create new product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product_management"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "image of product",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "description": "Product Request",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.ProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
+                        }
+                    }
+                }
+            }
+        },
         "/products/img/:id": {
             "post": {
                 "description": "Insert new product image",
@@ -388,6 +428,41 @@ const docTemplate = `{
             "properties": {
                 "msg": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.ProductRequest": {
+            "type": "object",
+            "required": [
+                "available",
+                "category_id",
+                "description",
+                "image",
+                "name",
+                "price",
+                "supplier_id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "integer"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "supplier_id": {
+                    "type": "integer"
                 }
             }
         },

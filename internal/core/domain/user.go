@@ -24,8 +24,9 @@ type IUserRepository interface {
 	Info(email string) (*UserInfo, error)
 	SaveInfo(user *User) error
 	OAuth2SaveInfo(user *User) error
-	SignUp(user *User, password string) error
-	SaveOAuth2(data *User) error
+	TransactionSignUp(user *User, password string) error
+	TransactionSaveOAuth2(data *User) error
+	UpdateProperties(query string, user *User) error
 }
 
 // SignUpRequest schema

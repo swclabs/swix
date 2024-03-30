@@ -12,19 +12,19 @@ type IAccountManagementService interface {
 	UpdateUserInfo(req *UserUpdate) error
 	UploadAvatar(email string, fileHeader *multipart.FileHeader) error
 	OAuth2SaveUser(req *OAuth2SaveUser) error
-	UpdateUserAddress(data *Addresses) error
+	UpdateAddress(data *Addresses) error
 }
 
-// IProductManagementService : Module Product Management
-// Actor: Admin
-type IProductManagementService interface {
-	InsertCategory(ctg *Categories) error
-	UploadImage(Id string, fileHeader *multipart.FileHeader) error
-}
-
-// IOrderManagementService : Module Order Management
-// Actor: admin
-type IOrderManagementService interface {
+// IProductService : Module Product interactions
+// Actor: Admin & Customer (User)
+type IProductService interface {
+	// GetAll()
+	// SearchProduct()
+	// GetByCategory()
+	// SortBy()
+	// GetProductInfo()
+	// Like()
+	// Comment()
 }
 
 // IPurchasingService : Module Purchasing
@@ -36,22 +36,23 @@ type IPurchasingService interface {
 	// AddCartInfo()
 }
 
+// IProductManagementService : Module Product Management
+// Actor: Admin
+type IProductManagementService interface {
+	InsertCategory(ctg *Categories) error
+	UploadImage(Id string, fileHeader *multipart.FileHeader) error
+	UploadProduct(img *multipart.FileHeader, products *ProductRequest) error
+}
+
+// IOrderManagementService : Module Order Management
+// Actor: admin
+type IOrderManagementService interface {
+}
+
 // IPaymentService : Module Payment
 // Actor: Admin & Customer (User)
 type IPaymentService interface {
 	GetPayments()
-}
-
-// IProductService : Module Product interactions
-// Actor: Admin & Customer (User)
-type IProductService interface {
-	// GetProducts()
-	// SearchProduct()
-	// GetByCategory()
-	// SortBy()
-	// GetProductInfo()
-	// Like()
-	// Comment()
 }
 
 // IDeliveryService : Module Delivery

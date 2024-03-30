@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/swclabs/swipe-api/delivery"
-	"github.com/swclabs/swipe-api/delivery/adapter"
-	_ "github.com/swclabs/swipe-api/docs"
-	"github.com/swclabs/swipe-api/internal/config"
+	"swclabs/swipe-api/delivery"
+	"swclabs/swipe-api/delivery/adapter"
+	_ "swclabs/swipe-api/docs"
+	"swclabs/swipe-api/internal/config"
 )
 
 // @title Swiftcart API Documentation

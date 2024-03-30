@@ -5,11 +5,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/swclabs/swipe-api/internal/http/middleware"
+	"swclabs/swipe-api/internal/http/middleware"
 
-	"github.com/swclabs/swipe-api/internal/config"
-	"github.com/swclabs/swipe-api/pkg/sentry"
-	"github.com/swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipe-api/internal/config"
+	"swclabs/swipe-api/pkg/sentry"
+	"swclabs/swipe-api/pkg/tools/worker"
 )
 
 var _ IServer = &_Server{}

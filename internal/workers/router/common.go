@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/swclabs/swipe-api/internal/workers/handler"
-	"github.com/swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipe-api/internal/workers/handler"
+	"swclabs/swipe-api/pkg/tools/worker"
 )
 
 var common = handler.NewCommonHandler()

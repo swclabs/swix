@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-api/internal/config"
+	"swclabs/swipe-api/internal/config"
 )
 
 const BaseSessions = "session"

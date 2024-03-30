@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/internal/core/domain"
 )
 
 type ProductService struct{}

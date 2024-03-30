@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 
-	"github.com/swclabs/swipe-api/internal/core/domain"
-	"github.com/swclabs/swipe-api/internal/helper/tasks"
+	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/internal/helper/tasks"
 )
 
 type CommonService struct {

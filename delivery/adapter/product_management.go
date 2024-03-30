@@ -2,7 +2,7 @@
 
 package adapter
 
-import "github.com/swclabs/swipe-api/internal/http"
+import "swclabs/swipe-api/internal/http"
 
 type _ProductManagementAdapter struct {
 	server http.IServer
