@@ -5,9 +5,9 @@ package adapter
 import (
 	"time"
 
-	"github.com/swclabs/swipe-api/internal/helper/cron"
-	"github.com/swclabs/swipe-api/internal/http"
-	"github.com/swclabs/swipe-api/pkg/tools"
+	"swclabs/swipe-api/internal/helper/cron"
+	"swclabs/swipe-api/internal/http"
+	"swclabs/swipe-api/pkg/tools"
 )
 
 type _AccountManagementAdapter struct {

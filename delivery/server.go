@@ -1,6 +1,6 @@
 package delivery
 
-import "github.com/swclabs/swipe-api/delivery/adapter"
+import "swclabs/swipe-api/delivery/adapter"
 
 type IServer interface {
 	Connect(adapter adapter.IAdapter) error

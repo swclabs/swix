@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/swclabs/swipe-api/internal/helper/mail"
+	"swclabs/swipe-api/internal/helper/mail"
 )
 
 func TestEmail(t *testing.T) {

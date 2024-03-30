@@ -3,7 +3,7 @@ package db
 import (
 	"sync"
 
-	"github.com/swclabs/swipe-api/pkg/utils"
+	"swclabs/swipe-api/pkg/utils"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

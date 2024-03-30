@@ -1,9 +1,9 @@
 package tasks
 
 import (
-	"github.com/swclabs/swipe-api/internal/core/domain"
-	"github.com/swclabs/swipe-api/internal/workers/queue"
-	"github.com/swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/internal/workers/queue"
+	"swclabs/swipe-api/pkg/tools/worker"
 )
 
 type AccountManagement struct {

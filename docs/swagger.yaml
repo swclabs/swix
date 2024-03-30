@@ -43,6 +43,31 @@ definitions:
       msg:
         type: string
     type: object
+  domain.ProductRequest:
+    properties:
+      available:
+        type: integer
+      category_id:
+        type: integer
+      description:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      supplier_id:
+        type: integer
+    required:
+    - available
+    - category_id
+    - description
+    - image
+    - name
+    - price
+    - supplier_id
+    type: object
   domain.SignUpRequest:
     properties:
       email:
@@ -249,6 +274,32 @@ paths:
           description: OK
       tags:
       - common
+  /products:
+    post:
+      consumes:
+      - application/json
+      description: create new product
+      parameters:
+      - description: image of product
+        in: formData
+        name: img
+        required: true
+        type: file
+      - description: Product Request
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - product_management
   /products/img/:id:
     post:
       consumes:

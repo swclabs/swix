@@ -8,9 +8,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/swclabs/swipe-api/internal/core/domain"
-	"github.com/swclabs/swipe-api/pkg/db"
-	"github.com/swclabs/swipe-api/pkg/db/queries"
+	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/pkg/db"
+	"swclabs/swipe-api/pkg/db/queries"
 
 	"gorm.io/gorm"
 )

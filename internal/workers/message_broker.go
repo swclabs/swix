@@ -1,9 +1,9 @@
 package workers
 
 import (
-	"github.com/swclabs/swipe-api/internal/workers/queue"
-	"github.com/swclabs/swipe-api/internal/workers/router"
-	"github.com/swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipe-api/internal/workers/queue"
+	"swclabs/swipe-api/internal/workers/router"
+	"swclabs/swipe-api/pkg/tools/worker"
 )
 
 type Writer struct {

@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/swclabs/swipe-api/internal/http/controller"
+	"swclabs/swipe-api/internal/http/controller"
 )
 
 func Common(e *echo.Echo) {

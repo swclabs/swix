@@ -5,10 +5,10 @@ import (
 	"encoding/json"
 
 	"github.com/hibiken/asynq"
-	"github.com/swclabs/swipe-api/internal/core/domain"
-	"github.com/swclabs/swipe-api/internal/core/service"
-	"github.com/swclabs/swipe-api/internal/helper/tasks"
-	"github.com/swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/internal/core/service"
+	"swclabs/swipe-api/internal/helper/tasks"
+	"swclabs/swipe-api/pkg/tools/worker"
 )
 
 type AccountManagement struct {

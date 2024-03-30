@@ -7,29 +7,31 @@ import (
 	"errors"
 	"mime/multipart"
 
-	"github.com/swclabs/swipe-api/internal/core/domain"
-	"github.com/swclabs/swipe-api/internal/helper/resolver"
-	"github.com/swclabs/swipe-api/internal/core/repo"
-	"github.com/swclabs/swipe-api/internal/helper/tasks"
-	"github.com/swclabs/swipe-api/pkg/tools"
+	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipe-api/internal/core/repo"
+	"swclabs/swipe-api/internal/helper/resolver"
+	"swclabs/swipe-api/internal/helper/tasks"
+	"swclabs/swipe-api/pkg/tools"
 )
 
 type AccountManagement struct {
 	tasks.AccountManagement
 	user    domain.IUserRepository
 	account domain.IAccountRepository
+	address domain.IAddressRepository
 }
 
 func NewAccountManagement() *AccountManagement {
 	return &AccountManagement{
 		user:    repo.NewUsers(),
 		account: repo.NewAccounts(),
+		address: repo.NewAddresses(),
 	}
 }
 
 func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
-	// TODO: update transaction
-	return manager.user.SignUp(&domain.User{
+	// call repository layer
+	return manager.user.TransactionSignUp(&domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -40,10 +42,12 @@ func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
 }
 
 func (manager *AccountManagement) Login(req *domain.LoginRequest) (string, error) {
+	// get account form email
 	account, err := manager.account.GetByEmail(req.Email)
 	if err != nil {
 		return "", err
 	}
+	// compare input password
 	if err := tools.ComparePassword(account.Password, req.Password); err != nil {
 		return "", errors.New("email or password incorrect")
 	}
@@ -51,6 +55,7 @@ func (manager *AccountManagement) Login(req *domain.LoginRequest) (string, error
 }
 
 func (manager *AccountManagement) UserInfo(email string) (*domain.UserInfo, error) {
+	// get user information
 	return manager.user.Info(email)
 }
 
@@ -69,7 +74,8 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 	if err != nil {
 		return err
 	}
-	resolver.ImagePool.Process(resolver.Image{
+	// call worker resolver process this tasks
+	resolver.ImagePool.Process(resolver.UserImage{
 		Email: email,
 		File:  file,
 	})
@@ -77,7 +83,7 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 }
 
 func (manager *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) error {
-	return manager.user.SaveOAuth2(&domain.User{
+	return manager.user.TransactionSaveOAuth2(&domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -94,6 +100,7 @@ func (manager *AccountManagement) CheckLoginEmail(email string) error {
 	return nil
 }
 
-func (manager *AccountManagement) UpdateUserAddress(data *domain.Addresses) error {
-	panic("implement me")
+func (manager *AccountManagement) UpdateAddress(data *domain.Addresses) error {
+	//TODO:
+	return manager.address.New(data)
 }

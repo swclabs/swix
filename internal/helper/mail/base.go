@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/a-h/templ"
-	"github.com/swclabs/swipe-api/internal/config"
-	"github.com/swclabs/swipe-api/pkg/tools"
-	"github.com/swclabs/swipe-api/pkg/web/components"
+	"swclabs/swipe-api/internal/config"
+	"swclabs/swipe-api/pkg/tools"
+	"swclabs/swipe-api/pkg/web/components"
 )
 
 type Mailler struct {

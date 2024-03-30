@@ -1,9 +1,9 @@
 package delivery
 
 import (
-	"github.com/swclabs/swipe-api/internal/config"
-	"github.com/swclabs/swipe-api/internal/workers"
-	"github.com/swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipe-api/internal/config"
+	"swclabs/swipe-api/internal/workers"
+	"swclabs/swipe-api/pkg/tools/worker"
 )
 
 type IWorker interface {

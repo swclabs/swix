@@ -4,11 +4,11 @@
 package repo
 
 import (
-	"github.com/swclabs/swipe-api/internal/core/domain"
 	"log"
+	"swclabs/swipe-api/internal/core/domain"
 
-	"github.com/swclabs/swipe-api/pkg/db"
 	"gorm.io/gorm"
+	"swclabs/swipe-api/pkg/db"
 )
 
 type Carts struct {

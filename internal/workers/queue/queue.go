@@ -1,6 +1,6 @@
 package queue
 
-import "github.com/swclabs/swipe-api/internal/config"
+import "swclabs/swipe-api/internal/config"
 
 var (
 	CriticalQueue = "critical"

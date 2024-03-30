@@ -15,6 +15,10 @@ d:
 	swag init
 templ:
 	templ generate
+web:
+	go run pkg/web/web.go
+
+
 dev-b: 
 	docker compose -f docker-compose.dev.yml up --build -d
 dev: 

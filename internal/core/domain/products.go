@@ -12,6 +12,16 @@ type Products struct {
 	Available   int64  `json:"available" gorm:"column:available"`
 }
 
+type ProductRequest struct {
+	Image       string `json:"image" validate:"required"`
+	Price       string `json:"price" validate:"required"`
+	Description string `json:"description" validate:"required"`
+	Name        string `json:"name" validate:"required"`
+	SupplierID  int64  `json:"supplier_id" validate:"required"`
+	CategoryID  int64  `json:"category_id" validate:"required"`
+	Available   int64  `json:"available" validate:"required"`
+}
+
 // ProductInCart Table
 type ProductInCart struct {
 	ID        int64 `json:"id" gorm:"column:id"`

@@ -5,8 +5,8 @@ import (
 	"maps"
 	"testing"
 
-	"github.com/swclabs/swipe-api/pkg/tools"
-	"github.com/swclabs/swipe-api/pkg/utils"
+	"swclabs/swipe-api/pkg/tools"
+	"swclabs/swipe-api/pkg/utils"
 )
 
 func TestHash(t *testing.T) {
