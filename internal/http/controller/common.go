@@ -3,11 +3,12 @@ package controller
 import (
 	"net/http"
 
-	"github.com/labstack/echo/v4"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/service"
 	"swclabs/swipe-api/internal/helper/oauth2"
 	"swclabs/swipe-api/pkg/utils"
+
+	"github.com/labstack/echo/v4"
 )
 
 // HealthCheck .
@@ -19,7 +20,7 @@ import (
 // @Router /common/healthcheck [GET]
 func HealthCheck(c echo.Context) error {
 	common := service.NewCommonService()
-	return c.JSON(200, common.HealthCheck())
+	return c.JSON(200, common.HealthCheck(c.Request().Context()))
 }
 
 // Auth0Login .
@@ -52,7 +53,7 @@ func WorkerCheck(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(200, common.HealthCheck())
+	return c.JSON(200, common.HealthCheck(c.Request().Context()))
 }
 
 func Foo(ctx echo.Context) error {

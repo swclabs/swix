@@ -1,5 +1,7 @@
 package domain
 
+import "context"
+
 // User : Table users
 type User struct {
 	UserID      int64  `json:"id" gorm:"column:id"`
@@ -19,14 +21,14 @@ type UserAddress struct {
 // IUserRepository User Repository interface
 // implement at /internal/repo/user.go
 type IUserRepository interface {
-	GetByEmail(email string) (*User, error)
-	Insert(usr *User) error
-	Info(email string) (*UserInfo, error)
-	SaveInfo(user *User) error
-	OAuth2SaveInfo(user *User) error
-	TransactionSignUp(user *User, password string) error
-	TransactionSaveOAuth2(data *User) error
-	UpdateProperties(query string, user *User) error
+	GetByEmail(ctx context.Context, email string) (*User, error)
+	Insert(ctx context.Context, usr *User) error
+	Info(ctx context.Context, email string) (*UserInfo, error)
+	SaveInfo(ctx context.Context, user *User) error
+	OAuth2SaveInfo(ctx context.Context, user *User) error
+	TransactionSignUp(ctx context.Context, user *User, password string) error
+	TransactionSaveOAuth2(ctx context.Context, data *User) error
+	UpdateProperties(ctx context.Context, query string, user *User) error
 }
 
 // SignUpRequest schema

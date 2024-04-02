@@ -3,12 +3,14 @@
 package repo
 
 import (
+	"context"
 	"log"
 
-	"gorm.io/gorm"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/pkg/db"
 	"swclabs/swipe-api/pkg/db/queries"
+
+	"gorm.io/gorm"
 )
 
 type Products struct {
@@ -27,8 +29,10 @@ func NewProducts() domain.IProductRepository {
 	}
 }
 
-func (product *Products) New(prd *domain.Products) error {
-	return db.SafeWriteQuery(product.conn,
+func (product *Products) New(ctx context.Context, prd *domain.Products) error {
+	return db.SafeWriteQuery(
+		ctx,
+		product.conn,
 		queries.InsertIntoProducts,
 		prd.Image, prd.Name, prd.Description, prd.Available, prd.SupplierID, prd.CategoryID,
 	)

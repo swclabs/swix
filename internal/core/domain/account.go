@@ -1,5 +1,7 @@
 package domain
 
+import "context"
+
 // Account table
 type Account struct {
 	Username  string `json:"username" gorm:"column:username"`
@@ -11,7 +13,7 @@ type Account struct {
 }
 
 type IAccountRepository interface {
-	GetByEmail(email string) (*Account, error)
-	Insert(acc *Account) error
-	SaveInfo(acc *Account) error
+	GetByEmail(ctx context.Context, email string) (*Account, error)
+	Insert(ctx context.Context, acc *Account) error
+	SaveInfo(ctx context.Context, acc *Account) error
 }

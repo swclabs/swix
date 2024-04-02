@@ -1,5 +1,7 @@
 package domain
 
+import "context"
+
 // Products Table
 type Products struct {
 	ID          int64  `json:"id" gorm:"column:id"`
@@ -45,6 +47,13 @@ type FavoriteProduct struct {
 	ProductID int64 `json:"product_id" gorm:"column:product_id"`
 }
 
+type Accessory struct {
+	Name  string `json:"name" gorm:"column:name"`
+	Price string `json:"price" gorm:"column:price"`
+	New   string `json:"new" gorm:"column:new"`
+	Img   string `json:"img" gorm:"column:img"`
+}
+
 type IProductInCartRepository interface {
 	GetByCartID(cartID int64) ([]ProductInCart, error)
 	AddProduct(product *ProductInCart) error
@@ -53,5 +62,5 @@ type IProductInCartRepository interface {
 }
 
 type IProductRepository interface {
-	New(prd *Products) error
+	New(ctx context.Context, prd *Products) error
 }

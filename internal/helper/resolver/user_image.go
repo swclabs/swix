@@ -4,6 +4,7 @@
 package resolver
 
 import (
+	"context"
 	"log"
 	"mime/multipart"
 	"sync"
@@ -35,10 +36,12 @@ func (image *UserImage) UserImageHandler(data <-chan interface{}, wg *sync.WaitG
 			if err != nil {
 				log.Fatal(err)
 			}
-			if err := repo.NewUsers().SaveInfo(&domain.User{
-				Email: imageInfo.Email,
-				Image: resp.SecureURL,
-			}); err != nil {
+			if err := repo.NewUsers().SaveInfo(
+				context.TODO(),
+				&domain.User{
+					Email: imageInfo.Email,
+					Image: resp.SecureURL,
+				}); err != nil {
 				log.Fatal(err)
 			}
 		} else {

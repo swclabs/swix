@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/hibiken/asynq"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/service"
 	"swclabs/swipe-api/internal/helper/tasks"
 	"swclabs/swipe-api/pkg/tools/worker"
+
+	"github.com/hibiken/asynq"
 )
 
 type AccountManagement struct {
@@ -29,7 +30,7 @@ func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
-			return account.handler.SignUp(&data)
+			return account.handler.SignUp(context.Background(), &data)
 		}
 }
 
@@ -40,7 +41,7 @@ func (account *AccountManagement) HandleOAuth2SaveUser() (string, worker.HandleF
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
-			return account.handler.OAuth2SaveUser(&data)
+			return account.handler.OAuth2SaveUser(context.Background(), &data)
 		}
 }
 
@@ -51,6 +52,6 @@ func (account *AccountManagement) HandleUpdateUserInfo() (string, worker.HandleF
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
-			return account.handler.UpdateUserInfo(&data)
+			return account.handler.UpdateUserInfo(context.Background(), &data)
 		}
 }

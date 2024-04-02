@@ -4,6 +4,7 @@
 package repo
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -33,35 +34,36 @@ func NewUsers() domain.IUserRepository {
 	}
 }
 
-func (usr *Users) GetByEmail(email string) (*domain.User, error) {
-	if err := usr.conn.Table("users").Where("email = ?", email).First(usr.data).Error; err != nil {
+func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
+	if err := usr.conn.WithContext(ctx).Table("users").Where("email = ?", email).First(usr.data).Error; err != nil {
 		return nil, err
 	}
 	return usr.data, nil
 }
 
-func (usr *Users) Insert(_usr *domain.User) error {
+func (usr *Users) Insert(ctx context.Context, _usr *domain.User) error {
 	// return usr.conn.Exec(
 	// 	queries.InsertIntoUsers,
 	// 	_usr.Email, _usr.PhoneNumber, _usr.FirstName, _usr.LastName, _usr.Image,
 	// ).Error
 
 	return db.SafeWriteQuery(
+		ctx,
 		usr.conn,
 		queries.InsertIntoUsers,
 		_usr.Email, _usr.PhoneNumber, _usr.FirstName, _usr.LastName, _usr.Image,
 	)
 }
 
-func (usr *Users) Info(email string) (*domain.UserInfo, error) {
+func (usr *Users) Info(ctx context.Context, email string) (*domain.UserInfo, error) {
 	data := new(domain.UserInfo)
-	if err := usr.conn.Raw(queries.SelectUserInfo, email).Scan(data).Error; err != nil {
+	if err := usr.conn.WithContext(ctx).Raw(queries.SelectUserInfo, email).Scan(data).Error; err != nil {
 		return nil, err
 	}
 	return data, nil
 }
 
-func (usr *Users) SaveInfo(user *domain.User) error {
+func (usr *Users) SaveInfo(ctx context.Context, user *domain.User) error {
 	if user.Email == "" {
 		return errors.New("missing key: email ")
 	}
@@ -74,6 +76,7 @@ func (usr *Users) SaveInfo(user *domain.User) error {
 		// }
 
 		if err := db.SafeWriteQuery(
+			ctx,
 			usr.conn,
 			queries.UpdateUsersFirstname,
 			user.FirstName, user.Email,
@@ -90,6 +93,7 @@ func (usr *Users) SaveInfo(user *domain.User) error {
 		// }
 
 		if err := db.SafeWriteQuery(
+			ctx,
 			usr.conn,
 			queries.UpdateUsersFirstname,
 			user.FirstName, user.Email,
@@ -106,6 +110,7 @@ func (usr *Users) SaveInfo(user *domain.User) error {
 		// }
 
 		if err := db.SafeWriteQuery(
+			ctx,
 			usr.conn,
 			queries.UpdateUsersImage,
 			user.Image, user.Email,
@@ -122,6 +127,7 @@ func (usr *Users) SaveInfo(user *domain.User) error {
 		// }
 
 		if err := db.SafeWriteQuery(
+			ctx,
 			usr.conn,
 			queries.UpdateUsersPhoneNumber,
 			user.PhoneNumber, user.Email,
@@ -132,10 +138,11 @@ func (usr *Users) SaveInfo(user *domain.User) error {
 	return nil
 }
 
-func (usr *Users) UpdateProperties(query string, user *domain.User) error {
+func (usr *Users) UpdateProperties(ctx context.Context, query string, user *domain.User) error {
 	switch query {
 	case queries.UpdateUsersLastname:
 		if err := db.SafeWriteQuery(
+			ctx,
 			usr.conn,
 			queries.UpdateUsersLastname,
 			user.LastName, user.Email,
@@ -144,6 +151,7 @@ func (usr *Users) UpdateProperties(query string, user *domain.User) error {
 		}
 	case queries.UpdateUsersFirstname:
 		if err := db.SafeWriteQuery(
+			ctx,
 			usr.conn,
 			queries.UpdateUsersFirstname,
 			user.FirstName, user.Email,
@@ -152,6 +160,7 @@ func (usr *Users) UpdateProperties(query string, user *domain.User) error {
 		}
 	case queries.UpdateUsersPhoneNumber:
 		if err := db.SafeWriteQuery(
+			ctx,
 			usr.conn,
 			queries.UpdateUsersPhoneNumber,
 			user.PhoneNumber, user.Email,
@@ -160,6 +169,7 @@ func (usr *Users) UpdateProperties(query string, user *domain.User) error {
 		}
 	case queries.UpdateUsersImage:
 		if err := db.SafeWriteQuery(
+			ctx,
 			usr.conn,
 			queries.UpdateUsersImage,
 			user.Image, user.Email,
@@ -170,7 +180,7 @@ func (usr *Users) UpdateProperties(query string, user *domain.User) error {
 	return errors.New("unknown :" + query)
 }
 
-func (usr *Users) OAuth2SaveInfo(user *domain.User) error {
+func (usr *Users) OAuth2SaveInfo(ctx context.Context, user *domain.User) error {
 	// return usr.conn.Exec(
 	// 	queries.InsertUsersConflict,
 	// 	user.Email,
@@ -181,6 +191,7 @@ func (usr *Users) OAuth2SaveInfo(user *domain.User) error {
 	// ).Error
 
 	return db.SafeWriteQuery(
+		ctx,
 		usr.conn,
 		queries.InsertUsersConflict,
 		user.Email,
@@ -191,21 +202,21 @@ func (usr *Users) OAuth2SaveInfo(user *domain.User) error {
 	)
 }
 
-func (usr *Users) TransactionSignUp(user *domain.User, password string) error {
+func (usr *Users) TransactionSignUp(ctx context.Context, user *domain.User, password string) error {
 	account := NewAccounts()
 	return usr.conn.Transaction(func(tx *gorm.DB) error {
 		hash, err := tools.GenPassword(password)
 		if err != nil {
 			return err
 		}
-		if err := usr.Insert(user); err != nil {
+		if err := usr.Insert(ctx, user); err != nil {
 			return err
 		}
-		userInfo, err := usr.GetByEmail(user.Email)
+		userInfo, err := usr.GetByEmail(ctx, user.Email)
 		if err != nil {
 			return err
 		}
-		return account.Insert(&domain.Account{
+		return account.Insert(ctx, &domain.Account{
 			Username: fmt.Sprintf("user#%d", userInfo.UserID),
 			Password: hash,
 			Role:     "Customer",
@@ -215,21 +226,21 @@ func (usr *Users) TransactionSignUp(user *domain.User, password string) error {
 	})
 }
 
-func (usr *Users) TransactionSaveOAuth2(user *domain.User) error {
+func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user *domain.User) error {
 	account := NewAccounts()
 	return usr.conn.Transaction(func(tx *gorm.DB) error {
 		hash, err := tools.GenPassword(utils.RandomString(18))
 		if err != nil {
 			return err
 		}
-		if err := usr.OAuth2SaveInfo(user); err != nil {
+		if err := usr.OAuth2SaveInfo(ctx, user); err != nil {
 			return err
 		}
-		userInfo, err := usr.GetByEmail(user.Email)
+		userInfo, err := usr.GetByEmail(ctx, user.Email)
 		if err != nil {
 			return err
 		}
-		return account.Insert(&domain.Account{
+		return account.Insert(ctx, &domain.Account{
 			Username: fmt.Sprintf("user#%d", userInfo.UserID),
 			Password: hash,
 			Role:     "Customer",

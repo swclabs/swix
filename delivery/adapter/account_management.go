@@ -3,11 +3,7 @@
 package adapter
 
 import (
-	"time"
-
-	"swclabs/swipe-api/internal/helper/cron"
 	"swclabs/swipe-api/internal/http"
-	"swclabs/swipe-api/pkg/tools"
 )
 
 type _AccountManagementAdapter struct {
@@ -19,7 +15,7 @@ func NewAccountManagementAdapter() IAdapter {
 		server: http.New(),
 	}
 	// initialize cron job
-	account._StartAccountManagementJob()
+	// account._StartAccountManagementJob()
 	return account
 }
 
@@ -28,9 +24,9 @@ func (account *_AccountManagementAdapter) Run(addr string) error {
 	return account.server.Run(addr)
 }
 
-func (account *_AccountManagementAdapter) _StartAccountManagementJob() {
-	newJob := tools.NewJob()
-	go newJob.Scheduler(cron.Ping, 5*time.Second)
+// func (account *_AccountManagementAdapter) _StartAccountManagementJob() {
+// 	newJob := tools.NewJob()
+// 	go newJob.Scheduler(cron.Ping, 5*time.Second)
 
-	newJob.Info()
-}
+// 	newJob.Info()
+// }
