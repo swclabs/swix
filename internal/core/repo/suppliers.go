@@ -1,12 +1,14 @@
 package repo
 
 import (
+	"context"
 	"log"
 
-	"gorm.io/gorm"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/pkg/db"
 	"swclabs/swipe-api/pkg/db/queries"
+
+	"gorm.io/gorm"
 )
 
 type Suppliers struct {
@@ -25,11 +27,17 @@ func NewSuppliers() domain.ISuppliersRepository {
 	}
 }
 
-func (supplier *Suppliers) New(supp *domain.Suppliers, addr *domain.Addresses) error {
+func (supplier *Suppliers) New(ctx context.Context, supp *domain.Suppliers, addr *domain.Addresses) error {
 	return supplier.conn.Transaction(func(tx *gorm.DB) error {
-		return db.SafeWriteQuery(supplier.conn,
+		return db.SafeWriteQuery(
+			ctx,
+			supplier.conn,
 			queries.InsertIntoSuppliers,
 			supp.Name, supp.PhoneNumber, supp.Email,
 		)
 	})
+}
+
+func (supplier *Suppliers) GetAll(ctx context.Context) ([]domain.Suppliers, error) {
+	panic("not implemented")
 }

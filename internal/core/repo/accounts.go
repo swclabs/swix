@@ -4,6 +4,7 @@
 package repo
 
 import (
+	"context"
 	"errors"
 	"log"
 	"time"
@@ -31,27 +32,28 @@ func NewAccounts() domain.IAccountRepository {
 	}
 }
 
-func (account *Accounts) GetByEmail(email string) (*domain.Account, error) {
-	if err := account.conn.Table("accounts").Where("email = ?", email).First(account.data).Error; err != nil {
+func (account *Accounts) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
+	if err := account.conn.WithContext(ctx).Table("accounts").Where("email = ?", email).First(account.data).Error; err != nil {
 		return nil, err
 	}
 	return account.data, nil
 }
 
-func (account *Accounts) Insert(acc *domain.Account) error {
+func (account *Accounts) Insert(ctx context.Context, acc *domain.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
 	// return account.conn.Exec(
 	// 	queries.InsertIntoAccounts,
 	// 	acc.Username, acc.Role, acc.Email, acc.Password, createdAt, acc.Type,
 	// ).Error
 	return db.SafeWriteQuery(
+		ctx,
 		account.conn,
 		queries.InsertIntoAccounts,
 		acc.Username, acc.Role, acc.Email, acc.Password, createdAt, acc.Type,
 	)
 }
 
-func (account *Accounts) SaveInfo(acc *domain.Account) error {
+func (account *Accounts) SaveInfo(ctx context.Context, acc *domain.Account) error {
 	if acc.Email == "" {
 		return errors.New("missing key: email ")
 	}
@@ -64,6 +66,7 @@ func (account *Accounts) SaveInfo(acc *domain.Account) error {
 		// }
 
 		if err := db.SafeWriteQuery(
+			ctx,
 			account.conn,
 			queries.UpdateAccountsUsername,
 			acc.Username, acc.Email,
@@ -81,6 +84,7 @@ func (account *Accounts) SaveInfo(acc *domain.Account) error {
 		// }
 
 		if err := db.SafeWriteQuery(
+			ctx,
 			account.conn,
 			queries.UpdateAccountsPassword,
 			acc.Password, acc.Email,
@@ -97,6 +101,7 @@ func (account *Accounts) SaveInfo(acc *domain.Account) error {
 		// }
 
 		if err := db.SafeWriteQuery(
+			ctx,
 			account.conn,
 			queries.UpdateAccountsRole,
 			acc.Role, acc.Email,

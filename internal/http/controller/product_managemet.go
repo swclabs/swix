@@ -46,7 +46,7 @@ func (product *ProductManagement) InsertCategory(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := product.services.InsertCategory(&domain.Categories{
+	if err := product.services.InsertCategory(c.Request().Context(), &domain.Categories{
 		Name:        request.Name,
 		Description: request.Description,
 	}); err != nil {
@@ -95,7 +95,7 @@ func (product *ProductManagement) UploadProductImage(c echo.Context) error {
 }
 
 // UploadProduct
-// @Description create new product
+// @Description Create new product
 // @Tags product_management
 // @Accept json
 // @Produce json

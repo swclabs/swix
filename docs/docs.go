@@ -25,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "account_management"
                 ],
                 "parameters": [
                     {
@@ -56,7 +56,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "account_management"
                 ],
                 "parameters": [
                     {
@@ -89,7 +89,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "account_management"
                 ],
                 "responses": {
                     "200": {
@@ -111,7 +111,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "account_management"
                 ],
                 "parameters": [
                     {
@@ -207,7 +207,7 @@ const docTemplate = `{
         },
         "/products": {
             "post": {
-                "description": "create new product",
+                "description": "Create new product",
                 "consumes": [
                     "application/json"
                 ],
@@ -299,7 +299,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "account_management"
                 ],
                 "responses": {
                     "200": {
@@ -319,7 +319,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "account_management"
                 ],
                 "parameters": [
                     {
@@ -352,7 +352,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "account_management"
                 ],
                 "responses": {
                     "200": {

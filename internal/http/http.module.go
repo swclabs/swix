@@ -31,3 +31,10 @@ func ProductManagementModule(server IServer) {
 		productManagement.Product,
 	)
 }
+
+func ProductsModule(server IServer) {
+	var products = router.NewProducts()
+	server.router(
+		products.Common,
+	)
+}

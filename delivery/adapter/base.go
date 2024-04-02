@@ -1,11 +1,7 @@
 package adapter
 
 import (
-	"time"
-
-	"swclabs/swipe-api/internal/helper/cron"
 	"swclabs/swipe-api/internal/http"
-	"swclabs/swipe-api/pkg/tools"
 )
 
 type IAdapter interface {
@@ -21,7 +17,7 @@ func NewAdapter() IAdapter {
 		server: http.New(),
 	}
 	// initialize cron job
-	adapter._StartCommonJob()
+	// adapter._StartCommonJob()
 	return adapter
 }
 
@@ -30,13 +26,14 @@ func (adapter *_Adapter) Run(addr string) error {
 	adapter.server.Bootstrap(
 		http.AccountManagementModule,
 		http.ProductManagementModule,
+		http.ProductsModule,
 	)
 	return adapter.server.Run(addr)
 }
 
-func (adapter *_Adapter) _StartCommonJob() {
-	newJob := tools.NewJob()
-	go newJob.Scheduler(cron.Ping, 5*time.Second)
+// func (adapter *_Adapter) _StartCommonJob() {
+// 	newJob := tools.NewJob()
+// 	go newJob.Scheduler(cron.Ping, 5*time.Second)
 
-	newJob.Info()
-}
+// 	newJob.Info()
+// }

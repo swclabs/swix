@@ -3,12 +3,14 @@
 package repo
 
 import (
+	"context"
 	"log"
 
-	"gorm.io/gorm"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/pkg/db"
 	"swclabs/swipe-api/pkg/db/queries"
+
+	"gorm.io/gorm"
 )
 
 type Categories struct {
@@ -27,6 +29,10 @@ func NewCategories() domain.ICategoriesRepository {
 	}
 }
 
-func (category *Categories) New(ctg *domain.Categories) error {
-	return db.SafeWriteQuery(category.conn, queries.InsertIntoCategory, ctg.Name, ctg.Description)
+func (category *Categories) New(ctx context.Context, ctg *domain.Categories) error {
+	return db.SafeWriteQuery(ctx, category.conn, queries.InsertIntoCategory, ctg.Name, ctg.Description)
+}
+
+func (category *Categories) GetAll(ctx context.Context) ([]domain.Categories, error) {
+	panic("not implemented")
 }

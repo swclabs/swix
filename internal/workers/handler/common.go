@@ -4,11 +4,12 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/hibiken/asynq"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/service"
 	"swclabs/swipe-api/internal/helper/tasks"
 	"swclabs/swipe-api/pkg/tools/worker"
+
+	"github.com/hibiken/asynq"
 )
 
 type CommonHandler struct {
@@ -31,6 +32,6 @@ func (common *CommonHandler) HandleHealthCheck() (taskName string, fn worker.Han
 		if err := json.Unmarshal(task.Payload(), &num); err != nil {
 			return err
 		}
-		return common.handler.WorkerCheck(num)
+		return common.handler.WorkerCheck(context.Background(), num)
 	}
 }

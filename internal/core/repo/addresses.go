@@ -3,13 +3,15 @@
 package repo
 
 import (
+	"context"
 	"errors"
 	"log"
 
-	"gorm.io/gorm"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/pkg/db"
 	"swclabs/swipe-api/pkg/db/queries"
+
+	"gorm.io/gorm"
 )
 
 type Addresses struct {
@@ -28,7 +30,7 @@ func NewAddresses() domain.IAddressRepository {
 	}
 }
 
-func (addr *Addresses) New(data *domain.Addresses) error {
+func (addr *Addresses) New(ctx context.Context, data *domain.Addresses) error {
 	if data == nil {
 		return errors.New("input data invalid (nil)")
 	}
@@ -36,7 +38,9 @@ func (addr *Addresses) New(data *domain.Addresses) error {
 		(data.SupplierId == "" && data.UserId == "") {
 		return errors.New("unknown data from supplier or user")
 	}
-	return db.SafeWriteQuery(addr.conn,
+	return db.SafeWriteQuery(
+		ctx,
+		addr.conn,
 		queries.InsertIntoAddresses,
 		data.UserId, data.SupplierId, data.Street, data.Ward, data.District, data.City,
 	)

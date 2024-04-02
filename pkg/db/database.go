@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"sync"
 
 	"swclabs/swipe-api/pkg/utils"
@@ -30,10 +31,10 @@ func Connection() (*gorm.DB, error) {
 	// return gorm.Open(postgres.Open(dsn), &gorm.Config{})
 }
 
-func SafeWriteQuery(connection *gorm.DB, sql string, args ...interface{}) error {
+func SafeWriteQuery(ctx context.Context, connection *gorm.DB, sql string, args ...interface{}) error {
 	// lock the connection
 	writeLock.Lock()
 	// after function call return, unlock the write lock
 	defer writeLock.Unlock()
-	return connection.Exec(sql, args...).Error
+	return connection.WithContext(ctx).Exec(sql, args...).Error
 }

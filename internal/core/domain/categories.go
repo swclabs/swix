@@ -1,5 +1,7 @@
 package domain
 
+import "context"
+
 type CategoriesRequest struct {
 	Name        string `json:"name" validate:"required"`
 	Description string `json:"description" validate:"required"`
@@ -13,5 +15,6 @@ type Categories struct {
 }
 
 type ICategoriesRepository interface {
-	New(ctg *Categories) error
+	New(ctx context.Context, ctg *Categories) error
+	GetAll(ctx context.Context) ([]Categories, error)
 }

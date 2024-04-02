@@ -4,6 +4,7 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"mime/multipart"
 
@@ -29,9 +30,9 @@ func NewAccountManagement() *AccountManagement {
 	}
 }
 
-func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
+func (manager *AccountManagement) SignUp(ctx context.Context, req *domain.SignUpRequest) error {
 	// call repository layer
-	return manager.user.TransactionSignUp(&domain.User{
+	return manager.user.TransactionSignUp(ctx, &domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -41,9 +42,9 @@ func (manager *AccountManagement) SignUp(req *domain.SignUpRequest) error {
 
 }
 
-func (manager *AccountManagement) Login(req *domain.LoginRequest) (string, error) {
+func (manager *AccountManagement) Login(ctx context.Context, req *domain.LoginRequest) (string, error) {
 	// get account form email
-	account, err := manager.account.GetByEmail(req.Email)
+	account, err := manager.account.GetByEmail(ctx, req.Email)
 	if err != nil {
 		return "", err
 	}
@@ -54,13 +55,13 @@ func (manager *AccountManagement) Login(req *domain.LoginRequest) (string, error
 	return tools.GenerateToken(req.Email)
 }
 
-func (manager *AccountManagement) UserInfo(email string) (*domain.UserInfo, error) {
+func (manager *AccountManagement) UserInfo(ctx context.Context, email string) (*domain.UserInfo, error) {
 	// get user information
-	return manager.user.Info(email)
+	return manager.user.Info(ctx, email)
 }
 
-func (manager *AccountManagement) UpdateUserInfo(req *domain.UserUpdate) error {
-	return manager.user.SaveInfo(&domain.User{
+func (manager *AccountManagement) UpdateUserInfo(ctx context.Context, req *domain.UserUpdate) error {
+	return manager.user.SaveInfo(ctx, &domain.User{
 		UserID:      req.Id,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -82,25 +83,27 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 	return nil
 }
 
-func (manager *AccountManagement) OAuth2SaveUser(req *domain.OAuth2SaveUser) error {
-	return manager.user.TransactionSaveOAuth2(&domain.User{
-		Email:       req.Email,
-		PhoneNumber: req.PhoneNumber,
-		FirstName:   req.FirstName,
-		LastName:    req.LastName,
-		Image:       req.Image,
-	})
+func (manager *AccountManagement) OAuth2SaveUser(ctx context.Context, req *domain.OAuth2SaveUser) error {
+	return manager.user.TransactionSaveOAuth2(
+		ctx,
+		&domain.User{
+			Email:       req.Email,
+			PhoneNumber: req.PhoneNumber,
+			FirstName:   req.FirstName,
+			LastName:    req.LastName,
+			Image:       req.Image,
+		})
 }
 
-func (manager *AccountManagement) CheckLoginEmail(email string) error {
-	_, err := manager.account.GetByEmail(email)
+func (manager *AccountManagement) CheckLoginEmail(ctx context.Context, email string) error {
+	_, err := manager.account.GetByEmail(ctx, email)
 	if err != nil {
 		return errors.New("account not found: " + email)
 	}
 	return nil
 }
 
-func (manager *AccountManagement) UpdateAddress(data *domain.Addresses) error {
+func (manager *AccountManagement) UpdateAddress(ctx context.Context, data *domain.Addresses) error {
 	//TODO:
-	return manager.address.New(data)
+	return manager.address.New(ctx, data)
 }

@@ -1,5 +1,7 @@
 package domain
 
+import "context"
+
 // Suppliers table
 type Suppliers struct {
 	Id          string `json:"id" gorm:"column:id"`
@@ -15,5 +17,6 @@ type SuppliersAddress struct {
 }
 
 type ISuppliersRepository interface {
-	New(sup *Suppliers, addr *Addresses) error
+	New(ctx context.Context, sup *Suppliers, addr *Addresses) error
+	GetAll(ctx context.Context) ([]Suppliers, error)
 }

@@ -172,7 +172,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
-      - auth
+      - account_management
   /auth/login:
     post:
       consumes:
@@ -193,7 +193,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.LoginResponse'
       tags:
-      - auth
+      - account_management
   /auth/logout:
     get:
       consumes:
@@ -207,7 +207,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
-      - auth
+      - account_management
   /auth/signup:
     post:
       consumes:
@@ -228,7 +228,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.SignUpResponse'
       tags:
-      - auth
+      - account_management
   /categories:
     post:
       consumes:
@@ -278,7 +278,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: create new product
+      description: Create new product
       parameters:
       - description: image of product
         in: formData
@@ -342,7 +342,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.UserInfo'
       tags:
-      - users
+      - account_management
     put:
       consumes:
       - application/json
@@ -362,7 +362,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
-      - users
+      - account_management
   /users/image:
     put:
       consumes:
@@ -376,5 +376,5 @@ paths:
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
-      - users
+      - account_management
 swagger: "2.0"

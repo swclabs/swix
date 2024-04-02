@@ -3,11 +3,12 @@ package controller
 import (
 	"net/http"
 
-	"github.com/labstack/echo/v4"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/service"
 	"swclabs/swipe-api/pkg/tools"
 	"swclabs/swipe-api/pkg/utils"
+
+	"github.com/labstack/echo/v4"
 )
 
 type AccountManagement struct {
@@ -32,7 +33,7 @@ type IAccountManagement interface {
 
 // Login
 // @Description Login account.
-// @Tags auth
+// @Tags account_management
 // @Accept json
 // @Produce json
 // @Param login body domain.LoginRequest true "Login"
@@ -51,7 +52,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 		})
 	}
 	// var account = service.NewAccountManagement()
-	accessToken, err := account.service.Login(&request)
+	accessToken, err := account.service.Login(c.Request().Context(), &request)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -78,7 +79,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 
 // SignUp
 // @Description Register account for admin.
-// @Tags auth
+// @Tags account_management
 // @Accept json
 // @Produce json
 // @Param sign_up body domain.SignUpRequest true "Sign Up"
@@ -96,7 +97,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := account.service.SignUp(&request); err != nil {
+	if err := account.service.SignUp(c.Request().Context(), &request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "user data invalid",
 		})
@@ -109,7 +110,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 
 // Logout
 // @Description logout user from the service
-// @Tags auth
+// @Tags account_management
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
@@ -132,7 +133,7 @@ func (account *AccountManagement) Logout(c echo.Context) error {
 
 // GetMe
 // @Description get information for users.
-// @Tags users
+// @Tags account_management
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.UserInfo
@@ -141,7 +142,7 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
 	email := utils.Session(c, utils.BaseSessions, "email").(string)
-	response, err := account.service.UserInfo(email)
+	response, err := account.service.UserInfo(c.Request().Context(), email)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -152,7 +153,7 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 
 // UpdateUserInfo
 // @Description update information for users.
-// @Tags users
+// @Tags account_management
 // @Accept json
 // @Produce json
 // @Param UserInfo body domain.UserUpdate true "Update User"
@@ -170,7 +171,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := account.service.UpdateUserInfo(&request); err != nil {
+	if err := account.service.UpdateUserInfo(c.Request().Context(), &request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -183,7 +184,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 
 // UpdateUserImage
 // @Description update information for users.
-// @Tags users
+// @Tags account_management
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
@@ -210,7 +211,7 @@ func (account *AccountManagement) UpdateUserImage(c echo.Context) error {
 
 // CheckLoginEmail
 // @Description check email address before login
-// @Tags auth
+// @Tags account_management
 // @Accept json
 // @Produce json
 // @Param email query string true "email address"
@@ -223,7 +224,7 @@ func (account *AccountManagement) CheckLoginEmail(c echo.Context) error {
 			Msg: "missing query parameter: email",
 		})
 	}
-	if err := account.service.CheckLoginEmail(email); err != nil {
+	if err := account.service.CheckLoginEmail(c.Request().Context(), email); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})

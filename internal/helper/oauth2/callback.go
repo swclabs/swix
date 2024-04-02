@@ -1,14 +1,16 @@
 package oauth2
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/service"
 	"swclabs/swipe-api/pkg/tools"
 	"swclabs/swipe-api/pkg/utils"
+
+	"github.com/labstack/echo/v4"
 )
 
 func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
@@ -47,12 +49,14 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 	}
 
 	account := service.NewAccountManagement()
-	if err := account.OAuth2SaveUser(&domain.OAuth2SaveUser{
-		Email:     profile.Email,
-		FirstName: profile.GivenName,
-		LastName:  profile.FamilyName,
-		Image:     profile.Picture,
-	}); err != nil {
+	if err := account.OAuth2SaveUser(
+		context.TODO(),
+		&domain.OAuth2SaveUser{
+			Email:     profile.Email,
+			FirstName: profile.GivenName,
+			LastName:  profile.FamilyName,
+			Image:     profile.Picture,
+		}); err != nil {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 

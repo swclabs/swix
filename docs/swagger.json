@@ -18,7 +18,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "account_management"
                 ],
                 "parameters": [
                     {
@@ -49,7 +49,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "account_management"
                 ],
                 "parameters": [
                     {
@@ -82,7 +82,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "account_management"
                 ],
                 "responses": {
                     "200": {
@@ -104,7 +104,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "auth"
+                    "account_management"
                 ],
                 "parameters": [
                     {
@@ -200,7 +200,7 @@
         },
         "/products": {
             "post": {
-                "description": "create new product",
+                "description": "Create new product",
                 "consumes": [
                     "application/json"
                 ],
@@ -292,7 +292,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "account_management"
                 ],
                 "responses": {
                     "200": {
@@ -312,7 +312,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "account_management"
                 ],
                 "parameters": [
                     {
@@ -345,7 +345,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "account_management"
                 ],
                 "responses": {
                     "200": {

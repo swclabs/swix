@@ -1,5 +1,7 @@
 package domain
 
+import "context"
+
 // Addresses Table
 type Addresses struct {
 	ID         int64  `json:"id" gorm:"column:id"`
@@ -12,5 +14,5 @@ type Addresses struct {
 }
 
 type IAddressRepository interface {
-	New(data *Addresses) error
+	New(ctx context.Context, data *Addresses) error
 }
