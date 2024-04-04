@@ -29,10 +29,17 @@ func NewCategories() domain.ICategoriesRepository {
 	}
 }
 
-func (category *Categories) New(ctx context.Context, ctg *domain.Categories) error {
+func (category *Categories) Insert(ctx context.Context, ctg *domain.Categories) error {
 	return db.SafeWriteQuery(ctx, category.conn, queries.InsertIntoCategory, ctg.Name, ctg.Description)
 }
 
-func (category *Categories) GetAll(ctx context.Context) ([]domain.Categories, error) {
-	panic("not implemented")
+func (category *Categories) GetLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+	var categories []domain.Categories
+	if err := category.conn.WithContext(ctx).Raw(
+		queries.SelectCategoryLimit,
+		limit,
+	).Scan(&categories).Error; err != nil {
+		return nil, err
+	}
+	return categories, nil
 }

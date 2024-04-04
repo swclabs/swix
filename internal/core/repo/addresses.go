@@ -30,7 +30,7 @@ func NewAddresses() domain.IAddressRepository {
 	}
 }
 
-func (addr *Addresses) New(ctx context.Context, data *domain.Addresses) error {
+func (addr *Addresses) Insert(ctx context.Context, data *domain.Addresses) error {
 	if data == nil {
 		return errors.New("input data invalid (nil)")
 	}

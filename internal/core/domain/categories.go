@@ -3,8 +3,8 @@ package domain
 import "context"
 
 type CategoriesRequest struct {
-	Name        string `json:"name" validate:"required"`
-	Description string `json:"description" validate:"required"`
+	Name        string `json:"name" validate:"required" gorm:"column:name"`
+	Description string `json:"description" validate:"required" gorm:"column:description"`
 }
 
 // Categories Table
@@ -14,7 +14,11 @@ type Categories struct {
 	Description string `json:"description" gorm:"column:description"`
 }
 
+type CategoriesList struct {
+	Data []Categories `json:"data"`
+}
+
 type ICategoriesRepository interface {
-	New(ctx context.Context, ctg *Categories) error
-	GetAll(ctx context.Context) ([]Categories, error)
+	Insert(ctx context.Context, ctg *Categories) error
+	GetLimit(ctx context.Context, limit string) ([]Categories, error)
 }

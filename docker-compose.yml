@@ -10,6 +10,7 @@ services:
       - swipe_bridge
     ports:
       - 8000:8000
+
   swipe-worker:
     image: duchungho/swipe-api:latest
     env_file:
@@ -18,6 +19,7 @@ services:
     networks:
       - swipe_bridge
     command: "swipe w"
+    
 networks:
   swipe_bridge:
 volumes:

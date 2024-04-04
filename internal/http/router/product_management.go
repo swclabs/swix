@@ -25,6 +25,10 @@ func (product *ProductManagement) Product(e *echo.Echo) {
 
 }
 
+func (product *ProductManagement) Newsletter(e *echo.Echo) {
+	e.POST("/newsletters", product.controller.UploadNewsletter)
+}
+
 func (product *ProductManagement) Category(e *echo.Echo) {
 	e.POST("/categories", product.controller.InsertCategory)
 	// router.GET("/categories")

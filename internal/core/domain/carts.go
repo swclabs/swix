@@ -13,8 +13,8 @@ type CartInfo struct {
 }
 
 type ICartRepository interface {
-	Add(productID int64) error
-	AddMany(products []int64) error
+	Insert(productID int64) error
+	InsertMany(products []int64) error
 	GetCartByUserID(userId int64) (*CartInfo, error)
 	RemoveProduct(productID int64) error
 }

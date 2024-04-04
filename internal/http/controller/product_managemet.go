@@ -6,14 +6,17 @@ import (
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/service"
 	"swclabs/swipe-api/pkg/tools"
+	"swclabs/swipe-api/pkg/utils"
 
 	"github.com/labstack/echo/v4"
+	"github.com/mitchellh/mapstructure"
 )
 
 type IProductManagement interface {
 	InsertCategory(c echo.Context) error
 	UploadProductImage(c echo.Context) error
 	UploadProduct(c echo.Context) error
+	UploadNewsletter(c echo.Context) error
 }
 
 type ProductManagement struct {
@@ -62,7 +65,7 @@ func (product *ProductManagement) InsertCategory(c echo.Context) error {
 // UploadProductImage
 // @Description Insert new product image
 // @Tags product_management
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
 // @Param id path string true "id of product"
 // @Param img formData file true "image of product"
@@ -97,7 +100,7 @@ func (product *ProductManagement) UploadProductImage(c echo.Context) error {
 // UploadProduct
 // @Description Create new product
 // @Tags product_management
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
 // @Param img formData file true "image of product"
 // @Param product body domain.ProductRequest true "Product Request"
@@ -131,5 +134,53 @@ func (product *ProductManagement) UploadProduct(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, domain.OK{
 		Msg: "upload product successfully",
+	})
+}
+
+// UploadNewsletter
+// @Description Create newsletter
+// @Tags product_management
+// @Accept multipart/form-data
+// @Accept json
+// @Produce json
+// @Param img formData file true "image of newsletter"
+// @Param product formData domain.Newsletter true "Newsletter Request"
+// @Success 200 {object} domain.OK
+// @Router /newsletters [POST]
+func (product *ProductManagement) UploadNewsletter(c echo.Context) error {
+	file, err := c.FormFile("img")
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	formData, err := c.MultipartForm()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	// bind json to structure
+	var newsletter domain.Newsletter
+
+	if err := mapstructure.Decode(utils.NxN2Nx1(formData.Value), &newsletter); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	// check validate struct
+	if valid := tools.Validate(&newsletter); valid != "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: valid,
+		})
+	}
+	// call services
+	if err := product.services.UploadNewsletter(c.Request().Context(), newsletter, file); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, domain.OK{
+		Msg: "upload newsletter successfully",
 	})
 }

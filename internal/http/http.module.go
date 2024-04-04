@@ -1,7 +1,6 @@
 package http
 
 import (
-	"swclabs/swipe-api/internal/helper/resolver"
 	"swclabs/swipe-api/internal/http/router"
 )
 
@@ -13,9 +12,6 @@ func CommonModule(server IServer) {
 }
 
 func AccountManagementModule(server IServer) {
-	server._BackgroundTask(func() {
-		resolver.StarUserImageHandler(5)
-	})
 	var accountManagement = router.NewAccountManagement()
 	server.router(
 		accountManagement.Users,
@@ -29,6 +25,7 @@ func ProductManagementModule(server IServer) {
 	server.router(
 		productManagement.Category,
 		productManagement.Product,
+		productManagement.Newsletter,
 	)
 }
 

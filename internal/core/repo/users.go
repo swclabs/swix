@@ -217,7 +217,7 @@ func (usr *Users) TransactionSignUp(ctx context.Context, user *domain.User, pass
 			return err
 		}
 		return account.Insert(ctx, &domain.Account{
-			Username: fmt.Sprintf("user#%d", userInfo.UserID),
+			Username: fmt.Sprintf("user#%d", userInfo.Id),
 			Password: hash,
 			Role:     "Customer",
 			Email:    user.Email,
@@ -241,7 +241,7 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user *domain.User) 
 			return err
 		}
 		return account.Insert(ctx, &domain.Account{
-			Username: fmt.Sprintf("user#%d", userInfo.UserID),
+			Username: fmt.Sprintf("user#%d", userInfo.Id),
 			Password: hash,
 			Role:     "Customer",
 			Email:    user.Email,
