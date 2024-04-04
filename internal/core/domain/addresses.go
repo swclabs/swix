@@ -14,5 +14,5 @@ type Addresses struct {
 }
 
 type IAddressRepository interface {
-	New(ctx context.Context, data *Addresses) error
+	Insert(ctx context.Context, data *Addresses) error
 }

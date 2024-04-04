@@ -15,7 +15,7 @@ type IAccountManagementService interface {
 	UpdateUserInfo(ctx context.Context, req *UserUpdate) error
 	UploadAvatar(email string, fileHeader *multipart.FileHeader) error
 	OAuth2SaveUser(ctx context.Context, req *OAuth2SaveUser) error
-	UpdateAddress(ctx context.Context, data *Addresses) error
+	UploadAddress(ctx context.Context, data *Addresses) error
 }
 
 // IProductService : Module Product interactions
@@ -30,8 +30,8 @@ type IProductService interface {
 	// Comment()
 
 	GetAccessory(ctx context.Context) ([]Accessory, error)
-
-	GetNewsletter(ctx context.Context) ([]Newsletter, error)
+	GetCategoriesLimit(ctx context.Context, limit string) ([]Categories, error)
+	GetNewsletter(ctx context.Context, limit int) ([]Newsletter, error)
 	GetHomeBanner(ctx context.Context) ([]HomeBanners, error)
 }
 
@@ -50,7 +50,7 @@ type IProductManagementService interface {
 	InsertCategory(ctx context.Context, ctg *Categories) error
 	UploadImage(Id string, fileHeader *multipart.FileHeader) error
 	UploadProduct(img *multipart.FileHeader, products *ProductRequest) error
-	UploadNewsletter(ctx context.Context, news *Newsletter) error
+	UploadNewsletter(ctx context.Context, news Newsletter, fileHeader *multipart.FileHeader) error
 	UploadHomeBanner(ctx context.Context, data *HomeBanners) error
 	GetAllSuppliers(ctx context.Context) ([]Suppliers, error)
 }

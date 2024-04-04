@@ -6,12 +6,13 @@ package service
 import (
 	"context"
 	"errors"
+	"log"
 	"mime/multipart"
 
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/repo"
-	"swclabs/swipe-api/internal/helper/resolver"
 	"swclabs/swipe-api/internal/helper/tasks"
+	"swclabs/swipe-api/pkg/cloud"
 	"swclabs/swipe-api/pkg/tools"
 )
 
@@ -62,7 +63,7 @@ func (manager *AccountManagement) UserInfo(ctx context.Context, email string) (*
 
 func (manager *AccountManagement) UpdateUserInfo(ctx context.Context, req *domain.UserUpdate) error {
 	return manager.user.SaveInfo(ctx, &domain.User{
-		UserID:      req.Id,
+		Id:          req.Id,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -76,11 +77,14 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 		return err
 	}
 	// call worker resolver process this tasks
-	resolver.ImagePool.Process(resolver.UserImage{
+	resp, err := cloud.UpdateImages(cloud.Connection(), file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return repo.NewUsers().SaveInfo(context.TODO(), &domain.User{
 		Email: email,
-		File:  file,
+		Image: resp.SecureURL,
 	})
-	return nil
 }
 
 func (manager *AccountManagement) OAuth2SaveUser(ctx context.Context, req *domain.OAuth2SaveUser) error {
@@ -103,7 +107,7 @@ func (manager *AccountManagement) CheckLoginEmail(ctx context.Context, email str
 	return nil
 }
 
-func (manager *AccountManagement) UpdateAddress(ctx context.Context, data *domain.Addresses) error {
+func (manager *AccountManagement) UploadAddress(ctx context.Context, data *domain.Addresses) error {
 	//TODO:
-	return manager.address.New(ctx, data)
+	return manager.address.Insert(ctx, data)
 }

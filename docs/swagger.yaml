@@ -1,5 +1,21 @@
 basePath: /
 definitions:
+  domain.Categories:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  domain.CategoriesList:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Categories'
+        type: array
+    type: object
   domain.CategoriesRequest:
     properties:
       description:
@@ -230,6 +246,25 @@ paths:
       tags:
       - account_management
   /categories:
+    get:
+      consumes:
+      - application/json
+      description: Get categories
+      parameters:
+      - description: limit number
+        in: query
+        name: limit
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.CategoriesList'
+      tags:
+      - products
     post:
       consumes:
       - application/json
@@ -262,6 +297,72 @@ paths:
           description: OK
       tags:
       - common
+  /newsletter:
+    get:
+      consumes:
+      - application/json
+      description: Get Product Newsletter
+      parameters:
+      - description: Login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.LoginResponse'
+      tags:
+      - products
+  /newsletters:
+    post:
+      consumes:
+      - multipart/form-data
+      - application/json
+      description: Create newsletter
+      parameters:
+      - description: image of newsletter
+        in: formData
+        name: img
+        required: true
+        type: file
+      - in: formData
+        name: description
+        required: true
+        type: string
+      - in: formData
+        name: image
+        required: true
+        type: string
+      - in: formData
+        name: subtitle
+        required: true
+        type: string
+      - in: formData
+        name: textcolor
+        required: true
+        type: string
+      - in: formData
+        name: title
+        required: true
+        type: string
+      - in: formData
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - product_management
   /oauth2/login:
     get:
       consumes:
@@ -277,7 +378,7 @@ paths:
   /products:
     post:
       consumes:
-      - application/json
+      - multipart/form-data
       description: Create new product
       parameters:
       - description: image of product
@@ -303,7 +404,7 @@ paths:
   /products/img/:id:
     post:
       consumes:
-      - application/json
+      - multipart/form-data
       description: Insert new product image
       parameters:
       - description: id of product

@@ -6,6 +6,7 @@ import (
 
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/repo"
+	"swclabs/swipe-api/pkg/cloud"
 )
 
 type ProductManagement struct {
@@ -20,7 +21,7 @@ func NewProductManagement() domain.IProductManagementService {
 
 func (product *ProductManagement) InsertCategory(ctx context.Context, ctg *domain.Categories) error {
 	// call repository layer
-	return product.Category.New(ctx, ctg)
+	return product.Category.Insert(ctx, ctg)
 }
 
 func (product *ProductManagement) UploadImage(Id string, fileHeader *multipart.FileHeader) error {
@@ -35,9 +36,17 @@ func (product *ProductManagement) GetAllSuppliers(ctx context.Context) ([]domain
 	panic("not implemented")
 }
 
-func (product *ProductManagement) UploadNewsletter(ctx context.Context, news *domain.Newsletter) error {
-	// TODO:
-	return nil
+func (product *ProductManagement) UploadNewsletter(ctx context.Context, news domain.Newsletter, fileHeader *multipart.FileHeader) error {
+	file, err := fileHeader.Open()
+	if err != nil {
+		return err
+	}
+	resp, err := cloud.UpdateImages(cloud.Connection(), file)
+	if err != nil {
+		return nil
+	}
+	news.Image = resp.SecureURL
+	return repo.NewNewsletter().Insert(context.Background(), news)
 }
 
 func (product *ProductManagement) UploadHomeBanner(ctx context.Context, data *domain.HomeBanners) error {

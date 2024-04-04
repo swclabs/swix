@@ -25,12 +25,12 @@ func NewCarts() domain.ICartRepository {
 	}
 }
 
-func (cart *Carts) Add(productID int64) error {
+func (cart *Carts) Insert(productID int64) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (cart *Carts) AddMany(products []int64) error {
+func (cart *Carts) InsertMany(products []int64) error {
 	//TODO implement me
 	panic("implement me")
 }

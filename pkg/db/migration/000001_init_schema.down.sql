@@ -14,3 +14,4 @@ DROP TABLE IF EXISTS "deliveries";
 DROP TABLE IF EXISTS "receipts";
 DROP TABLE IF EXISTS "user_address";
 DROP TABLE IF EXISTS "supplier_address";
+DROP TABLE IF EXISTS "newsletter";

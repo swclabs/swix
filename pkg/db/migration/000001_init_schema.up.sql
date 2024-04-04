@@ -129,3 +129,13 @@ CREATE TABLE "favorite_product" (
   "user_id" bigint NOT NULL,
   "product_id" bigint NOT NULL
 );
+
+CREATE TABLE "newsletter" (
+  "id" bigserial PRIMARY KEY,
+  "type" varchar,
+  "title" varchar,
+  "subtitle" varchar,
+  "description" varchar,
+  "image" varchar,
+  "textcolor" varchar
+)

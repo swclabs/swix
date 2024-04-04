@@ -4,7 +4,7 @@ import "context"
 
 // User : Table users
 type User struct {
-	UserID      int64  `json:"id" gorm:"column:id"`
+	Id      int64  `json:"id" gorm:"column:id"`
 	Email       string `json:"email" gorm:"column:email"`
 	PhoneNumber string `json:"phone_number" gorm:"column:phone_number"`
 	FirstName   string `json:"first_name" gorm:"column:first_name"`
