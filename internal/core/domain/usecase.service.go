@@ -31,8 +31,9 @@ type IProductService interface {
 
 	GetAccessory(ctx context.Context) ([]Accessory, error)
 	GetCategoriesLimit(ctx context.Context, limit string) ([]Categories, error)
-	GetNewsletter(ctx context.Context, limit int) ([]Newsletter, error)
+	GetNewsletter(ctx context.Context, limit int) ([]Newsletters, error)
 	GetHomeBanner(ctx context.Context) ([]HomeBanners, error)
+	GetProductsLimit(ctx context.Context, limit int) ([]Products, error)
 }
 
 // IPurchasingService : Module Purchasing
@@ -49,10 +50,10 @@ type IPurchasingService interface {
 type IProductManagementService interface {
 	InsertCategory(ctx context.Context, ctg *Categories) error
 	UploadImage(Id string, fileHeader *multipart.FileHeader) error
-	UploadProduct(img *multipart.FileHeader, products *ProductRequest) error
+	UploadProduct(ctx context.Context, fileHeader *multipart.FileHeader, products ProductRequest) error
 	UploadNewsletter(ctx context.Context, news Newsletter, fileHeader *multipart.FileHeader) error
 	UploadHomeBanner(ctx context.Context, data *HomeBanners) error
-	GetAllSuppliers(ctx context.Context) ([]Suppliers, error)
+	GetSuppliersLimit(ctx context.Context, limit int) ([]Suppliers, error)
 }
 
 // IOrderManagementService : Module Order Management

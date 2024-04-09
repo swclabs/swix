@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 
 	"swclabs/swipe-api/internal/core/domain"
 	"swclabs/swipe-api/internal/core/service"
@@ -17,6 +18,7 @@ type IProductManagement interface {
 	UploadProductImage(c echo.Context) error
 	UploadProduct(c echo.Context) error
 	UploadNewsletter(c echo.Context) error
+	GetSupplier(c echo.Context) error
 }
 
 type ProductManagement struct {
@@ -103,7 +105,7 @@ func (product *ProductManagement) UploadProductImage(c echo.Context) error {
 // @Accept multipart/form-data
 // @Produce json
 // @Param img formData file true "image of product"
-// @Param product body domain.ProductRequest true "Product Request"
+// @Param product formData domain.ProductRequest true "Product Request"
 // @Success 200 {object} domain.OK
 // @Router /products [POST]
 func (product *ProductManagement) UploadProduct(c echo.Context) error {
@@ -113,9 +115,15 @@ func (product *ProductManagement) UploadProduct(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
+	formData, err := c.MultipartForm()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
 	// bind json to structure
 	var productReq domain.ProductRequest
-	if err := c.Bind(&productReq); err != nil {
+	if err := mapstructure.Decode(utils.NxN2Nx1(formData.Value), &productReq); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -127,7 +135,7 @@ func (product *ProductManagement) UploadProduct(c echo.Context) error {
 		})
 	}
 	// call services
-	if err := product.services.UploadProduct(file, &productReq); err != nil {
+	if err := product.services.UploadProduct(c.Request().Context(), file, productReq); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -184,3 +192,30 @@ func (product *ProductManagement) UploadNewsletter(c echo.Context) error {
 		Msg: "upload newsletter successfully",
 	})
 }
+
+// GetSupplier
+// @Description get suppliers information
+// @Tags product_management
+// @Accept json
+// @Produce json
+// @Param limit query int true "limit number of suppliers"
+// @Success 200 {object} domain.SuppliersListResponse
+// @Router /supplier [GET]
+func (product *ProductManagement) GetSupplier(c echo.Context) error {
+	_limit, err := strconv.Atoi(c.QueryParam("limit"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "Invalid 'limit' query parameter",
+		})
+	}
+	_supp, err := product.services.GetSuppliersLimit(c.Request().Context(), _limit)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, domain.SuppliersListResponse{
+		Data: _supp,
+	})
+}
+

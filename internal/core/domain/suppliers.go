@@ -2,6 +2,8 @@ package domain
 
 import "context"
 
+const SuppliersTable = "suppliers"
+
 // Suppliers table
 type Suppliers struct {
 	Id          string `json:"id" gorm:"column:id"`
@@ -16,7 +18,11 @@ type SuppliersAddress struct {
 	AddressID   string `json:"address_id" gorm:"column:address_id"`
 }
 
+type SuppliersListResponse struct {
+	Data []Suppliers `json:"data"`
+}
+
 type ISuppliersRepository interface {
 	New(ctx context.Context, sup *Suppliers, addr *Addresses) error
-	GetAll(ctx context.Context) ([]Suppliers, error)
+	GetLimit(ctx context.Context, limit int) ([]Suppliers, error)
 }

@@ -9,13 +9,21 @@ import (
 	"strings"
 	"time"
 
-	"github.com/hibiken/asynq"
 	"swclabs/swipe-api/pkg/tools/logger"
+
+	"github.com/hibiken/asynq"
 )
 
+// Priority is a queue priority define in asynq
 type Priority map[string]int
+
+// Queue is a map of queue name and handler function
 type Queue map[string]func(context.Context, *asynq.Task) error
+
+// HandleFunc is a sort of handler function type
 type HandleFunc func(ctx context.Context, task *asynq.Task) error
+
+// Engine includes all components of the asynq server
 type Engine struct {
 	server   *asynq.Server
 	mux      *asynq.ServeMux
@@ -25,23 +33,7 @@ type Engine struct {
 
 var broker asynq.RedisClientOpt
 
-func getName(input interface{}) string {
-	str := runtime.FuncForPC(reflect.ValueOf(input).Pointer()).Name()
-	paths := strings.Split(str, "/")
-	return paths[len(paths)-1]
-}
-
-func GetTaskName(input interface{}) string {
-	return getName(input)
-}
-
-func SetBroker(host, port, password string) {
-	broker = asynq.RedisClientOpt{
-		Addr:     fmt.Sprintf("%s:%s", host, port), // Redis server address
-		Password: password,                         // Redis password
-	}
-}
-
+// NewServer creates a new instance of the Worker consume server
 func NewServer(priorityQueue Priority) *Engine {
 	return &Engine{
 		server:   nil,
@@ -51,15 +43,16 @@ func NewServer(priorityQueue Priority) *Engine {
 	}
 }
 
-func (w *Engine) Queue(hfn func() (taskName string, fn HandleFunc)) {
-	taskName, fn := hfn()
-	w.queue[taskName] = fn
-}
-
+// handleFunctions run all functions in the given path
 func (w *Engine) handleFunctions() {
 	for k, v := range w.queue {
 		w.mux.HandleFunc(k, v)
 	}
+}
+
+func (w *Engine) Queue(hfn func() (taskName string, fn HandleFunc)) {
+	taskName, fn := hfn()
+	w.queue[taskName] = fn
 }
 
 func (w *Engine) Run(concurrency int) error {
@@ -85,6 +78,34 @@ func (w *Engine) Run(concurrency int) error {
 	return w.server.Run(w.mux)
 }
 
+// getName returns the name of the function
+func getName(input interface{}) string {
+	str := runtime.FuncForPC(reflect.ValueOf(input).Pointer()).Name()
+	paths := strings.Split(str, "/")
+	return paths[len(paths)-1]
+}
+
+// SetBroker set redis host and port to asynq.RedisClientOpt
+func SetBroker(host, port, password string) {
+	broker = asynq.RedisClientOpt{
+		Addr:     fmt.Sprintf("%s:%s", host, port), // Redis server address
+		Password: password,                         // Redis password
+	}
+}
+
+// GetTaskName get taskname from function
+func GetTaskName(input interface{}) string {
+	return getName(input)
+}
+
+// NewTask creates a new asynq.Task instance
+// to be executed by worker consume handler.
+func NewTask(taskName string, data interface{}) *asynq.Task {
+	payload, _ := json.Marshal(data)
+	return asynq.NewTask(taskName, payload)
+}
+
+// Exec executes tasks in the given queue
 func Exec(queue string, task *asynq.Task) error {
 	// Create a new Asynq client.
 	client := asynq.NewClient(broker)
@@ -106,11 +127,7 @@ func Exec(queue string, task *asynq.Task) error {
 
 }
 
-func NewTask(taskName string, data interface{}) *asynq.Task {
-	payload, _ := json.Marshal(data)
-	return asynq.NewTask(taskName, payload)
-}
-
+// Delay executes tasks after period of time.
 func Delay(delay *time.Duration, queue string, task *asynq.Task) error {
 	// Create a new Asynq client.
 	client := asynq.NewClient(broker)

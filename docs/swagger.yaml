@@ -54,12 +54,44 @@ definitions:
     - success
     - token
     type: object
+  domain.NewsletterLisyResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Newsletters'
+        type: array
+    type: object
+  domain.Newsletters:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      subtitle:
+        type: string
+      textcolor:
+        type: string
+      title:
+        type: string
+      type:
+        type: string
+    required:
+    - description
+    - id
+    - image
+    - subtitle
+    - textcolor
+    - title
+    - type
+    type: object
   domain.OK:
     properties:
       msg:
         type: string
     type: object
-  domain.ProductRequest:
+  domain.Products:
     properties:
       available:
         type: integer
@@ -67,6 +99,8 @@ definitions:
         type: integer
       description:
         type: string
+      id:
+        type: integer
       image:
         type: string
       name:
@@ -75,14 +109,13 @@ definitions:
         type: string
       supplier_id:
         type: integer
-    required:
-    - available
-    - category_id
-    - description
-    - image
-    - name
-    - price
-    - supplier_id
+    type: object
+  domain.ProductsListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Products'
+        type: array
     type: object
   domain.SignUpRequest:
     properties:
@@ -112,6 +145,24 @@ definitions:
     required:
     - msg
     - success
+    type: object
+  domain.Suppliers:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  domain.SuppliersListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Suppliers'
+        type: array
     type: object
   domain.UserInfo:
     properties:
@@ -303,19 +354,18 @@ paths:
       - application/json
       description: Get Product Newsletter
       parameters:
-      - description: Login
-        in: body
-        name: login
+      - description: limit number of newsletter
+        in: query
+        name: limit
         required: true
-        schema:
-          $ref: '#/definitions/domain.LoginRequest'
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.LoginResponse'
+            $ref: '#/definitions/domain.NewsletterLisyResponse'
       tags:
       - products
   /newsletters:
@@ -376,6 +426,25 @@ paths:
       tags:
       - common
   /products:
+    get:
+      consumes:
+      - application/json
+      description: get product information
+      parameters:
+      - description: limit number of products
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ProductsListResponse'
+      tags:
+      - products
     post:
       consumes:
       - multipart/form-data
@@ -386,12 +455,30 @@ paths:
         name: img
         required: true
         type: file
-      - description: Product Request
-        in: body
-        name: product
+      - in: formData
+        name: available
         required: true
-        schema:
-          $ref: '#/definitions/domain.ProductRequest'
+        type: integer
+      - in: formData
+        name: category_id
+        required: true
+        type: integer
+      - in: formData
+        name: description
+        required: true
+        type: string
+      - in: formData
+        name: name
+        required: true
+        type: string
+      - in: formData
+        name: price
+        required: true
+        type: string
+      - in: formData
+        name: supplier_id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -428,6 +515,26 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/domain.Error'
+      tags:
+      - product_management
+  /supplier:
+    get:
+      consumes:
+      - application/json
+      description: get suppliers information
+      parameters:
+      - description: limit number of suppliers
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.SuppliersListResponse'
       tags:
       - product_management
   /users:

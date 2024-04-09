@@ -4,11 +4,13 @@ package adapter
 
 import "swclabs/swipe-api/internal/http"
 
+const TypeProductManagement = "ProductManagement"
+
 type _ProductManagementAdapter struct {
 	server http.IServer
 }
 
-func NewProductManagementAdapter() IAdapter {
+func _NewProductManagement() IAdapter {
 	product := &_ProductManagementAdapter{
 		server: http.New(),
 	}

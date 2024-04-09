@@ -31,7 +31,7 @@ import (
 func main() {
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 	server := delivery.NewServer(addr)
-	adapter := adapter.NewAdapter()
+	adapter := adapter.New(adapter.TypeBase)
 
 	if err := server.Connect(adapter); err != nil {
 		log.Fatal(err)

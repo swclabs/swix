@@ -29,11 +29,19 @@ func NewProducts() domain.IProductRepository {
 	}
 }
 
-func (product *Products) New(ctx context.Context, prd *domain.Products) error {
+func (product *Products) Insert(ctx context.Context, prd *domain.Products) error {
 	return db.SafeWriteQuery(
 		ctx,
 		product.conn,
 		queries.InsertIntoProducts,
 		prd.Image, prd.Name, prd.Description, prd.Available, prd.SupplierID, prd.CategoryID,
 	)
+}
+
+func (product *Products) GetLitmit(ctx context.Context, limit int) ([]domain.Products, error) {
+	var products []domain.Products
+	if err := product.conn.Table(domain.ProductsTable).Find(&products).Limit(limit).Error; err != nil {
+		return nil, err
+	}
+	return products, nil
 }

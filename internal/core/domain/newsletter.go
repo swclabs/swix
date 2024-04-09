@@ -2,6 +2,8 @@ package domain
 
 import "context"
 
+const NewsletterTable = "newsletter"
+
 type Newsletter struct {
 	Type        string `json:"type" gorm:"column:type" validate:"required"`
 	Title       string `json:"title" gorm:"column:title" validate:"required"`
@@ -11,11 +13,16 @@ type Newsletter struct {
 	TextColor   string `json:"textcolor" gorm:"column:textcolor" validate:"required"`
 }
 
-type NewsletterResponse struct {
+type Newsletters struct {
 	Id string `json:"id" gorm:"column:id" validate:"required"`
 	Newsletter
 }
 
+type NewsletterLisyResponse struct {
+	Data []Newsletters `json:"data"`
+}
+
 type INewsletterRepository interface {
 	Insert(ctx context.Context, newsletter Newsletter) error
+	Get(ctx context.Context, limit int) ([]Newsletters, error)
 }

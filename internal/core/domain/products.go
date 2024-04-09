@@ -2,6 +2,8 @@ package domain
 
 import "context"
 
+const ProductsTable = "products"
+
 // Products Table
 type Products struct {
 	ID          int64  `json:"id" gorm:"column:id"`
@@ -15,7 +17,6 @@ type Products struct {
 }
 
 type ProductRequest struct {
-	Image       string `json:"image" validate:"required"`
 	Price       string `json:"price" validate:"required"`
 	Description string `json:"description" validate:"required"`
 	Name        string `json:"name" validate:"required"`
@@ -54,6 +55,10 @@ type Accessory struct {
 	Img   string `json:"img" gorm:"column:img"`
 }
 
+type ProductsListResponse struct {
+	Data []Products `json:"data" gorm:"column:data"`
+}
+
 type IProductInCartRepository interface {
 	GetByCartID(cartID int64) ([]ProductInCart, error)
 	AddProduct(product *ProductInCart) error
@@ -62,5 +67,6 @@ type IProductInCartRepository interface {
 }
 
 type IProductRepository interface {
-	New(ctx context.Context, prd *Products) error
+	Insert(ctx context.Context, prd *Products) error
+	GetLitmit(ctx context.Context, limit int) ([]Products, error)
 }

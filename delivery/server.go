@@ -16,6 +16,13 @@ func NewServer(addr string) IServer {
 	}
 }
 
+// Connect to module via adapter
+//
+// Example:
+//
+//	server := delivery.NewServer("localhost:8000")
+//	adapter := adapter.NewAdapter()
+//	server.Connect(adapter)
 func (server *_Server) Connect(adapter adapter.IAdapter) error {
 	return adapter.Run(server.address)
 }

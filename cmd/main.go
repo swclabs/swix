@@ -74,7 +74,7 @@ var Command = []*cli.Command{
 		Action: func(_ *cli.Context) error {
 			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 			server := delivery.NewServer(addr)
-			adapter := adapter.NewAdapter()
+			adapter := adapter.New(adapter.TypeBase)
 
 			return server.Connect(adapter)
 		},
