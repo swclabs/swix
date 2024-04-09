@@ -41,7 +41,7 @@ var Command = []*cli.Command{
 		Action: func(_ *cli.Context) error {
 			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 			server := delivery.NewServer(addr)
-			adapter := adapter.NewProducts()
+			adapter := adapter.New(adapter.TypeProducts)
 
 			return server.Connect(adapter)
 		},

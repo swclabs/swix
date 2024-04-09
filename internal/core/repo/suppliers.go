@@ -12,7 +12,6 @@ import (
 )
 
 type Suppliers struct {
-	data *domain.Suppliers
 	conn *gorm.DB
 }
 
@@ -22,7 +21,6 @@ func NewSuppliers() domain.ISuppliersRepository {
 		log.Fatal(err)
 	}
 	return &Suppliers{
-		data: &domain.Suppliers{},
 		conn: _conn,
 	}
 }
@@ -38,6 +36,10 @@ func (supplier *Suppliers) New(ctx context.Context, supp *domain.Suppliers, addr
 	})
 }
 
-func (supplier *Suppliers) GetAll(ctx context.Context) ([]domain.Suppliers, error) {
-	panic("not implemented")
+func (supplier *Suppliers) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
+	var _suppliers []domain.Suppliers
+	if err := supplier.conn.Table(domain.SuppliersTable).Find(&_suppliers).Limit(limit).Error; err != nil {
+		return nil, err
+	}
+	return _suppliers, nil
 }

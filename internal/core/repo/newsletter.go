@@ -11,7 +11,6 @@ import (
 )
 
 type Newsletter struct {
-	data *domain.Newsletter
 	conn *gorm.DB
 }
 
@@ -21,7 +20,6 @@ func NewNewsletter() domain.INewsletterRepository {
 		log.Fatal(err)
 	}
 	return &Newsletter{
-		data: &domain.Newsletter{},
 		conn: _conn,
 	}
 }
@@ -33,4 +31,12 @@ func (news *Newsletter) Insert(ctx context.Context, newsletter domain.Newsletter
 		queries.InsertIntoNewsletter,
 		newsletter.Type, newsletter.Title, newsletter.SubTitle, newsletter.Description, newsletter.Image, newsletter.TextColor,
 	)
+}
+
+func (news *Newsletter) Get(ctx context.Context, limit int) ([]domain.Newsletters, error) {
+	var newsletter []domain.Newsletters
+	if err := news.conn.Table(domain.NewsletterTable).Find(&newsletter).Limit(limit).Error; err != nil {
+		return nil, err
+	}
+	return newsletter, nil
 }

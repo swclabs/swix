@@ -229,20 +229,18 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "description": "Login",
-                        "name": "login",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.LoginRequest"
-                        }
+                        "type": "integer",
+                        "description": "limit number of newsletter",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.LoginResponse"
+                            "$ref": "#/definitions/domain.NewsletterLisyResponse"
                         }
                     }
                 }
@@ -336,6 +334,35 @@ const docTemplate = `{
             }
         },
         "/products": {
+            "get": {
+                "description": "get product information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "limit number of products",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ProductsListResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Create new product",
                 "consumes": [
@@ -356,13 +383,40 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Product Request",
-                        "name": "product",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.ProductRequest"
-                        }
+                        "type": "integer",
+                        "name": "available",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "category_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "description",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "price",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "name": "supplier_id",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -414,6 +468,37 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/domain.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/supplier": {
+            "get": {
+                "description": "get suppliers information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product_management"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "limit number of suppliers",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.SuppliersListResponse"
                         }
                     }
                 }
@@ -578,6 +663,52 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.NewsletterLisyResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Newsletters"
+                    }
+                }
+            }
+        },
+        "domain.Newsletters": {
+            "type": "object",
+            "required": [
+                "description",
+                "id",
+                "image",
+                "subtitle",
+                "textcolor",
+                "title",
+                "type"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "textcolor": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.OK": {
             "type": "object",
             "properties": {
@@ -586,17 +717,8 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.ProductRequest": {
+        "domain.Products": {
             "type": "object",
-            "required": [
-                "available",
-                "category_id",
-                "description",
-                "image",
-                "name",
-                "price",
-                "supplier_id"
-            ],
             "properties": {
                 "available": {
                     "type": "integer"
@@ -606,6 +728,9 @@ const docTemplate = `{
                 },
                 "description": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "image": {
                     "type": "string"
@@ -618,6 +743,17 @@ const docTemplate = `{
                 },
                 "supplier_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "domain.ProductsListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Products"
+                    }
                 }
             }
         },
@@ -660,6 +796,34 @@ const docTemplate = `{
                 },
                 "success": {
                     "type": "boolean"
+                }
+            }
+        },
+        "domain.Suppliers": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.SuppliersListResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Suppliers"
+                    }
                 }
             }
         },

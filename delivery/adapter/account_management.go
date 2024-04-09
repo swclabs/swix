@@ -6,11 +6,13 @@ import (
 	"swclabs/swipe-api/internal/http"
 )
 
+const TypeAccountManagement = "AccountManagementAdapter"
+
 type _AccountManagementAdapter struct {
 	server http.IServer
 }
 
-func NewAccountManagementAdapter() IAdapter {
+func _NewAccountManagement() IAdapter {
 	account := &_AccountManagementAdapter{
 		server: http.New(),
 	}
@@ -23,10 +25,3 @@ func (account *_AccountManagementAdapter) Run(addr string) error {
 	account.server.Bootstrap(http.AccountManagementModule)
 	return account.server.Run(addr)
 }
-
-// func (account *_AccountManagementAdapter) _StartAccountManagementJob() {
-// 	newJob := tools.NewJob()
-// 	go newJob.Scheduler(cron.Ping, 5*time.Second)
-
-// 	newJob.Info()
-// }

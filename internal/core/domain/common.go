@@ -11,3 +11,4 @@ type Error struct {
 type OK struct {
 	Msg string `json:"msg"`
 }
+
