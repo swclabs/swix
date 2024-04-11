@@ -8,6 +8,7 @@ import (
 	"swclabs/swipe-api/pkg/db"
 	"swclabs/swipe-api/pkg/db/queries"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -25,15 +26,43 @@ func NewSuppliers() domain.ISuppliersRepository {
 	}
 }
 
-func (supplier *Suppliers) New(ctx context.Context, supp *domain.Suppliers, addr *domain.Addresses) error {
+func (supplier *Suppliers) Use(tx *gorm.DB) domain.ISuppliersRepository {
+	supplier.conn = tx
+	return supplier
+}
+
+func (supplier *Suppliers) Insert(ctx context.Context, supp domain.Suppliers, addr domain.Addresses) error {
 	return supplier.conn.Transaction(func(tx *gorm.DB) error {
-		return db.SafeWriteQuery(
+		if err := db.SafeWriteQuery(
 			ctx,
-			supplier.conn,
+			tx,
 			queries.InsertIntoSuppliers,
 			supp.Name, supp.PhoneNumber, supp.Email,
-		)
+		); err != nil {
+			return err
+		}
+		_supplier, err := NewSuppliers().Use(tx).GetByPhone(ctx, supp.Email)
+		if err != nil {
+			return err
+		}
+		addr.Uuid = uuid.New().String()
+		if err := NewAddresses().Use(tx).Insert(ctx, &addr); err != nil {
+			return err
+		}
+		return NewSuppliers().Use(tx).InsertAddress(ctx, domain.SuppliersAddress{
+			SuppliersID: _supplier.Id,
+			AddressUuiD: addr.Uuid,
+		})
 	})
+}
+
+func (supplier *Suppliers) InsertAddress(ctx context.Context, addr domain.SuppliersAddress) error {
+	return db.SafeWriteQuery(
+		ctx,
+		supplier.conn,
+		queries.InsertIntoSuppliersAddress,
+		addr.SuppliersID, addr.AddressUuiD,
+	)
 }
 
 func (supplier *Suppliers) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
@@ -42,4 +71,12 @@ func (supplier *Suppliers) GetLimit(ctx context.Context, limit int) ([]domain.Su
 		return nil, err
 	}
 	return _suppliers, nil
+}
+
+func (supplier *Suppliers) GetByPhone(ctx context.Context, email string) (*domain.Suppliers, error) {
+	var _supplier domain.Suppliers
+	if err := supplier.conn.Table(domain.SuppliersTable).Where("email = ?", email).First(&_supplier).Error; err != nil {
+		return nil, err
+	}
+	return &_supplier, nil
 }

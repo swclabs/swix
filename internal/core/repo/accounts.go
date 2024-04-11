@@ -21,6 +21,12 @@ type Accounts struct {
 	conn *gorm.DB
 }
 
+// Use implements domain.IAccountRepository.
+func (account *Accounts) Use(tx *gorm.DB) domain.IAccountRepository {
+	account.conn = tx
+	return account
+}
+
 func NewAccounts() domain.IAccountRepository {
 	_conn, err := db.Connection()
 	if err != nil {

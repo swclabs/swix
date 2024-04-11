@@ -473,7 +473,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/supplier": {
+        "/suppliers": {
             "get": {
                 "description": "get suppliers information",
                 "consumes": [
@@ -499,6 +499,37 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/domain.SuppliersListResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "insert new suppliers information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "product_management"
+                ],
+                "parameters": [
+                    {
+                        "description": "Suppliers Request",
+                        "name": "SuppliersRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.SuppliersRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -824,6 +855,37 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/domain.Suppliers"
                     }
+                }
+            }
+        },
+        "domain.SuppliersRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "name",
+                "phone_number"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "ward": {
+                    "type": "string"
                 }
             }
         },

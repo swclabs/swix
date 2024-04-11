@@ -10,7 +10,7 @@ CREATE TABLE "accounts" (
 CREATE TABLE "users" (
   "id" bigserial PRIMARY KEY,
   "email" varchar UNIQUE NOT NULL,
-  "phone_number" varchar NOT NULL,
+  "phone_number" varchar UNIQUE NOT NULL,
   "first_name" varchar NOT NULL,
   "last_name" varchar NOT NULL,
   "image" varchar
@@ -30,8 +30,7 @@ CREATE TABLE "addresses" (
   "ward" varchar NOT NULL,
   "district" varchar NOT NULL,
   "street" varchar NOT NULL,
-  "user_id" bigint,
-  "supplier_id" bigint
+  "uuid" varchar UNIQUE NOT NULL
 );
 
 CREATE TABLE "comments" (
@@ -58,7 +57,7 @@ CREATE TABLE "products" (
 CREATE TABLE "suppliers" (
   "id" bigserial PRIMARY KEY,
   "name" varchar NOT NULL,
-  "phone_number" varchar NOT NULL,
+  "phone_number" varchar UNIQUE NOT NULL,
   "email" varchar UNIQUE NOT NULL
 );
 
@@ -116,12 +115,12 @@ CREATE TABLE "receipts" (
 
 CREATE TABLE "user_address" (
   "user_id" bigint PRIMARY KEY,
-  "address_id" bigint NOT NULL
+  "address_uuid" varchar NOT NULL
 );
 
-CREATE TABLE "supplier_address" (
-  "supplier_id" bigint PRIMARY KEY,
-  "address_id" bigint NOT NULL
+CREATE TABLE "suppliers_address" (
+  "suppliers_id" bigint PRIMARY KEY,
+  "address_uuid" varchar NOT NULL
 );
 
 CREATE TABLE "favorite_product" (

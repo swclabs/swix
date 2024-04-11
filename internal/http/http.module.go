@@ -26,6 +26,7 @@ func ProductManagementModule(server IServer) {
 		productManagement.Category,
 		productManagement.Product,
 		productManagement.Newsletter,
+		productManagement.Suppliers,
 	)
 }
 

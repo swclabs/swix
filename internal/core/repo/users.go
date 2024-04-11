@@ -20,7 +20,12 @@ import (
 
 type Users struct {
 	conn *gorm.DB
-	data *domain.User
+}
+
+// Use implements domain.IUserRepository.
+func (usr *Users) Use(tx *gorm.DB) domain.IUserRepository {
+	usr.conn = tx
+	return usr
 }
 
 func NewUsers() domain.IUserRepository {
@@ -30,15 +35,15 @@ func NewUsers() domain.IUserRepository {
 	}
 	return &Users{
 		conn: _conn,
-		data: &domain.User{},
 	}
 }
 
 func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
-	if err := usr.conn.WithContext(ctx).Table("users").Where("email = ?", email).First(usr.data).Error; err != nil {
+	var user domain.User
+	if err := usr.conn.WithContext(ctx).Table(domain.UsersTable).Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
-	return usr.data, nil
+	return &user, nil
 }
 
 func (usr *Users) Insert(ctx context.Context, _usr *domain.User) error {
@@ -203,20 +208,19 @@ func (usr *Users) OAuth2SaveInfo(ctx context.Context, user *domain.User) error {
 }
 
 func (usr *Users) TransactionSignUp(ctx context.Context, user *domain.User, password string) error {
-	account := NewAccounts()
 	return usr.conn.Transaction(func(tx *gorm.DB) error {
 		hash, err := tools.GenPassword(password)
 		if err != nil {
 			return err
 		}
-		if err := usr.Insert(ctx, user); err != nil {
+		if err := NewUsers().Use(tx).Insert(ctx, user); err != nil {
 			return err
 		}
-		userInfo, err := usr.GetByEmail(ctx, user.Email)
+		userInfo, err := NewUsers().Use(tx).GetByEmail(ctx, user.Email)
 		if err != nil {
 			return err
 		}
-		return account.Insert(ctx, &domain.Account{
+		return NewAccounts().Use(tx).Insert(ctx, &domain.Account{
 			Username: fmt.Sprintf("user#%d", userInfo.Id),
 			Password: hash,
 			Role:     "Customer",
@@ -227,20 +231,19 @@ func (usr *Users) TransactionSignUp(ctx context.Context, user *domain.User, pass
 }
 
 func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user *domain.User) error {
-	account := NewAccounts()
 	return usr.conn.Transaction(func(tx *gorm.DB) error {
 		hash, err := tools.GenPassword(utils.RandomString(18))
 		if err != nil {
 			return err
 		}
-		if err := usr.OAuth2SaveInfo(ctx, user); err != nil {
+		if err := NewUsers().Use(tx).OAuth2SaveInfo(ctx, user); err != nil {
 			return err
 		}
-		userInfo, err := usr.GetByEmail(ctx, user.Email)
+		userInfo, err := NewUsers().Use(tx).GetByEmail(ctx, user.Email)
 		if err != nil {
 			return err
 		}
-		return account.Insert(ctx, &domain.Account{
+		return NewAccounts().Use(tx).Insert(ctx, &domain.Account{
 			Username: fmt.Sprintf("user#%d", userInfo.Id),
 			Password: hash,
 			Role:     "Customer",
@@ -248,4 +251,12 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user *domain.User) 
 			Type:     "oauth2-google",
 		})
 	})
+}
+
+func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*domain.User, error) {
+	var user domain.User
+	if err := usr.conn.WithContext(ctx).Table(domain.UsersTable).Where("phone_number = ?", nPhone).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
 }

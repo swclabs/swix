@@ -164,6 +164,27 @@ definitions:
           $ref: '#/definitions/domain.Suppliers'
         type: array
     type: object
+  domain.SuppliersRequest:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+      street:
+        type: string
+      ward:
+        type: string
+    required:
+    - email
+    - name
+    - phone_number
+    type: object
   domain.UserInfo:
     properties:
       email:
@@ -517,7 +538,7 @@ paths:
             $ref: '#/definitions/domain.Error'
       tags:
       - product_management
-  /supplier:
+  /suppliers:
     get:
       consumes:
       - application/json
@@ -535,6 +556,26 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/domain.SuppliersListResponse'
+      tags:
+      - product_management
+    post:
+      consumes:
+      - application/json
+      description: insert new suppliers information
+      parameters:
+      - description: Suppliers Request
+        in: body
+        name: SuppliersRequest
+        required: true
+        schema:
+          $ref: '#/definitions/domain.SuppliersRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
       tags:
       - product_management
   /users:
