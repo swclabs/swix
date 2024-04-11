@@ -1,8 +1,9 @@
 package router
 
 import (
-	"github.com/labstack/echo/v4"
 	"swclabs/swipe-api/internal/http/controller"
+
+	"github.com/labstack/echo/v4"
 )
 
 type ProductManagement struct {
@@ -16,7 +17,7 @@ func NewProductManagement() *ProductManagement {
 }
 
 func (product *ProductManagement) Product(e *echo.Echo) {
-	// e.POST("/products")
+	e.POST("/products", product.controller.UploadProduct)
 	// e.GET("/products")
 	//e.PUT("/products/:id")
 	// e.DELETE("/products/:id")
@@ -34,4 +35,9 @@ func (product *ProductManagement) Category(e *echo.Echo) {
 	// router.GET("/categories")
 	// router.PUT("/categories/:id")
 	// router.DELETE("/categories/:id")
+}
+
+func (product *ProductManagement) Suppliers(e *echo.Echo) {
+	e.GET("/suppliers", product.controller.GetSupplier)
+	e.POST("/suppliers", product.controller.NewSuppliers)
 }

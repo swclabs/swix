@@ -15,7 +15,6 @@ import (
 )
 
 type Addresses struct {
-	data *domain.Addresses
 	conn *gorm.DB
 }
 
@@ -25,23 +24,23 @@ func NewAddresses() domain.IAddressRepository {
 		log.Fatal(err)
 	}
 	return &Addresses{
-		data: &domain.Addresses{},
 		conn: _conn,
 	}
+}
+
+func (addr *Addresses) Use(tx *gorm.DB) domain.IAddressRepository {
+	addr.conn = tx
+	return addr
 }
 
 func (addr *Addresses) Insert(ctx context.Context, data *domain.Addresses) error {
 	if data == nil {
 		return errors.New("input data invalid (nil)")
 	}
-	if (data.SupplierId != "" && data.UserId != "") ||
-		(data.SupplierId == "" && data.UserId == "") {
-		return errors.New("unknown data from supplier or user")
-	}
 	return db.SafeWriteQuery(
 		ctx,
 		addr.conn,
 		queries.InsertIntoAddresses,
-		data.UserId, data.SupplierId, data.Street, data.Ward, data.District, data.City,
+		data.Street, data.Ward, data.District, data.City, data.Uuid,
 	)
 }

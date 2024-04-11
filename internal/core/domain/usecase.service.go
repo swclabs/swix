@@ -54,6 +54,7 @@ type IProductManagementService interface {
 	UploadNewsletter(ctx context.Context, news Newsletter, fileHeader *multipart.FileHeader) error
 	UploadHomeBanner(ctx context.Context, data *HomeBanners) error
 	GetSuppliersLimit(ctx context.Context, limit int) ([]Suppliers, error)
+	InsertSuppliers(ctx context.Context, supplierReq SuppliersRequest) error
 }
 
 // IOrderManagementService : Module Order Management

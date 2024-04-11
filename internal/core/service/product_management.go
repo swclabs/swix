@@ -57,6 +57,21 @@ func (product *ProductManagement) GetSuppliersLimit(ctx context.Context, limit i
 	return product.suppliers.GetLimit(ctx, limit)
 }
 
+func (product *ProductManagement) InsertSuppliers(ctx context.Context, supplierReq domain.SuppliersRequest) error {
+	supplier := domain.Suppliers{
+		Name:        supplierReq.Name,
+		Email:       supplierReq.Email,
+		PhoneNumber: supplierReq.PhoneNumber,
+	}
+	addr := domain.Addresses{
+		City: supplierReq.City,
+		Ward: supplierReq.Ward,
+		District: supplierReq.District,
+		Street: supplierReq.Street,
+	}
+	return product.suppliers.Insert(ctx, supplier, addr)
+}
+
 func (product *ProductManagement) UploadNewsletter(ctx context.Context, news domain.Newsletter, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {

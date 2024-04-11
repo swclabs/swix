@@ -19,6 +19,7 @@ type IProductManagement interface {
 	UploadProduct(c echo.Context) error
 	UploadNewsletter(c echo.Context) error
 	GetSupplier(c echo.Context) error
+	NewSuppliers(c echo.Context) error
 }
 
 type ProductManagement struct {
@@ -200,7 +201,7 @@ func (product *ProductManagement) UploadNewsletter(c echo.Context) error {
 // @Produce json
 // @Param limit query int true "limit number of suppliers"
 // @Success 200 {object} domain.SuppliersListResponse
-// @Router /supplier [GET]
+// @Router /suppliers [GET]
 func (product *ProductManagement) GetSupplier(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil {
@@ -219,3 +220,32 @@ func (product *ProductManagement) GetSupplier(c echo.Context) error {
 	})
 }
 
+// NewSuppliers
+// @Description insert new suppliers information
+// @Tags product_management
+// @Accept json
+// @Produce json
+// @Param SuppliersRequest body domain.SuppliersRequest true "Suppliers Request"
+// @Success 200 {object} domain.OK
+// @Router /suppliers [POST]
+func (product *ProductManagement) NewSuppliers(c echo.Context) error {
+	var req domain.SuppliersRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	if valid := tools.Validate(req); valid != "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: valid,
+		})
+	}
+	if err := product.services.InsertSuppliers(c.Request().Context(), req); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, domain.OK{
+		Msg: "suppliers created successfully",
+	})
+}

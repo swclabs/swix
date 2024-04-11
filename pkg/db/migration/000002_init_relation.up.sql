@@ -16,14 +16,14 @@ ALTER TABLE "carts" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DEL
 
 ALTER TABLE "orders" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE "addresses" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "addresses" ADD FOREIGN KEY ("supplier_id") REFERENCES "suppliers" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+-- ALTER TABLE "addresses" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+-- ALTER TABLE "addresses" ADD FOREIGN KEY ("supplier_id") REFERENCES "suppliers" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "user_address" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "user_address" ADD FOREIGN KEY ("address_id") REFERENCES "addresses" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "user_address" ADD FOREIGN KEY ("address_uuid") REFERENCES "addresses" ("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE "supplier_address" ADD FOREIGN KEY ("address_id") REFERENCES "addresses" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "supplier_address" ADD FOREIGN KEY ("supplier_id") REFERENCES "suppliers" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "suppliers_address" ADD FOREIGN KEY ("address_uuid") REFERENCES "addresses" ("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "suppliers_address" ADD FOREIGN KEY ("suppliers_id") REFERENCES "suppliers" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "product_in_cart" ADD FOREIGN KEY ("cart_id") REFERENCES "carts" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "product_in_cart" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

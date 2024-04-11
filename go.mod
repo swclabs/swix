@@ -12,6 +12,7 @@ require (
 	github.com/go-playground/validator/v10 v10.18.0
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/golang-migrate/migrate/v4 v4.16.2
+	github.com/google/uuid v1.3.0
 	github.com/gorilla/sessions v1.2.2
 	github.com/hibiken/asynq v0.24.1
 	github.com/joho/godotenv v1.5.1
@@ -50,7 +51,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/schema v1.2.0 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
