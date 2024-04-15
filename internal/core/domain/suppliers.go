@@ -34,8 +34,8 @@ type SuppliersListResponse struct {
 
 type SuppliersRequest struct {
 	Name        string `json:"name" validate:"required"`
-	PhoneNumber string `json:"phone_number" validate:"required"`
-	Email       string `json:"email" validate:"required"`
+	PhoneNumber string `json:"phone_number" validate:"number,required"`
+	Email       string `json:"email" validate:"email,required"`
 	City        string `json:"city" gorm:"column:city"`
 	Ward        string `json:"ward" gorm:"column:ward"`
 	District    string `json:"district" gorm:"column:district"`

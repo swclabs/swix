@@ -31,7 +31,7 @@ func NewProducts() IProducts {
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of newsletter"
-// @Success 200 {object} domain.NewsletterLisyResponse
+// @Success 200 {object} domain.NewsletterListResponse
 // @Router /newsletter [GET]
 func (p *Products) GetNewsletter(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
@@ -46,7 +46,7 @@ func (p *Products) GetNewsletter(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, domain.NewsletterLisyResponse{
+	return c.JSON(http.StatusOK, domain.NewsletterListResponse{
 		Data: newsletter,
 	})
 }

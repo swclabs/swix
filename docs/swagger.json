@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a documentation for the Swiftcart API",
-        "title": "Swiftcart API Documentation",
+        "description": "This is a documentation for the Swipe API",
+        "title": "Swipe API Documentation",
         "contact": {},
         "version": "1.0.0"
     },
@@ -233,7 +233,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.NewsletterLisyResponse"
+                            "$ref": "#/definitions/domain.NewsletterListResponse"
                         }
                     }
                 }
@@ -376,14 +376,14 @@
                         "required": true
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
                         "name": "available",
                         "in": "formData",
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "name": "category_id",
+                        "type": "string",
+                        "name": "categoryID",
                         "in": "formData",
                         "required": true
                     },
@@ -406,8 +406,8 @@
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "name": "supplier_id",
+                        "type": "string",
+                        "name": "supplierID",
                         "in": "formData",
                         "required": true
                     }
@@ -687,7 +687,7 @@
                 }
             }
         },
-        "domain.NewsletterLisyResponse": {
+        "domain.NewsletterListResponse": {
             "type": "object",
             "properties": {
                 "data": {
@@ -745,10 +745,10 @@
             "type": "object",
             "properties": {
                 "available": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "category_id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "description": {
                     "type": "string"
@@ -766,7 +766,7 @@
                     "type": "string"
                 },
                 "supplier_id": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
