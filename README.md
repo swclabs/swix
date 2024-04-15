@@ -1,6 +1,6 @@
 # Swipe
 
-Swipe (code: `swipe-api`) is a api server for [SwifSwipelication](https://github.com/swclabs/swipe-app) & [SwiftCarSwiperd](https://github.com/swclabs/swipe-dashboard). `swipe-api` provides functions, and services through API and microservices. Designed for server, `swipe-api` provides cli commands to run api services and redis-based distributed systems cluster.
+Swipe (code: `swipe-api`) is a api server for [Swipe App](https://github.com/swclabs/swipe-app) & [Swipe Admin](https://github.com/swclabs/swipe-admin). `swipe-api` provides functions, and services through API and microservices. Designed for server, `swipe-api` provides cli commands to run api services and redis-based distributed systems cluster.
 
 ## Installing
 
