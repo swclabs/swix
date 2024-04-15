@@ -23,7 +23,7 @@ func PurchaseOrderIndex() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><body class=\"purchaseorder-pdf\" style=\"font-family: arial\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html lang=\"en\"><body class=\"purchaseorder-pdf\" style=\"font-family: arial,serif\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -59,7 +59,7 @@ func header() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"header\"><div style=\"display: flex\"><div><img src=\"https://res.cloudinary.com/dqsiqqz7q/image/upload/v1711183220/swc-storage/swiftcart_wlw2ou.png\" style=\"width: 100px\"></div><div style=\"display: flex; align-items: center\">Example company B.V. \r<br>Dorpsstraat 21 \r<br>3928 AM Utrecht \r<br>Nederland \r<br></div><div style=\"width: 100px\"></div></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"header\"><div style=\"display: flex\"><div><img src=\"https://res.cloudinary.com/dqsiqqz7q/image/upload/v1711183220/swc-storage/swiftcart_wlw2ou.png\" style=\"width: 100px\" alt=\"img\"></div><div style=\"display: flex; align-items: center\">Example company B.V. \r<br>Dorpsstraat 21 \r<br>3928 AM Utrecht \r<br>Nederland \r<br></div><div style=\"width: 100px\"></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

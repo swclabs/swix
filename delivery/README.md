@@ -1,4 +1,4 @@
-# Swiftcart API `swiple-api/delivery` GuildLines
+# Swipe API `swiple-api/delivery` GuildLines
 
 ## Overview
 

@@ -11,18 +11,18 @@ type Products struct {
 	Price       string `json:"price" gorm:"column:price"`
 	Description string `json:"description" gorm:"column:description"`
 	Name        string `json:"name" gorm:"column:name"`
-	SupplierID  int64  `json:"supplier_id" gorm:"column:supplier_id"`
-	CategoryID  int64  `json:"category_id" gorm:"column:category_id"`
-	Available   int64  `json:"available" gorm:"column:available"`
+	SupplierID  string `json:"supplier_id" gorm:"column:supplier_id"`
+	CategoryID  string `json:"category_id" gorm:"column:category_id"`
+	Available   string `json:"available" gorm:"column:available"`
 }
 
 type ProductRequest struct {
 	Price       string `json:"price" validate:"required"`
 	Description string `json:"description" validate:"required"`
 	Name        string `json:"name" validate:"required"`
-	SupplierID  int64  `json:"supplier_id" validate:"required"`
-	CategoryID  int64  `json:"category_id" validate:"required"`
-	Available   int64  `json:"available" validate:"required"`
+	SupplierID  string `json:"supplierID" validate:"required"`
+	CategoryID  string `json:"categoryID" validate:"required"`
+	Available   string `json:"available" validate:"required"`
 }
 
 // ProductInCart Table

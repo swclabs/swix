@@ -240,7 +240,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.NewsletterLisyResponse"
+                            "$ref": "#/definitions/domain.NewsletterListResponse"
                         }
                     }
                 }
@@ -383,14 +383,14 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
+                        "type": "string",
                         "name": "available",
                         "in": "formData",
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "name": "category_id",
+                        "type": "string",
+                        "name": "categoryID",
                         "in": "formData",
                         "required": true
                     },
@@ -413,8 +413,8 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "name": "supplier_id",
+                        "type": "string",
+                        "name": "supplierID",
                         "in": "formData",
                         "required": true
                     }
@@ -694,7 +694,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.NewsletterLisyResponse": {
+        "domain.NewsletterListResponse": {
             "type": "object",
             "properties": {
                 "data": {
@@ -752,10 +752,10 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "available": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "category_id": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "description": {
                     "type": "string"
@@ -773,7 +773,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "supplier_id": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
@@ -968,8 +968,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Swiftcart API Documentation",
-	Description:      "This is a documentation for the Swiftcart API",
+	Title:            "Swipe API Documentation",
+	Description:      "This is a documentation for the Swipe API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

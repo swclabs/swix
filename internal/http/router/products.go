@@ -19,4 +19,5 @@ func NewProducts() *Products {
 func (r *Products) Common(e *echo.Echo) {
 	e.GET("/newsletters", r.controller.GetNewsletter)
 	e.GET("/categories", r.controller.GetCategories)
+	e.GET("/products", r.controller.GetProductLimit)
 }

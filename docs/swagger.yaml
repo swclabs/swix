@@ -54,7 +54,7 @@ definitions:
     - success
     - token
     type: object
-  domain.NewsletterLisyResponse:
+  domain.NewsletterListResponse:
     properties:
       data:
         items:
@@ -94,9 +94,9 @@ definitions:
   domain.Products:
     properties:
       available:
-        type: integer
+        type: string
       category_id:
-        type: integer
+        type: string
       description:
         type: string
       id:
@@ -108,7 +108,7 @@ definitions:
       price:
         type: string
       supplier_id:
-        type: integer
+        type: string
     type: object
   domain.ProductsListResponse:
     properties:
@@ -237,8 +237,8 @@ definitions:
     type: object
 info:
   contact: {}
-  description: This is a documentation for the Swiftcart API
-  title: Swiftcart API Documentation
+  description: This is a documentation for the Swipe API
+  title: Swipe API Documentation
   version: 1.0.0
 paths:
   /auth:
@@ -386,7 +386,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.NewsletterLisyResponse'
+            $ref: '#/definitions/domain.NewsletterListResponse'
       tags:
       - products
   /newsletters:
@@ -479,11 +479,11 @@ paths:
       - in: formData
         name: available
         required: true
-        type: integer
+        type: string
       - in: formData
-        name: category_id
+        name: categoryID
         required: true
-        type: integer
+        type: string
       - in: formData
         name: description
         required: true
@@ -497,9 +497,9 @@ paths:
         required: true
         type: string
       - in: formData
-        name: supplier_id
+        name: supplierID
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:

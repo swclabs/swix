@@ -51,7 +51,7 @@ CREATE TABLE "products" (
   "supplier_id" bigint NOT NULL,
   "category_id" bigint NOT NULL,
   "available" bigint NOT NULL,
-  "star" varchar NOT NULL
+  "star" varchar
 );
 
 CREATE TABLE "suppliers" (

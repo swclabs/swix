@@ -18,7 +18,7 @@ type Newsletters struct {
 	Newsletter
 }
 
-type NewsletterLisyResponse struct {
+type NewsletterListResponse struct {
 	Data []Newsletters `json:"data"`
 }
 

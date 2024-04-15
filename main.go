@@ -1,4 +1,4 @@
-// Copyright 2023 Swiftcart. All rights reserved.
+// Copyright 2023 Swipe. All rights reserved.
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
@@ -23,9 +23,9 @@ import (
 	"swclabs/swipe-api/internal/config"
 )
 
-// @title Swiftcart API Documentation
+// @title Swipe API Documentation
 // @version 1.0.0
-// @description This is a documentation for the Swiftcart API
+// @description This is a documentation for the Swipe API
 // @host
 // @basePath /
 func main() {
