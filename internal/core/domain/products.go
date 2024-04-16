@@ -1,6 +1,8 @@
 package domain
 
-import "context"
+import (
+	"context"
+)
 
 const ProductsTable = "products"
 
@@ -69,4 +71,5 @@ type IProductInCartRepository interface {
 type IProductRepository interface {
 	Insert(ctx context.Context, prd *Products) error
 	GetLitmit(ctx context.Context, limit int) ([]Products, error)
+	UploadNewImage(ctx context.Context, urlImg string, id int) error
 }

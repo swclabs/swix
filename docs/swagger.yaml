@@ -356,7 +356,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.LoginResponse'
       tags:
-      - product_management
+      - products
   /common/healthcheck:
     get:
       consumes:
@@ -388,7 +388,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.NewsletterListResponse'
       tags:
-      - products
+      - posts
   /newsletters:
     post:
       consumes:
@@ -433,7 +433,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
-      - product_management
+      - posts
   /oauth2/login:
     get:
       consumes:
@@ -508,15 +508,15 @@ paths:
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
-      - product_management
-  /products/img/:id:
+      - products
+  /products/img:
     post:
       consumes:
       - multipart/form-data
       description: Insert new product image
       parameters:
       - description: id of product
-        in: path
+        in: query
         name: id
         required: true
         type: string
@@ -537,7 +537,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.Error'
       tags:
-      - product_management
+      - products
   /suppliers:
     get:
       consumes:
@@ -557,7 +557,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.SuppliersListResponse'
       tags:
-      - product_management
+      - products
     post:
       consumes:
       - application/json
@@ -577,7 +577,7 @@ paths:
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
-      - product_management
+      - products
   /users:
     get:
       consumes:

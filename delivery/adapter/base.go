@@ -6,25 +6,6 @@ import (
 
 const TypeBase = "BaseAdapter"
 
-// IAdapter interface, used to connect to server instance
-type IAdapter interface {
-	Run(addr string) error
-}
-
-func New(types string) IAdapter {
-	switch types {
-	case TypeBase:
-		return _NewAdapter()
-	case TypeAccountManagement:
-		return _NewAccountManagement()
-	case TypeProductManagement:
-		return _NewProductManagement()
-	case TypeProducts:
-		return _NewProducts()
-	}
-	return _NewAdapter()
-}
-
 type _Adapter struct {
 	server http.IServer
 }
@@ -42,8 +23,8 @@ func _NewAdapter() IAdapter {
 func (adapter *_Adapter) Run(addr string) error {
 	adapter.server.Bootstrap(
 		http.AccountManagementModule,
-		http.ProductManagementModule,
 		http.ProductsModule,
+		http.PostsModule,
 	)
 	return adapter.server.Run(addr)
 }

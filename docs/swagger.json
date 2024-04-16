@@ -166,7 +166,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {
@@ -218,7 +218,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "posts"
                 ],
                 "parameters": [
                     {
@@ -250,7 +250,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "posts"
                 ],
                 "parameters": [
                     {
@@ -365,7 +365,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {
@@ -422,7 +422,7 @@
                 }
             }
         },
-        "/products/img/:id": {
+        "/products/img": {
             "post": {
                 "description": "Insert new product image",
                 "consumes": [
@@ -432,14 +432,14 @@
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {
                         "type": "string",
                         "description": "id of product",
                         "name": "id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     },
                     {
@@ -476,7 +476,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {
@@ -505,7 +505,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {

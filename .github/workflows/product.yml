@@ -3,7 +3,7 @@ name: Build test product management module
 on:
   push:
     branches:
-      - stag/product-management
+      - stag/products
   pull_request:
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
           go-version: 1.21
 
       - name: Build the Go application
-        run: sh hack/ci/product_management.sh
+        run: sh hack/ci/products.sh
 
       - name: Remove binaries
         run: rm -rf bin

@@ -11,7 +11,7 @@ type _Products struct {
 }
 
 func _NewProducts() IAdapter {
-	product := &_ProductManagementAdapter{
+	product := &_Products{
 		server: http.New(),
 	}
 	return product
