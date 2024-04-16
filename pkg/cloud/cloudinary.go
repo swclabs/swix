@@ -34,7 +34,7 @@ func Connection() *cloudinary.Cloudinary {
 	return cld
 }
 
-func UpdateImages(cld *cloudinary.Cloudinary, file interface{}) (*uploader.UploadResult, error) {
+func UploadImages(cld *cloudinary.Cloudinary, file interface{}) (*uploader.UploadResult, error) {
 	var ctx = context.Background()
 	updateResult, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
 		ResourceType: "auto",

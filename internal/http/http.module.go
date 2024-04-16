@@ -5,34 +5,18 @@ import (
 )
 
 func CommonModule(server IServer) {
-	server.router(
-		router.Common,
-		router.Docs,
-	)
+	server.connect(router.New(router.TypeDocs))
+	server.connect(router.New(router.TypeCommon))
 }
 
 func AccountManagementModule(server IServer) {
-	var accountManagement = router.NewAccountManagement()
-	server.router(
-		accountManagement.Users,
-		accountManagement.Auth,
-		accountManagement.OAuth2,
-	)
-}
-
-func ProductManagementModule(server IServer) {
-	var productManagement = router.NewProductManagement()
-	server.router(
-		productManagement.Category,
-		productManagement.Product,
-		productManagement.Newsletter,
-		productManagement.Suppliers,
-	)
+	server.connect(router.New(router.TypeAccountManagement))
 }
 
 func ProductsModule(server IServer) {
-	var products = router.NewProducts()
-	server.router(
-		products.Common,
-	)
+	server.connect(router.New(router.TypeProducts))
+}
+
+func PostsModule(server IServer) {
+	server.connect(router.New(router.TypePosts))
 }

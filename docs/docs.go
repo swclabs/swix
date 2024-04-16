@@ -173,7 +173,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {
@@ -225,7 +225,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "posts"
                 ],
                 "parameters": [
                     {
@@ -257,7 +257,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "posts"
                 ],
                 "parameters": [
                     {
@@ -372,7 +372,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {
@@ -429,7 +429,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/img/:id": {
+        "/products/img": {
             "post": {
                 "description": "Insert new product image",
                 "consumes": [
@@ -439,14 +439,14 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {
                         "type": "string",
                         "description": "id of product",
                         "name": "id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     },
                     {
@@ -483,7 +483,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {
@@ -512,7 +512,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "product_management"
+                    "products"
                 ],
                 "parameters": [
                     {

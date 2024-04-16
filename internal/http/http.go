@@ -2,13 +2,14 @@ package http
 
 import (
 	"os"
+	"swclabs/swipe-api/internal/http/router"
 
 	"github.com/labstack/echo/v4"
 )
 
 type IServer interface {
 	middleware(mdws ...func(*echo.Echo))
-	router(routers ...func(*echo.Echo))
+	connect(routers router.IRouter)
 	_BackgroundTask(tasks ...func())
 	_InitMiddleware()
 	_LoggerWriter(*os.File)
@@ -41,8 +42,6 @@ func (server *_Server) _BackgroundTask(tasks ...func()) {
 	}
 }
 
-func (server *_Server) router(routers ...func(*echo.Echo)) {
-	for _, r := range routers {
-		r(server.engine)
-	}
+func (server *_Server) connect(routers router.IRouter) {
+	routers.Routers(server.engine)
 }

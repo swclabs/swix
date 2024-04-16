@@ -93,7 +93,7 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 		return err
 	}
 	// upload image to image cloud storage
-	resp, err := cloud.UpdateImages(cloud.Connection(), file)
+	resp, err := cloud.UploadImages(cloud.Connection(), file)
 	if err != nil {
 		log.Fatal(err)
 	}
