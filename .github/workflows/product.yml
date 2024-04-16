@@ -1,4 +1,4 @@
-name: Build test product management module
+name: Build test products module
 
 on:
   push:
