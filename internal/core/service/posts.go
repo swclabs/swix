@@ -23,8 +23,8 @@ func NewPost() domain.IPostsService {
 }
 
 // GetHomeBanner implements domain.IPostsService.
-func (p *Posts) GetHomeBanner(ctx context.Context) ([]domain.HomeBanners, error) {
-	panic("unimplemented")
+func (p *Posts) GetHomeBanner(ctx context.Context, limit int) ([]domain.HomeBanners, error) {
+	return p.newsletter.GetHomeBanner(ctx, limit)
 }
 
 // GetNewsletter implements domain.IPostsService.
@@ -33,8 +33,13 @@ func (p *Posts) GetNewsletter(ctx context.Context, limit int) ([]domain.Newslett
 }
 
 // UploadHomeBanner implements domain.IPostsService.
-func (p *Posts) UploadHomeBanner(ctx context.Context, data *domain.HomeBanners) error {
-	panic("unimplemented")
+func (p *Posts) UploadHomeBanner(ctx context.Context, data domain.HomeBanners, fileHeader *multipart.FileHeader) error {
+	url, err := cloud.UploadFile(ctx, cloud.Connection(), fileHeader)
+	if err != nil {
+		return err
+	}
+	data.Img = url
+	return p.newsletter.InsertHomeBanner(ctx, data)
 }
 
 // UploadNewsletter implements domain.IPostsService.

@@ -42,27 +42,17 @@ type IProductService interface {
 // IPurchasingService : Module Purchasing
 // Actor: Admin & Customer (User)
 type IPurchasingService interface {
-	// AddToCart()
-	// GetOrders()
-	// GetCartItems()
-	// AddCartInfo()
+	AddToCart(ctx context.Context, cart CartInfo)
+	GetCart(ctx context.Context, limit int) ([]Carts, error)
+	GetOrders(ctx context.Context, limit int) ([]Orders, error)
+	InsertOrders(ctx context.Context, order Orders) error
 }
-
-// IProductManagementService : Module Product Management
-// Actor: Admin
-// type IProductManagementService interface {
-// 	InsertCategory(ctx context.Context, ctg *Categories) error
-// 	UploadProductImage(ctx context.Context, Id int, fileHeader *multipart.FileHeader) error
-// 	UploadProduct(ctx context.Context, fileHeader *multipart.FileHeader, products ProductRequest) error
-// 	GetSuppliersLimit(ctx context.Context, limit int) ([]Suppliers, error)
-// 	InsertSuppliers(ctx context.Context, supplierReq SuppliersRequest) error
-// }
 
 type IPostsService interface {
 	GetNewsletter(ctx context.Context, limit int) ([]Newsletters, error)
-	GetHomeBanner(ctx context.Context) ([]HomeBanners, error)
+	GetHomeBanner(ctx context.Context, limit int) ([]HomeBanners, error)
 	UploadNewsletter(ctx context.Context, news Newsletter, fileHeader *multipart.FileHeader) error
-	UploadHomeBanner(ctx context.Context, data *HomeBanners) error
+	UploadHomeBanner(ctx context.Context, data HomeBanners, fileHeader *multipart.FileHeader) error
 }
 
 // IOrderManagementService : Module Order Management
