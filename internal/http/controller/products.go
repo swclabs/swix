@@ -17,7 +17,7 @@ type IProducts interface {
 	GetProductLimit(c echo.Context) error
 	GetSupplier(c echo.Context) error
 	InsertCategory(c echo.Context) error
-	NewSuppliers(c echo.Context) error
+	InsertSupplier(c echo.Context) error
 	UploadProductImage(c echo.Context) error
 	UploadProduct(c echo.Context) error
 }
@@ -226,7 +226,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 	})
 }
 
-// NewSuppliers
+// InsertSupplier
 // @Description insert new suppliers information
 // @Tags products
 // @Accept json
@@ -234,7 +234,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 // @Param SuppliersRequest body domain.SuppliersRequest true "Suppliers Request"
 // @Success 200 {object} domain.OK
 // @Router /suppliers [POST]
-func (p *Products) NewSuppliers(c echo.Context) error {
+func (p *Products) InsertSupplier(c echo.Context) error {
 	var req domain.SuppliersRequest
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{

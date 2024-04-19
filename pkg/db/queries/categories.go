@@ -7,8 +7,8 @@ const (
 	`
 
 	SelectCategoryLimit string = `
-	SELECT *
-	FROM categories
-	LIMIT ?;
-`
+		SELECT *
+		FROM categories
+		LIMIT ?;
+	`
 )

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"mime/multipart"
 	"sync"
 
 	"swclabs/swipe-api/internal/config"
@@ -36,9 +37,25 @@ func Connection() *cloudinary.Cloudinary {
 
 func UploadImages(cld *cloudinary.Cloudinary, file interface{}) (*uploader.UploadResult, error) {
 	var ctx = context.Background()
+	return UploadImagesWithContext(ctx, cld, file)
+}
+
+func UploadImagesWithContext(ctx context.Context, cld *cloudinary.Cloudinary, file interface{}) (*uploader.UploadResult, error) {
 	updateResult, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
 		ResourceType: "auto",
 		Folder:       "swc-storage",
 	})
 	return updateResult, err
+}
+
+func UploadFile(ctx context.Context, cld *cloudinary.Cloudinary, fileHeader *multipart.FileHeader) (url string, err error) {
+	file, err := fileHeader.Open()
+	if err != nil {
+		return "", err
+	}
+	resp, err := UploadImagesWithContext(ctx, cld, file)
+	if err != nil {
+		return "", err
+	}
+	return resp.SecureURL, nil
 }

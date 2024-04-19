@@ -22,7 +22,16 @@ type NewsletterListResponse struct {
 	Data []Newsletters `json:"data"`
 }
 
+type HomeBanners struct {
+	Name     string `json:"name"`
+	Subtitle string `json:"subtitle"`
+	Img      string `json:"img"`
+	Text     string `json:"text"`
+}
+
 type INewsletterRepository interface {
 	Insert(ctx context.Context, newsletter Newsletter) error
 	Get(ctx context.Context, limit int) ([]Newsletters, error)
+	GetHomeBanner(ctx context.Context, limit int) ([]HomeBanners, error)
+	InsertHomeBanner(ctx context.Context, homeBanner HomeBanners) error
 }

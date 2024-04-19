@@ -16,6 +16,8 @@ func New(types string) IRouter {
 		return newProducts()
 	case TypePosts:
 		return newPosts()
+	case TypeAccountManagement:
+		return newAccountManagement()
 	}
 	return newCommon()
 }

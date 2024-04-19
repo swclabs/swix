@@ -6,6 +6,14 @@ import (
 	"swclabs/swipe-api/pkg/tools/worker"
 )
 
+type IAccountManagement interface {
+	DelaySignUp(req *domain.SignUpRequest) error
+	DelayUpdateUserInfo(req *domain.UserUpdate) error
+	DelayOAuth2SaveUser(req *domain.OAuth2SaveUser) error
+}
+
+var _ IAccountManagement = (*AccountManagement)(nil)
+
 type AccountManagement struct {
 }
 

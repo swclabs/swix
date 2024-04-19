@@ -16,6 +16,7 @@ type Products struct {
 	SupplierID  string `json:"supplier_id" gorm:"column:supplier_id"`
 	CategoryID  string `json:"category_id" gorm:"column:category_id"`
 	Available   string `json:"available" gorm:"column:available"`
+	Spec        string `json:"spec" gorm:"column:spec"`
 }
 
 type ProductRequest struct {
@@ -55,6 +56,22 @@ type Accessory struct {
 	Price string `json:"price" gorm:"column:price"`
 	New   string `json:"new" gorm:"column:new"`
 	Img   string `json:"img" gorm:"column:img"`
+}
+
+type Specifications struct {
+	Screen  string `json:"screen"`
+	Display string `json:"display"`
+	SSD     []int  `json:"SSD"`
+}
+
+type ProductResponse struct {
+	ID          int64          `json:"id"`
+	Image       string         `json:"image"`
+	Price       string         `json:"price"`
+	Description string         `json:"description"`
+	Name        string         `json:"name"`
+	Available   string         `json:"available"`
+	Spec        Specifications `json:"spec"`
 }
 
 type ProductsListResponse struct {
