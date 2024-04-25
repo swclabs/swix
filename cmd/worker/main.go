@@ -9,11 +9,11 @@ package main
 import (
 	"log"
 
-	"swclabs/swipe-api/delivery"
+	"swclabs/swipe-api/boot"
 )
 
 func main() {
-	w := delivery.NewWorker()
+	w := boot.NewWorker()
 	if err := w.Run(10); err != nil {
 		log.Fatal(err)
 	}

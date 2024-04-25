@@ -4,7 +4,7 @@ import (
 	"context"
 	"mime/multipart"
 	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/core/repo"
+	"swclabs/swipe-api/internal/core/repository"
 	"swclabs/swipe-api/pkg/cloud"
 )
 
@@ -16,9 +16,9 @@ type Posts struct {
 
 func NewPost() domain.IPostsService {
 	return &Posts{
-		category:   repo.NewCategories(),
-		product:    repo.NewProducts(),
-		newsletter: repo.NewNewsletter(),
+		category:   repository.NewCategories(),
+		product:    repository.NewProducts(),
+		newsletter: repository.NewNewsletter(),
 	}
 }
 
@@ -53,5 +53,5 @@ func (p *Posts) UploadNewsletter(ctx context.Context, news domain.Newsletter, fi
 		return err
 	}
 	news.Image = resp.SecureURL
-	return repo.NewNewsletter().Insert(context.Background(), news)
+	return repository.NewNewsletter().Insert(context.Background(), news)
 }

@@ -1,4 +1,4 @@
-package delivery
+package boot
 
 import (
 	"swclabs/swipe-api/internal/config"

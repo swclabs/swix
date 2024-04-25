@@ -4,7 +4,7 @@ import (
 	"context"
 	"mime/multipart"
 	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/core/repo"
+	"swclabs/swipe-api/internal/core/repository"
 	"swclabs/swipe-api/pkg/cloud"
 )
 
@@ -17,10 +17,10 @@ type ProductService struct {
 
 func NewProductService() domain.IProductService {
 	return &ProductService{
-		newsletter: repo.NewNewsletter(),
-		categories: repo.NewCategories(),
-		products:   repo.NewProducts(),
-		suppliers:  repo.NewSuppliers(),
+		newsletter: repository.NewNewsletter(),
+		categories: repository.NewCategories(),
+		products:   repository.NewProducts(),
+		suppliers:  repository.NewSuppliers(),
 	}
 }
 

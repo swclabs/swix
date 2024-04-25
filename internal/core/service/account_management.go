@@ -18,7 +18,7 @@ import (
 	"mime/multipart"
 
 	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/core/repo"
+	"swclabs/swipe-api/internal/core/repository"
 	"swclabs/swipe-api/internal/workers/tasks"
 	"swclabs/swipe-api/pkg/cloud"
 	"swclabs/swipe-api/pkg/tools"
@@ -35,9 +35,9 @@ type AccountManagement struct {
 // NewAccountManagement return new AccountManagement instance
 func NewAccountManagement() *AccountManagement {
 	return &AccountManagement{
-		user:    repo.NewUsers(),
-		account: repo.NewAccounts(),
-		address: repo.NewAddresses(),
+		user:    repository.NewUsers(),
+		account: repository.NewAccounts(),
+		address: repository.NewAddresses(),
 	}
 }
 
@@ -98,7 +98,7 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 		log.Fatal(err)
 	}
 	// call repository layer to save user
-	return repo.NewUsers().SaveInfo(context.TODO(), &domain.User{
+	return repository.NewUsers().SaveInfo(context.TODO(), &domain.User{
 		Email: email,
 		Image: resp.SecureURL,
 	})
