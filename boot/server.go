@@ -1,6 +1,6 @@
-package delivery
+package boot
 
-import "swclabs/swipe-api/delivery/adapter"
+import "swclabs/swipe-api/boot/adapter"
 
 type IServer interface {
 	Connect(adapter adapter.IAdapter) error
@@ -20,7 +20,7 @@ func NewServer(addr string) IServer {
 //
 // Example:
 //
-//	server := delivery.NewServer("localhost:8000")
+//	server := boot.NewServer("localhost:8000")
 //	adapter := adapter.NewAdapter()
 //	server.Connect(adapter)
 func (server *_Server) Connect(adapter adapter.IAdapter) error {

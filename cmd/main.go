@@ -16,8 +16,8 @@ import (
 	"os"
 	"sort"
 
-	"swclabs/swipe-api/delivery"
-	"swclabs/swipe-api/delivery/adapter"
+	"swclabs/swipe-api/boot"
+	"swclabs/swipe-api/boot/adapter"
 	"swclabs/swipe-api/internal/config"
 	"swclabs/swipe-api/pkg/utils"
 
@@ -63,7 +63,7 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			w := delivery.NewWorker()
+			w := boot.NewWorker()
 			return w.Run(10)
 		},
 	},
@@ -73,7 +73,7 @@ var Command = []*cli.Command{
 		Usage:   "run app server",
 		Action: func(_ *cli.Context) error {
 			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-			server := delivery.NewServer(addr)
+			server := boot.NewServer(addr)
 			adapter := adapter.New(adapter.TypeBase)
 
 			return server.Connect(adapter)

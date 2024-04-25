@@ -25,7 +25,7 @@ type UserAddress struct {
 }
 
 // IUserRepository User Repository interface
-// implement at /internal/repo/user.go
+// implement at /internal/repository/user.go
 type IUserRepository interface {
 	Use(tx *gorm.DB) IUserRepository
 

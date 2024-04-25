@@ -1,6 +1,6 @@
-// Package repo
+// Package repository
 // Author: Duc Hung Ho @kieranhoo
-package repo
+package repository
 
 import (
 	"context"

@@ -10,14 +10,14 @@ import (
 	"fmt"
 	"log"
 
-	"swclabs/swipe-api/delivery"
-	"swclabs/swipe-api/delivery/adapter"
+	"swclabs/swipe-api/boot"
+	"swclabs/swipe-api/boot/adapter"
 	"swclabs/swipe-api/internal/config"
 )
 
 func main() {
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-	server := delivery.NewServer(addr)
+	server := boot.NewServer(addr)
 	adapter := adapter.New(adapter.TypeBase)
 
 	if err := server.Connect(adapter); err != nil {

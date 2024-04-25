@@ -1,7 +1,7 @@
-// Package repo
+// Package repository
 // Author: Duc Hung Ho @kieranhoo
 // Description: account repository implementation
-package repo
+package repository
 
 import (
 	"context"
@@ -47,10 +47,6 @@ func (account *Accounts) GetByEmail(ctx context.Context, email string) (*domain.
 
 func (account *Accounts) Insert(ctx context.Context, acc *domain.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
-	// return account.conn.Exec(
-	// 	queries.InsertIntoAccounts,
-	// 	acc.Username, acc.Role, acc.Email, acc.Password, createdAt, acc.Type,
-	// ).Error
 	return db.SafeWriteQuery(
 		ctx,
 		account.conn,
@@ -64,13 +60,6 @@ func (account *Accounts) SaveInfo(ctx context.Context, acc *domain.Account) erro
 		return errors.New("missing key: email ")
 	}
 	if acc.Username != "" {
-		// if err := account.conn.Exec(
-		// 	queries.UpdateAccountsUsername,
-		// 	acc.Username, acc.Email,
-		// ).Error; err != nil {
-		// 	return err
-		// }
-
 		if err := db.SafeWriteQuery(
 			ctx,
 			account.conn,
@@ -82,13 +71,6 @@ func (account *Accounts) SaveInfo(ctx context.Context, acc *domain.Account) erro
 
 	}
 	if acc.Password != "" {
-		// if err := account.conn.Exec(
-		// 	queries.UpdateAccountsPassword,
-		// 	acc.Password, acc.Email,
-		// ).Error; err != nil {
-		// 	return err
-		// }
-
 		if err := db.SafeWriteQuery(
 			ctx,
 			account.conn,
@@ -99,13 +81,6 @@ func (account *Accounts) SaveInfo(ctx context.Context, acc *domain.Account) erro
 		}
 	}
 	if acc.Role != "" {
-		// if err := account.conn.Exec(
-		// 	queries.UpdateAccountsRole,
-		// 	acc.Role, acc.Email,
-		// ).Error; err != nil {
-		// 	return err
-		// }
-
 		if err := db.SafeWriteQuery(
 			ctx,
 			account.conn,
