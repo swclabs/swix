@@ -5,10 +5,11 @@ package repository
 
 import (
 	"log"
-	"swclabs/swipe-api/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain"
+
+	"swclabs/swipecore/pkg/db"
 
 	"gorm.io/gorm"
-	"swclabs/swipe-api/pkg/db"
 )
 
 type Carts struct {

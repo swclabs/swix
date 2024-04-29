@@ -15,13 +15,13 @@ import (
 	"os"
 	"sort"
 
-	"swclabs/swipe-api/boot"
-	"swclabs/swipe-api/boot/adapter"
-	"swclabs/swipe-api/internal/config"
+	"swclabs/swipecore/boot"
+	"swclabs/swipecore/boot/adapter"
+	"swclabs/swipecore/internal/config"
 
 	"github.com/urfave/cli/v2"
 
-	_ "swclabs/swipe-api/docs"
+	_ "swclabs/swipecore/docs"
 )
 
 var Command = []*cli.Command{

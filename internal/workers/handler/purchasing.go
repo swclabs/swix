@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"swclabs/swipe-api/internal/workers/tasks"
-	"swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipecore/internal/workers/tasks"
+	"swclabs/swipecore/pkg/tools/worker"
 )
 
 type IPurchasing interface {

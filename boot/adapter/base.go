@@ -1,7 +1,7 @@
 package adapter
 
 import (
-	"swclabs/swipe-api/internal/http"
+	"swclabs/swipecore/internal/http"
 )
 
 const TypeBase = "BaseAdapter"

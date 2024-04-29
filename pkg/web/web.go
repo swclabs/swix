@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
 	"net/http"
-	"swclabs/swipe-api/pkg/web/components"
+	"swclabs/swipecore/pkg/web/components"
+
+	"github.com/labstack/echo/v4"
 )
 
 func main() {

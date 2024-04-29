@@ -3,10 +3,10 @@ package controller
 import (
 	"net/http"
 	"strconv"
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/core/service"
-	"swclabs/swipe-api/pkg/tools"
-	"swclabs/swipe-api/pkg/utils"
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/service"
+	"swclabs/swipecore/pkg/tools"
+	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 	"github.com/mitchellh/mapstructure"

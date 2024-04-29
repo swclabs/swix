@@ -1,6 +1,6 @@
 package boot
 
-import "swclabs/swipe-api/boot/adapter"
+import "swclabs/swipecore/boot/adapter"
 
 type IServer interface {
 	Connect(adapter adapter.IAdapter) error

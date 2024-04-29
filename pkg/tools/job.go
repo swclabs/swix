@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"swclabs/swipe-api/pkg/tools/logger"
+	"swclabs/swipecore/pkg/tools/logger"
 )
 
 type Job struct {

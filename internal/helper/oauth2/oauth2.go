@@ -5,8 +5,8 @@ import (
 	"io"
 	"net/http"
 
-	"swclabs/swipe-api/internal/config"
-	"swclabs/swipe-api/pkg/utils"
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/pkg/utils"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/labstack/echo/v4"

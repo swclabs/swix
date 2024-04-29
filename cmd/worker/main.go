@@ -9,7 +9,7 @@ package main
 import (
 	"log"
 
-	"swclabs/swipe-api/boot"
+	"swclabs/swipecore/boot"
 )
 
 func main() {

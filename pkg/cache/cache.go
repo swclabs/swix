@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"swclabs/swipe-api/internal/config"
+	"swclabs/swipecore/internal/config"
 
 	"github.com/redis/go-redis/v9"
 )

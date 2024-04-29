@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/core/repository"
-	"swclabs/swipe-api/pkg/cloud"
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/repository"
+	"swclabs/swipecore/pkg/cloud"
 )
 
 type ProductService struct {

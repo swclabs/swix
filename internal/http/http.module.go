@@ -1,7 +1,7 @@
 package http
 
 import (
-	"swclabs/swipe-api/internal/http/router"
+	"swclabs/swipecore/internal/http/router"
 )
 
 func CommonModule(server IServer) {

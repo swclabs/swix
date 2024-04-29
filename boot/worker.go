@@ -1,9 +1,9 @@
 package boot
 
 import (
-	"swclabs/swipe-api/internal/config"
-	"swclabs/swipe-api/internal/workers"
-	"swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/internal/workers"
+	"swclabs/swipecore/pkg/tools/worker"
 )
 
 type IWorker interface {

@@ -4,12 +4,13 @@ import (
 	"net/http"
 	"os"
 
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/pkg/utils"
+
 	sentryecho "github.com/getsentry/sentry-go/echo"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"swclabs/swipe-api/internal/config"
-	"swclabs/swipe-api/pkg/utils"
 )
 
 func CORS() echo.MiddlewareFunc {

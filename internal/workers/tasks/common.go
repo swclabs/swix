@@ -1,8 +1,8 @@
 package tasks
 
 import (
-	"swclabs/swipe-api/internal/workers/queue"
-	"swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipecore/internal/workers/queue"
+	"swclabs/swipecore/pkg/tools/worker"
 )
 
 type CommonTask struct {

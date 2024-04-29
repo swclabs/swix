@@ -3,10 +3,11 @@ package sentry
 import (
 	"fmt"
 
+	"swclabs/swipecore/internal/config"
+
 	"github.com/getsentry/sentry-go"
 	sentryecho "github.com/getsentry/sentry-go/echo"
 	"github.com/labstack/echo/v4"
-	"swclabs/swipe-api/internal/config"
 )
 
 func Init() {

@@ -7,7 +7,7 @@ import (
 	"mime/multipart"
 	"sync"
 
-	"swclabs/swipe-api/internal/config"
+	"swclabs/swipecore/internal/config"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"

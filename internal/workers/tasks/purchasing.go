@@ -1,6 +1,6 @@
 package tasks
 
-import "swclabs/swipe-api/internal/core/domain"
+import "swclabs/swipecore/internal/core/domain"
 
 type IPurchasing interface {
 	DelayAddToCart(cart domain.CartInfo) error

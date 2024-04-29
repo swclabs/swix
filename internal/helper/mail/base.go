@@ -3,10 +3,11 @@ package mail
 import (
 	"context"
 
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/pkg/tools"
+	"swclabs/swipecore/pkg/web/components"
+
 	"github.com/a-h/templ"
-	"swclabs/swipe-api/internal/config"
-	"swclabs/swipe-api/pkg/tools"
-	"swclabs/swipe-api/pkg/web/components"
 )
 
 type Mailer struct {

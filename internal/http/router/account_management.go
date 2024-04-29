@@ -1,8 +1,8 @@
 package router
 
 import (
-	"swclabs/swipe-api/internal/http/controller"
-	"swclabs/swipe-api/internal/http/middleware"
+	"swclabs/swipecore/internal/http/controller"
+	"swclabs/swipecore/internal/http/middleware"
 
 	"github.com/labstack/echo/v4"
 )
