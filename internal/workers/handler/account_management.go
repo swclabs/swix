@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/core/service"
-	"swclabs/swipe-api/internal/workers/tasks"
-	"swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/service"
+	"swclabs/swipecore/internal/workers/tasks"
+	"swclabs/swipecore/pkg/tools/worker"
 
 	"github.com/hibiken/asynq"
 )

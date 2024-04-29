@@ -3,10 +3,11 @@ package middleware
 import (
 	"net/http"
 
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/pkg/tools"
+	"swclabs/swipecore/pkg/utils"
+
 	"github.com/labstack/echo/v4"
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/pkg/tools"
-	"swclabs/swipe-api/pkg/utils"
 )
 
 func Protected(next echo.HandlerFunc) echo.HandlerFunc {

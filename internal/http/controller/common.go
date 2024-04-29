@@ -3,10 +3,10 @@ package controller
 import (
 	"net/http"
 
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/core/service"
-	"swclabs/swipe-api/internal/helper/oauth2"
-	"swclabs/swipe-api/pkg/utils"
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/service"
+	"swclabs/swipecore/internal/helper/oauth2"
+	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 )

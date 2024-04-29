@@ -17,10 +17,10 @@ import (
 	"fmt"
 	"log"
 
-	"swclabs/swipe-api/boot"
-	"swclabs/swipe-api/boot/adapter"
-	_ "swclabs/swipe-api/docs"
-	"swclabs/swipe-api/internal/config"
+	"swclabs/swipecore/boot"
+	"swclabs/swipecore/boot/adapter"
+	_ "swclabs/swipecore/docs"
+	"swclabs/swipecore/internal/config"
 )
 
 // @title Swipe API Documentation

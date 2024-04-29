@@ -17,11 +17,11 @@ import (
 	"log"
 	"mime/multipart"
 
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/core/repository"
-	"swclabs/swipe-api/internal/workers/tasks"
-	"swclabs/swipe-api/pkg/cloud"
-	"swclabs/swipe-api/pkg/tools"
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/repository"
+	"swclabs/swipecore/internal/workers/tasks"
+	"swclabs/swipecore/pkg/cloud"
+	"swclabs/swipecore/pkg/tools"
 )
 
 // AccountManagement implement domain.AccountManagementService

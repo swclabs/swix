@@ -3,7 +3,7 @@ package utils
 import (
 	"fmt"
 
-	"swclabs/swipe-api/internal/config"
+	"swclabs/swipecore/internal/config"
 )
 
 // ConnectionURLBuilder func for building URL connection.

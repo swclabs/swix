@@ -1,4 +1,4 @@
-module swclabs/swipe-api
+module swclabs/swipecore
 
 go 1.21.3
 

@@ -5,11 +5,11 @@ import (
 	"log"
 	"os"
 
-	"swclabs/swipe-api/internal/http/middleware"
+	"swclabs/swipecore/internal/http/middleware"
 
-	"swclabs/swipe-api/internal/config"
-	"swclabs/swipe-api/pkg/sentry"
-	"swclabs/swipe-api/pkg/tools/worker"
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/pkg/sentry"
+	"swclabs/swipecore/pkg/tools/worker"
 )
 
 var _ IServer = &_Server{}

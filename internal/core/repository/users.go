@@ -9,11 +9,11 @@ import (
 	"fmt"
 	"log"
 
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/pkg/db"
-	"swclabs/swipe-api/pkg/db/queries"
-	"swclabs/swipe-api/pkg/tools"
-	"swclabs/swipe-api/pkg/utils"
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/db/queries"
+	"swclabs/swipecore/pkg/tools"
+	"swclabs/swipecore/pkg/utils"
 
 	"gorm.io/gorm"
 )

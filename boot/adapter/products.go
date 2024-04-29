@@ -2,7 +2,7 @@
 
 package adapter
 
-import "swclabs/swipe-api/internal/http"
+import "swclabs/swipecore/internal/http"
 
 const TypeProducts = "Products"
 

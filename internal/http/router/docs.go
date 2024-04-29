@@ -1,7 +1,7 @@
 package router
 
 import (
-	_ "swclabs/swipe-api/docs"
+	_ "swclabs/swipecore/docs"
 
 	"github.com/labstack/echo/v4"
 

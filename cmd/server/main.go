@@ -10,9 +10,9 @@ import (
 	"fmt"
 	"log"
 
-	"swclabs/swipe-api/boot"
-	"swclabs/swipe-api/boot/adapter"
-	"swclabs/swipe-api/internal/config"
+	"swclabs/swipecore/boot"
+	"swclabs/swipecore/boot/adapter"
+	"swclabs/swipecore/internal/config"
 )
 
 func main() {

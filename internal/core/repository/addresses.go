@@ -7,9 +7,9 @@ import (
 	"errors"
 	"log"
 
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/pkg/db"
-	"swclabs/swipe-api/pkg/db/queries"
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/db/queries"
 
 	"gorm.io/gorm"
 )

@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"swclabs/swipe-api/internal/core/domain"
-	"swclabs/swipe-api/internal/workers/tasks"
+	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/workers/tasks"
 )
 
 type CommonService struct {

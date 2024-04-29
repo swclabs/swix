@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"swclabs/swipe-api/pkg/utils"
+	"swclabs/swipecore/pkg/utils"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

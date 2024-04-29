@@ -2,7 +2,7 @@ package http
 
 import (
 	"os"
-	"swclabs/swipe-api/internal/http/router"
+	"swclabs/swipecore/internal/http/router"
 
 	"github.com/labstack/echo/v4"
 )
