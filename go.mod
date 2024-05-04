@@ -29,7 +29,7 @@ require (
 	google.golang.org/protobuf v1.31.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gorm.io/driver/postgres v1.5.4
-	gorm.io/gorm v1.25.7
+	gorm.io/gorm v1.25.10
 )
 
 require (
