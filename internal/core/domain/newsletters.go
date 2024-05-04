@@ -1,7 +1,5 @@
 package domain
 
-import "context"
-
 const NewsletterTable = "newsletter"
 
 type Newsletter struct {
@@ -27,11 +25,4 @@ type HomeBanners struct {
 	Subtitle string `json:"subtitle"`
 	Img      string `json:"img"`
 	Text     string `json:"text"`
-}
-
-type INewsletterRepository interface {
-	Insert(ctx context.Context, newsletter Newsletter) error
-	Get(ctx context.Context, limit int) ([]Newsletters, error)
-	GetHomeBanner(ctx context.Context, limit int) ([]HomeBanners, error)
-	InsertHomeBanner(ctx context.Context, homeBanner HomeBanners) error
 }

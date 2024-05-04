@@ -21,14 +21,6 @@ type IAccountManagementService interface {
 // IProductService : Module Product interactions
 // Actor: Admin & Customer (User)
 type IProductService interface {
-	// GetAll()
-	// SearchProduct()
-	// GetByCategory()
-	// SortBy()
-	// GetProductInfo()
-	// Like()
-	// Comment()
-
 	GetAccessory(ctx context.Context) ([]Accessory, error)
 	GetCategoriesLimit(ctx context.Context, limit string) ([]Categories, error)
 	GetProductsLimit(ctx context.Context, limit int) ([]Products, error)

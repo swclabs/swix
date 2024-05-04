@@ -8,5 +8,5 @@ if [ "$#" -lt 1 ]; then
 fi
 
 if [ "$1" == "common" ]; then
-    go test -v ./test/common
+    go test -v ./testing/common
 fi

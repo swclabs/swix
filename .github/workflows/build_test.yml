@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: test api server
     runs-on: ubuntu-latest
 
     steps:

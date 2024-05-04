@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"swclabs/swipecore/internal/workers/tasks"
+	"swclabs/swipecore/internal/core/service/tasks"
 	"swclabs/swipecore/pkg/tools/worker"
 )
 
