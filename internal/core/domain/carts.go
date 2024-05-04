@@ -11,10 +11,3 @@ type Carts struct {
 // CartInfo schema
 type CartInfo struct {
 }
-
-type ICartRepository interface {
-	Insert(productID int64) error
-	InsertMany(products []int64) error
-	GetCartByUserID(userId int64) (*CartInfo, error)
-	RemoveProduct(productID int64) error
-}

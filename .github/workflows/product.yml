@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: build products module
     runs-on: ubuntu-latest
 
     steps:

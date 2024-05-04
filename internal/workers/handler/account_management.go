@@ -6,7 +6,7 @@ import (
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/internal/workers/tasks"
+	"swclabs/swipecore/internal/core/service/tasks"
 	"swclabs/swipecore/pkg/tools/worker"
 
 	"github.com/hibiken/asynq"

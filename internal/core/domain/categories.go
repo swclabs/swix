@@ -1,7 +1,5 @@
 package domain
 
-import "context"
-
 type CategoriesRequest struct {
 	Name        string `json:"name" validate:"required" gorm:"column:name"`
 	Description string `json:"description" validate:"required" gorm:"column:description"`
@@ -16,9 +14,4 @@ type Categories struct {
 
 type CategoriesList struct {
 	Data []Categories `json:"data"`
-}
-
-type ICategoriesRepository interface {
-	Insert(ctx context.Context, ctg *Categories) error
-	GetLimit(ctx context.Context, limit string) ([]Categories, error)
 }

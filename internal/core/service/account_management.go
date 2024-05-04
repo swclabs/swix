@@ -19,7 +19,7 @@ import (
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/internal/workers/tasks"
+	"swclabs/swipecore/internal/core/service/tasks"
 	"swclabs/swipecore/pkg/cloud"
 	"swclabs/swipecore/pkg/tools"
 )

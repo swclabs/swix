@@ -1,11 +1,5 @@
 package domain
 
-import (
-	"context"
-
-	"gorm.io/gorm"
-)
-
 const SuppliersTable = "suppliers"
 const SuppliersAddressTable = "supplier_address"
 
@@ -40,13 +34,4 @@ type SuppliersRequest struct {
 	Ward        string `json:"ward" gorm:"column:ward"`
 	District    string `json:"district" gorm:"column:district"`
 	Street      string `json:"street" gorm:"column:street"`
-}
-
-type ISuppliersRepository interface {
-	Use(tx *gorm.DB) ISuppliersRepository
-
-	Insert(ctx context.Context, sup Suppliers, addr Addresses) error
-	InsertAddress(ctx context.Context, addr SuppliersAddress) error
-	GetLimit(ctx context.Context, limit int) ([]Suppliers, error)
-	GetByPhone(ctx context.Context, email string) (*Suppliers, error)
 }
