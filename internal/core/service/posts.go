@@ -9,27 +9,23 @@ import (
 )
 
 type Posts struct {
-	category   domain.ICategoriesRepository
-	product    domain.IProductRepository
-	newsletter domain.INewsletterRepository
+	Newsletter domain.INewsletterRepository
 }
 
 func NewPost() domain.IPostsService {
 	return &Posts{
-		category:   repository.NewCategories(),
-		product:    repository.NewProducts(),
-		newsletter: repository.NewNewsletter(),
+		Newsletter: repository.NewNewsletter(),
 	}
 }
 
 // GetHomeBanner implements domain.IPostsService.
 func (p *Posts) GetHomeBanner(ctx context.Context, limit int) ([]domain.HomeBanners, error) {
-	return p.newsletter.GetHomeBanner(ctx, limit)
+	return p.Newsletter.GetHomeBanner(ctx, limit)
 }
 
 // GetNewsletter implements domain.IPostsService.
 func (p *Posts) GetNewsletter(ctx context.Context, limit int) ([]domain.Newsletters, error) {
-	return p.newsletter.Get(ctx, limit)
+	return p.Newsletter.Get(ctx, limit)
 }
 
 // UploadHomeBanner implements domain.IPostsService.
@@ -39,7 +35,7 @@ func (p *Posts) UploadHomeBanner(ctx context.Context, data domain.HomeBanners, f
 		return err
 	}
 	data.Img = url
-	return p.newsletter.InsertHomeBanner(ctx, data)
+	return p.Newsletter.InsertHomeBanner(ctx, data)
 }
 
 // UploadNewsletter implements domain.IPostsService.

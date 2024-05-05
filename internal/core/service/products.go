@@ -9,20 +9,20 @@ import (
 )
 
 type ProductService struct {
-	newsletter domain.INewsletterRepository
-	categories domain.ICategoriesRepository
-	products   domain.IProductRepository
-	suppliers  domain.ISuppliersRepository
+	Categories domain.ICategoriesRepository
+	Products   domain.IProductRepository
+	Suppliers  domain.ISuppliersRepository
 }
 
+// NewProductService creates a new ProductService instance
 func NewProductService() domain.IProductService {
 	return &ProductService{
-		newsletter: repository.NewNewsletter(),
-		categories: repository.NewCategories(),
-		products:   repository.NewProducts(),
-		suppliers:  repository.NewSuppliers(),
+		Categories: repository.NewCategories(),
+		Products:   repository.NewProducts(),
+		Suppliers:  repository.NewSuppliers(),
 	}
 }
+
 
 func (s *ProductService) GetAccessory(ctx context.Context) ([]domain.Accessory, error) {
 	// TODO:
@@ -30,16 +30,16 @@ func (s *ProductService) GetAccessory(ctx context.Context) ([]domain.Accessory, 
 }
 
 func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
-	return s.categories.GetLimit(ctx, limit)
+	return s.Categories.GetLimit(ctx, limit)
 }
 
 func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.Products, error) {
-	return s.products.GetLitmit(ctx, limit)
+	return s.Products.GetLitmit(ctx, limit)
 }
 
 func (s *ProductService) InsertCategory(ctx context.Context, ctg *domain.Categories) error {
 	// call repository layer
-	return s.categories.Insert(ctx, ctg)
+	return s.Categories.Insert(ctx, ctg)
 }
 
 func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHeader *multipart.FileHeader) error {
@@ -51,7 +51,7 @@ func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHea
 	if err != nil {
 		return err
 	}
-	return s.products.UploadNewImage(ctx, resp.SecureURL, Id)
+	return s.Products.UploadNewImage(ctx, resp.SecureURL, Id)
 }
 
 func (s *ProductService) UploadProduct(ctx context.Context, fileHeader *multipart.FileHeader, products domain.ProductRequest) error {
@@ -72,11 +72,11 @@ func (s *ProductService) UploadProduct(ctx context.Context, fileHeader *multipar
 		CategoryID:  products.CategoryID,
 		Available:   products.Available,
 	}
-	return s.products.Insert(ctx, &prd)
+	return s.Products.Insert(ctx, &prd)
 }
 
 func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
-	return s.suppliers.GetLimit(ctx, limit)
+	return s.Suppliers.GetLimit(ctx, limit)
 }
 
 func (s *ProductService) InsertSuppliers(ctx context.Context, supplierReq domain.SuppliersRequest) error {
@@ -91,5 +91,5 @@ func (s *ProductService) InsertSuppliers(ctx context.Context, supplierReq domain
 		District: supplierReq.District,
 		Street:   supplierReq.Street,
 	}
-	return s.suppliers.Insert(ctx, supplier, addr)
+	return s.Suppliers.Insert(ctx, supplier, addr)
 }

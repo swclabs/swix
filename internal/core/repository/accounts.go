@@ -21,12 +21,6 @@ type Accounts struct {
 	conn *gorm.DB
 }
 
-// Use implements domain.IAccountRepository.
-func (account *Accounts) Use(tx *gorm.DB) domain.IAccountRepository {
-	account.conn = tx
-	return account
-}
-
 func NewAccounts() domain.IAccountRepository {
 	_conn, err := db.Connection()
 	if err != nil {
@@ -38,6 +32,13 @@ func NewAccounts() domain.IAccountRepository {
 	}
 }
 
+// Use implements domain.IAccountRepository.
+func (account *Accounts) Use(tx *gorm.DB) domain.IAccountRepository {
+	account.conn = tx
+	return account
+}
+
+// GetByEmail implements domain.IAccountRepository.
 func (account *Accounts) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
 	if err := account.conn.WithContext(ctx).Table("accounts").Where("email = ?", email).First(account.data).Error; err != nil {
 		return nil, err
@@ -45,6 +46,7 @@ func (account *Accounts) GetByEmail(ctx context.Context, email string) (*domain.
 	return account.data, nil
 }
 
+// Insert implements domain.IAccountRepository.
 func (account *Accounts) Insert(ctx context.Context, acc *domain.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
 	return db.SafeWriteQuery(
@@ -55,6 +57,7 @@ func (account *Accounts) Insert(ctx context.Context, acc *domain.Account) error 
 	)
 }
 
+// SaveInfo implements domain.IAccountRepository.
 func (account *Accounts) SaveInfo(ctx context.Context, acc *domain.Account) error {
 	if acc.Email == "" {
 		return errors.New("missing key: email ")

@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/pkg/tools"
+	"swclabs/swipecore/pkg/tools/valid"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
@@ -23,12 +23,12 @@ type IProducts interface {
 }
 
 type Products struct {
-	services domain.IProductService
+	Services domain.IProductService
 }
 
 func NewProducts() IProducts {
 	return &Products{
-		services: service.NewProductService(),
+		Services: service.NewProductService(),
 	}
 }
 
@@ -48,7 +48,7 @@ func (p *Products) GetCategories(c echo.Context) error {
 		})
 	}
 
-	resp, err := p.services.GetCategoriesLimit(c.Request().Context(), limit)
+	resp, err := p.Services.GetCategoriesLimit(c.Request().Context(), limit)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -75,7 +75,7 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 			Msg: "Invalid 'limit' query parameter",
 		})
 	}
-	prd, err := p.services.GetProductsLimit(c.Request().Context(), _limit)
+	prd, err := p.Services.GetProductsLimit(c.Request().Context(), _limit)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -101,12 +101,12 @@ func (p *Products) InsertCategory(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := tools.Validate(request); _valid != "" {
+	if _valid := valid.Validate(request); _valid != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: _valid,
 		})
 	}
-	if err := p.services.InsertCategory(c.Request().Context(), &domain.Categories{
+	if err := p.Services.InsertCategory(c.Request().Context(), &domain.Categories{
 		Name:        request.Name,
 		Description: request.Description,
 	}); err != nil {
@@ -144,7 +144,7 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 		})
 	}
 	// call services
-	if err := p.services.UploadProductImage(c.Request().Context(), id, file); err != nil {
+	if err := p.Services.UploadProductImage(c.Request().Context(), id, file); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -184,13 +184,13 @@ func (p *Products) UploadProduct(c echo.Context) error {
 		})
 	}
 	// check validate struct
-	if valid := tools.Validate(&productReq); valid != "" {
+	if valid := valid.Validate(&productReq); valid != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: valid,
 		})
 	}
 	// call services
-	if err := p.services.UploadProduct(c.Request().Context(), file, productReq); err != nil {
+	if err := p.Services.UploadProduct(c.Request().Context(), file, productReq); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -215,7 +215,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 			Msg: "Invalid 'limit' query parameter",
 		})
 	}
-	_supp, err := p.services.GetSuppliersLimit(c.Request().Context(), _limit)
+	_supp, err := p.Services.GetSuppliersLimit(c.Request().Context(), _limit)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -241,12 +241,12 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if valid := tools.Validate(req); valid != "" {
+	if valid := valid.Validate(req); valid != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: valid,
 		})
 	}
-	if err := p.services.InsertSuppliers(c.Request().Context(), req); err != nil {
+	if err := p.Services.InsertSuppliers(c.Request().Context(), req); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})

@@ -4,6 +4,7 @@
 package repository
 
 import (
+	"context"
 	"log"
 	"swclabs/swipecore/internal/core/domain"
 
@@ -26,22 +27,22 @@ func NewCarts() domain.ICartRepository {
 	}
 }
 
-func (cart *Carts) Insert(productID int64) error {
-	//TODO implement me
-	panic("implement me")
+// GetCartByUserID implements domain.ICartRepository.
+func (c *Carts) GetCartByUserID(ctx context.Context, userId int64) (*domain.CartInfo, error) {
+	panic("unimplemented")
 }
 
-func (cart *Carts) InsertMany(products []int64) error {
-	//TODO implement me
-	panic("implement me")
+// Insert implements domain.ICartRepository.
+func (c *Carts) Insert(ctx context.Context, productID int64) error {
+	panic("unimplemented")
 }
 
-func (cart *Carts) GetCartByUserID(userId int64) (*domain.CartInfo, error) {
-	//TODO implement me
-	panic("implement me")
+// InsertMany implements domain.ICartRepository.
+func (c *Carts) InsertMany(ctx context.Context, products []int64) error {
+	panic("unimplemented")
 }
 
-func (cart *Carts) RemoveProduct(productID int64) error {
-	//TODO implement me
-	panic("implement me")
+// RemoveProduct implements domain.ICartRepository.
+func (c *Carts) RemoveProduct(ctx context.Context, productID int64, userId int64) error {
+	panic("unimplemented")
 }

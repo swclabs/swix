@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/pkg/tools"
+	"swclabs/swipecore/pkg/tools/valid"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
@@ -18,12 +18,12 @@ type IPosts interface {
 }
 
 type Posts struct {
-	services domain.IPostsService
+	Services domain.IPostsService
 }
 
 func NewPosts() IPosts {
 	return &Posts{
-		services: service.NewPost(),
+		Services: service.NewPost(),
 	}
 }
 
@@ -42,7 +42,7 @@ func (p *Posts) GetNewsletter(c echo.Context) error {
 			Msg: "Invalid 'limit' query parameter",
 		})
 	}
-	newsletter, err := p.services.GetNewsletter(c.Request().Context(), _limit)
+	newsletter, err := p.Services.GetNewsletter(c.Request().Context(), _limit)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -85,13 +85,13 @@ func (p *Posts) UploadNewsletter(c echo.Context) error {
 		})
 	}
 	// check validate struct
-	if valid := tools.Validate(&newsletter); valid != "" {
+	if valid := valid.Validate(&newsletter); valid != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: valid,
 		})
 	}
 	// call services
-	if err := p.services.UploadNewsletter(c.Request().Context(), newsletter, file); err != nil {
+	if err := p.Services.UploadNewsletter(c.Request().Context(), newsletter, file); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})

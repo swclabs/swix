@@ -2,21 +2,21 @@ package mail
 
 import (
 	"context"
+	"swclabs/swipecore/pkg/tools/mailer"
 
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/tools"
 	"swclabs/swipecore/pkg/web/components"
 
 	"github.com/a-h/templ"
 )
 
 type Mailer struct {
-	*tools.Mailer
+	*mailer.Mailer
 }
 
 func New() *Mailer {
 	return &Mailer{
-		tools.NewMailer(config.Email, config.EmailAppPassword),
+		mailer.NewMailer(config.Email, config.EmailAppPassword),
 	}
 }
 
