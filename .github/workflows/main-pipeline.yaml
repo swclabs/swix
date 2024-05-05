@@ -43,7 +43,7 @@ jobs:
           go-version: 1.21
 
       - name: Unit test - common
-        run: sh hack/cmd_test.sh common
+        run: bash hack/cmd_test.sh common
 
   test-posts:
     needs: [build]
@@ -60,7 +60,7 @@ jobs:
           go-version: 1.21
 
       - name: Unit test - posts
-        run: sh hack/cmd_test.sh posts
+        run: bash hack/cmd_test.sh posts
 
   test-products:
     needs: [build]
@@ -77,7 +77,7 @@ jobs:
           go-version: 1.21
 
       - name: Unit test - products
-        run: sh hack/cmd_test.sh products
+        run: bash hack/cmd_test.sh products
 
   build-docker:
     needs: [test-common, test-posts, test-products]

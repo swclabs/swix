@@ -41,4 +41,4 @@ jobs:
           go-version: 1.21
 
       - name: Unit test - products
-        run: sh hack/cmd_test.sh products
+        run: bash hack/cmd_test.sh products
