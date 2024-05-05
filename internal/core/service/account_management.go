@@ -16,35 +16,35 @@ import (
 	"errors"
 	"log"
 	"mime/multipart"
+	"swclabs/swipecore/pkg/tools/jwt"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository"
 	"swclabs/swipecore/internal/core/service/tasks"
 	"swclabs/swipecore/pkg/cloud"
-	"swclabs/swipecore/pkg/tools"
 )
 
 // AccountManagement implement domain.AccountManagementService
 type AccountManagement struct {
 	tasks.AccountManagement // embedded tasks to call worker consume
-	user                    domain.IUserRepository
-	account                 domain.IAccountRepository
-	address                 domain.IAddressRepository
+	User                    domain.IUserRepository
+	Account                 domain.IAccountRepository
+	Address                 domain.IAddressRepository
 }
 
 // NewAccountManagement return new AccountManagement instance
 func NewAccountManagement() *AccountManagement {
 	return &AccountManagement{
-		user:    repository.NewUsers(),
-		account: repository.NewAccounts(),
-		address: repository.NewAddresses(),
+		User:    repository.NewUsers(),
+		Account: repository.NewAccounts(),
+		Address: repository.NewAddresses(),
 	}
 }
 
 // SignUp user to access system, return error if exist
 func (manager *AccountManagement) SignUp(ctx context.Context, req *domain.SignUpRequest) error {
 	// call repository layer
-	return manager.user.TransactionSignUp(ctx, &domain.User{
+	return manager.User.TransactionSignUp(ctx, &domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -57,27 +57,27 @@ func (manager *AccountManagement) SignUp(ctx context.Context, req *domain.SignUp
 // Login to system, return token if error not exist
 func (manager *AccountManagement) Login(ctx context.Context, req *domain.LoginRequest) (string, error) {
 	// get account form email
-	account, err := manager.account.GetByEmail(ctx, req.Email)
+	account, err := manager.Account.GetByEmail(ctx, req.Email)
 	if err != nil {
 		return "", err
 	}
 	// compare input password
-	if err := tools.ComparePassword(account.Password, req.Password); err != nil {
+	if err := jwt.ComparePassword(account.Password, req.Password); err != nil {
 		return "", errors.New("email or password incorrect")
 	}
-	return tools.GenerateToken(req.Email)
+	return jwt.GenerateToken(req.Email)
 }
 
 // UserInfo return user information from Database
 func (manager *AccountManagement) UserInfo(ctx context.Context, email string) (*domain.UserInfo, error) {
 	// get user information
-	return manager.user.Info(ctx, email)
+	return manager.User.Info(ctx, email)
 }
 
 // UpdateUserInfo update user information to database
 func (manager *AccountManagement) UpdateUserInfo(ctx context.Context, req *domain.UserUpdate) error {
 	// call repository layer
-	return manager.user.SaveInfo(ctx, &domain.User{
+	return manager.User.SaveInfo(ctx, &domain.User{
 		Id:          req.Id,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -106,7 +106,7 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 
 // OAuth2SaveUser save user use oauth2 protocol
 func (manager *AccountManagement) OAuth2SaveUser(ctx context.Context, req *domain.OAuth2SaveUser) error {
-	return manager.user.TransactionSaveOAuth2(
+	return manager.User.TransactionSaveOAuth2(
 		ctx,
 		&domain.User{
 			Email:       req.Email,
@@ -119,7 +119,7 @@ func (manager *AccountManagement) OAuth2SaveUser(ctx context.Context, req *domai
 
 // CheckLoginEmail check email already exist in database
 func (manager *AccountManagement) CheckLoginEmail(ctx context.Context, email string) error {
-	_, err := manager.account.GetByEmail(ctx, email)
+	_, err := manager.Account.GetByEmail(ctx, email)
 	if err != nil {
 		return errors.New("account not found: " + email)
 	}
@@ -129,5 +129,5 @@ func (manager *AccountManagement) CheckLoginEmail(ctx context.Context, email str
 // UploadAddress update user address to database
 func (manager *AccountManagement) UploadAddress(ctx context.Context, data *domain.Addresses) error {
 	//TODO:
-	return manager.address.Insert(ctx, data)
+	return manager.Address.Insert(ctx, data)
 }

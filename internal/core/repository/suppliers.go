@@ -26,11 +26,13 @@ func NewSuppliers() domain.ISuppliersRepository {
 	}
 }
 
+// Use implements domain.ISuppliersRepository.
 func (supplier *Suppliers) Use(tx *gorm.DB) domain.ISuppliersRepository {
 	supplier.conn = tx
 	return supplier
 }
 
+// Insert implements domain.ISuppliersRepository.
 func (supplier *Suppliers) Insert(ctx context.Context, supp domain.Suppliers, addr domain.Addresses) error {
 	return supplier.conn.Transaction(func(tx *gorm.DB) error {
 		if err := db.SafeWriteQuery(
@@ -56,6 +58,7 @@ func (supplier *Suppliers) Insert(ctx context.Context, supp domain.Suppliers, ad
 	})
 }
 
+// InsertAddress implements domain.ISuppliersRepository.
 func (supplier *Suppliers) InsertAddress(ctx context.Context, addr domain.SuppliersAddress) error {
 	return db.SafeWriteQuery(
 		ctx,
@@ -65,6 +68,7 @@ func (supplier *Suppliers) InsertAddress(ctx context.Context, addr domain.Suppli
 	)
 }
 
+// GetLimit implements domain.ISuppliersRepository.
 func (supplier *Suppliers) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
 	var _suppliers []domain.Suppliers
 	if err := supplier.conn.Table(domain.SuppliersTable).Find(&_suppliers).Limit(limit).Error; err != nil {
@@ -73,6 +77,7 @@ func (supplier *Suppliers) GetLimit(ctx context.Context, limit int) ([]domain.Su
 	return _suppliers, nil
 }
 
+// GetByPhone implements domain.ISuppliersRepository.
 func (supplier *Suppliers) GetByPhone(ctx context.Context, email string) (*domain.Suppliers, error) {
 	var _supplier domain.Suppliers
 	if err := supplier.conn.Table(domain.SuppliersTable).Where("email = ?", email).First(&_supplier).Error; err != nil {

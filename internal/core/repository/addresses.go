@@ -28,11 +28,13 @@ func NewAddresses() domain.IAddressRepository {
 	}
 }
 
+// Use implements domain.IAddressRepository.
 func (addr *Addresses) Use(tx *gorm.DB) domain.IAddressRepository {
 	addr.conn = tx
 	return addr
 }
 
+// Insert implements domain.IAddressRepository.
 func (addr *Addresses) Insert(ctx context.Context, data *domain.Addresses) error {
 	if data == nil {
 		return errors.New("input data invalid (nil)")

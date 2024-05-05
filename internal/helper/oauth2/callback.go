@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"swclabs/swipecore/pkg/tools/jwt"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/pkg/tools"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
@@ -60,7 +60,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
-	accessToken, err := tools.GenerateToken(profile.Email)
+	accessToken, err := jwt.GenerateToken(profile.Email)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),

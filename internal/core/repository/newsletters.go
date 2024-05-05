@@ -24,6 +24,7 @@ func NewNewsletter() domain.INewsletterRepository {
 	}
 }
 
+// Insert implements domain.INewsletterRepository.
 func (news *Newsletter) Insert(ctx context.Context, newsletter domain.Newsletter) error {
 	return db.SafeWriteQuery(
 		ctx,
@@ -33,6 +34,7 @@ func (news *Newsletter) Insert(ctx context.Context, newsletter domain.Newsletter
 	)
 }
 
+// Get implements domain.INewsletterRepository.
 func (news *Newsletter) Get(ctx context.Context, limit int) ([]domain.Newsletters, error) {
 	var newsletters []domain.Newsletters
 	if err := news.conn.WithContext(ctx).

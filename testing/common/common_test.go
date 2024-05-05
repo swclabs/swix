@@ -3,15 +3,15 @@ package test
 import (
 	"fmt"
 	"maps"
+	"swclabs/swipecore/pkg/tools/jwt"
 	"testing"
 
-	"swclabs/swipecore/pkg/tools"
 	"swclabs/swipecore/pkg/utils"
 )
 
 func TestHash(t *testing.T) {
-	pass, _ := tools.GenPassword("12345")
-	if err := tools.ComparePassword(pass, "12345"); err != nil {
+	pass, _ := jwt.GenPassword("12345")
+	if err := jwt.ComparePassword(pass, "12345"); err != nil {
 		t.Fatalf("ERROR: %s", err.Error())
 	}
 }

@@ -2,22 +2,22 @@ package controller
 
 import (
 	"net/http"
+	"swclabs/swipecore/pkg/tools/valid"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/pkg/tools"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 )
 
 type AccountManagement struct {
-	service *service.AccountManagement
+	Service *service.AccountManagement
 }
 
 func NewAccountManagement() IAccountManagement {
 	return &AccountManagement{
-		service: service.NewAccountManagement(),
+		Service: service.NewAccountManagement(),
 	}
 }
 
@@ -46,13 +46,13 @@ func (account *AccountManagement) Login(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := tools.Validate(request); _valid != "" {
+	if _valid := valid.Validate(request); _valid != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: _valid,
 		})
 	}
 	// var account = service.NewAccountManagement()
-	accessToken, err := account.service.Login(c.Request().Context(), &request)
+	accessToken, err := account.Service.Login(c.Request().Context(), &request)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -92,12 +92,12 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := tools.Validate(request); _valid != "" {
+	if _valid := valid.Validate(request); _valid != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: _valid,
 		})
 	}
-	if err := account.service.SignUp(c.Request().Context(), &request); err != nil {
+	if err := account.Service.SignUp(c.Request().Context(), &request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "user data invalid",
 		})
@@ -142,7 +142,7 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
 	email := utils.Session(c, utils.BaseSessions, "email").(string)
-	response, err := account.service.UserInfo(c.Request().Context(), email)
+	response, err := account.Service.UserInfo(c.Request().Context(), email)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -166,12 +166,12 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := tools.Validate(request); _valid != "" {
+	if _valid := valid.Validate(request); _valid != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: _valid,
 		})
 	}
-	if err := account.service.UpdateUserInfo(c.Request().Context(), &request); err != nil {
+	if err := account.Service.UpdateUserInfo(c.Request().Context(), &request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -199,7 +199,7 @@ func (account *AccountManagement) UpdateUserImage(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if err := account.service.UploadAvatar(email, file); err != nil {
+	if err := account.Service.UploadAvatar(email, file); err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
@@ -224,7 +224,7 @@ func (account *AccountManagement) CheckLoginEmail(c echo.Context) error {
 			Msg: "missing query parameter: email",
 		})
 	}
-	if err := account.service.CheckLoginEmail(c.Request().Context(), email); err != nil {
+	if err := account.Service.CheckLoginEmail(c.Request().Context(), email); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
