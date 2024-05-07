@@ -1,4 +1,4 @@
-package tasks
+package service
 
 import (
 	"swclabs/swipecore/internal/core/domain"
@@ -12,30 +12,30 @@ type IAccountManagement interface {
 	DelayOAuth2SaveUser(req *domain.OAuth2SaveUser) error
 }
 
-var _ IAccountManagement = (*AccountManagement)(nil)
+var _ IAccountManagement = (*AccountManagementTask)(nil)
 
-type AccountManagement struct {
+type AccountManagementTask struct {
 }
 
-func NewAccountManagement() *AccountManagement {
-	return &AccountManagement{}
+func NewAccountManagementTask() *AccountManagementTask {
+	return &AccountManagementTask{}
 }
 
-func (t *AccountManagement) DelaySignUp(req *domain.SignUpRequest) error {
+func (t *AccountManagementTask) DelaySignUp(req *domain.SignUpRequest) error {
 	return worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.DelaySignUp),
 		req,
 	))
 }
 
-func (t *AccountManagement) DelayUpdateUserInfo(req *domain.UserUpdate) error {
+func (t *AccountManagementTask) DelayUpdateUserInfo(req *domain.UserUpdate) error {
 	return worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.DelayUpdateUserInfo),
 		req,
 	))
 }
 
-func (t *AccountManagement) DelayOAuth2SaveUser(req *domain.OAuth2SaveUser) error {
+func (t *AccountManagementTask) DelayOAuth2SaveUser(req *domain.OAuth2SaveUser) error {
 	return worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.DelayOAuth2SaveUser),
 		req,

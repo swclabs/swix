@@ -6,15 +6,14 @@ import (
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/internal/core/service/tasks"
 	"swclabs/swipecore/pkg/tools/worker"
 
 	"github.com/hibiken/asynq"
 )
 
 type CommonHandler struct {
-	tasks.CommonTask                       // embedded delay function here
-	handler          domain.ICommonService // create handler for services
+	service.CommonTask                       // embedded delay function here
+	handler            domain.ICommonService // create handler for services
 }
 
 func NewCommonHandler() *CommonHandler {
@@ -32,6 +31,10 @@ func (common *CommonHandler) HandleHealthCheck() (taskName string, fn worker.Han
 		if err := json.Unmarshal(task.Payload(), &num); err != nil {
 			return err
 		}
-		return common.handler.WorkerCheck(context.Background(), num)
+		if err := common.handler.WorkerCheck(context.Background(), num); err != nil {
+			return err
+		}
+		_, err := task.ResultWriter().Write([]byte("HandleHealthCheck: success"))
+		return err
 	}
 }

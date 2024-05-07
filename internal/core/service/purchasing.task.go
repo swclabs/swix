@@ -1,4 +1,4 @@
-package tasks
+package service
 
 import "swclabs/swipecore/internal/core/domain"
 
@@ -7,16 +7,16 @@ type IPurchasing interface {
 	DelayInsertOrders(order domain.Orders) error
 }
 
-var _ IPurchasing = (*Purchasing)(nil)
+var _ IPurchasing = (*PurchasingTask)(nil)
 
-type Purchasing struct{}
+type PurchasingTask struct{}
 
 // DelayAddToCart implements IPurchasing.
-func (p *Purchasing) DelayAddToCart(cart domain.CartInfo) error {
+func (p *PurchasingTask) DelayAddToCart(cart domain.CartInfo) error {
 	panic("unimplemented")
 }
 
 // DelayInsertOrders implements IPurchasing.
-func (p *Purchasing) DelayInsertOrders(order domain.Orders) error {
+func (p *PurchasingTask) DelayInsertOrders(order domain.Orders) error {
 	panic("unimplemented")
 }

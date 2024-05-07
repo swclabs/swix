@@ -4,6 +4,62 @@
 
 This document describes how you can use the scripts from [`internal`](.) directory and gives a brief introduction and explanation of these scripts.
 
+## Clean Architecture
+
+```mermaid
+---
+title: clean architecture [internal]
+---
+flowchart BT
+  Cached ----> Repository
+  Database ----> Repository
+
+  Service ----> Delivery
+  Domain ----> Delivery
+
+  Rest ----> Delivery
+  Workers ----> Delivery
+
+  subgraph Core
+    Domain ----> Service
+    Domain ----> Repository
+    Repository ----> Service
+  end
+
+```
+
+## Architecture Diagram
+
+```mermaid
+---
+title: Architecture [internal]
+---
+flowchart BT
+  subgraph Core
+    Domain-->Service
+    Domain-- interface -->Repository
+    Repository-- interface -->Service
+  end
+
+  subgraph Helper
+    0Auth2
+  end
+
+  subgraph Http
+    Controller --> 0Auth2
+  end
+
+  subgraph Workers
+    Handler
+  end
+
+  Service -- interface --> Controller
+  Service -- interface --> Handler
+  Domain --> Handler
+  Domain --> Controller
+
+```
+
 ## Key Folder
 
 [`domain`](./domain/) : This is the first layer in clean architecture, where data types for other layers are described
