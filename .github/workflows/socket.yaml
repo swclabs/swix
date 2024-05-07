@@ -3,7 +3,8 @@ name: build nest websocket
 on:
   push:
     branches:
-      - socket
+      - main
+  pull_request:
 
 jobs:
   build:
