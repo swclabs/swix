@@ -1,4 +1,4 @@
-name: Tag docker image with Git
+name: tag docker image with Git
 
 on:
   push:

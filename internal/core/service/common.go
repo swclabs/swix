@@ -5,11 +5,10 @@ import (
 	"fmt"
 
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service/tasks"
 )
 
 type CommonService struct {
-	tasks.CommonTask
+	CommonTask
 }
 
 func NewCommonService() *CommonService {

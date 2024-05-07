@@ -1,0 +1,32 @@
+name: build nest websocket
+
+on:
+  push:
+    branches:
+      - socket
+
+jobs:
+  build:
+    name: build-ws (linux)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set Node.js 20.9.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.9.0
+
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+          dir: "x/socket"
+
+      - name: Test the app
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+          dir: "x/socket"

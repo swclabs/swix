@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"swclabs/swipecore/internal/core/service/tasks"
+	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/pkg/tools/worker"
 )
 
@@ -13,7 +13,7 @@ type IPurchasing interface {
 var _ IPurchasing = (*Purchasing)(nil)
 
 type Purchasing struct {
-	tasks.Purchasing
+	service.PurchasingTask
 }
 
 // HandleAddToCart implements IPurchasing.

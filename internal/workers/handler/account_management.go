@@ -6,14 +6,13 @@ import (
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/internal/core/service/tasks"
 	"swclabs/swipecore/pkg/tools/worker"
 
 	"github.com/hibiken/asynq"
 )
 
 type AccountManagement struct {
-	tasks.AccountManagement
+	service.AccountManagementTask
 	handler domain.IAccountManagementService
 }
 

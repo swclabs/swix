@@ -20,16 +20,15 @@ import (
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/internal/core/service/tasks"
 	"swclabs/swipecore/pkg/cloud"
 )
 
 // AccountManagement implement domain.AccountManagementService
 type AccountManagement struct {
-	tasks.AccountManagement // embedded tasks to call worker consume
-	User                    domain.IUserRepository
-	Account                 domain.IAccountRepository
-	Address                 domain.IAddressRepository
+	AccountManagementTask // embedded tasks to call worker consume
+	User                  domain.IUserRepository
+	Account               domain.IAccountRepository
+	Address               domain.IAddressRepository
 }
 
 // NewAccountManagement return new AccountManagement instance

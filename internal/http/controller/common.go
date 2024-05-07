@@ -48,12 +48,15 @@ func Auth0Callback(c echo.Context) error {
 
 func WorkerCheck(c echo.Context) error {
 	common := service.NewCommonService()
-	if err := common.DelayWorkerCheck(); err != nil {
+	results, err := common.DelayWorkerCheckResult(c.Request().Context())
+	if err != nil {
 		return c.JSON(400, domain.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(200, common.HealthCheck(c.Request().Context()))
+	return c.JSON(200, domain.OK{
+		Msg: results,
+	})
 }
 
 func Foo(ctx echo.Context) error {

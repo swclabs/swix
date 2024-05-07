@@ -1,4 +1,4 @@
-name: Build test api server
+name: build test api server
 
 on:
   push:

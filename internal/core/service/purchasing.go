@@ -3,11 +3,10 @@ package service
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service/tasks"
 )
 
 type Purchasing struct {
-	tasks.Purchasing
+	// PurchasingTask
 }
 
 func NewPurchasingService() domain.IPurchasingService {

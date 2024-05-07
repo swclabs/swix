@@ -1,10 +1,9 @@
-package tasks
+package service
 
 import (
 	"context"
 	"swclabs/swipecore/internal/workers/queue"
 	"swclabs/swipecore/pkg/tools/worker"
-	"time"
 )
 
 type CommonTask struct {
@@ -17,9 +16,7 @@ func (common *CommonTask) DelayWorkerCheck() error {
 	))
 }
 
-func (common *CommonTask) DelayWorkerCheckResult() (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
-	defer cancel()
+func (common *CommonTask) DelayWorkerCheckResult(ctx context.Context) (string, error) {
 	result, err := worker.ExecGetResult(ctx, queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(common.DelayWorkerCheck),
 		1,
