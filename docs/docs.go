@@ -384,12 +384,6 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "name": "available",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
                         "name": "categoryID",
                         "in": "formData",
                         "required": true
@@ -409,6 +403,18 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "name": "price",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "spec",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "name": "status",
                         "in": "formData",
                         "required": true
                     },
@@ -609,6 +615,51 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/warehouse": {
+            "get": {
+                "description": "Get product availability in warehouse",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "product id",
+                        "name": "pid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "ram",
+                        "name": "ram",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "ssd",
+                        "name": "ssd",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Warehouse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -751,9 +802,6 @@ const docTemplate = `{
         "domain.Products": {
             "type": "object",
             "properties": {
-                "available": {
-                    "type": "string"
-                },
                 "category_id": {
                     "type": "string"
                 },
@@ -770,6 +818,12 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "price": {
+                    "type": "string"
+                },
+                "spec": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 },
                 "supplier_id": {
@@ -955,6 +1009,32 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Warehouse": {
+            "type": "object",
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
                     "type": "string"
                 }
             }

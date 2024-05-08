@@ -21,7 +21,6 @@ type IAccountManagementService interface {
 // IProductService : Module Product interactions
 // Actor: Admin & Customer (User)
 type IProductService interface {
-	GetAccessory(ctx context.Context) ([]Accessory, error)
 	GetCategoriesLimit(ctx context.Context, limit string) ([]Categories, error)
 	GetProductsLimit(ctx context.Context, limit int) ([]Products, error)
 	InsertCategory(ctx context.Context, ctg *Categories) error
@@ -29,6 +28,8 @@ type IProductService interface {
 	UploadProduct(ctx context.Context, fileHeader *multipart.FileHeader, products ProductRequest) error
 	GetSuppliersLimit(ctx context.Context, limit int) ([]Suppliers, error)
 	InsertSuppliers(ctx context.Context, supplierReq SuppliersRequest) error
+	InsertIntoWarehouse(ctx context.Context, product Warehouse) error
+	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd string) (*Warehouse, error)
 }
 
 // IPurchasingService : Module Purchasing

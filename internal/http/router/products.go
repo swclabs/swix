@@ -22,6 +22,8 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.GET("/categories", r.controller.GetCategories)
 	e.GET("/products", r.controller.GetProductLimit)
 	e.GET("/suppliers", r.controller.GetSupplier)
+	e.GET("/warehouse", r.controller.GetProductAvailability)
+
 	e.POST("/suppliers", r.controller.InsertSupplier)
 	e.POST("/categories", r.controller.InsertCategory)
 	e.POST("/products", r.controller.UploadProduct)

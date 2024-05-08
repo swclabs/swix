@@ -32,3 +32,5 @@ ALTER TABLE "product_in_order" ADD FOREIGN KEY ("product_id") REFERENCES "produc
 
 ALTER TABLE "favorite_product" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "favorite_product" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "warehouse" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

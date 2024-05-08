@@ -11,19 +11,19 @@ This document describes how you can use the scripts from [`internal`](.) directo
 title: clean architecture [internal]
 ---
 flowchart BT
-  Cached ----> Repository
-  Database ----> Repository
+  id1[(Database)] --> Repository
+  id2[(Cached)] --> Repository
 
-  Service ----> Delivery
-  Domain ----> Delivery
+  Service --> Delivery
+  Domain --> Delivery
 
-  Rest ----> Delivery
-  Workers ----> Delivery
+  Rest --> Delivery
+  Workers --> Delivery
 
   subgraph Core
-    Domain ----> Service
-    Domain ----> Repository
-    Repository ----> Service
+    Domain --> Service
+    Domain --> Repository
+    Repository --> Service
   end
 
 ```
@@ -55,18 +55,16 @@ flowchart BT
 
   Service -- interface --> Controller
   Service -- interface --> Handler
-  Domain --> Handler
-  Domain --> Controller
 
 ```
 
 ## Key Folder
 
-[`domain`](./domain/) : This is the first layer in clean architecture, where data types for other layers are described
+[`domain`](./core/domain/) : This is the first layer in clean architecture, where data types for other layers are described
 
-[`repo`](./repo/): This is the second layer of the architecture, where queries to the database are processed.
+[`repo`](./core/repo/): This is the second layer of the architecture, where queries to the database are processed.
 
-[`service`](./service/): This is the third layer of the architecture, where the business logic of the application is implemented.
+[`service`](./core/service/): This is the third layer of the architecture, where the business logic of the application is implemented.
 
 ## Attention
 
