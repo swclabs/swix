@@ -20,6 +20,7 @@ type IProducts interface {
 	InsertSupplier(c echo.Context) error
 	UploadProductImage(c echo.Context) error
 	UploadProduct(c echo.Context) error
+	GetProductAvailability(c echo.Context) error
 }
 
 type Products struct {
@@ -30,6 +31,35 @@ func NewProducts() IProducts {
 	return &Products{
 		Services: service.NewProductService(),
 	}
+}
+
+// GetProductAvailability
+// @Description Get product availability in warehouse
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param pid query number true "product id"
+// @Param ram query number true "ram"
+// @Param ssd query number true "ssd"
+// @Success 200 {object} domain.Warehouse
+// @Router /warehouse [GET]
+func (p *Products) GetProductAvailability(c echo.Context) error {
+	pid := c.QueryParam("pid")
+	if pid == "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "required 'limit' query params",
+		})
+	}
+	ram := c.QueryParam("ram")
+	ssd := c.QueryParam("ssd")
+
+	product, err := p.Services.GetProductsInWarehouse(c.Request().Context(), pid, ram, ssd)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, product)
 }
 
 // GetCategories

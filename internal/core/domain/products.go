@@ -11,8 +11,8 @@ type Products struct {
 	Name        string `json:"name" gorm:"column:name"`
 	SupplierID  string `json:"supplier_id" gorm:"column:supplier_id"`
 	CategoryID  string `json:"category_id" gorm:"column:category_id"`
-	Available   string `json:"available" gorm:"column:available"`
 	Spec        string `json:"spec" gorm:"column:spec"`
+	Status      string `json:"status" gorm:"column:status"`
 }
 
 type ProductRequest struct {
@@ -21,7 +21,8 @@ type ProductRequest struct {
 	Name        string `json:"name" validate:"required"`
 	SupplierID  string `json:"supplierID" validate:"required"`
 	CategoryID  string `json:"categoryID" validate:"required"`
-	Available   string `json:"available" validate:"required"`
+	Status      string `json:"status" validate:"required"`
+	Spec        string `json:"spec" validate:"required"`
 }
 
 // ProductInCart Table
@@ -47,17 +48,11 @@ type FavoriteProduct struct {
 	ProductID int64 `json:"product_id" gorm:"column:product_id"`
 }
 
-type Accessory struct {
-	Name  string `json:"name" gorm:"column:name"`
-	Price string `json:"price" gorm:"column:price"`
-	New   string `json:"new" gorm:"column:new"`
-	Img   string `json:"img" gorm:"column:img"`
-}
-
 type Specifications struct {
 	Screen  string `json:"screen"`
 	Display string `json:"display"`
 	SSD     []int  `json:"SSD"`
+	RAM     []int  `json:"RAM"`
 }
 
 type ProductResponse struct {
@@ -66,7 +61,7 @@ type ProductResponse struct {
 	Price       string         `json:"price"`
 	Description string         `json:"description"`
 	Name        string         `json:"name"`
-	Available   string         `json:"available"`
+	Status      string         `json:"status"`
 	Spec        Specifications `json:"spec"`
 }
 

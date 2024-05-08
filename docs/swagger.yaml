@@ -93,8 +93,6 @@ definitions:
     type: object
   domain.Products:
     properties:
-      available:
-        type: string
       category_id:
         type: string
       description:
@@ -106,6 +104,10 @@ definitions:
       name:
         type: string
       price:
+        type: string
+      spec:
+        type: string
+      status:
         type: string
       supplier_id:
         type: string
@@ -234,6 +236,23 @@ definitions:
     - last_name
     - phone_number
     - username
+    type: object
+  domain.Warehouse:
+    properties:
+      available:
+        type: string
+      id:
+        type: string
+      model:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: string
+      ram:
+        type: string
+      ssd:
+        type: string
     type: object
 info:
   contact: {}
@@ -477,10 +496,6 @@ paths:
         required: true
         type: file
       - in: formData
-        name: available
-        required: true
-        type: string
-      - in: formData
         name: categoryID
         required: true
         type: string
@@ -494,6 +509,14 @@ paths:
         type: string
       - in: formData
         name: price
+        required: true
+        type: string
+      - in: formData
+        name: spec
+        required: true
+        type: string
+      - in: formData
+        name: status
         required: true
         type: string
       - in: formData
@@ -626,4 +649,34 @@ paths:
             $ref: '#/definitions/domain.OK'
       tags:
       - account_management
+  /warehouse:
+    get:
+      consumes:
+      - application/json
+      description: Get product availability in warehouse
+      parameters:
+      - description: product id
+        in: query
+        name: pid
+        required: true
+        type: number
+      - description: ram
+        in: query
+        name: ram
+        required: true
+        type: number
+      - description: ssd
+        in: query
+        name: ssd
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Warehouse'
+      tags:
+      - products
 swagger: "2.0"

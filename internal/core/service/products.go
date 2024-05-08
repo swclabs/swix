@@ -12,6 +12,7 @@ type ProductService struct {
 	Categories domain.ICategoriesRepository
 	Products   domain.IProductRepository
 	Suppliers  domain.ISuppliersRepository
+	Warehouse  domain.IWarehouseRepository
 }
 
 // NewProductService creates a new ProductService instance
@@ -20,13 +21,18 @@ func NewProductService() domain.IProductService {
 		Categories: repository.NewCategories(),
 		Products:   repository.NewProducts(),
 		Suppliers:  repository.NewSuppliers(),
+		Warehouse:  repository.NewWarehouse(),
 	}
 }
 
+// GetProductsInWarehouse implements domain.IProductService.
+func (s *ProductService) GetProductsInWarehouse(ctx context.Context, productID, ram, ssd string) (*domain.Warehouse, error) {
+	return s.Warehouse.GetProducts(ctx, productID, ram, ssd)
+}
 
-func (s *ProductService) GetAccessory(ctx context.Context) ([]domain.Accessory, error) {
-	// TODO:
-	return nil, nil
+// InsertIntoWarehouse implements domain.IProductService.
+func (s *ProductService) InsertIntoWarehouse(ctx context.Context, product domain.Warehouse) error {
+	return s.Warehouse.InsertProduct(ctx, product)
 }
 
 func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
@@ -38,8 +44,11 @@ func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]dom
 }
 
 func (s *ProductService) InsertCategory(ctx context.Context, ctg *domain.Categories) error {
-	// call repository layer
 	return s.Categories.Insert(ctx, ctg)
+}
+
+func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
+	return s.Suppliers.GetLimit(ctx, limit)
 }
 
 func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHeader *multipart.FileHeader) error {
@@ -70,13 +79,10 @@ func (s *ProductService) UploadProduct(ctx context.Context, fileHeader *multipar
 		Name:        products.Name,
 		SupplierID:  products.SupplierID,
 		CategoryID:  products.CategoryID,
-		Available:   products.Available,
+		Status:      products.Status,
+		Spec:        products.Spec,
 	}
 	return s.Products.Insert(ctx, &prd)
-}
-
-func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
-	return s.Suppliers.GetLimit(ctx, limit)
 }
 
 func (s *ProductService) InsertSuppliers(ctx context.Context, supplierReq domain.SuppliersRequest) error {

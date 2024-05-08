@@ -35,7 +35,8 @@ func (product *Products) Insert(ctx context.Context, prd *domain.Products) error
 		ctx,
 		product.conn,
 		queries.InsertIntoProducts,
-		prd.Image, prd.Price, prd.Name, prd.Description, prd.Available, prd.SupplierID, prd.CategoryID,
+		prd.Image, prd.Price, prd.Name, prd.Description,
+		prd.SupplierID, prd.CategoryID, prd.Status, prd.Spec,
 	)
 }
 
