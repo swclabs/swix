@@ -138,14 +138,4 @@ CREATE TABLE "newsletter" (
   "description" varchar,
   "image" varchar,
   "textcolor" varchar
-);
-
-CREATE TABLE "warehouse" (
-  "id" bigserial PRIMARY KEY,
-  "product_id" int NOT NULL,
-  "price" varchar NOT NULL,
-  "ram" varchar,
-  "ssd" varchar,
-  "model" varchar,
-  "available" int NOT NULL
-);
+)
