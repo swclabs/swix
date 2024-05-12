@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"mime/multipart"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository"
@@ -39,7 +40,7 @@ func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) (
 	return s.Categories.GetLimit(ctx, limit)
 }
 
-func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.Products, error) {
+func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.ProductResponse, error) {
 	return s.Products.GetLitmit(ctx, limit)
 }
 
@@ -63,24 +64,24 @@ func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHea
 	return s.Products.UploadNewImage(ctx, resp.SecureURL, Id)
 }
 
-func (s *ProductService) UploadProduct(ctx context.Context, fileHeader *multipart.FileHeader, products domain.ProductRequest) error {
-	file, err := fileHeader.Open()
+func (s *ProductService) UploadProduct(ctx context.Context, products domain.ProductRequest) (int64, error) {
+	specs, err := json.Marshal(domain.Specifications{
+		Screen:  products.Screen,
+		Display: products.Display,
+		SSD:     products.SSD,
+		RAM:     products.RAM,
+	})
 	if err != nil {
-		return err
-	}
-	resp, err := cloud.UploadImages(cloud.Connection(), file)
-	if err != nil {
-		return err
+		return -1, err
 	}
 	var prd = domain.Products{
-		Image:       resp.SecureURL,
 		Price:       products.Price,
 		Description: products.Description,
 		Name:        products.Name,
 		SupplierID:  products.SupplierID,
 		CategoryID:  products.CategoryID,
 		Status:      products.Status,
-		Spec:        products.Spec,
+		Spec:        string(specs),
 	}
 	return s.Products.Insert(ctx, &prd)
 }

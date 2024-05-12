@@ -1,256 +1,1756 @@
 {
 	"info": {
-		"_postman_id": "cc7f7671-7978-40bc-8bf4-309e56112e61",
-		"name": "swc",
+		"_postman_id": "0f2162aa-a37c-4a7d-866b-f3cd1389f0a9",
+		"name": "Swipe API Documentation",
+		"description": "This is a documentation for the Swipe API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23388230"
 	},
 	"item": [
 		{
-			"name": "user",
+			"name": "auth",
 			"item": [
 				{
+					"name": "login",
+					"item": [
+						{
+							"name": "Login account.",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"uuid": "21e47f67-2d1a-4212-a140-fd041c328d4e"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"uuid": "96bf6e8d-16f8-4c13-be34-a7cf9a712d8c"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								},
+								"description": "Login account."
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"<string>\",\n  \"password\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/auth/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"email\": \"<string>\",\n  \"success\": \"<boolean>\",\n  \"token\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "logout",
+					"item": [
+						{
+							"name": "logout user from the service",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"uuid": "3f2c0059-a6ea-40d4-b96c-87b2fa3db3d8"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/auth/logout",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"logout"
+									]
+								},
+								"description": "logout user from the service"
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/auth/logout",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"logout"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
 					"name": "signup",
+					"item": [
+						{
+							"name": "Register account for admin.",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"uuid": "a3f9eebf-610d-4c6b-a328-f6e22ba9bc7a"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"uuid": "64323bd2-8179-48fd-b7c9-ef85ce293d80"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/auth/signup",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth",
+										"signup"
+									]
+								},
+								"description": "Register account for admin."
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"email\": \"<string>\",\n  \"first_name\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"password\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/auth/signup",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"auth",
+												"signup"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\",\n  \"success\": \"<boolean>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "check email address before login",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "68f0e429-559a-4b11-95c7-32153f944a02"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/auth?email=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "<string>",
+									"description": "(Required) email address"
+								}
+							]
+						},
+						"description": "check email address before login"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/auth?email=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"auth"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "<string>",
+											"description": "(Required) email address"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"msg\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "categories",
+			"item": [
+				{
+					"name": "Get categories",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "88cc90d8-774e-4a69-9d84-71dd4c028e79"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/categories?limit=<number>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"categories"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "<number>",
+									"description": "(Required) limit number"
+								}
+							]
+						},
+						"description": "Get categories"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/categories?limit=<number>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"categories"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "<number>",
+											"description": "(Required) limit number"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Insert new category",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"uuid": "2bee0f39-d810-4afc-81ee-6db955b9bb6e"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "b2016132-7f1a-4a85-8fd3-2c3b781c7de5"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"hunghoduc@gmail.com\",\r\n  \"first_name\": \"Hưng\",\r\n  \"last_name\": \"Hồ Đức\",\r\n  \"password\": \"12345\",\r\n  \"phone_number\": \"12345678912\"\r\n}",
+							"raw": "{\n  \"description\": \"<string>\",\n  \"name\": \"<string>\"\n}",
 							"options": {
 								"raw": {
+									"headerFamily": "json",
 									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/auth/signup",
-							"protocol": "http",
+							"raw": "{{baseUrl}}/categories",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
-							"port": "8000",
 							"path": [
-								"auth",
-								"signup"
+								"categories"
+							]
+						},
+						"description": "Insert new category"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"description\": \"<string>\",\n  \"name\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/categories",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"email\": \"<string>\",\n  \"success\": \"<boolean>\",\n  \"token\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "common",
+			"item": [
+				{
+					"name": "healthcheck",
+					"item": [
+						{
+							"name": "health check api server.",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/common/healthcheck",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"common",
+										"healthcheck"
+									]
+								},
+								"description": "health check api server."
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/common/healthcheck",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"common",
+												"healthcheck"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
 							]
 						}
-					},
-					"response": []
-				},
+					]
+				}
+			]
+		},
+		{
+			"name": "newsletter",
+			"item": [
 				{
-					"name": "image",
+					"name": "Get Product Newsletter",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "13f25e67-634a-4cd6-a342-8c2889c208fb"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/newsletter?limit=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"newsletter"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "<integer>",
+									"description": "(Required) limit number of newsletter"
+								}
+							]
+						},
+						"description": "Get Product Newsletter"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/newsletter?limit=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"newsletter"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "<integer>",
+											"description": "(Required) limit number of newsletter"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"image\": \"<string>\",\n      \"subtitle\": \"<string>\",\n      \"textcolor\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"image\": \"<string>\",\n      \"subtitle\": \"<string>\",\n      \"textcolor\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "newsletters",
+			"item": [
+				{
+					"name": "Create newsletter",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"uuid": "7ea8ae67-601e-4d63-bdf7-0b2173180320"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "235e59d6-207f-4b28-9f98-2f378789ae7f"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "img",
-									"type": "file",
-									"src": "/C:/Users/84865/Pictures/1200x1200bf-60.jpg"
+									"value": "<string>",
+									"description": "(Required) image of newsletter",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "subtitle",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "textcolor",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:8000/users/image",
-							"protocol": "http",
+							"raw": "{{baseUrl}}/newsletters",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
-							"port": "8000",
 							"path": [
-								"users",
-								"image"
+								"newsletters"
 							]
-						}
+						},
+						"description": "Create newsletter"
 					},
-					"response": []
-				},
-				{
-					"name": "logout",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/auth/logout",
-							"protocol": "http",
-							"host": [
-								"localhost"
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "img",
+											"value": "<string>",
+											"description": "(Required) image of newsletter",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "subtitle",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "textcolor",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "title",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/newsletters",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"newsletters"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
 							],
-							"port": "8000",
-							"path": [
-								"auth",
-								"logout"
-							]
+							"cookie": [],
+							"body": "{\n  \"msg\": \"<string>\"\n}"
 						}
-					},
-					"response": []
-				},
+					]
+				}
+			]
+		},
+		{
+			"name": "oauth2",
+			"item": [
 				{
 					"name": "login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"hungho1@gmail.com\",\r\n  \"password\": \"12345\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"item": [
+						{
+							"name": "Auth0 Login form.",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/oauth2/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"oauth2",
+										"login"
+									]
+								},
+								"description": "Auth0 Login form."
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/oauth2/login",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"oauth2",
+												"login"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
 								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8000/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"auth",
-								"login"
 							]
 						}
-					},
-					"response": []
+					]
+				}
+			]
+		},
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "img",
+					"item": [
+						{
+							"name": "Insert new product image",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data",
+										"uuid": "d211f19d-1d10-4981-b4bf-6e477715ffb3"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"uuid": "0be94023-edec-48bd-82ca-4252ec227bed"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "img",
+											"value": "<string>",
+											"description": "(Required) image of product",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/products/img?id=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products",
+										"img"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "<string>",
+											"description": "(Required) id of product"
+										}
+									]
+								},
+								"description": "Insert new product image"
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "img",
+													"value": "<string>",
+													"description": "(Required) image of product",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products/img?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products",
+												"img"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) id of product"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\"\n}"
+								},
+								{
+									"name": "Bad Request",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "multipart/form-data"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "img",
+													"value": "<string>",
+													"description": "(Required) image of product",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/products/img?id=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"products",
+												"img"
+											],
+											"query": [
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) id of product"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
 				},
 				{
-					"name": "get me",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "get product information",
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "3084769b-7f96-4132-bdcd-4a9773d68907"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products?limit=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
 								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imh1bmdobzFAZ21haWwuY29tIiwiZXhwIjoxNzA4Njc1NzE0fQ.-I4rPTQ1snal1oenKsQEazpIdMGXUa-6RVHoNjCd-7Y",
-									"type": "string"
+									"key": "limit",
+									"value": "<integer>",
+									"description": "(Required) limit number of products"
 								}
 							]
 						},
+						"description": "get product information"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/products?limit=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "<integer>",
+											"description": "(Required) limit number of products"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"category_id\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"image\": \"<string>\",\n      \"name\": \"<string>\",\n      \"price\": \"<string>\",\n      \"spec\": \"<string>\",\n      \"status\": \"<string>\",\n      \"supplier_id\": \"<string>\"\n    },\n    {\n      \"category_id\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"image\": \"<string>\",\n      \"name\": \"<string>\",\n      \"price\": \"<string>\",\n      \"spec\": \"<string>\",\n      \"status\": \"<string>\",\n      \"supplier_id\": \"<string>\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Create new product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"uuid": "5397a212-c92a-490f-b9dc-f24e9a18333a"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "8f7569b5-1052-46f8-b09f-3abfbd5c26fe"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "img",
+									"value": "<string>",
+									"description": "(Required) image of product",
+									"type": "text"
+								},
+								{
+									"key": "categoryID",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "spec",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								},
+								{
+									"key": "supplierID",
+									"value": "<string>",
+									"description": "(Required) ",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						},
+						"description": "Create new product"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "img",
+											"value": "<string>",
+											"description": "(Required) image of product",
+											"type": "text"
+										},
+										{
+											"key": "categoryID",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "price",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "spec",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "status",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										},
+										{
+											"key": "supplierID",
+											"value": "<string>",
+											"description": "(Required) ",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/products",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"msg\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "suppliers",
+			"item": [
+				{
+					"name": "get suppliers information",
+					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "405cacbf-911f-423a-b130-084a7b41e905"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/suppliers?limit=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"suppliers"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "<integer>",
+									"description": "(Required) limit number of suppliers"
+								}
+							]
+						},
+						"description": "get suppliers information"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/suppliers?limit=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"suppliers"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "<integer>",
+											"description": "(Required) limit number of suppliers"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"email\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"phone_number\": \"<string>\"\n    },\n    {\n      \"email\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"phone_number\": \"<string>\"\n    }\n  ]\n}"
+						}
+					]
+				},
+				{
+					"name": "insert new suppliers information",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"uuid": "093d507d-3b88-40a7-9535-48b06e0535ff"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "856c3ed2-c0c7-40e6-8c3b-efe407552fd0"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"string\",\r\n  \"password\": \"string\"\r\n}",
+							"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"city\": \"<string>\",\n  \"district\": \"<string>\",\n  \"street\": \"<string>\",\n  \"ward\": \"<string>\"\n}",
 							"options": {
 								"raw": {
+									"headerFamily": "json",
 									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/users",
-							"protocol": "http",
+							"raw": "{{baseUrl}}/suppliers",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
-							"port": "8000",
+							"path": [
+								"suppliers"
+							]
+						},
+						"description": "insert new suppliers information"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"city\": \"<string>\",\n  \"district\": \"<string>\",\n  \"street\": \"<string>\",\n  \"ward\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/suppliers",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"suppliers"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"msg\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "image",
+					"item": [
+						{
+							"name": "update information for users.",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"uuid": "0447ddbf-043e-4a91-a256-0f98724e7ba2"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users/image",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users",
+										"image"
+									]
+								},
+								"description": "update information for users."
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/users/image",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"users",
+												"image"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "get information for users.",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "8c3e484b-b20a-43d0-a4a7-ae6c2ec43135"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": [
+								"{{baseUrl}}"
+							],
 							"path": [
 								"users"
 							]
-						}
+						},
+						"description": "get information for users."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"email\": \"<string>\",\n  \"first_name\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"image\": \"<string>\",\n  \"last_name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"role\": \"<string>\",\n  \"username\": \"<string>\"\n}"
+						}
+					]
 				},
 				{
-					"name": "auth",
+					"name": "update information for users.",
 					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/auth",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"auth"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "category",
-			"item": [
-				{
-					"name": "categories",
-					"request": {
-						"method": "POST",
-						"header": [],
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"uuid": "6071e69e-e130-416b-be7c-26d3cbe77f64"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "9514ff97-aa24-4dbb-a945-0825d47d20a4"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Phụ kiện\",\r\n  \"description\": \"Phụ kiện điện thoại\"\r\n}",
+							"raw": "{\n  \"email\": \"<string>\",\n  \"first_name\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"last_name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"username\": \"<string>\"\n}",
 							"options": {
 								"raw": {
+									"headerFamily": "json",
 									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/categories",
-							"protocol": "http",
+							"raw": "{{baseUrl}}/users",
 							"host": [
-								"localhost"
+								"{{baseUrl}}"
 							],
-							"port": "8000",
 							"path": [
-								"categories"
+								"users"
 							]
-						}
+						},
+						"description": "update information for users."
 					},
-					"response": []
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"first_name\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"last_name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"username\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/users",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"msg\": \"<string>\"\n}"
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "healthcheck",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8000/common/healthcheck",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"common",
-						"healthcheck"
+			"name": "warehouse",
+			"item": [
+				{
+					"name": "Get product availability in warehouse",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"uuid": "b5b81d95-8ad3-40ec-8752-6752e3d2f70e"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/warehouse?pid=<number>&ram=<number>&ssd=<number>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"warehouse"
+							],
+							"query": [
+								{
+									"key": "pid",
+									"value": "<number>",
+									"description": "(Required) product id"
+								},
+								{
+									"key": "ram",
+									"value": "<number>",
+									"description": "(Required) ram"
+								},
+								{
+									"key": "ssd",
+									"value": "<number>",
+									"description": "(Required) ssd"
+								}
+							]
+						},
+						"description": "Get product availability in warehouse"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/warehouse?pid=<number>&ram=<number>&ssd=<number>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"warehouse"
+									],
+									"query": [
+										{
+											"key": "pid",
+											"value": "<number>",
+											"description": "(Required) product id"
+										},
+										{
+											"key": "ram",
+											"value": "<number>",
+											"description": "(Required) ram"
+										},
+										{
+											"key": "ssd",
+											"value": "<number>",
+											"description": "(Required) ssd"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"available\": \"<string>\",\n  \"id\": \"<string>\",\n  \"model\": \"<string>\",\n  \"price\": \"<string>\",\n  \"product_id\": \"<string>\",\n  \"ram\": \"<string>\",\n  \"ssd\": \"<string>\"\n}"
+						}
 					]
 				}
-			},
-			"response": []
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "workercheck",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8000/common/worker",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8000",
-					"path": [
-						"common",
-						"worker"
-					]
-				}
-			},
-			"response": []
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:8000"
 		}
 	]
 }

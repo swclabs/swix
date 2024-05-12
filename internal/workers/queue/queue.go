@@ -6,6 +6,9 @@ var (
 	CriticalQueue = "critical"
 	DefaultQueue  = "default"
 	LowQueue      = "low"
+
+	OrderQueue = "order"
+	Purchase   = "purchase"
 )
 
 func init() {

@@ -22,19 +22,19 @@ type IAccountManagementService interface {
 // Actor: Admin & Customer (User)
 type IProductService interface {
 	GetCategoriesLimit(ctx context.Context, limit string) ([]Categories, error)
-	GetProductsLimit(ctx context.Context, limit int) ([]Products, error)
+	GetProductsLimit(ctx context.Context, limit int) ([]ProductResponse, error)
 	InsertCategory(ctx context.Context, ctg *Categories) error
 	UploadProductImage(ctx context.Context, Id int, fileHeader *multipart.FileHeader) error
-	UploadProduct(ctx context.Context, fileHeader *multipart.FileHeader, products ProductRequest) error
+	UploadProduct(ctx context.Context, products ProductRequest) (int64, error)
 	GetSuppliersLimit(ctx context.Context, limit int) ([]Suppliers, error)
 	InsertSuppliers(ctx context.Context, supplierReq SuppliersRequest) error
 	InsertIntoWarehouse(ctx context.Context, product Warehouse) error
 	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd string) (*Warehouse, error)
 }
 
-// IPurchasingService : Module Purchasing
+// IPurchaseService : Module Purchasing
 // Actor: Admin & Customer (User)
-type IPurchasingService interface {
+type IPurchaseService interface {
 	AddToCart(ctx context.Context, cart CartInfo)
 	GetCart(ctx context.Context, limit int) ([]Carts, error)
 	GetOrders(ctx context.Context, limit int) ([]Orders, error)

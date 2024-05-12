@@ -26,6 +26,7 @@ func (m *Mailer) SendPurchaseOrder(to string) error {
 	if err != nil {
 		return err
 	}
+
 	m.Message.SetHeader("From", m.Email)
 	m.Message.SetHeader("To", to)
 	m.Message.SetHeader("Subject", "Sample Message")

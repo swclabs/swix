@@ -91,6 +91,40 @@ definitions:
       msg:
         type: string
     type: object
+  domain.ProductRequest:
+    properties:
+      RAM:
+        items:
+          type: integer
+        type: array
+      SSD:
+        items:
+          type: integer
+        type: array
+      category_id:
+        type: string
+      description:
+        type: string
+      display:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      screen:
+        type: string
+      status:
+        type: string
+      supplier_id:
+        type: string
+    required:
+    - category_id
+    - description
+    - name
+    - price
+    - status
+    - supplier_id
+    type: object
   domain.Products:
     properties:
       category_id:
@@ -388,7 +422,7 @@ paths:
           description: OK
       tags:
       - common
-  /newsletter:
+  /newsletters:
     get:
       consumes:
       - application/json
@@ -408,7 +442,6 @@ paths:
             $ref: '#/definitions/domain.NewsletterListResponse'
       tags:
       - posts
-  /newsletters:
     post:
       consumes:
       - multipart/form-data
@@ -487,42 +520,15 @@ paths:
       - products
     post:
       consumes:
-      - multipart/form-data
+      - application/json
       description: Create new product
       parameters:
-      - description: image of product
-        in: formData
-        name: img
+      - description: Product Request
+        in: body
+        name: product
         required: true
-        type: file
-      - in: formData
-        name: categoryID
-        required: true
-        type: string
-      - in: formData
-        name: description
-        required: true
-        type: string
-      - in: formData
-        name: name
-        required: true
-        type: string
-      - in: formData
-        name: price
-        required: true
-        type: string
-      - in: formData
-        name: spec
-        required: true
-        type: string
-      - in: formData
-        name: status
-        required: true
-        type: string
-      - in: formData
-        name: supplierID
-        required: true
-        type: string
+        schema:
+          $ref: '#/definitions/domain.ProductRequest'
       produces:
       - application/json
       responses:

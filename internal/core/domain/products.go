@@ -16,13 +16,13 @@ type Products struct {
 }
 
 type ProductRequest struct {
+	Specifications
 	Price       string `json:"price" validate:"required"`
 	Description string `json:"description" validate:"required"`
 	Name        string `json:"name" validate:"required"`
-	SupplierID  string `json:"supplierID" validate:"required"`
-	CategoryID  string `json:"categoryID" validate:"required"`
+	SupplierID  string `json:"supplier_id" validate:"required"`
+	CategoryID  string `json:"category_id" validate:"required"`
 	Status      string `json:"status" validate:"required"`
-	Spec        string `json:"spec" validate:"required"`
 }
 
 // ProductInCart Table
@@ -65,6 +65,11 @@ type ProductResponse struct {
 	Spec        Specifications `json:"spec"`
 }
 
+type UploadProductResponse struct {
+	Msg string `json:"msg"`
+	Id  int64  `json:"id"`
+}
+
 type ProductsListResponse struct {
-	Data []Products `json:"data" gorm:"column:data"`
+	Data []ProductResponse `json:"data" gorm:"column:data"`
 }

@@ -51,7 +51,7 @@ CREATE TABLE "products" (
   "supplier_id" bigint NOT NULL,
   "category_id" bigint NOT NULL,
   "star" varchar,
-  "spec" varchar,
+  "spec" jsonb,
   "status" varchar NOT NULL
 );
 
@@ -138,7 +138,7 @@ CREATE TABLE "newsletter" (
   "description" varchar,
   "image" varchar,
   "textcolor" varchar
-)
+);
 
 CREATE TABLE "warehouse" (
   "id" bigserial PRIMARY KEY,
@@ -147,5 +147,5 @@ CREATE TABLE "warehouse" (
   "ram" varchar,
   "ssd" varchar,
   "model" varchar,
-  "available" int NOT NULL,
-)
+  "available" int NOT NULL
+);

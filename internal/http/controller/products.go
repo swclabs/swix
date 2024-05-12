@@ -6,10 +6,8 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/pkg/tools/valid"
-	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
-	"github.com/mitchellh/mapstructure"
 )
 
 type IProducts interface {
@@ -160,12 +158,13 @@ func (p *Products) InsertCategory(c echo.Context) error {
 // @Failure 400 {object} domain.Error
 // @Router /products/img [POST]
 func (p *Products) UploadProductImage(c echo.Context) error {
-	file, err := c.FormFile("img")
+	form, err := c.MultipartForm()
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 	}
+	files := form.File["img"]
 	// get id params
 	id, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
@@ -174,7 +173,7 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 		})
 	}
 	// call services
-	if err := p.Services.UploadProductImage(c.Request().Context(), id, file); err != nil {
+	if err := p.Services.UploadProductImage(c.Request().Context(), id, files[0]); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -187,28 +186,15 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 // UploadProduct
 // @Description Create new product
 // @Tags products
-// @Accept multipart/form-data
+// @Accept json
 // @Produce json
-// @Param img formData file true "image of product"
-// @Param product formData domain.ProductRequest true "Product Request"
+// @Param product body domain.ProductRequest true "Product Request"
 // @Success 200 {object} domain.OK
 // @Router /products [POST]
 func (p *Products) UploadProduct(c echo.Context) error {
-	file, err := c.FormFile("img")
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: err.Error(),
-		})
-	}
-	formData, err := c.MultipartForm()
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: err.Error(),
-		})
-	}
 	// bind json to structure
 	var productReq domain.ProductRequest
-	if err := mapstructure.Decode(utils.NxN2Nx1(formData.Value), &productReq); err != nil {
+	if err := c.Bind(&productReq); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -220,13 +206,15 @@ func (p *Products) UploadProduct(c echo.Context) error {
 		})
 	}
 	// call services
-	if err := p.Services.UploadProduct(c.Request().Context(), file, productReq); err != nil {
+	id, err := p.Services.UploadProduct(c.Request().Context(), productReq)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, domain.OK{
+	return c.JSON(http.StatusCreated, domain.UploadProductResponse{
 		Msg: "upload product successfully",
+		Id:  id,
 	})
 }
 

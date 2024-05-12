@@ -215,7 +215,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/newsletter": {
+        "/newsletters": {
             "get": {
                 "description": "Get Product Newsletter",
                 "consumes": [
@@ -244,9 +244,7 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/newsletters": {
+            },
             "post": {
                 "description": "Create newsletter",
                 "consumes": [
@@ -366,7 +364,7 @@ const docTemplate = `{
             "post": {
                 "description": "Create new product",
                 "consumes": [
-                    "multipart/form-data"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -376,53 +374,13 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "type": "file",
-                        "description": "image of product",
-                        "name": "img",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "categoryID",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "description",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "price",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "spec",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "status",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "supplierID",
-                        "in": "formData",
-                        "required": true
+                        "description": "Product Request",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.ProductRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -795,6 +753,55 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ProductRequest": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "description",
+                "name",
+                "price",
+                "status",
+                "supplier_id"
+            ],
+            "properties": {
+                "RAM": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "SSD": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "category_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "display": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "screen": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "supplier_id": {
                     "type": "string"
                 }
             }

@@ -46,7 +46,7 @@ flowchart BT
   end
 
   subgraph Http
-    Controller --> 0Auth2
+    0Auth2 --> Controller
   end
 
   subgraph Workers
