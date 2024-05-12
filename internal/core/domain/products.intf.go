@@ -10,7 +10,7 @@ type IProductInCartRepository interface {
 }
 
 type IProductRepository interface {
-	Insert(ctx context.Context, prd *Products) error
-	GetLitmit(ctx context.Context, limit int) ([]Products, error)
+	Insert(ctx context.Context, prd *Products) (int64, error)
+	GetLitmit(ctx context.Context, limit int) ([]ProductResponse, error)
 	UploadNewImage(ctx context.Context, urlImg string, id int) error
 }

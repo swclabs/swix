@@ -54,6 +54,39 @@ func TestGetNewsletters(t *testing.T) {
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
 }
 
+func TestGetSuppliers(t *testing.T) {
+	// repository layers
+	repos := repository.SuppliersMock{}
+	repos.On("GetLimit", context.Background(), 10).Return([]domain.Suppliers{
+		{
+			Id:          "1",
+			Name:        "apple",
+			PhoneNumber: "",
+			Email:       "apple@example.com",
+		},
+	}, nil)
+
+	// bussiness logic layers
+	service := service.ProductService{
+		Suppliers: &repos,
+	}
+
+	// presenter layers
+	controllers := controller.Products{
+		Services: &service,
+	}
+
+	e.GET("/suppliers", controllers.GetSupplier)
+
+	req := httptest.NewRequest(http.MethodGet, "/suppliers?limit=10", nil)
+	rr := httptest.NewRecorder()
+
+	e.ServeHTTP(rr, req)
+
+	expected := "{\"data\":[{\"id\":\"1\",\"name\":\"apple\",\"phone_number\":\"\",\"email\":\"apple@example.com\"}]}\n"
+	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
+}
+
 func TestUploadNewsletters(t *testing.T) {
 
 }

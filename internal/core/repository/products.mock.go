@@ -13,18 +13,17 @@ type ProductMock struct {
 
 var _ domain.IProductRepository = (*ProductMock)(nil)
 
-
 func NewProductsMock() *ProductMock {
 	return &ProductMock{}
 }
 
 // GetLitmit implements domain.IProductRepository.
-func (p *ProductMock) GetLitmit(ctx context.Context, limit int) ([]domain.Products, error) {
+func (p *ProductMock) GetLitmit(ctx context.Context, limit int) ([]domain.ProductResponse, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.IProductRepository.
-func (p *ProductMock) Insert(ctx context.Context, prd *domain.Products) error {
+func (p *ProductMock) Insert(ctx context.Context, prd *domain.Products) (int64, error) {
 	panic("unimplemented")
 }
 

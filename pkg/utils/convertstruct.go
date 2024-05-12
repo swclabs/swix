@@ -1,7 +1,7 @@
 package utils
 
-func NxN2Nx1(data map[string][]string) map[string]string {
-	resp := make(map[string]string, len(data))
+func NxN2Nx1(data map[string][]string) map[string]interface{} {
+	resp := make(map[string]interface{}, len(data))
 	for k, v := range data {
 		resp[k] = v[0]
 	}

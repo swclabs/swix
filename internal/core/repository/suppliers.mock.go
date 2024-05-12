@@ -14,10 +14,6 @@ type SuppliersMock struct {
 
 var _ domain.ISuppliersRepository = (*SuppliersMock)(nil)
 
-func NewSuppliersMock() *SuppliersMock {
-	return &SuppliersMock{}
-}
-
 // GetByPhone implements domain.ISuppliersRepository.
 func (s *SuppliersMock) GetByPhone(ctx context.Context, email string) (*domain.Suppliers, error) {
 	panic("unimplemented")
@@ -25,7 +21,8 @@ func (s *SuppliersMock) GetByPhone(ctx context.Context, email string) (*domain.S
 
 // GetLimit implements domain.ISuppliersRepository.
 func (s *SuppliersMock) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
-	panic("unimplemented")
+	args := s.Called(ctx, limit)
+	return args.Get(0).([]domain.Suppliers), args.Error(1)
 }
 
 // Insert implements domain.ISuppliersRepository.

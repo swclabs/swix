@@ -34,7 +34,7 @@ func NewPosts() IPosts {
 // @Produce json
 // @Param limit query int true "limit number of newsletter"
 // @Success 200 {object} domain.NewsletterListResponse
-// @Router /newsletter [GET]
+// @Router /newsletters [GET]
 func (p *Posts) GetNewsletter(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil {

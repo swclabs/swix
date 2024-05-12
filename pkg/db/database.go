@@ -38,3 +38,15 @@ func SafeWriteQuery(ctx context.Context, connection *gorm.DB, sql string, args .
 	defer writeLock.Unlock()
 	return connection.WithContext(ctx).Exec(sql, args...).Error
 }
+
+func SafeWriteQueryReturnId(ctx context.Context, connection *gorm.DB, sql string, args ...interface{}) (int64, error) {
+	// lock the connection
+	writeLock.Lock()
+	// after function call return, unlock the write lock
+	defer writeLock.Unlock()
+	var id int64
+	if err := connection.WithContext(ctx).Raw(sql, args...).Scan(&id).Error; err != nil {
+		return -1, err
+	}
+	return id, nil
+}
