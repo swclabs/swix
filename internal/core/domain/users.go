@@ -18,8 +18,8 @@ type UserAddress struct {
 	AddressID string `json:"address_uuid" gorm:"column:address_uuid"`
 }
 
-// SignUpRequest schema
-type SignUpRequest struct {
+// SignUpReq schema
+type SignUpReq struct {
 	Email       string `json:"email" validate:"email,required"`
 	PhoneNumber string `json:"phone_number" validate:"number,required"`
 	FirstName   string `json:"first_name" validate:"required"`
@@ -27,20 +27,20 @@ type SignUpRequest struct {
 	Password    string `json:"password" validate:"required"`
 }
 
-// SignUpResponse schema
-type SignUpResponse struct {
+// SignUpRes schema
+type SignUpRes struct {
 	Success bool   `json:"success" validate:"required"`
 	Msg     string `json:"msg" validate:"required"`
 }
 
-// LoginRequest schema
-type LoginRequest struct {
+// LoginReq schema
+type LoginReq struct {
 	Email    string `json:"email" validate:"email,required"`
 	Password string `json:"password" validate:"required"`
 }
 
-// LoginResponse schema
-type LoginResponse struct {
+// LoginRes schema
+type LoginRes struct {
 	Success bool   `json:"success" validate:"required"`
 	Token   string `json:"token" validate:"required"`
 	Email   string `json:"email" validate:"email,required"`

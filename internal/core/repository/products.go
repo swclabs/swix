@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"log"
+	"strings"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
@@ -42,24 +43,26 @@ func (product *Products) Insert(ctx context.Context, prd *domain.Products) (int6
 }
 
 // GetLitmit implements domain.IProductRepository.
-func (product *Products) GetLitmit(ctx context.Context, limit int) ([]domain.ProductResponse, error) {
+func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
 	var products []domain.Products
-	var productResponse []domain.ProductResponse
+	var productResponse []domain.ProductRes
 	if err := product.conn.Table(domain.ProductsTable).Find(&products).Limit(limit).Error; err != nil {
 		return nil, err
 	}
 	for _, p := range products {
-		var spec domain.Specifications
+		var spec domain.Specs
 		if err := json.Unmarshal([]byte(p.Spec), &spec); err != nil {
-			return nil, err
+			return productResponse, nil // don't find anything, just return empty object
 		}
-		productResponse = append(productResponse, domain.ProductResponse{
+		images := strings.Split(p.Image, ",")
+		productResponse = append(productResponse, domain.ProductRes{
 			ID:          p.ID,
-			Image:       p.Image,
 			Price:       p.Price,
 			Description: p.Description,
 			Name:        p.Name,
 			Status:      p.Status,
+			Created:     p.Created,
+			Image:       images[1:],
 			Spec:        spec,
 		})
 	}

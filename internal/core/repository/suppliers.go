@@ -39,7 +39,7 @@ func (supplier *Suppliers) Insert(ctx context.Context, supp domain.Suppliers, ad
 			ctx,
 			tx,
 			queries.InsertIntoSuppliers,
-			supp.Name, supp.PhoneNumber, supp.Email,
+			supp.Name, supp.Email,
 		); err != nil {
 			return err
 		}

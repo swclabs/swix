@@ -11,6 +11,6 @@ type IProductInCartRepository interface {
 
 type IProductRepository interface {
 	Insert(ctx context.Context, prd *Products) (int64, error)
-	GetLitmit(ctx context.Context, limit int) ([]ProductResponse, error)
+	GetLimit(ctx context.Context, limit int) ([]ProductRes, error)
 	UploadNewImage(ctx context.Context, urlImg string, id int) error
 }

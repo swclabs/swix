@@ -5,10 +5,9 @@ const SuppliersAddressTable = "supplier_address"
 
 // Suppliers table
 type Suppliers struct {
-	Id          string `json:"id" gorm:"column:id"`
-	Name        string `json:"name" gorm:"column:name"`
-	PhoneNumber string `json:"phone_number" gorm:"column:phone_number"`
-	Email       string `json:"email" gorm:"column:email"`
+	Id    string `json:"id" gorm:"column:id"`
+	Name  string `json:"name" gorm:"column:name"`
+	Email string `json:"email" gorm:"column:email"`
 }
 
 // SuppliersAddress suppliers address table
@@ -22,13 +21,12 @@ type SuppliersAddress struct {
 	AddressUuiD string `json:"address_uuid" gorm:"column:address_uuid"`
 }
 
-type SuppliersListResponse struct {
+type SuppliersListRes struct {
 	Data []Suppliers `json:"data"`
 }
 
-type SuppliersRequest struct {
+type SuppliersReq struct {
 	Name        string `json:"name" validate:"required"`
-	PhoneNumber string `json:"phone_number" validate:"number,required"`
 	Email       string `json:"email" validate:"email,required"`
 	City        string `json:"city" gorm:"column:city"`
 	Ward        string `json:"ward" gorm:"column:ward"`

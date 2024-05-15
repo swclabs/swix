@@ -8,8 +8,8 @@ import (
 // IAccountManagementService : Module Account Management with use-case
 // Actor: admin & customer (user)
 type IAccountManagementService interface {
-	SignUp(ctx context.Context, req *SignUpRequest) error
-	Login(ctx context.Context, req *LoginRequest) (string, error)
+	SignUp(ctx context.Context, req *SignUpReq) error
+	Login(ctx context.Context, req *LoginReq) (string, error)
 	CheckLoginEmail(ctx context.Context, email string) error
 	UserInfo(ctx context.Context, email string) (*UserInfo, error)
 	UpdateUserInfo(ctx context.Context, req *UserUpdate) error
@@ -22,14 +22,14 @@ type IAccountManagementService interface {
 // Actor: Admin & Customer (User)
 type IProductService interface {
 	GetCategoriesLimit(ctx context.Context, limit string) ([]Categories, error)
-	GetProductsLimit(ctx context.Context, limit int) ([]ProductResponse, error)
+	GetProductsLimit(ctx context.Context, limit int) ([]ProductRes, error)
 	InsertCategory(ctx context.Context, ctg *Categories) error
-	UploadProductImage(ctx context.Context, Id int, fileHeader *multipart.FileHeader) error
-	UploadProduct(ctx context.Context, products ProductRequest) (int64, error)
+	UploadProductImage(ctx context.Context, Id int, fileHeader []*multipart.FileHeader) error
+	UploadProduct(ctx context.Context, products ProductReq) (int64, error)
 	GetSuppliersLimit(ctx context.Context, limit int) ([]Suppliers, error)
-	InsertSuppliers(ctx context.Context, supplierReq SuppliersRequest) error
-	InsertIntoWarehouse(ctx context.Context, product Warehouse) error
-	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd string) (*Warehouse, error)
+	InsertSuppliers(ctx context.Context, supplierReq SuppliersReq) error
+	InsertIntoWarehouse(ctx context.Context, product WarehouseReq) error
+	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*WarehouseRes, error)
 }
 
 // IPurchaseService : Module Purchasing

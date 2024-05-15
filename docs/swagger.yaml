@@ -16,7 +16,7 @@ definitions:
           $ref: '#/definitions/domain.Categories'
         type: array
     type: object
-  domain.CategoriesRequest:
+  domain.CategoriesReq:
     properties:
       description:
         type: string
@@ -31,7 +31,7 @@ definitions:
       msg:
         type: string
     type: object
-  domain.LoginRequest:
+  domain.LoginReq:
     properties:
       email:
         type: string
@@ -41,7 +41,7 @@ definitions:
     - email
     - password
     type: object
-  domain.LoginResponse:
+  domain.LoginRes:
     properties:
       email:
         type: string
@@ -54,7 +54,7 @@ definitions:
     - success
     - token
     type: object
-  domain.NewsletterListResponse:
+  domain.NewsletterListRes:
     properties:
       data:
         items:
@@ -91,7 +91,7 @@ definitions:
       msg:
         type: string
     type: object
-  domain.ProductRequest:
+  domain.ProductReq:
     properties:
       RAM:
         items:
@@ -125,35 +125,33 @@ definitions:
     - status
     - supplier_id
     type: object
-  domain.Products:
+  domain.ProductRes:
     properties:
-      category_id:
-        type: string
       description:
         type: string
       id:
         type: integer
       image:
-        type: string
+        items:
+          type: string
+        type: array
       name:
         type: string
       price:
         type: string
       spec:
-        type: string
+        $ref: '#/definitions/domain.Specs'
       status:
         type: string
-      supplier_id:
-        type: string
     type: object
-  domain.ProductsListResponse:
+  domain.ProductsRes:
     properties:
       data:
         items:
-          $ref: '#/definitions/domain.Products'
+          $ref: '#/definitions/domain.ProductRes'
         type: array
     type: object
-  domain.SignUpRequest:
+  domain.SignUpReq:
     properties:
       email:
         type: string
@@ -172,7 +170,7 @@ definitions:
     - password
     - phone_number
     type: object
-  domain.SignUpResponse:
+  domain.SignUpRes:
     properties:
       msg:
         type: string
@@ -182,6 +180,34 @@ definitions:
     - msg
     - success
     type: object
+  domain.Specs:
+    properties:
+      RAM:
+        items:
+          type: integer
+        type: array
+      SSD:
+        items:
+          type: integer
+        type: array
+      display:
+        type: string
+      screen:
+        type: string
+    type: object
+  domain.SpecsDetail:
+    properties:
+      color:
+        type: string
+      color_image:
+        type: string
+      image:
+        type: string
+      ram:
+        type: string
+      ssd:
+        type: string
+    type: object
   domain.Suppliers:
     properties:
       email:
@@ -190,17 +216,15 @@ definitions:
         type: string
       name:
         type: string
-      phone_number:
-        type: string
     type: object
-  domain.SuppliersListResponse:
+  domain.SuppliersListRes:
     properties:
       data:
         items:
           $ref: '#/definitions/domain.Suppliers'
         type: array
     type: object
-  domain.SuppliersRequest:
+  domain.SuppliersReq:
     properties:
       city:
         type: string
@@ -210,8 +234,6 @@ definitions:
         type: string
       name:
         type: string
-      phone_number:
-        type: string
       street:
         type: string
       ward:
@@ -219,7 +241,13 @@ definitions:
     required:
     - email
     - name
-    - phone_number
+    type: object
+  domain.UploadProductResponse:
+    properties:
+      id:
+        type: integer
+      msg:
+        type: string
     type: object
   domain.UserInfo:
     properties:
@@ -271,7 +299,25 @@ definitions:
     - phone_number
     - username
     type: object
-  domain.Warehouse:
+  domain.WarehouseReq:
+    properties:
+      available:
+        type: string
+      model:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: string
+      specs:
+        $ref: '#/definitions/domain.SpecsDetail'
+    required:
+    - available
+    - model
+    - price
+    - product_id
+    type: object
+  domain.WarehouseRes:
     properties:
       available:
         type: string
@@ -283,10 +329,13 @@ definitions:
         type: string
       product_id:
         type: string
-      ram:
-        type: string
-      ssd:
-        type: string
+      specs:
+        $ref: '#/definitions/domain.SpecsDetail'
+    required:
+    - available
+    - model
+    - price
+    - product_id
     type: object
 info:
   contact: {}
@@ -325,14 +374,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.LoginRequest'
+          $ref: '#/definitions/domain.LoginReq'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.LoginResponse'
+            $ref: '#/definitions/domain.LoginRes'
       tags:
       - account_management
   /auth/logout:
@@ -360,14 +409,14 @@ paths:
         name: sign_up
         required: true
         schema:
-          $ref: '#/definitions/domain.SignUpRequest'
+          $ref: '#/definitions/domain.SignUpReq'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.SignUpResponse'
+            $ref: '#/definitions/domain.SignUpRes'
       tags:
       - account_management
   /categories:
@@ -400,14 +449,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.CategoriesRequest'
+          $ref: '#/definitions/domain.CategoriesReq'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.LoginResponse'
+            $ref: '#/definitions/domain.OK'
       tags:
       - products
   /common/healthcheck:
@@ -439,7 +488,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.NewsletterListResponse'
+            $ref: '#/definitions/domain.NewsletterListRes'
       tags:
       - posts
     post:
@@ -515,7 +564,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.ProductsListResponse'
+            $ref: '#/definitions/domain.ProductsRes'
       tags:
       - products
     post:
@@ -528,14 +577,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/domain.ProductRequest'
+          $ref: '#/definitions/domain.ProductReq'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/domain.UploadProductResponse'
       tags:
       - products
   /products/img:
@@ -584,7 +633,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.SuppliersListResponse'
+            $ref: '#/definitions/domain.SuppliersListRes'
       tags:
       - products
     post:
@@ -594,10 +643,10 @@ paths:
       parameters:
       - description: Suppliers Request
         in: body
-        name: SuppliersRequest
+        name: SuppliersReq
         required: true
         schema:
-          $ref: '#/definitions/domain.SuppliersRequest'
+          $ref: '#/definitions/domain.SuppliersReq'
       produces:
       - application/json
       responses:
@@ -676,13 +725,38 @@ paths:
         name: ssd
         required: true
         type: number
+      - description: color
+        in: query
+        name: color
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Warehouse'
+            $ref: '#/definitions/domain.WarehouseRes'
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: add product to warehouse
+      parameters:
+      - description: Warehouse Request
+        in: body
+        name: WarehouseReq
+        required: true
+        schema:
+          $ref: '#/definitions/domain.WarehouseReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
       tags:
       - products
 swagger: "2.0"

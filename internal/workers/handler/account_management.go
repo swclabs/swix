@@ -25,7 +25,7 @@ func NewAccountManagement() *AccountManagement {
 func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 	return worker.GetTaskName(account.DelaySignUp),
 		func(_ context.Context, task *asynq.Task) error {
-			var data domain.SignUpRequest
+			var data domain.SignUpReq
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}

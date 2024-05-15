@@ -36,11 +36,11 @@ type IAccountManagement interface {
 // @Tags account_management
 // @Accept json
 // @Produce json
-// @Param login body domain.LoginRequest true "Login"
-// @Success 200 {object} domain.LoginResponse
+// @Param login body domain.LoginReq true "Login"
+// @Success 200 {object} domain.LoginRes
 // @Router /auth/login [POST]
 func (account *AccountManagement) Login(c echo.Context) error {
-	var request domain.LoginRequest
+	var request domain.LoginReq
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -70,7 +70,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, domain.LoginResponse{
+	return c.JSON(http.StatusOK, domain.LoginRes{
 		Success: true,
 		Token:   accessToken,
 		Email:   request.Email,
@@ -82,11 +82,11 @@ func (account *AccountManagement) Login(c echo.Context) error {
 // @Tags account_management
 // @Accept json
 // @Produce json
-// @Param sign_up body domain.SignUpRequest true "Sign Up"
-// @Success 200 {object} domain.SignUpResponse
+// @Param sign_up body domain.SignUpReq true "Sign Up"
+// @Success 200 {object} domain.SignUpRes
 // @Router /auth/signup [POST]
 func (account *AccountManagement) SignUp(c echo.Context) error {
-	var request domain.SignUpRequest
+	var request domain.SignUpReq
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -102,7 +102,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 			Msg: "user data invalid",
 		})
 	}
-	return c.JSON(http.StatusCreated, domain.SignUpResponse{
+	return c.JSON(http.StatusCreated, domain.SignUpRes{
 		Success: true,
 		Msg:     "user has been created",
 	})

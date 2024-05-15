@@ -59,10 +59,9 @@ func TestGetSuppliers(t *testing.T) {
 	repos := repository.SuppliersMock{}
 	repos.On("GetLimit", context.Background(), 10).Return([]domain.Suppliers{
 		{
-			Id:          "1",
-			Name:        "apple",
-			PhoneNumber: "",
-			Email:       "apple@example.com",
+			Id:    "1",
+			Name:  "apple",
+			Email: "apple@example.com",
 		},
 	}, nil)
 

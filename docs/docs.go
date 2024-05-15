@@ -65,7 +65,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.LoginRequest"
+                            "$ref": "#/definitions/domain.LoginReq"
                         }
                     }
                 ],
@@ -73,7 +73,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.LoginResponse"
+                            "$ref": "#/definitions/domain.LoginRes"
                         }
                     }
                 }
@@ -120,7 +120,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.SignUpRequest"
+                            "$ref": "#/definitions/domain.SignUpReq"
                         }
                     }
                 ],
@@ -128,7 +128,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.SignUpResponse"
+                            "$ref": "#/definitions/domain.SignUpRes"
                         }
                     }
                 }
@@ -182,7 +182,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CategoriesRequest"
+                            "$ref": "#/definitions/domain.CategoriesReq"
                         }
                     }
                 ],
@@ -190,7 +190,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.LoginResponse"
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -240,7 +240,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.NewsletterListResponse"
+                            "$ref": "#/definitions/domain.NewsletterListRes"
                         }
                     }
                 }
@@ -356,7 +356,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.ProductsListResponse"
+                            "$ref": "#/definitions/domain.ProductsRes"
                         }
                     }
                 }
@@ -379,7 +379,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.ProductRequest"
+                            "$ref": "#/definitions/domain.ProductReq"
                         }
                     }
                 ],
@@ -387,7 +387,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.OK"
+                            "$ref": "#/definitions/domain.UploadProductResponse"
                         }
                     }
                 }
@@ -462,7 +462,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.SuppliersListResponse"
+                            "$ref": "#/definitions/domain.SuppliersListRes"
                         }
                     }
                 }
@@ -481,11 +481,11 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Suppliers Request",
-                        "name": "SuppliersRequest",
+                        "name": "SuppliersReq",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.SuppliersRequest"
+                            "$ref": "#/definitions/domain.SuppliersReq"
                         }
                     }
                 ],
@@ -607,13 +607,51 @@ const docTemplate = `{
                         "name": "ssd",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "color",
+                        "name": "color",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.Warehouse"
+                            "$ref": "#/definitions/domain.WarehouseRes"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "add product to warehouse",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "description": "Warehouse Request",
+                        "name": "WarehouseReq",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.WarehouseReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -646,7 +684,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CategoriesRequest": {
+        "domain.CategoriesReq": {
             "type": "object",
             "required": [
                 "description",
@@ -669,7 +707,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.LoginRequest": {
+        "domain.LoginReq": {
             "type": "object",
             "required": [
                 "email",
@@ -684,7 +722,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.LoginResponse": {
+        "domain.LoginRes": {
             "type": "object",
             "required": [
                 "email",
@@ -703,7 +741,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.NewsletterListResponse": {
+        "domain.NewsletterListRes": {
             "type": "object",
             "properties": {
                 "data": {
@@ -757,7 +795,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.ProductRequest": {
+        "domain.ProductReq": {
             "type": "object",
             "required": [
                 "category_id",
@@ -806,12 +844,9 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.Products": {
+        "domain.ProductRes": {
             "type": "object",
             "properties": {
-                "category_id": {
-                    "type": "string"
-                },
                 "description": {
                     "type": "string"
                 },
@@ -819,7 +854,10 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "image": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "name": {
                     "type": "string"
@@ -828,28 +866,25 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "spec": {
-                    "type": "string"
+                    "$ref": "#/definitions/domain.Specs"
                 },
                 "status": {
-                    "type": "string"
-                },
-                "supplier_id": {
                     "type": "string"
                 }
             }
         },
-        "domain.ProductsListResponse": {
+        "domain.ProductsRes": {
             "type": "object",
             "properties": {
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/domain.Products"
+                        "$ref": "#/definitions/domain.ProductRes"
                     }
                 }
             }
         },
-        "domain.SignUpRequest": {
+        "domain.SignUpReq": {
             "type": "object",
             "required": [
                 "email",
@@ -876,7 +911,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.SignUpResponse": {
+        "domain.SignUpRes": {
             "type": "object",
             "required": [
                 "msg",
@@ -891,6 +926,49 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.Specs": {
+            "type": "object",
+            "properties": {
+                "RAM": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "SSD": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "display": {
+                    "type": "string"
+                },
+                "screen": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.SpecsDetail": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "color_image": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.Suppliers": {
             "type": "object",
             "properties": {
@@ -902,13 +980,10 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
                 }
             }
         },
-        "domain.SuppliersListResponse": {
+        "domain.SuppliersListRes": {
             "type": "object",
             "properties": {
                 "data": {
@@ -919,12 +994,11 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.SuppliersRequest": {
+        "domain.SuppliersReq": {
             "type": "object",
             "required": [
                 "email",
-                "name",
-                "phone_number"
+                "name"
             ],
             "properties": {
                 "city": {
@@ -939,13 +1013,21 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "phone_number": {
-                    "type": "string"
-                },
                 "street": {
                     "type": "string"
                 },
                 "ward": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.UploadProductResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "msg": {
                     "type": "string"
                 }
             }
@@ -1020,8 +1102,40 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.Warehouse": {
+        "domain.WarehouseReq": {
             "type": "object",
+            "required": [
+                "available",
+                "model",
+                "price",
+                "product_id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "specs": {
+                    "$ref": "#/definitions/domain.SpecsDetail"
+                }
+            }
+        },
+        "domain.WarehouseRes": {
+            "type": "object",
+            "required": [
+                "available",
+                "model",
+                "price",
+                "product_id"
+            ],
             "properties": {
                 "available": {
                     "type": "string"
@@ -1038,11 +1152,8 @@ const docTemplate = `{
                 "product_id": {
                     "type": "string"
                 },
-                "ram": {
-                    "type": "string"
-                },
-                "ssd": {
-                    "type": "string"
+                "specs": {
+                    "$ref": "#/definitions/domain.SpecsDetail"
                 }
             }
         }

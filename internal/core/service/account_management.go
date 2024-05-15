@@ -41,7 +41,7 @@ func NewAccountManagement() *AccountManagement {
 }
 
 // SignUp user to access system, return error if exist
-func (manager *AccountManagement) SignUp(ctx context.Context, req *domain.SignUpRequest) error {
+func (manager *AccountManagement) SignUp(ctx context.Context, req *domain.SignUpReq) error {
 	// call repository layer
 	return manager.User.TransactionSignUp(ctx, &domain.User{
 		Email:       req.Email,
@@ -54,7 +54,7 @@ func (manager *AccountManagement) SignUp(ctx context.Context, req *domain.SignUp
 }
 
 // Login to system, return token if error not exist
-func (manager *AccountManagement) Login(ctx context.Context, req *domain.LoginRequest) (string, error) {
+func (manager *AccountManagement) Login(ctx context.Context, req *domain.LoginReq) (string, error) {
 	// get account form email
 	account, err := manager.Account.GetByEmail(ctx, req.Email)
 	if err != nil {

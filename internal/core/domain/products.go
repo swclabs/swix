@@ -13,16 +13,7 @@ type Products struct {
 	CategoryID  string `json:"category_id" gorm:"column:category_id"`
 	Spec        string `json:"spec" gorm:"column:spec"`
 	Status      string `json:"status" gorm:"column:status"`
-}
-
-type ProductRequest struct {
-	Specifications
-	Price       string `json:"price" validate:"required"`
-	Description string `json:"description" validate:"required"`
-	Name        string `json:"name" validate:"required"`
-	SupplierID  string `json:"supplier_id" validate:"required"`
-	CategoryID  string `json:"category_id" validate:"required"`
-	Status      string `json:"status" validate:"required"`
+	Created     string `json:"created" gorm:"column:created"`
 }
 
 // ProductInCart Table
@@ -48,21 +39,32 @@ type FavoriteProduct struct {
 	ProductID int64 `json:"product_id" gorm:"column:product_id"`
 }
 
-type Specifications struct {
+type Specs struct {
 	Screen  string `json:"screen"`
 	Display string `json:"display"`
 	SSD     []int  `json:"SSD"`
 	RAM     []int  `json:"RAM"`
 }
 
-type ProductResponse struct {
-	ID          int64          `json:"id"`
-	Image       string         `json:"image"`
-	Price       string         `json:"price"`
-	Description string         `json:"description"`
-	Name        string         `json:"name"`
-	Status      string         `json:"status"`
-	Spec        Specifications `json:"spec"`
+type ProductReq struct {
+	Specs
+	Price       string `json:"price" validate:"required"`
+	Description string `json:"description" validate:"required"`
+	Name        string `json:"name" validate:"required"`
+	SupplierID  string `json:"supplier_id" validate:"required"`
+	CategoryID  string `json:"category_id" validate:"required"`
+	Status      string `json:"status" validate:"required"`
+}
+
+type ProductRes struct {
+	ID          int64    `json:"id"`
+	Image       []string `json:"image"`
+	Price       string   `json:"price"`
+	Description string   `json:"description"`
+	Name        string   `json:"name"`
+	Status      string   `json:"status"`
+	Created     string   `json:"created"`
+	Spec        Specs    `json:"spec"`
 }
 
 type UploadProductResponse struct {
@@ -70,6 +72,6 @@ type UploadProductResponse struct {
 	Id  int64  `json:"id"`
 }
 
-type ProductsListResponse struct {
-	Data []ProductResponse `json:"data" gorm:"column:data"`
+type ProductsRes struct {
+	Data []ProductRes `json:"data" gorm:"column:data"`
 }
