@@ -2,7 +2,7 @@ package controller
 
 import (
 	"net/http"
-	"swclabs/swipecore/pkg/tools/valid"
+	"swclabs/swipecore/pkg/lib/valid"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"

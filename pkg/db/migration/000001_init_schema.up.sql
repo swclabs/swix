@@ -129,16 +129,6 @@ CREATE TABLE "favorite_product" (
   "product_id" bigint NOT NULL
 );
 
-CREATE TABLE "newsletter" (
-  "id" bigserial PRIMARY KEY,
-  "type" varchar,
-  "title" varchar,
-  "subtitle" varchar,
-  "description" varchar,
-  "image" varchar,
-  "textcolor" varchar
-);
-
 CREATE TABLE "warehouse" (
   "id" bigserial PRIMARY KEY,
   "product_id" int NOT NULL,
@@ -146,4 +136,12 @@ CREATE TABLE "warehouse" (
   "model" varchar,
   "specs" jsonb,
   "available" int NOT NULL
+);
+
+CREATE TABLE "collections" (
+  "id" bigserial PRIMARY KEY,
+  "created" timestamp default (timezone('utc', now())),
+  "position" varchar NOT NULL ,
+  "headline" varchar,
+  "body" jsonb
 );

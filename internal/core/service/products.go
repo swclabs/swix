@@ -7,7 +7,7 @@ import (
 	"mime/multipart"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/pkg/cloud"
+	"swclabs/swipecore/pkg/blob"
 )
 
 type ProductService struct {
@@ -62,7 +62,7 @@ func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHea
 		if err != nil {
 			return err
 		}
-		resp, err := cloud.UploadImages(cloud.Connection(), file)
+		resp, err := blob.UploadImages(blob.Connection(), file)
 		if err != nil {
 			return err
 		}

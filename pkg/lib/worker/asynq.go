@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"swclabs/swipecore/pkg/tools/logger"
+	"swclabs/swipecore/pkg/lib/logger"
 
 	"github.com/hibiken/asynq"
 )

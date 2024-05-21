@@ -5,49 +5,38 @@ import (
 	"mime/multipart"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/pkg/cloud"
+	"swclabs/swipecore/pkg/blob"
 )
 
 type Posts struct {
-	Newsletter domain.INewsletterRepository
+	CardBanner domain.ICollections
 }
 
 func NewPost() domain.IPostsService {
 	return &Posts{
-		Newsletter: repository.NewNewsletter(),
+		CardBanner: repository.NewCardBannerCollection(),
 	}
 }
 
-// GetHomeBanner implements domain.IPostsService.
-func (p *Posts) GetHomeBanner(ctx context.Context, limit int) ([]domain.HomeBanners, error) {
-	return p.Newsletter.GetHomeBanner(ctx, limit)
+// SlicesOfCollections implements domain.IPostsService.
+func (p *Posts) SlicesOfCollections(ctx context.Context, position string, limit int) (*domain.Collections, error) {
+	return p.CardBanner.SlicesOfCollections(ctx, position, limit)
 }
 
-// GetNewsletter implements domain.IPostsService.
-func (p *Posts) GetNewsletter(ctx context.Context, limit int) ([]domain.Newsletters, error) {
-	return p.Newsletter.Get(ctx, limit)
+// UploadCollections implements domain.IPostsService.
+func (p *Posts) UploadCollections(ctx context.Context, banner domain.CollectionType) (int64, error) {
+	return p.CardBanner.AddCollection(ctx, banner)
 }
 
-// UploadHomeBanner implements domain.IPostsService.
-func (p *Posts) UploadHomeBanner(ctx context.Context, data domain.HomeBanners, fileHeader *multipart.FileHeader) error {
-	url, err := cloud.UploadFile(ctx, cloud.Connection(), fileHeader)
-	if err != nil {
-		return err
-	}
-	data.Img = url
-	return p.Newsletter.InsertHomeBanner(ctx, data)
-}
-
-// UploadNewsletter implements domain.IPostsService.
-func (p *Posts) UploadNewsletter(ctx context.Context, news domain.Newsletter, fileHeader *multipart.FileHeader) error {
+// UploadCollectionsImage implements domain.IPostsService.
+func (p *Posts) UploadCollectionsImage(ctx context.Context, cardBannerId string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return err
 	}
-	resp, err := cloud.UploadImages(cloud.Connection(), file)
+	resp, err := blob.UploadImages(blob.Connection(), file)
 	if err != nil {
 		return err
 	}
-	news.Image = resp.SecureURL
-	return repository.NewNewsletter().Insert(context.Background(), news)
+	return p.CardBanner.UploadCollectionImage(ctx, cardBannerId, resp.SecureURL)
 }

@@ -2,7 +2,7 @@ package router
 
 import (
 	"swclabs/swipecore/internal/workers/handler"
-	"swclabs/swipecore/pkg/tools/worker"
+	"swclabs/swipecore/pkg/lib/worker"
 )
 
 var common = handler.NewCommonHandler()

@@ -8,7 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"swclabs/swipecore/pkg/tools/jwt"
+	"swclabs/swipecore/pkg/lib/jwt"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"

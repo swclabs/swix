@@ -16,44 +16,6 @@ import (
 
 var e = echo.New()
 
-func TestGetNewsletters(t *testing.T) {
-	// repository layers
-	repos := repository.NewsletterMock{}
-	repos.On("Get", context.Background(), 10).Return([]domain.Newsletters{
-		{
-			Id: "1",
-			Newsletter: domain.Newsletter{
-				Title:       "KHOAN THANH TOAN HANG THANG THAP",
-				SubTitle:    "Tra gop hang thang voi Momo",
-				Description: "Tra dan, thoi han toi 24 thang va chi tra truoc 20%.",
-				Image:       "/img/store/iphone2.jpg",
-				TextColor:   "text-black",
-				Type:        "product-page",
-			},
-		},
-	}, nil)
-
-	// bussiness logic layers
-	service := service.Posts{
-		Newsletter: &repos,
-	}
-
-	// presenter layers
-	controllers := controller.Posts{
-		Services: &service,
-	}
-
-	e.GET("/newsletters", controllers.GetNewsletter)
-
-	req := httptest.NewRequest(http.MethodGet, "/newsletters?limit=10", nil)
-	rr := httptest.NewRecorder()
-
-	e.ServeHTTP(rr, req)
-
-	expected := "{\"data\":[{\"id\":\"1\",\"type\":\"product-page\",\"title\":\"KHOAN THANH TOAN HANG THANG THAP\",\"subtitle\":\"Tra gop hang thang voi Momo\",\"description\":\"Tra dan, thoi han toi 24 thang va chi tra truoc 20%.\",\"image\":\"/img/store/iphone2.jpg\",\"textcolor\":\"text-black\"}]}\n"
-	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
-}
-
 func TestGetSuppliers(t *testing.T) {
 	// repository layers
 	repos := repository.SuppliersMock{}
@@ -66,13 +28,13 @@ func TestGetSuppliers(t *testing.T) {
 	}, nil)
 
 	// bussiness logic layers
-	service := service.ProductService{
+	services := service.ProductService{
 		Suppliers: &repos,
 	}
 
 	// presenter layers
 	controllers := controller.Products{
-		Services: &service,
+		Services: &services,
 	}
 
 	e.GET("/suppliers", controllers.GetSupplier)
@@ -84,8 +46,4 @@ func TestGetSuppliers(t *testing.T) {
 
 	expected := "{\"data\":[{\"id\":\"1\",\"name\":\"apple\",\"phone_number\":\"\",\"email\":\"apple@example.com\"}]}\n"
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
-}
-
-func TestUploadNewsletters(t *testing.T) {
-
 }

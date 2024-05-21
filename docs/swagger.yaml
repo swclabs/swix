@@ -26,6 +26,81 @@ definitions:
     - description
     - name
     type: object
+  domain.CollectionBody:
+    properties:
+      description:
+        type: string
+      image:
+        type: string
+      subtitle:
+        type: string
+      text_color:
+        type: string
+      title:
+        type: string
+    required:
+    - description
+    - subtitle
+    - text_color
+    - title
+    type: object
+  domain.CollectionType:
+    properties:
+      body:
+        $ref: '#/definitions/domain.CollectionBody'
+      created:
+        type: string
+      headline:
+        type: string
+      id:
+        type: integer
+      position:
+        type: string
+    required:
+    - body
+    - headline
+    - position
+    type: object
+  domain.CollectionUploadRes:
+    properties:
+      id:
+        type: integer
+      msg:
+        type: string
+    type: object
+  domain.Collections:
+    properties:
+      card_banner:
+        items:
+          $ref: '#/definitions/domain.CollectionsBody'
+        type: array
+      headline:
+        type: string
+      position:
+        type: string
+    type: object
+  domain.CollectionsBody:
+    properties:
+      created:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      subtitle:
+        type: string
+      text_color:
+        type: string
+      title:
+        type: string
+    required:
+    - description
+    - subtitle
+    - text_color
+    - title
+    type: object
   domain.Error:
     properties:
       msg:
@@ -53,38 +128,6 @@ definitions:
     - email
     - success
     - token
-    type: object
-  domain.NewsletterListRes:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Newsletters'
-        type: array
-    type: object
-  domain.Newsletters:
-    properties:
-      description:
-        type: string
-      id:
-        type: string
-      image:
-        type: string
-      subtitle:
-        type: string
-      textcolor:
-        type: string
-      title:
-        type: string
-      type:
-        type: string
-    required:
-    - description
-    - id
-    - image
-    - subtitle
-    - textcolor
-    - title
-    - type
     type: object
   domain.OK:
     properties:
@@ -127,6 +170,8 @@ definitions:
     type: object
   domain.ProductRes:
     properties:
+      created:
+        type: string
       description:
         type: string
       id:
@@ -453,12 +498,82 @@ paths:
       produces:
       - application/json
       responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - products
+  /collections:
+    get:
+      consumes:
+      - application/json
+      description: Create card banner
+      parameters:
+      - description: position of card banner
+        in: query
+        name: position
+        required: true
+        type: string
+      - description: limit of cards banner slices
+        in: query
+        name: limit
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Collections'
+      tags:
+      - posts
+    post:
+      consumes:
+      - application/json
+      description: Create card banner
+      parameters:
+      - description: Card Banner Request
+        in: body
+        name: collection
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CollectionType'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.CollectionUploadRes'
+      tags:
+      - posts
+  /collections/img:
+    put:
+      consumes:
+      - application/json
+      description: Create card banner
+      parameters:
+      - description: image of card banner
+        in: formData
+        name: img
+        required: true
+        type: file
+      - description: card banner identifier
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
         "200":
           description: OK
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
-      - products
+      - posts
   /common/healthcheck:
     get:
       consumes:
@@ -471,70 +586,6 @@ paths:
           description: OK
       tags:
       - common
-  /newsletters:
-    get:
-      consumes:
-      - application/json
-      description: Get Product Newsletter
-      parameters:
-      - description: limit number of newsletter
-        in: query
-        name: limit
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.NewsletterListRes'
-      tags:
-      - posts
-    post:
-      consumes:
-      - multipart/form-data
-      - application/json
-      description: Create newsletter
-      parameters:
-      - description: image of newsletter
-        in: formData
-        name: img
-        required: true
-        type: file
-      - in: formData
-        name: description
-        required: true
-        type: string
-      - in: formData
-        name: image
-        required: true
-        type: string
-      - in: formData
-        name: subtitle
-        required: true
-        type: string
-      - in: formData
-        name: textcolor
-        required: true
-        type: string
-      - in: formData
-        name: title
-        required: true
-        type: string
-      - in: formData
-        name: type
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.OK'
-      tags:
-      - posts
   /oauth2/login:
     get:
       consumes:
@@ -650,8 +701,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/domain.OK'
       tags:
@@ -753,8 +804,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/domain.OK'
       tags:

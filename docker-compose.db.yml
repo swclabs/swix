@@ -12,7 +12,7 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_DB: swc-db
+      POSTGRES_DB: swipe
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: admin
     ports:

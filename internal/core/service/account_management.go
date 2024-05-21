@@ -16,11 +16,11 @@ import (
 	"errors"
 	"log"
 	"mime/multipart"
-	"swclabs/swipecore/pkg/tools/jwt"
+	"swclabs/swipecore/pkg/lib/jwt"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/pkg/cloud"
+	"swclabs/swipecore/pkg/blob"
 )
 
 // AccountManagement implement domain.AccountManagementService
@@ -85,14 +85,14 @@ func (manager *AccountManagement) UpdateUserInfo(ctx context.Context, req *domai
 	})
 }
 
-// UploadAvatar upload image to cloud storage and save img url to database
+// UploadAvatar upload image to blob storage and save img url to database
 func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return err
 	}
-	// upload image to image cloud storage
-	resp, err := cloud.UploadImages(cloud.Connection(), file)
+	// upload image to image blob storage
+	resp, err := blob.UploadImages(blob.Connection(), file)
 	if err != nil {
 		log.Fatal(err)
 	}

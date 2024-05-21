@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/pkg/tools/valid"
+	"swclabs/swipecore/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )

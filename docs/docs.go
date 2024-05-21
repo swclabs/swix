@@ -187,6 +187,113 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/collections": {
+            "get": {
+                "description": "Create card banner",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position of card banner",
+                        "name": "position",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit of cards banner slices",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Collections"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create card banner",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "parameters": [
+                    {
+                        "description": "Card Banner Request",
+                        "name": "collection",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.CollectionType"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.CollectionUploadRes"
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/img": {
+            "put": {
+                "description": "Create card banner",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "image of card banner",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "card banner identifier",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
@@ -211,103 +318,6 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
-                    }
-                }
-            }
-        },
-        "/newsletters": {
-            "get": {
-                "description": "Get Product Newsletter",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "posts"
-                ],
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "limit number of newsletter",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/domain.NewsletterListRes"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Create newsletter",
-                "consumes": [
-                    "multipart/form-data",
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "posts"
-                ],
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "image of newsletter",
-                        "name": "img",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "description",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "image",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "subtitle",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "textcolor",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "title",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "name": "type",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/domain.OK"
-                        }
                     }
                 }
             }
@@ -490,8 +500,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/domain.OK"
                         }
@@ -648,8 +658,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/domain.OK"
                         }
@@ -699,6 +709,117 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.CollectionBody": {
+            "type": "object",
+            "required": [
+                "description",
+                "subtitle",
+                "text_color",
+                "title"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "text_color": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.CollectionType": {
+            "type": "object",
+            "required": [
+                "body",
+                "headline",
+                "position"
+            ],
+            "properties": {
+                "body": {
+                    "$ref": "#/definitions/domain.CollectionBody"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "headline": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "position": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.CollectionUploadRes": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.Collections": {
+            "type": "object",
+            "properties": {
+                "card_banner": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.CollectionsBody"
+                    }
+                },
+                "headline": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.CollectionsBody": {
+            "type": "object",
+            "required": [
+                "description",
+                "subtitle",
+                "text_color",
+                "title"
+            ],
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "text_color": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.Error": {
             "type": "object",
             "properties": {
@@ -737,52 +858,6 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "token": {
-                    "type": "string"
-                }
-            }
-        },
-        "domain.NewsletterListRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Newsletters"
-                    }
-                }
-            }
-        },
-        "domain.Newsletters": {
-            "type": "object",
-            "required": [
-                "description",
-                "id",
-                "image",
-                "subtitle",
-                "textcolor",
-                "title",
-                "type"
-            ],
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "subtitle": {
-                    "type": "string"
-                },
-                "textcolor": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                },
-                "type": {
                     "type": "string"
                 }
             }
@@ -847,6 +922,9 @@ const docTemplate = `{
         "domain.ProductRes": {
             "type": "object",
             "properties": {
+                "created": {
+                    "type": "string"
+                },
                 "description": {
                     "type": "string"
                 },

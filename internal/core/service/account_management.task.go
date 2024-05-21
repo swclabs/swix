@@ -3,7 +3,7 @@ package service
 import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/workers/queue"
-	"swclabs/swipecore/pkg/tools/worker"
+	"swclabs/swipecore/pkg/lib/worker"
 )
 
 type IAccountManagement interface {

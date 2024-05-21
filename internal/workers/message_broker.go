@@ -3,7 +3,7 @@ package workers
 import (
 	"swclabs/swipecore/internal/workers/queue"
 	"swclabs/swipecore/internal/workers/router"
-	"swclabs/swipecore/pkg/tools/worker"
+	"swclabs/swipecore/pkg/lib/worker"
 )
 
 type Writer struct {

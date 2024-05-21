@@ -19,6 +19,7 @@ func newPosts() *Posts {
 }
 
 func (p *Posts) Routers(e *echo.Echo) {
-	e.GET("/newsletters", p.controller.GetNewsletter)
-	e.POST("/newsletters", p.controller.UploadNewsletter)
+	e.POST("/collections", p.controller.UploadCollections)
+	e.PUT("/collections/img", p.controller.UpdateCollectionsImage)
+	e.GET("/collections", p.controller.GetSlicesOfCollections)
 }
