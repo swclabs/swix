@@ -198,7 +198,7 @@ const docTemplate = `{
         },
         "/collections": {
             "get": {
-                "description": "Create card banner",
+                "description": "Create collections",
                 "consumes": [
                     "application/json"
                 ],
@@ -211,7 +211,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "position of card banner",
+                        "description": "position of collections",
                         "name": "position",
                         "in": "query",
                         "required": true
@@ -234,7 +234,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create card banner",
+                "description": "Create collections",
                 "consumes": [
                     "application/json"
                 ],
@@ -246,7 +246,7 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "description": "Card Banner Request",
+                        "description": "collections Request",
                         "name": "collection",
                         "in": "body",
                         "required": true,
@@ -267,7 +267,7 @@ const docTemplate = `{
         },
         "/collections/img": {
             "put": {
-                "description": "Create card banner",
+                "description": "Create collections",
                 "consumes": [
                     "application/json"
                 ],
@@ -280,14 +280,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "file",
-                        "description": "image of card banner",
+                        "description": "image of collections",
                         "name": "img",
                         "in": "formData",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "card banner identifier",
+                        "description": "collections identifier",
                         "name": "id",
                         "in": "formData",
                         "required": true

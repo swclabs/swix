@@ -508,9 +508,9 @@ paths:
     get:
       consumes:
       - application/json
-      description: Create card banner
+      description: Create collections
       parameters:
-      - description: position of card banner
+      - description: position of collections
         in: query
         name: position
         required: true
@@ -532,9 +532,9 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create card banner
+      description: Create collections
       parameters:
-      - description: Card Banner Request
+      - description: collections Request
         in: body
         name: collection
         required: true
@@ -553,14 +553,14 @@ paths:
     put:
       consumes:
       - application/json
-      description: Create card banner
+      description: Create collections
       parameters:
-      - description: image of card banner
+      - description: image of collections
         in: formData
         name: img
         required: true
         type: file
-      - description: card banner identifier
+      - description: collections identifier
         in: formData
         name: id
         required: true
