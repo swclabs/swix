@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"swclabs/swipecore/pkg/tools/jwt"
+	"swclabs/swipecore/pkg/lib/jwt"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"

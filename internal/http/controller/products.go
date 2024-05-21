@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/pkg/tools/valid"
+	"swclabs/swipecore/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )
@@ -19,6 +19,7 @@ type IProducts interface {
 	UploadProductImage(c echo.Context) error
 	UploadProduct(c echo.Context) error
 	GetProductAvailability(c echo.Context) error
+	AddToWarehouse(c echo.Context) error
 }
 
 type Products struct {
@@ -39,7 +40,8 @@ func NewProducts() IProducts {
 // @Param pid query number true "product id"
 // @Param ram query number true "ram"
 // @Param ssd query number true "ssd"
-// @Success 200 {object} domain.Warehouse
+// @Param color query string true "color"
+// @Success 200 {object} domain.WarehouseRes
 // @Router /warehouse [GET]
 func (p *Products) GetProductAvailability(c echo.Context) error {
 	pid := c.QueryParam("pid")
@@ -50,8 +52,9 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 	}
 	ram := c.QueryParam("ram")
 	ssd := c.QueryParam("ssd")
+	color := c.QueryParam("color")
 
-	product, err := p.Services.GetProductsInWarehouse(c.Request().Context(), pid, ram, ssd)
+	product, err := p.Services.GetProductsInWarehouse(c.Request().Context(), pid, ram, ssd, color)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -94,7 +97,7 @@ func (p *Products) GetCategories(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of products"
-// @Success 200 {object} domain.ProductsListResponse
+// @Success 200 {object} domain.ProductsRes
 // @Router /products [GET]
 func (p *Products) GetProductLimit(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
@@ -109,7 +112,7 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, domain.ProductsListResponse{
+	return c.JSON(http.StatusOK, domain.ProductsRes{
 		Data: prd,
 	})
 }
@@ -119,11 +122,11 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param login body domain.CategoriesRequest true "Categories Request"
-// @Success 200 {object} domain.LoginResponse
+// @Param login body domain.CategoriesReq true "Categories Request"
+// @Success 201 {object} domain.OK
 // @Router /categories [POST]
 func (p *Products) InsertCategory(c echo.Context) error {
-	var request domain.CategoriesRequest
+	var request domain.CategoriesReq
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -173,7 +176,7 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 		})
 	}
 	// call services
-	if err := p.Services.UploadProductImage(c.Request().Context(), id, files[0]); err != nil {
+	if err := p.Services.UploadProductImage(c.Request().Context(), id, files); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -188,21 +191,21 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param product body domain.ProductRequest true "Product Request"
-// @Success 200 {object} domain.OK
+// @Param product body domain.ProductReq true "Product Request"
+// @Success 200 {object} domain.UploadProductResponse
 // @Router /products [POST]
 func (p *Products) UploadProduct(c echo.Context) error {
 	// bind json to structure
-	var productReq domain.ProductRequest
+	var productReq domain.ProductReq
 	if err := c.Bind(&productReq); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 	}
 	// check validate struct
-	if valid := valid.Validate(&productReq); valid != "" {
+	if validate := valid.Validate(&productReq); validate != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: valid,
+			Msg: validate,
 		})
 	}
 	// call services
@@ -224,7 +227,7 @@ func (p *Products) UploadProduct(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of suppliers"
-// @Success 200 {object} domain.SuppliersListResponse
+// @Success 200 {object} domain.SuppliersListRes
 // @Router /suppliers [GET]
 func (p *Products) GetSupplier(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
@@ -239,7 +242,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, domain.SuppliersListResponse{
+	return c.JSON(http.StatusOK, domain.SuppliersListRes{
 		Data: _supp,
 	})
 }
@@ -249,19 +252,19 @@ func (p *Products) GetSupplier(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param SuppliersRequest body domain.SuppliersRequest true "Suppliers Request"
-// @Success 200 {object} domain.OK
+// @Param SuppliersReq body domain.SuppliersReq true "Suppliers Request"
+// @Success 201 {object} domain.OK
 // @Router /suppliers [POST]
 func (p *Products) InsertSupplier(c echo.Context) error {
-	var req domain.SuppliersRequest
+	var req domain.SuppliersReq
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 	}
-	if valid := valid.Validate(req); valid != "" {
+	if validate := valid.Validate(req); validate != "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: valid,
+			Msg: validate,
 		})
 	}
 	if err := p.Services.InsertSuppliers(c.Request().Context(), req); err != nil {
@@ -269,7 +272,37 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, domain.OK{
+	return c.JSON(http.StatusCreated, domain.OK{
 		Msg: "suppliers created successfully",
+	})
+}
+
+// AddToWarehouse
+// @Description add product to warehouse
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param WarehouseReq body domain.WarehouseReq true "Warehouse Request"
+// @Success 201 {object} domain.OK
+// @Router /warehouse [POST]
+func (p *Products) AddToWarehouse(c echo.Context) error {
+	var req domain.WarehouseReq
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	if validate := valid.Validate(req); validate != "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: validate,
+		})
+	}
+	if err := p.Services.InsertIntoWarehouse(c.Request().Context(), req); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, domain.OK{
+		Msg: "add product to warehouse created successfully",
 	})
 }

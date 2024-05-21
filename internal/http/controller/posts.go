@@ -5,20 +5,15 @@ import (
 	"strconv"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/pkg/tools/valid"
-	"swclabs/swipecore/pkg/utils"
+	"swclabs/swipecore/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
-	"github.com/mitchellh/mapstructure"
 )
 
 type IPosts interface {
-	GetNewsletter(c echo.Context) error
-	UploadNewsletter(c echo.Context) error
-}
-
-type Posts struct {
-	Services domain.IPostsService
+	UploadCollections(c echo.Context) error
+	UpdateCollectionsImage(c echo.Context) error
+	GetSlicesOfCollections(c echo.Context) error
 }
 
 func NewPosts() IPosts {
@@ -27,76 +22,106 @@ func NewPosts() IPosts {
 	}
 }
 
-// GetNewsletter
-// @Description Get Product Newsletter
+type Posts struct {
+	Services domain.IPostsService
+}
+
+// UploadCollections
+// @Description Create collections
 // @Tags posts
 // @Accept json
 // @Produce json
-// @Param limit query int true "limit number of newsletter"
-// @Success 200 {object} domain.NewsletterListResponse
-// @Router /newsletters [GET]
-func (p *Posts) GetNewsletter(c echo.Context) error {
-	_limit, err := strconv.Atoi(c.QueryParam("limit"))
-	if err != nil {
+// @Param collection body domain.CollectionType true "collections Request"
+// @Success 201 {object} domain.CollectionUploadRes
+// @Router /collections [POST]
+func (p *Posts) UploadCollections(c echo.Context) error {
+	var cardBanner domain.CollectionType
+	if err := c.Bind(&cardBanner); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: "Invalid 'limit' query parameter",
+			Msg: err.Error(),
 		})
 	}
-	newsletter, err := p.Services.GetNewsletter(c.Request().Context(), _limit)
+	if _valid := valid.Validate(cardBanner); _valid != "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: _valid,
+		})
+	}
+	id, err := p.Services.UploadCollections(c.Request().Context(), cardBanner)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, domain.NewsletterListResponse{
-		Data: newsletter,
+	return c.JSON(http.StatusCreated, domain.CollectionUploadRes{
+		Msg: "collection uploaded successfully",
+		Id:  id,
 	})
 }
 
-// UploadNewsletter
-// @Description Create newsletter
+// UpdateCollectionsImage
+// @Description Create collections
 // @Tags posts
-// @Accept multipart/form-data
 // @Accept json
 // @Produce json
-// @Param img formData file true "image of newsletter"
-// @Param product formData domain.Newsletter true "Newsletter Request"
+// @Param img formData file true "image of collections"
+// @Param id formData string true "collections identifier"
 // @Success 200 {object} domain.OK
-// @Router /newsletters [POST]
-func (p *Posts) UploadNewsletter(c echo.Context) error {
+// @Router /collections/img [PUT]
+func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 	file, err := c.FormFile("img")
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 	}
-	formData, err := c.MultipartForm()
+	id := c.FormValue("id")
+	if id == "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing 'id' field",
+		})
+	}
+
+	if err := p.Services.UploadCollectionsImage(c.Request().Context(), id, file); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, domain.Error{
+		Msg: "upload image of collection successfully",
+	})
+}
+
+// GetSlicesOfCollections
+// @Description Create collections
+// @Tags posts
+// @Accept json
+// @Produce json
+// @Param position query string true "position of collections"
+// @Param limit query string true "limit of cards banner slices"
+// @Success 200 {object} domain.Collections
+// @Router /collections [GET]
+func (p *Posts) GetSlicesOfCollections(c echo.Context) error {
+	position := c.QueryParam("position")
+	limit := c.QueryParam("limit")
+	if position == "" || limit == "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing 'position' or 'limit' field",
+		})
+	}
+
+	_limit, err := strconv.Atoi(limit)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 	}
-	// bind json to structure
-	var newsletter domain.Newsletter
 
-	if err := mapstructure.Decode(utils.NxN2Nx1(formData.Value), &newsletter); err != nil {
+	slices, err := p.Services.SlicesOfCollections(c.Request().Context(), position, _limit)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
 	}
-	// check validate struct
-	if valid := valid.Validate(&newsletter); valid != "" {
-		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: valid,
-		})
-	}
-	// call services
-	if err := p.Services.UploadNewsletter(c.Request().Context(), newsletter, file); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: err.Error(),
-		})
-	}
-	return c.JSON(http.StatusCreated, domain.OK{
-		Msg: "upload newsletter successfully",
-	})
+	return c.JSON(http.StatusOK, *slices)
 }

@@ -3,7 +3,7 @@ package test
 import (
 	"fmt"
 	"maps"
-	"swclabs/swipecore/pkg/tools/jwt"
+	"swclabs/swipecore/pkg/lib/jwt"
 	"testing"
 
 	"swclabs/swipecore/pkg/utils"

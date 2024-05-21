@@ -9,7 +9,7 @@ import (
 
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/pkg/sentry"
-	"swclabs/swipecore/pkg/tools/worker"
+	"swclabs/swipecore/pkg/lib/worker"
 )
 
 var _ IServer = &_Server{}

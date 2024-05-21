@@ -50,7 +50,7 @@ CREATE TABLE "products" (
   "name" varchar NOT NULL,
   "supplier_id" bigint NOT NULL,
   "category_id" bigint NOT NULL,
-  "star" varchar,
+  "created" timestamp default (now() at time zone 'utc'),
   "spec" jsonb,
   "status" varchar NOT NULL
 );
@@ -58,7 +58,6 @@ CREATE TABLE "products" (
 CREATE TABLE "suppliers" (
   "id" bigserial PRIMARY KEY,
   "name" varchar NOT NULL,
-  "phone_number" varchar UNIQUE NOT NULL,
   "email" varchar UNIQUE NOT NULL
 );
 
@@ -130,12 +129,19 @@ CREATE TABLE "favorite_product" (
   "product_id" bigint NOT NULL
 );
 
-CREATE TABLE "newsletter" (
+CREATE TABLE "warehouse" (
   "id" bigserial PRIMARY KEY,
-  "type" varchar,
-  "title" varchar,
-  "subtitle" varchar,
-  "description" varchar,
-  "image" varchar,
-  "textcolor" varchar
-)
+  "product_id" int NOT NULL,
+  "price" varchar NOT NULL,
+  "model" varchar,
+  "specs" jsonb,
+  "available" int NOT NULL
+);
+
+CREATE TABLE "collections" (
+  "id" bigserial PRIMARY KEY,
+  "created" timestamp default (timezone('utc', now())),
+  "position" varchar NOT NULL ,
+  "headline" varchar,
+  "body" jsonb
+);

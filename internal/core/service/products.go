@@ -3,10 +3,11 @@ package service
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"mime/multipart"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/pkg/cloud"
+	"swclabs/swipecore/pkg/blob"
 )
 
 type ProductService struct {
@@ -27,12 +28,12 @@ func NewProductService() domain.IProductService {
 }
 
 // GetProductsInWarehouse implements domain.IProductService.
-func (s *ProductService) GetProductsInWarehouse(ctx context.Context, productID, ram, ssd string) (*domain.Warehouse, error) {
-	return s.Warehouse.GetProducts(ctx, productID, ram, ssd)
+func (s *ProductService) GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseRes, error) {
+	return s.Warehouse.GetProducts(ctx, productID, ram, ssd, color)
 }
 
 // InsertIntoWarehouse implements domain.IProductService.
-func (s *ProductService) InsertIntoWarehouse(ctx context.Context, product domain.Warehouse) error {
+func (s *ProductService) InsertIntoWarehouse(ctx context.Context, product domain.WarehouseReq) error {
 	return s.Warehouse.InsertProduct(ctx, product)
 }
 
@@ -40,8 +41,8 @@ func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) (
 	return s.Categories.GetLimit(ctx, limit)
 }
 
-func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.ProductResponse, error) {
-	return s.Products.GetLitmit(ctx, limit)
+func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
+	return s.Products.GetLimit(ctx, limit)
 }
 
 func (s *ProductService) InsertCategory(ctx context.Context, ctg *domain.Categories) error {
@@ -52,20 +53,31 @@ func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]do
 	return s.Suppliers.GetLimit(ctx, limit)
 }
 
-func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHeader *multipart.FileHeader) error {
-	file, err := fileHeader.Open()
-	if err != nil {
-		return err
+func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHeader []*multipart.FileHeader) error {
+	if fileHeader == nil {
+		return errors.New("missing image file")
 	}
-	resp, err := cloud.UploadImages(cloud.Connection(), file)
-	if err != nil {
-		return err
+	for _, fileheader := range fileHeader {
+		file, err := fileheader.Open()
+		if err != nil {
+			return err
+		}
+		resp, err := blob.UploadImages(blob.Connection(), file)
+		if err != nil {
+			return err
+		}
+		if err := s.Products.UploadNewImage(ctx, resp.SecureURL, Id); err != nil {
+			return err
+		}
+		if err := file.Close(); err != nil {
+			return err
+		}
 	}
-	return s.Products.UploadNewImage(ctx, resp.SecureURL, Id)
+	return nil
 }
 
-func (s *ProductService) UploadProduct(ctx context.Context, products domain.ProductRequest) (int64, error) {
-	specs, err := json.Marshal(domain.Specifications{
+func (s *ProductService) UploadProduct(ctx context.Context, products domain.ProductReq) (int64, error) {
+	specs, err := json.Marshal(domain.Specs{
 		Screen:  products.Screen,
 		Display: products.Display,
 		SSD:     products.SSD,
@@ -86,11 +98,10 @@ func (s *ProductService) UploadProduct(ctx context.Context, products domain.Prod
 	return s.Products.Insert(ctx, &prd)
 }
 
-func (s *ProductService) InsertSuppliers(ctx context.Context, supplierReq domain.SuppliersRequest) error {
+func (s *ProductService) InsertSuppliers(ctx context.Context, supplierReq domain.SuppliersReq) error {
 	supplier := domain.Suppliers{
-		Name:        supplierReq.Name,
-		Email:       supplierReq.Email,
-		PhoneNumber: supplierReq.PhoneNumber,
+		Name:  supplierReq.Name,
+		Email: supplierReq.Email,
 	}
 	addr := domain.Addresses{
 		City:     supplierReq.City,

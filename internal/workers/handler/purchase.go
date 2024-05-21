@@ -2,7 +2,7 @@ package handler
 
 import (
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/pkg/tools/worker"
+	"swclabs/swipecore/pkg/lib/worker"
 )
 
 type IPurchase interface {

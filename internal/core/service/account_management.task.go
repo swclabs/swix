@@ -3,11 +3,11 @@ package service
 import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/workers/queue"
-	"swclabs/swipecore/pkg/tools/worker"
+	"swclabs/swipecore/pkg/lib/worker"
 )
 
 type IAccountManagement interface {
-	DelaySignUp(req *domain.SignUpRequest) error
+	DelaySignUp(req *domain.SignUpReq) error
 	DelayUpdateUserInfo(req *domain.UserUpdate) error
 	DelayOAuth2SaveUser(req *domain.OAuth2SaveUser) error
 }
@@ -21,7 +21,7 @@ func NewAccountManagementTask() *AccountManagementTask {
 	return &AccountManagementTask{}
 }
 
-func (t *AccountManagementTask) DelaySignUp(req *domain.SignUpRequest) error {
+func (t *AccountManagementTask) DelaySignUp(req *domain.SignUpReq) error {
 	return worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.DelaySignUp),
 		req,

@@ -2,9 +2,8 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-// Author:
-// - Ho Duc Hung : @kieranhoo
-// - Nguyen Van Khoa: @anthony2704
+// Author: - Ho Duc Hung : @kieranhoo
+// 		   - Nguyen Van Khoa: @anthony2704
 // Description: This is Graduation project in computer science
 // 2023 - Ho Chi Minh City University of Technology, VNUHCM
 
@@ -31,9 +30,9 @@ import (
 func main() {
 	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
 	server := boot.NewServer(addr)
-	adapter := adapter.New(adapter.TypeBase)
+	myAdapter := adapter.New(adapter.TypeBase)
 
-	if err := server.Connect(adapter); err != nil {
+	if err := server.Connect(myAdapter); err != nil {
 		log.Fatal(err)
 	}
 }

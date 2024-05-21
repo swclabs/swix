@@ -11,6 +11,5 @@ const (
 		UPDATE products
 		SET image = image || ',' || ?
 		WHERE id = ?;
-	
 	`
 )

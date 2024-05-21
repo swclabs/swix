@@ -2,7 +2,7 @@ package mail
 
 import (
 	"context"
-	"swclabs/swipecore/pkg/tools/mailer"
+	"swclabs/swipecore/pkg/lib/mailer"
 
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/pkg/web/components"

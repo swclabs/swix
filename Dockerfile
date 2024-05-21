@@ -18,3 +18,4 @@ RUN go build -ldflags="-s -w" -o /bin/swipe ./cmd/${APP_MODULE}
 
 # Remove all source code files
 RUN rm -r *
+RUN go clean -modcache
