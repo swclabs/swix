@@ -8,7 +8,7 @@ services:
     environment:
       - REDIS_HOST_PASSWORD=password
     volumes:
-      - ./pkg/db/data/redis:/data
+      - ./pkg/db/sys/redis:/data
   postgres:
     image: postgres:latest
     environment:
@@ -19,6 +19,6 @@ services:
       - 5432:5432
     restart: on-failure:3
     volumes:
-      - ./pkg/db/data/postgres:/var/lib/postgresql/data
+      - ./pkg/db/sys/postgres:/var/lib/postgresql/data
 volumes:
   pkg:

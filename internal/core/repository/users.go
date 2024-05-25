@@ -41,7 +41,8 @@ func (usr *Users) Use(tx *gorm.DB) domain.IUserRepository {
 // GetByEmail implements domain.IUserRepository.
 func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
 	var user domain.User
-	if err := usr.conn.WithContext(ctx).Table(domain.UsersTable).Where("email = ?", email).First(&user).Error; err != nil {
+	if err := usr.conn.WithContext(ctx).
+		Table(domain.UsersTable).Where("email = ?", email).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -222,7 +223,8 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user *domain.User) 
 // GetByPhone implements domain.IUserRepository.
 func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*domain.User, error) {
 	var user domain.User
-	if err := usr.conn.WithContext(ctx).Table(domain.UsersTable).Where("phone_number = ?", nPhone).First(&user).Error; err != nil {
+	if err := usr.conn.WithContext(ctx).
+		Table(domain.UsersTable).Where("phone_number = ?", nPhone).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil

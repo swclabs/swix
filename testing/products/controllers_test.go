@@ -2,6 +2,7 @@ package test
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"swclabs/swipecore/internal/core/domain"
@@ -18,30 +19,31 @@ var e = echo.New()
 
 func TestGetProductAvailability(t *testing.T) {
 	// repository layers
+	specs, _ := json.Marshal(domain.SpecsDetail{
+		Color:      "black",
+		Ram:        "16",
+		Ssd:        "512",
+		ColorImage: "",
+		Image:      "",
+	})
 	repos := repository.WarehouseMock{}
-	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.WarehouseRes{
-		Id: "1",
-		WarehouseReq: domain.WarehouseReq{ProductID: "1",
-			Model:     "iPhone 15 Pro Max",
-			Available: "100",
-			Price:     "$1000",
-			Specs: domain.SpecsDetail{
-				Color:      "black",
-				Ram:        "16",
-				Ssd:        "512",
-				ColorImage: "",
-				Image:      "",
-			}},
+	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.Warehouse{
+		Id:        "1",
+		ProductID: "1",
+		Model:     "iPhone 15 Pro Max",
+		Available: "100",
+		Price:     "$1000",
+		Specs:     string(specs),
 	}, nil)
 
-	// bussiness logic layers
-	service := service.ProductService{
+	// business logic layers
+	services := service.ProductService{
 		Warehouse: &repos,
 	}
 
 	// presenter layers
 	controllers := controller.Products{
-		Services: &service,
+		Services: &services,
 	}
 
 	e.GET("/warehouse", controllers.GetProductAvailability)
@@ -51,6 +53,6 @@ func TestGetProductAvailability(t *testing.T) {
 
 	e.ServeHTTP(rr, req)
 
-	expected := "{\"id\":\"1\",\"product_id\":\"1\",\"price\":\"$1000\",\"model\":\"iPhone 15 Pro Max\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"},\"available\":\"100\"}\n"
+	expected := "{\"id\":\"1\",\"product_id\":\"1\",\"price\":\"$1000\",\"model\":\"iPhone 15 Pro Max\",\"available\":\"100\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
 }

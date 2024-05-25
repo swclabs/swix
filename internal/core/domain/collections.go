@@ -66,24 +66,48 @@ type CollectionUploadRes struct {
 	Id  int64  `json:"id"`
 }
 
+/*** Swagger ***/
+
+type CollectionTypeSwagger struct {
+	Position string                `json:"position" validate:"required"`
+	Headline string                `json:"headline" validate:"required"`
+	Body     CollectionBodySwagger `json:"body" validate:"required"`
+}
+
+type CollectionBodySwagger struct {
+	Title       string `json:"title" validate:"required"`
+	SubTitle    string `json:"subtitle" validate:"required"`
+	Description string `json:"description" validate:"required"`
+	TextColor   string `json:"text_color" validate:"required"`
+}
+
 /***********************************************************************************************/
 
-// HeadlineCollection define in database, used to save and query data from database
-type HeadlineCollection struct {
-	Id       int64  `json:"id"`
-	Created  string `json:"created"`
-	Position string `json:"position"`
-	Headline string `json:"headline"` // see headline bellows
+type HeadlineBannerBody struct {
+	Headline string `json:"headline" validate:"required"`
 }
 
-// Headline body of HeadlineCollections used to bind body from json to struct
-type Headline struct {
+type HeadlineBannerSliceBody struct {
+	HeadlineBannerBody
+	Id      int64  `json:"id"`
+	Created string `json:"created"`
 }
 
-// HeadlineType type to accept request and response from users
-type HeadlineType struct {
-	Id       int64    `json:"id"`
-	Created  string   `json:"created"`
-	Position string   `json:"position"`
-	Headline Headline `json:"headline"`
+// HeadlineBannerType user body request & response
+type HeadlineBannerType struct {
+	Position string             `json:"position" validate:"required"`
+	Created  string             `json:"created"`
+	Body     HeadlineBannerBody `json:"body" validate:"required"`
+}
+
+// HeadlineBannerTypeSwagger used to generate swagger documents
+type HeadlineBannerTypeSwagger struct {
+	Position string             `json:"position" validate:"required"`
+	Body     HeadlineBannerBody `json:"body" validate:"required"`
+}
+
+// HeadlineBannerSlice response slices
+type HeadlineBannerSlice struct {
+	Position  string                    `json:"position"`
+	Headlines []HeadlineBannerSliceBody `json:"headlines"`
 }

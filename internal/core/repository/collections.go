@@ -27,7 +27,8 @@ func NewCardBannerCollection() domain.ICollections {
 	}
 }
 
-func (collection *Collections) UploadCollectionImage(ctx context.Context, collectionId string, url string) error {
+func (collection *Collections) UploadCollectionImage(
+	ctx context.Context, collectionId string, url string) error {
 	return db.SafeWriteQuery(
 		ctx,
 		collection.conn,
@@ -36,7 +37,8 @@ func (collection *Collections) UploadCollectionImage(ctx context.Context, collec
 	)
 }
 
-func (collection *Collections) AddCollection(ctx context.Context, collectionType domain.CollectionType) (int64, error) {
+func (collection *Collections) AddCollection(
+	ctx context.Context, collectionType domain.CollectionType) (int64, error) {
 	_collection, err := json.Marshal(collectionType.Body)
 	if err != nil {
 		return -1, err
@@ -49,26 +51,23 @@ func (collection *Collections) AddCollection(ctx context.Context, collectionType
 	)
 }
 
-func (collection *Collections) SlicesOfCollections(ctx context.Context, position string, limit int) (*domain.Collections, error) {
+func (collection *Collections) SlicesOfCollections(
+	ctx context.Context, position string, limit int) ([]domain.Collection, error) {
 	var collections []domain.Collection
 	if err := collection.conn.WithContext(ctx).
 		Raw(queries.SelectCollectionByPosition, position, limit).Scan(&collections).Error; err != nil {
 		return nil, err
 	}
-	var _collections domain.Collections
-	_collections.Position = collections[0].Position
-	_collections.Headline = collections[0].Headline
+	return collections, nil
+}
 
-	for _, _collection := range collections {
-		var body domain.CollectionBody
-		if err := json.Unmarshal([]byte(_collection.Body), &body); err != nil {
-			return nil, err
-		}
-		_collections.CardBanner = append(_collections.CardBanner, domain.CollectionsBody{
-			CollectionBody: body,
-			Id:             _collection.Id,
-			Created:        _collection.Created,
-		})
+// AddHeadlineBanner implements domain.IHeadlineBannerCollections.
+func (collection *Collections) AddHeadlineBanner(
+	ctx context.Context, headline domain.HeadlineBannerType) error {
+	body, err := json.Marshal(headline.Body)
+	if err != nil {
+		return err
 	}
-	return &_collections, nil
+	return db.SafeWriteQuery(
+		ctx, collection.conn, queries.InsertIntoCollections, headline.Position, "", string(body))
 }

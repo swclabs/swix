@@ -14,6 +14,9 @@ type IPosts interface {
 	UploadCollections(c echo.Context) error
 	UpdateCollectionsImage(c echo.Context) error
 	GetSlicesOfCollections(c echo.Context) error
+
+	UploadHeadlineBanner(c echo.Context) error
+	GetSliceOfHeadlineBanner(c echo.Context) error
 }
 
 func NewPosts() IPosts {
@@ -26,12 +29,22 @@ type Posts struct {
 	Services domain.IPostsService
 }
 
+// GetSliceOfHeadlineBanner implements IPosts.
+func (p *Posts) GetSliceOfHeadlineBanner(c echo.Context) error {
+	panic("unimplemented")
+}
+
+// UploadHeadlineBanner implements IPosts.
+func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
+	panic("unimplemented")
+}
+
 // UploadCollections
 // @Description Create collections
 // @Tags posts
 // @Accept json
 // @Produce json
-// @Param collection body domain.CollectionType true "collections Request"
+// @Param collection body domain.CollectionTypeSwagger true "collections Request"
 // @Success 201 {object} domain.CollectionUploadRes
 // @Router /collections [POST]
 func (p *Posts) UploadCollections(c echo.Context) error {

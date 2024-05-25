@@ -40,7 +40,10 @@ func (account *Accounts) Use(tx *gorm.DB) domain.IAccountRepository {
 
 // GetByEmail implements domain.IAccountRepository.
 func (account *Accounts) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
-	if err := account.conn.WithContext(ctx).Table("accounts").Where("email = ?", email).First(account.data).Error; err != nil {
+	if err := account.conn.WithContext(ctx).
+		Table("accounts").
+		Where("email = ?", email).
+		First(account.data).Error; err != nil {
 		return nil, err
 	}
 	return account.data, nil

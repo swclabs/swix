@@ -8,6 +8,9 @@ definitions:
         type: string
       name:
         type: string
+    required:
+    - description
+    - name
     type: object
   domain.CategoriesList:
     properties:
@@ -16,7 +19,7 @@ definitions:
           $ref: '#/definitions/domain.Categories'
         type: array
     type: object
-  domain.CategoriesReq:
+  domain.CategoriesSwagger:
     properties:
       description:
         type: string
@@ -26,11 +29,9 @@ definitions:
     - description
     - name
     type: object
-  domain.CollectionBody:
+  domain.CollectionBodySwagger:
     properties:
       description:
-        type: string
-      image:
         type: string
       subtitle:
         type: string
@@ -44,16 +45,12 @@ definitions:
     - text_color
     - title
     type: object
-  domain.CollectionType:
+  domain.CollectionTypeSwagger:
     properties:
       body:
-        $ref: '#/definitions/domain.CollectionBody'
-      created:
-        type: string
+        $ref: '#/definitions/domain.CollectionBodySwagger'
       headline:
         type: string
-      id:
-        type: integer
       position:
         type: string
     required:
@@ -344,7 +341,7 @@ definitions:
     - phone_number
     - username
     type: object
-  domain.WarehouseReq:
+  domain.WarehouseStructure:
     properties:
       available:
         type: string
@@ -362,7 +359,7 @@ definitions:
     - price
     - product_id
     type: object
-  domain.WarehouseRes:
+  domain.WarehouseType:
     properties:
       available:
         type: string
@@ -494,7 +491,7 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.CategoriesReq'
+          $ref: '#/definitions/domain.CategoriesSwagger'
       produces:
       - application/json
       responses:
@@ -539,7 +536,7 @@ paths:
         name: collection
         required: true
         schema:
-          $ref: '#/definitions/domain.CollectionType'
+          $ref: '#/definitions/domain.CollectionTypeSwagger'
       produces:
       - application/json
       responses:
@@ -787,7 +784,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.WarehouseRes'
+            $ref: '#/definitions/domain.WarehouseType'
       tags:
       - products
     post:
@@ -797,10 +794,10 @@ paths:
       parameters:
       - description: Warehouse Request
         in: body
-        name: WarehouseReq
+        name: WarehouseStructure
         required: true
         schema:
-          $ref: '#/definitions/domain.WarehouseReq'
+          $ref: '#/definitions/domain.WarehouseStructure'
       produces:
       - application/json
       responses:
