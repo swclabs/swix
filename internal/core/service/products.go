@@ -28,12 +28,32 @@ func NewProductService() domain.IProductService {
 }
 
 // GetProductsInWarehouse implements domain.IProductService.
-func (s *ProductService) GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseRes, error) {
-	return s.Warehouse.GetProducts(ctx, productID, ram, ssd, color)
+func (s *ProductService) GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseType, error) {
+	warehouse, err := s.Warehouse.GetProducts(ctx, productID, ram, ssd, color)
+	if err != nil {
+		return nil, err
+	}
+	var warehouseRes = domain.WarehouseType{
+		Id: warehouse.Id,
+		WarehouseStructure: domain.WarehouseStructure{
+			ProductID: warehouse.Id,
+			Price:     warehouse.Price,
+			Model:     warehouse.Model,
+			Available: warehouse.Available,
+		},
+	}
+	if err := json.Unmarshal([]byte(warehouse.Specs), &warehouseRes.Specs); err != nil {
+		return &warehouseRes, nil // don't find anything, just return empty object
+	}
+	if warehouseRes.Available == "" {
+		warehouseRes.Available = "0"
+		return &warehouseRes, nil
+	}
+	return &warehouseRes, nil
 }
 
 // InsertIntoWarehouse implements domain.IProductService.
-func (s *ProductService) InsertIntoWarehouse(ctx context.Context, product domain.WarehouseReq) error {
+func (s *ProductService) InsertIntoWarehouse(ctx context.Context, product domain.WarehouseStructure) error {
 	return s.Warehouse.InsertProduct(ctx, product)
 }
 

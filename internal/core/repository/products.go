@@ -46,7 +46,8 @@ func (product *Products) Insert(ctx context.Context, prd *domain.Products) (int6
 func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
 	var products []domain.Products
 	var productResponse []domain.ProductRes
-	if err := product.conn.Table(domain.ProductsTable).WithContext(ctx).Find(&products).Limit(limit).Error; err != nil {
+	if err := product.conn.Table(domain.ProductsTable).
+		WithContext(ctx).Find(&products).Limit(limit).Error; err != nil {
 		return nil, err
 	}
 	for _, p := range products {

@@ -28,7 +28,8 @@ func NewWarehouse() domain.IWarehouseRepository {
 }
 
 // GetProducts implements domain.IWarehouseRepository.
-func (w *Warehouse) GetProducts(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseRes, error) {
+func (w *Warehouse) GetProducts(
+	ctx context.Context, productID, ram, ssd, color string) (*domain.Warehouse, error) {
 	var warehouse domain.Warehouse
 	if err := w.conn.
 		WithContext(ctx).
@@ -36,27 +37,11 @@ func (w *Warehouse) GetProducts(ctx context.Context, productID, ram, ssd, color 
 		Scan(&warehouse).Error; err != nil {
 		return nil, err
 	}
-	var warehouseRes = domain.WarehouseRes{
-		Id: warehouse.Id,
-		WarehouseReq: domain.WarehouseReq{
-			ProductID: warehouse.Id,
-			Price:     warehouse.Price,
-			Model:     warehouse.Model,
-			Available: warehouse.Available,
-		},
-	}
-	if err := json.Unmarshal([]byte(warehouse.Specs), &warehouseRes.Specs); err != nil {
-		return &warehouseRes, nil // don't find anything, just return empty object
-	}
-	if warehouseRes.Available == "" {
-		warehouseRes.Available = "0"
-		return &warehouseRes, nil
-	}
-	return &warehouseRes, nil
+	return &warehouse, nil
 }
 
 // InsertProduct implements domain.IWarehouseRepository.
-func (w *Warehouse) InsertProduct(ctx context.Context, product domain.WarehouseReq) error {
+func (w *Warehouse) InsertProduct(ctx context.Context, product domain.WarehouseStructure) error {
 	specsjson, _ := json.Marshal(product.Specs)
 	return db.SafeWriteQuery(
 		ctx,

@@ -41,7 +41,7 @@ func NewProducts() IProducts {
 // @Param ram query number true "ram"
 // @Param ssd query number true "ssd"
 // @Param color query string true "color"
-// @Success 200 {object} domain.WarehouseRes
+// @Success 200 {object} domain.WarehouseType
 // @Router /warehouse [GET]
 func (p *Products) GetProductAvailability(c echo.Context) error {
 	pid := c.QueryParam("pid")
@@ -122,11 +122,11 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param login body domain.CategoriesReq true "Categories Request"
+// @Param login body domain.CategoriesSwagger true "Categories Request"
 // @Success 201 {object} domain.OK
 // @Router /categories [POST]
 func (p *Products) InsertCategory(c echo.Context) error {
-	var request domain.CategoriesReq
+	var request domain.Categories
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -137,10 +137,7 @@ func (p *Products) InsertCategory(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := p.Services.InsertCategory(c.Request().Context(), &domain.Categories{
-		Name:        request.Name,
-		Description: request.Description,
-	}); err != nil {
+	if err := p.Services.InsertCategory(c.Request().Context(), &request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "category data invalid",
 		})
@@ -282,11 +279,11 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param WarehouseReq body domain.WarehouseReq true "Warehouse Request"
+// @Param WarehouseStructure body domain.WarehouseStructure true "Warehouse Request"
 // @Success 201 {object} domain.OK
 // @Router /warehouse [POST]
 func (p *Products) AddToWarehouse(c echo.Context) error {
-	var req domain.WarehouseReq
+	var req domain.WarehouseStructure
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),

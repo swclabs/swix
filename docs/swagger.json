@@ -175,7 +175,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CategoriesReq"
+                            "$ref": "#/definitions/domain.CategoriesSwagger"
                         }
                     }
                 ],
@@ -244,7 +244,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CollectionType"
+                            "$ref": "#/definitions/domain.CollectionTypeSwagger"
                         }
                     }
                 ],
@@ -623,7 +623,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.WarehouseRes"
+                            "$ref": "#/definitions/domain.WarehouseType"
                         }
                     }
                 }
@@ -642,11 +642,11 @@
                 "parameters": [
                     {
                         "description": "Warehouse Request",
-                        "name": "WarehouseReq",
+                        "name": "WarehouseStructure",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.WarehouseReq"
+                            "$ref": "#/definitions/domain.WarehouseStructure"
                         }
                     }
                 ],
@@ -664,6 +664,10 @@
     "definitions": {
         "domain.Categories": {
             "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
             "properties": {
                 "description": {
                     "type": "string"
@@ -687,7 +691,7 @@
                 }
             }
         },
-        "domain.CategoriesReq": {
+        "domain.CategoriesSwagger": {
             "type": "object",
             "required": [
                 "description",
@@ -702,7 +706,7 @@
                 }
             }
         },
-        "domain.CollectionBody": {
+        "domain.CollectionBodySwagger": {
             "type": "object",
             "required": [
                 "description",
@@ -712,9 +716,6 @@
             ],
             "properties": {
                 "description": {
-                    "type": "string"
-                },
-                "image": {
                     "type": "string"
                 },
                 "subtitle": {
@@ -728,7 +729,7 @@
                 }
             }
         },
-        "domain.CollectionType": {
+        "domain.CollectionTypeSwagger": {
             "type": "object",
             "required": [
                 "body",
@@ -737,16 +738,10 @@
             ],
             "properties": {
                 "body": {
-                    "$ref": "#/definitions/domain.CollectionBody"
-                },
-                "created": {
-                    "type": "string"
+                    "$ref": "#/definitions/domain.CollectionBodySwagger"
                 },
                 "headline": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "position": {
                     "type": "string"
@@ -1173,7 +1168,7 @@
                 }
             }
         },
-        "domain.WarehouseReq": {
+        "domain.WarehouseStructure": {
             "type": "object",
             "required": [
                 "available",
@@ -1199,7 +1194,7 @@
                 }
             }
         },
-        "domain.WarehouseRes": {
+        "domain.WarehouseType": {
             "type": "object",
             "required": [
                 "available",

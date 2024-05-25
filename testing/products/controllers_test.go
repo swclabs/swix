@@ -19,9 +19,9 @@ var e = echo.New()
 func TestGetProductAvailability(t *testing.T) {
 	// repository layers
 	repos := repository.WarehouseMock{}
-	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.WarehouseRes{
+	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.WarehouseType{
 		Id: "1",
-		WarehouseReq: domain.WarehouseReq{ProductID: "1",
+		WarehouseStructure: domain.WarehouseStructure{ProductID: "1",
 			Model:     "iPhone 15 Pro Max",
 			Available: "100",
 			Price:     "$1000",
@@ -34,14 +34,14 @@ func TestGetProductAvailability(t *testing.T) {
 			}},
 	}, nil)
 
-	// bussiness logic layers
-	service := service.ProductService{
+	// business logic layers
+	services := service.ProductService{
 		Warehouse: &repos,
 	}
 
 	// presenter layers
 	controllers := controller.Products{
-		Services: &service,
+		Services: &services,
 	}
 
 	e.GET("/warehouse", controllers.GetProductAvailability)

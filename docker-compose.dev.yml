@@ -60,7 +60,7 @@ services:
     environment:
       - REDIS_HOST_PASSWORD=password
     volumes:
-      - ./pkg/db/data/redis:/data
+      - ./pkg/db/sys/redis:/data
 
   postgres:
     image: postgres:latest
@@ -74,7 +74,7 @@ services:
     networks:
       - swipe_bridge
     volumes:
-      - ./pkg/db/data/postgres:/var/lib/postgresql/data
+      - ./pkg/db/sys/postgres:/var/lib/postgresql/data
 networks:
   swipe_bridge:
 volumes:

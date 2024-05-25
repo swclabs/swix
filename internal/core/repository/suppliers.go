@@ -71,7 +71,8 @@ func (supplier *Suppliers) InsertAddress(ctx context.Context, addr domain.Suppli
 // GetLimit implements domain.ISuppliersRepository.
 func (supplier *Suppliers) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
 	var _suppliers []domain.Suppliers
-	if err := supplier.conn.Table(domain.SuppliersTable).Find(&_suppliers).Limit(limit).Error; err != nil {
+	if err := supplier.conn.
+		Table(domain.SuppliersTable).Find(&_suppliers).Limit(limit).Error; err != nil {
 		return nil, err
 	}
 	return _suppliers, nil
@@ -80,7 +81,8 @@ func (supplier *Suppliers) GetLimit(ctx context.Context, limit int) ([]domain.Su
 // GetByPhone implements domain.ISuppliersRepository.
 func (supplier *Suppliers) GetByPhone(ctx context.Context, email string) (*domain.Suppliers, error) {
 	var _supplier domain.Suppliers
-	if err := supplier.conn.Table(domain.SuppliersTable).Where("email = ?", email).First(&_supplier).Error; err != nil {
+	if err := supplier.conn.
+		Table(domain.SuppliersTable).Where("email = ?", email).First(&_supplier).Error; err != nil {
 		return nil, err
 	}
 	return &_supplier, nil

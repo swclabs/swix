@@ -182,7 +182,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CategoriesReq"
+                            "$ref": "#/definitions/domain.CategoriesSwagger"
                         }
                     }
                 ],
@@ -251,7 +251,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CollectionType"
+                            "$ref": "#/definitions/domain.CollectionTypeSwagger"
                         }
                     }
                 ],
@@ -630,7 +630,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.WarehouseRes"
+                            "$ref": "#/definitions/domain.WarehouseType"
                         }
                     }
                 }
@@ -649,11 +649,11 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Warehouse Request",
-                        "name": "WarehouseReq",
+                        "name": "WarehouseStructure",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.WarehouseReq"
+                            "$ref": "#/definitions/domain.WarehouseStructure"
                         }
                     }
                 ],
@@ -671,6 +671,10 @@ const docTemplate = `{
     "definitions": {
         "domain.Categories": {
             "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
             "properties": {
                 "description": {
                     "type": "string"
@@ -694,7 +698,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CategoriesReq": {
+        "domain.CategoriesSwagger": {
             "type": "object",
             "required": [
                 "description",
@@ -709,7 +713,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CollectionBody": {
+        "domain.CollectionBodySwagger": {
             "type": "object",
             "required": [
                 "description",
@@ -719,9 +723,6 @@ const docTemplate = `{
             ],
             "properties": {
                 "description": {
-                    "type": "string"
-                },
-                "image": {
                     "type": "string"
                 },
                 "subtitle": {
@@ -735,7 +736,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CollectionType": {
+        "domain.CollectionTypeSwagger": {
             "type": "object",
             "required": [
                 "body",
@@ -744,16 +745,10 @@ const docTemplate = `{
             ],
             "properties": {
                 "body": {
-                    "$ref": "#/definitions/domain.CollectionBody"
-                },
-                "created": {
-                    "type": "string"
+                    "$ref": "#/definitions/domain.CollectionBodySwagger"
                 },
                 "headline": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "position": {
                     "type": "string"
@@ -1180,7 +1175,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.WarehouseReq": {
+        "domain.WarehouseStructure": {
             "type": "object",
             "required": [
                 "available",
@@ -1206,7 +1201,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.WarehouseRes": {
+        "domain.WarehouseType": {
             "type": "object",
             "required": [
                 "available",

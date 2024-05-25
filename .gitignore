@@ -28,5 +28,5 @@ go.work
 
 # Binary files
 bin
-data
 exe
+sys

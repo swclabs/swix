@@ -17,7 +17,7 @@ func NewProductsMock() *ProductMock {
 	return &ProductMock{}
 }
 
-// GetLitmit implements domain.IProductRepository.
+// GetLimit implements domain.IProductRepository.
 func (p *ProductMock) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
 	panic("unimplemented")
 }

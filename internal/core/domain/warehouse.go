@@ -19,15 +19,15 @@ type SpecsDetail struct {
 	Image      string `json:"image"`
 }
 
-type WarehouseReq struct {
+type WarehouseStructure struct {
 	ProductID string      `json:"product_id" validate:"required"`
 	Price     string      `json:"price" validate:"required"`
 	Model     string      `json:"model" validate:"required"`
-	Specs     SpecsDetail `json:"specs"`
 	Available string      `json:"available" validate:"required"`
+	Specs     SpecsDetail `json:"specs"`
 }
 
-type WarehouseRes struct {
+type WarehouseType struct {
 	Id string `json:"id"`
-	WarehouseReq
+	WarehouseStructure
 }

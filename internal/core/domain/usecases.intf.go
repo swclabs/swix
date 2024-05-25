@@ -107,13 +107,13 @@ type IProductService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// product contains the warehouse product details to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertIntoWarehouse(ctx context.Context, product WarehouseReq) error
+	InsertIntoWarehouse(ctx context.Context, product WarehouseStructure) error
 
 	// GetProductsInWarehouse retrieves product details from the warehouse.
 	// ctx is the context to manage the request's lifecycle.
 	// productID, ram, ssd, and color specify the product attributes to retrieve.
-	// Returns a pointer to the WarehouseRes object and an error if any issues occur during the retrieval process.
-	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*WarehouseRes, error)
+	// Returns a pointer to the WarehouseType object and an error if any issues occur during the retrieval process.
+	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*WarehouseType, error)
 }
 
 // IPurchaseService : Module for Purchasing.
@@ -165,6 +165,9 @@ type IPostsService interface {
 	// limit is the maximum number of Collection to retrieve.
 	// Returns an error if any issues occur during the upload process.
 	SlicesOfCollections(ctx context.Context, position string, limit int) (*Collections, error)
+
+	UploadHeadlineBanner(ctx context.Context, banner HeadlineBannerType) error
+	SliceOfHeadlineBanner(ctx context.Context, position string, limit int) (*HeadlineBannerSlice, error)
 }
 
 // IOrderManagementService : Module for Order Management.

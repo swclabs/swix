@@ -27,7 +27,7 @@ func TestGetSuppliers(t *testing.T) {
 		},
 	}, nil)
 
-	// bussiness logic layers
+	// business logic layers
 	services := service.ProductService{
 		Suppliers: &repos,
 	}
