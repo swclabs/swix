@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service"
+	"swclabs/swipecore/internal/core/service/posts"
 	"swclabs/swipecore/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
@@ -21,12 +21,12 @@ type IPosts interface {
 
 func NewPosts() IPosts {
 	return &Posts{
-		Services: service.NewPost(),
+		Services: posts.NewPost(),
 	}
 }
 
 type Posts struct {
-	Services domain.IPostsService
+	Services posts.IPostsService
 }
 
 // GetSliceOfHeadlineBanner implements IPosts.

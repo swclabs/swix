@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/internal/core/service"
+	"swclabs/swipecore/internal/core/repository/suppliers"
+	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/internal/http/controller"
 	"testing"
 
@@ -18,7 +18,7 @@ var e = echo.New()
 
 func TestGetSuppliers(t *testing.T) {
 	// repository layers
-	repos := repository.SuppliersMock{}
+	repos := suppliers.SuppliersMock{}
 	repos.On("GetLimit", context.Background(), 10).Return([]domain.Suppliers{
 		{
 			Id:    "1",
@@ -28,7 +28,7 @@ func TestGetSuppliers(t *testing.T) {
 	}, nil)
 
 	// business logic layers
-	services := service.ProductService{
+	services := products.ProductService{
 		Suppliers: &repos,
 	}
 

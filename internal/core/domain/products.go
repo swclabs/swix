@@ -67,7 +67,7 @@ type ProductRes struct {
 	Spec        Specs    `json:"spec"`
 }
 
-type UploadProductResponse struct {
+type UploadProductRes struct {
 	Msg string `json:"msg"`
 	Id  int64  `json:"id"`
 }

@@ -3,22 +3,22 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"swclabs/swipecore/internal/core/service/accountmanagement"
 
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/pkg/lib/worker"
 
 	"github.com/hibiken/asynq"
 )
 
 type AccountManagement struct {
-	service.AccountManagementTask
-	handler domain.IAccountManagementService
+	accountmanagement.Task
+	handler accountmanagement.IAccountManagement
 }
 
 func NewAccountManagement() *AccountManagement {
 	return &AccountManagement{
-		handler: service.NewAccountManagement(),
+		handler: accountmanagement.NewAccountManagement(),
 	}
 }
 

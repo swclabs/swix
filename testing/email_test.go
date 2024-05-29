@@ -1,9 +1,8 @@
 package test
 
 import (
+	"swclabs/swipecore/internal/core/utils/mail"
 	"testing"
-
-	"swclabs/swipecore/internal/helper/mail"
 )
 
 func TestEmail(t *testing.T) {

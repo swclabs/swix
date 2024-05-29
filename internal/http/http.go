@@ -9,11 +9,10 @@ import (
 
 type IServer interface {
 	middleware(mdws ...func(*echo.Echo))
-	connect(routers router.IRouter)
 	_BackgroundTask(tasks ...func())
 	_InitMiddleware()
 	_LoggerWriter(*os.File)
-	Bootstrap(fn ...func(server IServer))
+	Connect(routers router.IRouter)
 	Run(string) error
 }
 
@@ -26,7 +25,8 @@ func New() IServer {
 		engine: echo.New(),
 	}
 	server._InitMiddleware()
-	server.Bootstrap(CommonModule)
+	server.Connect(router.New(router.TypeCommon))
+	server.Connect(router.New(router.TypeDocs))
 	return server
 }
 
@@ -42,6 +42,6 @@ func (server *_Server) _BackgroundTask(tasks ...func()) {
 	}
 }
 
-func (server *_Server) connect(routers router.IRouter) {
+func (server *_Server) Connect(routers router.IRouter) {
 	routers.Routers(server.engine)
 }

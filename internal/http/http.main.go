@@ -32,12 +32,6 @@ func (server *_Server) _InitMiddleware() {
 	)
 }
 
-func (server *_Server) Bootstrap(fn ...func(server IServer)) {
-	for _, _fn := range fn {
-		_fn(server)
-	}
-}
-
 func (server *_Server) Run(addr string) error {
 	if config.StageStatus != "dev" {
 		const filePath = "api.log"

@@ -6,7 +6,9 @@ var (
 	CriticalQueue = "critical"
 	DefaultQueue  = "default"
 	LowQueue      = "low"
+)
 
+var (
 	OrderQueue = "order"
 	Purchase   = "purchase"
 )

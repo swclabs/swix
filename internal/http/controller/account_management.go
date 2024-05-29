@@ -2,22 +2,22 @@ package controller
 
 import (
 	"net/http"
+	"swclabs/swipecore/internal/core/service/accountmanagement"
 	"swclabs/swipecore/pkg/lib/valid"
 
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 )
 
 type AccountManagement struct {
-	Service *service.AccountManagement
+	Service *accountmanagement.AccountManagement
 }
 
 func NewAccountManagement() IAccountManagement {
 	return &AccountManagement{
-		Service: service.NewAccountManagement(),
+		Service: accountmanagement.NewAccountManagement(),
 	}
 }
 

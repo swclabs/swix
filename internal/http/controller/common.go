@@ -2,10 +2,10 @@ package controller
 
 import (
 	"net/http"
+	"swclabs/swipecore/internal/core/service/common"
+	"swclabs/swipecore/internal/core/utils/oauth2"
 
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/internal/helper/oauth2"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
@@ -19,7 +19,7 @@ import (
 // @Success 200
 // @Router /common/healthcheck [GET]
 func HealthCheck(c echo.Context) error {
-	common := service.NewCommonService()
+	common := common.NewCommonService()
 	return c.JSON(200, common.HealthCheck(c.Request().Context()))
 }
 
@@ -47,7 +47,7 @@ func Auth0Callback(c echo.Context) error {
 }
 
 func WorkerCheck(c echo.Context) error {
-	common := service.NewCommonService()
+	common := common.NewCommonService()
 	results, err := common.DelayWorkerCheckResult(c.Request().Context())
 	if err != nil {
 		return c.JSON(400, domain.Error{
