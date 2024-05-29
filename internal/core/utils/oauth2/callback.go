@@ -48,7 +48,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
-	account := accountmanagement.NewAccountManagement()
+	account := accountmanagement.New()
 	if err := account.OAuth2SaveUser(
 		context.TODO(),
 		&domain.OAuth2SaveUser{

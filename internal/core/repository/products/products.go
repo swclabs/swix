@@ -1,4 +1,4 @@
-// Package repository
+// Package products
 // Author: Duc Hung Ho @kieranhoo
 package products
 
@@ -17,7 +17,7 @@ type Products struct {
 	conn *gorm.DB
 }
 
-func NewProducts() IProductRepository {
+func New() IProductRepository {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)

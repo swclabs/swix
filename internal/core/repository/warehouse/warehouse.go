@@ -15,7 +15,7 @@ type Warehouse struct {
 
 var _ IWarehouseRepository = (*Warehouse)(nil)
 
-func NewWarehouse() IWarehouseRepository {
+func New() IWarehouseRepository {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)

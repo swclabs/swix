@@ -8,32 +8,32 @@ import (
 	"gorm.io/gorm"
 )
 
-type AccountMock struct {
+type Mock struct {
 	mock.Mock
 }
 
-var _ IAccountRepository = (*AccountMock)(nil)
+var _ IAccountRepository = (*Mock)(nil)
 
-func NewAccountsMock() *AccountMock {
-	return &AccountMock{}
+func NewAccountsMock() *Mock {
+	return &Mock{}
 }
 
 // GetByEmail implements domain.IAccountRepository.
-func (a *AccountMock) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
+func (a *Mock) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.IAccountRepository.
-func (a *AccountMock) Insert(ctx context.Context, acc *domain.Account) error {
+func (a *Mock) Insert(ctx context.Context, acc *domain.Account) error {
 	panic("unimplemented")
 }
 
 // SaveInfo implements domain.IAccountRepository.
-func (a *AccountMock) SaveInfo(ctx context.Context, acc *domain.Account) error {
+func (a *Mock) SaveInfo(ctx context.Context, acc *domain.Account) error {
 	panic("unimplemented")
 }
 
 // Use implements domain.IAccountRepository.
-func (a *AccountMock) Use(tx *gorm.DB) IAccountRepository {
+func (a *Mock) Use(tx *gorm.DB) IAccountRepository {
 	panic("unimplemented")
 }

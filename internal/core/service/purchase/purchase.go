@@ -9,7 +9,7 @@ type Purchase struct {
 	// PurchaseTask
 }
 
-func NewPurchasingService() IPurchaseService {
+func New() IPurchaseService {
 	return &Purchase{}
 }
 

@@ -8,62 +8,62 @@ import (
 	"gorm.io/gorm"
 )
 
-type UsersMock struct {
+type Mock struct {
 	mock.Mock
 }
 
-var _ IUserRepository = (*UsersMock)(nil)
+var _ IUserRepository = (*Mock)(nil)
 
-func NewUsersMock() *UsersMock {
-	return &UsersMock{}
+func NewUsersMock() *Mock {
+	return &Mock{}
 }
 
 // GetByEmail implements domain.IUserRepository.
-func (u *UsersMock) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
+func (u *Mock) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
 	panic("unimplemented")
 }
 
 // GetByPhone implements domain.IUserRepository.
-func (u *UsersMock) GetByPhone(ctx context.Context, nPhone string) (*domain.User, error) {
+func (u *Mock) GetByPhone(ctx context.Context, nPhone string) (*domain.User, error) {
 	panic("unimplemented")
 }
 
 // Info implements domain.IUserRepository.
-func (u *UsersMock) Info(ctx context.Context, email string) (*domain.UserInfo, error) {
+func (u *Mock) Info(ctx context.Context, email string) (*domain.UserInfo, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.IUserRepository.
-func (u *UsersMock) Insert(ctx context.Context, usr *domain.User) error {
+func (u *Mock) Insert(ctx context.Context, usr *domain.User) error {
 	panic("unimplemented")
 }
 
 // OAuth2SaveInfo implements domain.IUserRepository.
-func (u *UsersMock) OAuth2SaveInfo(ctx context.Context, user *domain.User) error {
+func (u *Mock) OAuth2SaveInfo(ctx context.Context, user *domain.User) error {
 	panic("unimplemented")
 }
 
 // SaveInfo implements domain.IUserRepository.
-func (u *UsersMock) SaveInfo(ctx context.Context, user *domain.User) error {
+func (u *Mock) SaveInfo(ctx context.Context, user *domain.User) error {
 	panic("unimplemented")
 }
 
 // TransactionSaveOAuth2 implements domain.IUserRepository.
-func (u *UsersMock) TransactionSaveOAuth2(ctx context.Context, data *domain.User) error {
+func (u *Mock) TransactionSaveOAuth2(ctx context.Context, data *domain.User) error {
 	panic("unimplemented")
 }
 
 // TransactionSignUp implements domain.IUserRepository.
-func (u *UsersMock) TransactionSignUp(ctx context.Context, user *domain.User, password string) error {
+func (u *Mock) TransactionSignUp(ctx context.Context, user *domain.User, password string) error {
 	panic("unimplemented")
 }
 
 // UpdateProperties implements domain.IUserRepository.
-func (u *UsersMock) UpdateProperties(ctx context.Context, query string, user *domain.User) error {
+func (u *Mock) UpdateProperties(ctx context.Context, query string, user *domain.User) error {
 	panic("unimplemented")
 }
 
 // Use implements domain.IUserRepository.
-func (u *UsersMock) Use(tx *gorm.DB) IUserRepository {
+func (u *Mock) Use(tx *gorm.DB) IUserRepository {
 	panic("unimplemented")
 }

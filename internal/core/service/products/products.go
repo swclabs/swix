@@ -20,13 +20,13 @@ type ProductService struct {
 	Warehouse  warehouse.IWarehouseRepository
 }
 
-// NewProductService creates a new ProductService instance
-func NewProductService() IProductService {
+// New creates a new ProductService instance
+func New() IProductService {
 	return &ProductService{
-		Categories: categories.NewCategories(),
-		Products:   products.NewProducts(),
-		Suppliers:  suppliers.NewSuppliers(),
-		Warehouse:  warehouse.NewWarehouse(),
+		Categories: categories.New(),
+		Products:   products.New(),
+		Suppliers:  suppliers.New(),
+		Warehouse:  warehouse.New(),
 	}
 }
 

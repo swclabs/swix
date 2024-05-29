@@ -15,7 +15,7 @@ type Suppliers struct {
 	conn *gorm.DB
 }
 
-func NewSuppliers() ISuppliersRepository {
+func New() ISuppliersRepository {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)
@@ -42,15 +42,15 @@ func (supplier *Suppliers) Insert(ctx context.Context, supp domain.Suppliers, ad
 		); err != nil {
 			return err
 		}
-		_supplier, err := NewSuppliers().Use(tx).GetByPhone(ctx, supp.Email)
+		_supplier, err := New().Use(tx).GetByPhone(ctx, supp.Email)
 		if err != nil {
 			return err
 		}
 		addr.Uuid = uuid.New().String()
-		if err := addresses.NewAddresses().Use(tx).Insert(ctx, &addr); err != nil {
+		if err := addresses.New().Use(tx).Insert(ctx, &addr); err != nil {
 			return err
 		}
-		return NewSuppliers().Use(tx).InsertAddress(ctx, domain.SuppliersAddress{
+		return New().Use(tx).InsertAddress(ctx, domain.SuppliersAddress{
 			SuppliersID: _supplier.Id,
 			AddressUuiD: addr.Uuid,
 		})

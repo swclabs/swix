@@ -8,22 +8,22 @@ import (
 	"gorm.io/gorm"
 )
 
-type AddressesMock struct {
+type Mock struct {
 	mock.Mock
 }
 
-var _ IAddressRepository = (*AddressesMock)(nil)
+var _ IAddressRepository = (*Mock)(nil)
 
-func NewAddressesMock() *AddressesMock {
-	return &AddressesMock{}
+func NewAddressesMock() *Mock {
+	return &Mock{}
 }
 
 // Insert implements domain.IAddressRepository.
-func (a *AddressesMock) Insert(ctx context.Context, data *domain.Addresses) error {
+func (a *Mock) Insert(ctx context.Context, data *domain.Addresses) error {
 	panic("unimplemented")
 }
 
 // Use implements domain.IAddressRepository.
-func (a *AddressesMock) Use(tx *gorm.DB) IAddressRepository {
+func (a *Mock) Use(tx *gorm.DB) IAddressRepository {
 	panic("unimplemented")
 }

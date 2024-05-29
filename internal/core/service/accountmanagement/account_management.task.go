@@ -11,7 +11,7 @@ var _ IAccountManagementTask = (*Task)(nil)
 type Task struct {
 }
 
-func NewAccountManagementTask() *Task {
+func NewTask() *Task {
 	return &Task{}
 }
 

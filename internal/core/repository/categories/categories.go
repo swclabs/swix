@@ -1,4 +1,4 @@
-// Package repository
+// Package categories
 // Author: Duc Hung Ho @kieranhoo
 package categories
 
@@ -16,7 +16,7 @@ type Categories struct {
 	conn *gorm.DB
 }
 
-func NewCategories() ICategoriesRepository {
+func New() ICategoriesRepository {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)

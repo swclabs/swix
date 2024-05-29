@@ -21,7 +21,7 @@ type IPosts interface {
 
 func NewPosts() IPosts {
 	return &Posts{
-		Services: posts.NewPost(),
+		Services: posts.New(),
 	}
 }
 

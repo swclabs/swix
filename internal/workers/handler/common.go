@@ -17,7 +17,7 @@ type CommonHandler struct {
 
 func NewCommonHandler() *CommonHandler {
 	return &CommonHandler{
-		handler: common.NewCommonService(),
+		handler: common.New(),
 	}
 }
 

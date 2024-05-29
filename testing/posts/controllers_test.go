@@ -18,7 +18,7 @@ var e = echo.New()
 
 func TestGetSuppliers(t *testing.T) {
 	// repository layers
-	repos := suppliers.SuppliersMock{}
+	repos := suppliers.Mock{}
 	repos.On("GetLimit", context.Background(), 10).Return([]domain.Suppliers{
 		{
 			Id:    "1",

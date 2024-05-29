@@ -19,7 +19,7 @@ import (
 // @Success 200
 // @Router /common/healthcheck [GET]
 func HealthCheck(c echo.Context) error {
-	common := common.NewCommonService()
+	common := common.New()
 	return c.JSON(200, common.HealthCheck(c.Request().Context()))
 }
 
@@ -46,8 +46,15 @@ func Auth0Callback(c echo.Context) error {
 	return auth.OAuth2CallBack(c)
 }
 
+// WorkerCheck .
+// @Description health check worker consume server.
+// @Tags common
+// @Accept json
+// @Produce json
+// @Success 200
+// @Router /common/worker [GET]
 func WorkerCheck(c echo.Context) error {
-	common := common.NewCommonService()
+	common := common.New()
 	results, err := common.DelayWorkerCheckResult(c.Request().Context())
 	if err != nil {
 		return c.JSON(400, domain.Error{

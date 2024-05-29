@@ -10,7 +10,7 @@ type CommonService struct {
 	Task
 }
 
-func NewCommonService() *CommonService {
+func New() *CommonService {
 	return &CommonService{}
 }
 

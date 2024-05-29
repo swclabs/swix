@@ -18,7 +18,7 @@ type AccountManagement struct {
 
 func NewAccountManagement() *AccountManagement {
 	return &AccountManagement{
-		handler: accountmanagement.NewAccountManagement(),
+		handler: accountmanagement.New(),
 	}
 }
 

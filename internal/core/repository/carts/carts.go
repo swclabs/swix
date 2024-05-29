@@ -1,4 +1,4 @@
-// Package repository
+// Package carts
 // Author: Duc Hung Ho @kieranhoo
 // Description: cart repository implementation
 package carts
@@ -17,7 +17,7 @@ type Carts struct {
 	conn *gorm.DB
 }
 
-func NewCarts() ICartRepository {
+func New() ICartRepository {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)

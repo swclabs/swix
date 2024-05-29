@@ -15,7 +15,7 @@ type Addresses struct {
 	conn *gorm.DB
 }
 
-func NewAddresses() IAddressRepository {
+func New() IAddressRepository {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)

@@ -7,22 +7,22 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-type CategoriesMock struct {
+type Mock struct {
 	mock.Mock
 }
 
-var _ ICategoriesRepository = (*CategoriesMock)(nil)
+var _ ICategoriesRepository = (*Mock)(nil)
 
-func NewCategoriesMock() *CategoriesMock {
-	return &CategoriesMock{}
+func NewCategoriesMock() *Mock {
+	return &Mock{}
 }
 
 // GetLimit implements domain.ICategoriesRepository.
-func (c *CategoriesMock) GetLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+func (c *Mock) GetLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.ICategoriesRepository.
-func (c *CategoriesMock) Insert(ctx context.Context, ctg *domain.Categories) error {
+func (c *Mock) Insert(ctx context.Context, ctg *domain.Categories) error {
 	panic("unimplemented")
 }

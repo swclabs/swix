@@ -7,27 +7,27 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-type ProductMock struct {
+type Mock struct {
 	mock.Mock
 }
 
-var _ IProductRepository = (*ProductMock)(nil)
+var _ IProductRepository = (*Mock)(nil)
 
-func NewProductsMock() *ProductMock {
-	return &ProductMock{}
+func NewProductsMock() *Mock {
+	return &Mock{}
 }
 
 // GetLimit implements domain.IProductRepository.
-func (p *ProductMock) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
+func (p *Mock) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.IProductRepository.
-func (p *ProductMock) Insert(ctx context.Context, prd *domain.Products) (int64, error) {
+func (p *Mock) Insert(ctx context.Context, prd *domain.Products) (int64, error) {
 	panic("unimplemented")
 }
 
 // UploadNewImage implements domain.IProductRepository.
-func (p *ProductMock) UploadNewImage(ctx context.Context, urlImg string, id int) error {
+func (p *Mock) UploadNewImage(ctx context.Context, urlImg string, id int) error {
 	panic("unimplemented")
 }

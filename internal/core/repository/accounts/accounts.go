@@ -20,7 +20,7 @@ type Accounts struct {
 	conn *gorm.DB
 }
 
-func NewAccounts() IAccountRepository {
+func New() IAccountRepository {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)

@@ -15,7 +15,7 @@ type Collections struct {
 
 var _ ICollections = (*Collections)(nil)
 
-func NewCardBannerCollection() ICollections {
+func New() ICollections {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)

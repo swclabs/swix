@@ -26,7 +26,7 @@ func TestGetProductAvailability(t *testing.T) {
 		ColorImage: "",
 		Image:      "",
 	})
-	repos := warehouse.WarehouseMock{}
+	repos := warehouse.Mock{}
 	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.Warehouse{
 		Id:        "1",
 		ProductID: "1",

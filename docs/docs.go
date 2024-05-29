@@ -159,7 +159,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.CategoriesList"
+                            "$ref": "#/definitions/domain.CategorySlices"
                         }
                     }
                 }
@@ -322,6 +322,25 @@ const docTemplate = `{
                 }
             }
         },
+        "/common/worker": {
+            "get": {
+                "description": "health check worker consume server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "common"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/oauth2/login": {
             "get": {
                 "description": "Auth0 Login form.",
@@ -397,7 +416,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.UploadProductResponse"
+                            "$ref": "#/definitions/domain.UploadProductRes"
                         }
                     }
                 }
@@ -472,7 +491,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.SuppliersListRes"
+                            "$ref": "#/definitions/domain.SupplierSlices"
                         }
                     }
                 }
@@ -687,17 +706,6 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CategoriesList": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Categories"
-                    }
-                }
-            }
-        },
         "domain.CategoriesSwagger": {
             "type": "object",
             "required": [
@@ -710,6 +718,17 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.CategorySlices": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Categories"
+                    }
                 }
             }
         },
@@ -1042,6 +1061,17 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.SupplierSlices": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Suppliers"
+                    }
+                }
+            }
+        },
         "domain.Suppliers": {
             "type": "object",
             "properties": {
@@ -1053,17 +1083,6 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
-                }
-            }
-        },
-        "domain.SuppliersListRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Suppliers"
-                    }
                 }
             }
         },
@@ -1094,7 +1113,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.UploadProductResponse": {
+        "domain.UploadProductRes": {
             "type": "object",
             "properties": {
                 "id": {

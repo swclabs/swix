@@ -28,7 +28,7 @@ type Products struct {
 
 func NewProducts() IProducts {
 	return &Products{
-		Services: products.NewProductService(),
+		Services: products.New(),
 	}
 }
 

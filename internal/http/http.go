@@ -8,10 +8,10 @@ import (
 )
 
 type IServer interface {
-	middleware(mdws ...func(*echo.Echo))
 	_BackgroundTask(tasks ...func())
 	_InitMiddleware()
 	_LoggerWriter(*os.File)
+	middleware(mdws ...func(*echo.Echo))
 	Connect(routers router.IRouter)
 	Run(string) error
 }

@@ -1,4 +1,4 @@
-// Package repository
+// Package users
 // Author: Duc Hung Ho @kieranhoo
 // Description: users repository implementation
 package users
@@ -22,7 +22,7 @@ type Users struct {
 	conn *gorm.DB
 }
 
-func NewUsers() IUserRepository {
+func New() IUserRepository {
 	_conn, err := db.Connection()
 	if err != nil {
 		log.Fatal(err)
@@ -179,14 +179,14 @@ func (usr *Users) TransactionSignUp(ctx context.Context, user *domain.User, pass
 		if err != nil {
 			return err
 		}
-		if err := NewUsers().Use(tx).Insert(ctx, user); err != nil {
+		if err := New().Use(tx).Insert(ctx, user); err != nil {
 			return err
 		}
-		userInfo, err := NewUsers().Use(tx).GetByEmail(ctx, user.Email)
+		userInfo, err := New().Use(tx).GetByEmail(ctx, user.Email)
 		if err != nil {
 			return err
 		}
-		return accounts.NewAccounts().Use(tx).Insert(ctx, &domain.Account{
+		return accounts.New().Use(tx).Insert(ctx, &domain.Account{
 			Username: fmt.Sprintf("user#%d", userInfo.Id),
 			Password: hash,
 			Role:     "Customer",
@@ -203,14 +203,14 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user *domain.User) 
 		if err != nil {
 			return err
 		}
-		if err := NewUsers().Use(tx).OAuth2SaveInfo(ctx, user); err != nil {
+		if err := New().Use(tx).OAuth2SaveInfo(ctx, user); err != nil {
 			return err
 		}
-		userInfo, err := NewUsers().Use(tx).GetByEmail(ctx, user.Email)
+		userInfo, err := New().Use(tx).GetByEmail(ctx, user.Email)
 		if err != nil {
 			return err
 		}
-		return accounts.NewAccounts().Use(tx).Insert(ctx, &domain.Account{
+		return accounts.New().Use(tx).Insert(ctx, &domain.Account{
 			Username: fmt.Sprintf("user#%d", userInfo.Id),
 			Password: hash,
 			Role:     "Customer",
