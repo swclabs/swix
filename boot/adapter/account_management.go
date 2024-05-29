@@ -4,6 +4,7 @@ package adapter
 
 import (
 	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/http/router"
 )
 
 const TypeAccountManagement = "AccountManagementAdapter"
@@ -22,6 +23,6 @@ func _NewAccountManagement() IAdapter {
 }
 
 func (account *_AccountManagementAdapter) Run(addr string) error {
-	account.server.Bootstrap(http.AccountManagementModule)
+	account.server.Connect(router.New(router.TypeAccountManagement))
 	return account.server.Run(addr)
 }

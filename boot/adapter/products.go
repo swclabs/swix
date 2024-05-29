@@ -2,7 +2,10 @@
 
 package adapter
 
-import "swclabs/swipecore/internal/http"
+import (
+	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/http/router"
+)
 
 const TypeProducts = "Products"
 
@@ -18,6 +21,6 @@ func _NewProducts() IAdapter {
 }
 
 func (product *_Products) Run(addr string) error {
-	product.server.Bootstrap(http.ProductsModule)
+	product.server.Connect(router.New(router.TypeProducts))
 	return product.server.Run(addr)
 }

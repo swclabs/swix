@@ -7,7 +7,7 @@ type Categories struct {
 	Description string `json:"description" gorm:"column:description" validate:"required"`
 }
 
-type CategoriesList struct {
+type CategorySlices struct {
 	Data []Categories `json:"data"`
 }
 

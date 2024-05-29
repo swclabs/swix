@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/internal/core/service"
+	"swclabs/swipecore/internal/core/repository/warehouse"
+	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/internal/http/controller"
 	"testing"
 
@@ -26,7 +26,7 @@ func TestGetProductAvailability(t *testing.T) {
 		ColorImage: "",
 		Image:      "",
 	})
-	repos := repository.WarehouseMock{}
+	repos := warehouse.Mock{}
 	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.Warehouse{
 		Id:        "1",
 		ProductID: "1",
@@ -37,7 +37,7 @@ func TestGetProductAvailability(t *testing.T) {
 	}, nil)
 
 	// business logic layers
-	services := service.ProductService{
+	services := products.ProductService{
 		Warehouse: &repos,
 	}
 

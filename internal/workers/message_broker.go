@@ -31,6 +31,5 @@ func (msg *Writer) Run(concurrency int) error {
 		router.Common,
 		router.AccountManagement,
 	)
-
 	return msg.engine.Run(concurrency)
 }

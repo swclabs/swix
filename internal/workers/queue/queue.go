@@ -6,15 +6,26 @@ var (
 	CriticalQueue = "critical"
 	DefaultQueue  = "default"
 	LowQueue      = "low"
+)
 
+var (
 	OrderQueue = "order"
 	Purchase   = "purchase"
 )
 
 func init() {
+	var queues = []*string{
+		&CriticalQueue,
+		&DefaultQueue,
+		&LowQueue,
+
+		&OrderQueue,
+		&Purchase,
+	}
+
 	if config.StageStatus != "prod" {
-		CriticalQueue = "critical_dev"
-		DefaultQueue = "default_dev"
-		LowQueue = "low_dev"
+		for _, queue := range queues {
+			*queue = *queue + "_dev"
+		}
 	}
 }

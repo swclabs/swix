@@ -21,15 +21,15 @@ type SuppliersAddress struct {
 	AddressUuiD string `json:"address_uuid" gorm:"column:address_uuid"`
 }
 
-type SuppliersListRes struct {
+type SupplierSlices struct {
 	Data []Suppliers `json:"data"`
 }
 
 type SuppliersReq struct {
-	Name        string `json:"name" validate:"required"`
-	Email       string `json:"email" validate:"email,required"`
-	City        string `json:"city" gorm:"column:city"`
-	Ward        string `json:"ward" gorm:"column:ward"`
-	District    string `json:"district" gorm:"column:district"`
-	Street      string `json:"street" gorm:"column:street"`
+	Name     string `json:"name" validate:"required"`
+	Email    string `json:"email" validate:"email,required"`
+	City     string `json:"city" gorm:"column:city"`
+	Ward     string `json:"ward" gorm:"column:ward"`
+	District string `json:"district" gorm:"column:district"`
+	Street   string `json:"street" gorm:"column:street"`
 }

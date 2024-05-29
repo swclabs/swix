@@ -2,22 +2,22 @@ package controller
 
 import (
 	"net/http"
+	"swclabs/swipecore/internal/core/service/accountmanagement"
 	"swclabs/swipecore/pkg/lib/valid"
 
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 )
 
 type AccountManagement struct {
-	Service *service.AccountManagement
+	Service *accountmanagement.AccountManagement
 }
 
 func NewAccountManagement() IAccountManagement {
 	return &AccountManagement{
-		Service: service.NewAccountManagement(),
+		Service: accountmanagement.New(),
 	}
 }
 
@@ -51,7 +51,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	// var account = service.NewAccountManagement()
+	// var account = service.New()
 	accessToken, err := account.Service.Login(c.Request().Context(), &request)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{

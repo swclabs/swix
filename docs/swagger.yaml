@@ -12,13 +12,6 @@ definitions:
     - description
     - name
     type: object
-  domain.CategoriesList:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Categories'
-        type: array
-    type: object
   domain.CategoriesSwagger:
     properties:
       description:
@@ -28,6 +21,13 @@ definitions:
     required:
     - description
     - name
+    type: object
+  domain.CategorySlices:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Categories'
+        type: array
     type: object
   domain.CollectionBodySwagger:
     properties:
@@ -250,6 +250,13 @@ definitions:
       ssd:
         type: string
     type: object
+  domain.SupplierSlices:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/domain.Suppliers'
+        type: array
+    type: object
   domain.Suppliers:
     properties:
       email:
@@ -258,13 +265,6 @@ definitions:
         type: string
       name:
         type: string
-    type: object
-  domain.SuppliersListRes:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Suppliers'
-        type: array
     type: object
   domain.SuppliersReq:
     properties:
@@ -284,7 +284,7 @@ definitions:
     - email
     - name
     type: object
-  domain.UploadProductResponse:
+  domain.UploadProductRes:
     properties:
       id:
         type: integer
@@ -478,7 +478,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.CategoriesList'
+            $ref: '#/definitions/domain.CategorySlices'
       tags:
       - products
     post:
@@ -583,6 +583,18 @@ paths:
           description: OK
       tags:
       - common
+  /common/worker:
+    get:
+      consumes:
+      - application/json
+      description: health check worker consume server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - common
   /oauth2/login:
     get:
       consumes:
@@ -632,7 +644,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.UploadProductResponse'
+            $ref: '#/definitions/domain.UploadProductRes'
       tags:
       - products
   /products/img:
@@ -681,7 +693,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.SuppliersListRes'
+            $ref: '#/definitions/domain.SupplierSlices'
       tags:
       - products
     post:

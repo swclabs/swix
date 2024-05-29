@@ -41,7 +41,7 @@ flowchart BT
     Repository-- interface -->Service
   end
 
-  subgraph Helper
+  subgraph Utils
     0Auth2
   end
 
@@ -74,4 +74,4 @@ flowchart BT
 
 [`tasks`](./tasks): This directory implements business functionalities and sends them to workers via Redis.
 
-[`helper`](./helper/): This directory stores auxiliary functions for the application.
+[`utils`](core/utils/): This directory stores auxiliary functions for the application.

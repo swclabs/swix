@@ -3,22 +3,21 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"swclabs/swipecore/internal/core/service/common"
 
-	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/pkg/lib/worker"
 
 	"github.com/hibiken/asynq"
 )
 
 type CommonHandler struct {
-	service.CommonTask                       // embedded delay function here
-	handler            domain.ICommonService // create handler for services
+	common.Task                       // embedded delay function here
+	handler     common.ICommonService // create handler for services
 }
 
 func NewCommonHandler() *CommonHandler {
 	return &CommonHandler{
-		handler: service.NewCommonService(),
+		handler: common.New(),
 	}
 }
 

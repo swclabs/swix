@@ -152,7 +152,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.CategoriesList"
+                            "$ref": "#/definitions/domain.CategorySlices"
                         }
                     }
                 }
@@ -315,6 +315,25 @@
                 }
             }
         },
+        "/common/worker": {
+            "get": {
+                "description": "health check worker consume server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "common"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/oauth2/login": {
             "get": {
                 "description": "Auth0 Login form.",
@@ -390,7 +409,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.UploadProductResponse"
+                            "$ref": "#/definitions/domain.UploadProductRes"
                         }
                     }
                 }
@@ -465,7 +484,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.SuppliersListRes"
+                            "$ref": "#/definitions/domain.SupplierSlices"
                         }
                     }
                 }
@@ -680,17 +699,6 @@
                 }
             }
         },
-        "domain.CategoriesList": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Categories"
-                    }
-                }
-            }
-        },
         "domain.CategoriesSwagger": {
             "type": "object",
             "required": [
@@ -703,6 +711,17 @@
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.CategorySlices": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Categories"
+                    }
                 }
             }
         },
@@ -1035,6 +1054,17 @@
                 }
             }
         },
+        "domain.SupplierSlices": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.Suppliers"
+                    }
+                }
+            }
+        },
         "domain.Suppliers": {
             "type": "object",
             "properties": {
@@ -1046,17 +1076,6 @@
                 },
                 "name": {
                     "type": "string"
-                }
-            }
-        },
-        "domain.SuppliersListRes": {
-            "type": "object",
-            "properties": {
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/domain.Suppliers"
-                    }
                 }
             }
         },
@@ -1087,7 +1106,7 @@
                 }
             }
         },
-        "domain.UploadProductResponse": {
+        "domain.UploadProductRes": {
             "type": "object",
             "properties": {
                 "id": {

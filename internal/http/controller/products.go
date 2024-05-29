@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/service"
+	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
@@ -23,12 +23,12 @@ type IProducts interface {
 }
 
 type Products struct {
-	Services domain.IProductService
+	Services products.IProductService
 }
 
 func NewProducts() IProducts {
 	return &Products{
-		Services: service.NewProductService(),
+		Services: products.New(),
 	}
 }
 
@@ -69,7 +69,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query number true "limit number"
-// @Success 200 {object} domain.CategoriesList
+// @Success 200 {object} domain.CategorySlices
 // @Router /categories [GET]
 func (p *Products) GetCategories(c echo.Context) error {
 	limit := c.QueryParam("limit")
@@ -86,7 +86,7 @@ func (p *Products) GetCategories(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, domain.CategoriesList{
+	return c.JSON(http.StatusOK, domain.CategorySlices{
 		Data: resp,
 	})
 }
@@ -189,7 +189,7 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param product body domain.ProductReq true "Product Request"
-// @Success 200 {object} domain.UploadProductResponse
+// @Success 200 {object} domain.UploadProductRes
 // @Router /products [POST]
 func (p *Products) UploadProduct(c echo.Context) error {
 	// bind json to structure
@@ -212,7 +212,7 @@ func (p *Products) UploadProduct(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, domain.UploadProductResponse{
+	return c.JSON(http.StatusCreated, domain.UploadProductRes{
 		Msg: "upload product successfully",
 		Id:  id,
 	})
@@ -224,7 +224,7 @@ func (p *Products) UploadProduct(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of suppliers"
-// @Success 200 {object} domain.SuppliersListRes
+// @Success 200 {object} domain.SupplierSlices
 // @Router /suppliers [GET]
 func (p *Products) GetSupplier(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
@@ -239,7 +239,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, domain.SuppliersListRes{
+	return c.JSON(http.StatusOK, domain.SupplierSlices{
 		Data: _supp,
 	})
 }
