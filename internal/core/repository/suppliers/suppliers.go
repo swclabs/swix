@@ -8,7 +8,6 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"swclabs/swipecore/pkg/db"
 )
 
 type Suppliers struct {
