@@ -16,9 +16,13 @@ func newDocs() *Docs {
 	return &Docs{}
 }
 
-// Docs
+func NewDocs() *Docs {
+	return &Docs{}
+}
+
+// Routers
 // API documentation
-// Router documentation
+// Register documentation
 // Base on: http://${HOST}:${PORT}/docs/index.html#/
 func (d *Docs) Routers(e *echo.Echo) {
 	e.GET("/docs/*any", echoSwagger.WrapHandler)

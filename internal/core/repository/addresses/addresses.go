@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"gorm.io/gorm"
-	"log"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
 )
@@ -15,13 +14,9 @@ type Addresses struct {
 	conn *gorm.DB
 }
 
-func New() IAddressRepository {
-	_conn, err := db.Connection()
-	if err != nil {
-		log.Fatal(err)
-	}
+func New(conn *gorm.DB) *Addresses {
 	return &Addresses{
-		conn: _conn,
+		conn: conn,
 	}
 }
 

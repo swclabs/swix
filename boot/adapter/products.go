@@ -7,20 +7,18 @@ import (
 	"swclabs/swipecore/internal/http/router"
 )
 
-const TypeProducts = "Products"
-
 type _Products struct {
 	server http.IServer
 }
 
-func _NewProducts() IAdapter {
+func NewProducts(server http.IServer, router *router.Products) IAdapter {
 	product := &_Products{
-		server: http.New(),
+		server: server,
 	}
+	product.server.Connect(router)
 	return product
 }
 
 func (product *_Products) Run(addr string) error {
-	product.server.Connect(router.New(router.TypeProducts))
 	return product.server.Run(addr)
 }

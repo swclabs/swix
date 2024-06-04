@@ -17,7 +17,7 @@ import (
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /common/healthcheck [GET]
+// @Register /common/healthcheck [GET]
 func HealthCheck(c echo.Context) error {
 	common := common.New()
 	return c.JSON(200, common.HealthCheck(c.Request().Context()))
@@ -29,7 +29,7 @@ func HealthCheck(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /oauth2/login [GET]
+// @Register /oauth2/login [GET]
 func Auth0Login(c echo.Context) error {
 	auth := oauth2.New()
 	url := auth.AuthCodeURL(auth.State)
@@ -52,7 +52,7 @@ func Auth0Callback(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /common/worker [GET]
+// @Register /common/worker [GET]
 func WorkerCheck(c echo.Context) error {
 	common := common.New()
 	results, err := common.DelayWorkerCheckResult(c.Request().Context())

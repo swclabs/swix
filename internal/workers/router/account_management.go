@@ -5,10 +5,18 @@ import (
 	"swclabs/swipecore/pkg/lib/worker"
 )
 
-var _AccountManagement = handler.NewAccountManagement()
+type AccountManagements struct {
+	handlers *handler.AccountManagement
+}
 
-func AccountManagement(eng *worker.Engine) {
-	eng.Queue(_AccountManagement.HandleOAuth2SaveUser)
-	eng.Queue(_AccountManagement.HandleSignUp)
-	eng.Queue(_AccountManagement.HandleUpdateUserInfo)
+func NewAccountManagement(handlers *handler.AccountManagement) *AccountManagements {
+	return &AccountManagements{
+		handlers: handlers,
+	}
+}
+
+func (router *AccountManagements) Register(eng *worker.Engine) {
+	eng.RegisterQueue(router.handlers.HandleOAuth2SaveUser)
+	eng.RegisterQueue(router.handlers.HandleSignUp)
+	eng.RegisterQueue(router.handlers.HandleUpdateUserInfo)
 }

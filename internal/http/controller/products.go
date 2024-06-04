@@ -26,9 +26,9 @@ type Products struct {
 	Services products.IProductService
 }
 
-func NewProducts() IProducts {
+func NewProducts(services *products.ProductService) *Products {
 	return &Products{
-		Services: products.New(),
+		Services: services,
 	}
 }
 
@@ -42,7 +42,7 @@ func NewProducts() IProducts {
 // @Param ssd query number true "ssd"
 // @Param color query string true "color"
 // @Success 200 {object} domain.WarehouseType
-// @Router /warehouse [GET]
+// @Register /warehouse [GET]
 func (p *Products) GetProductAvailability(c echo.Context) error {
 	pid := c.QueryParam("pid")
 	if pid == "" {
@@ -70,7 +70,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 // @Produce json
 // @Param limit query number true "limit number"
 // @Success 200 {object} domain.CategorySlices
-// @Router /categories [GET]
+// @Register /categories [GET]
 func (p *Products) GetCategories(c echo.Context) error {
 	limit := c.QueryParam("limit")
 	if limit == "" {
@@ -98,7 +98,7 @@ func (p *Products) GetCategories(c echo.Context) error {
 // @Produce json
 // @Param limit query int true "limit number of products"
 // @Success 200 {object} domain.ProductsRes
-// @Router /products [GET]
+// @Register /products [GET]
 func (p *Products) GetProductLimit(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil {
@@ -124,7 +124,7 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 // @Produce json
 // @Param login body domain.CategoriesSwagger true "Categories Request"
 // @Success 201 {object} domain.OK
-// @Router /categories [POST]
+// @Register /categories [POST]
 func (p *Products) InsertCategory(c echo.Context) error {
 	var request domain.Categories
 	if err := c.Bind(&request); err != nil {
@@ -156,7 +156,7 @@ func (p *Products) InsertCategory(c echo.Context) error {
 // @Param img formData file true "image of product"
 // @Success 200 {object} domain.OK
 // @Failure 400 {object} domain.Error
-// @Router /products/img [POST]
+// @Register /products/img [POST]
 func (p *Products) UploadProductImage(c echo.Context) error {
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -190,7 +190,7 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 // @Produce json
 // @Param product body domain.ProductReq true "Product Request"
 // @Success 200 {object} domain.UploadProductRes
-// @Router /products [POST]
+// @Register /products [POST]
 func (p *Products) UploadProduct(c echo.Context) error {
 	// bind json to structure
 	var productReq domain.ProductReq
@@ -225,7 +225,7 @@ func (p *Products) UploadProduct(c echo.Context) error {
 // @Produce json
 // @Param limit query int true "limit number of suppliers"
 // @Success 200 {object} domain.SupplierSlices
-// @Router /suppliers [GET]
+// @Register /suppliers [GET]
 func (p *Products) GetSupplier(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil {
@@ -251,7 +251,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 // @Produce json
 // @Param SuppliersReq body domain.SuppliersReq true "Suppliers Request"
 // @Success 201 {object} domain.OK
-// @Router /suppliers [POST]
+// @Register /suppliers [POST]
 func (p *Products) InsertSupplier(c echo.Context) error {
 	var req domain.SuppliersReq
 	if err := c.Bind(&req); err != nil {
@@ -281,7 +281,7 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 // @Produce json
 // @Param WarehouseStructure body domain.WarehouseStructure true "Warehouse Request"
 // @Success 201 {object} domain.OK
-// @Router /warehouse [POST]
+// @Register /warehouse [POST]
 func (p *Products) AddToWarehouse(c echo.Context) error {
 	var req domain.WarehouseStructure
 	if err := c.Bind(&req); err != nil {

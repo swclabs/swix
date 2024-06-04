@@ -4,7 +4,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"swclabs/swipecore/internal/core/repository/accounts"
+	"swclabs/swipecore/internal/core/repository/addresses"
+	"swclabs/swipecore/internal/core/repository/users"
 	"swclabs/swipecore/internal/core/service/accountmanagement"
+	"swclabs/swipecore/pkg/db"
 	"swclabs/swipecore/pkg/lib/jwt"
 
 	"swclabs/swipecore/internal/core/domain"
@@ -48,7 +52,11 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
-	account := accountmanagement.New()
+	account := accountmanagement.New(
+		users.New(db.TransactionConnection()),
+		accounts.New(db.TransactionConnection()),
+		addresses.New(db.TransactionConnection()),
+	)
 	if err := account.OAuth2SaveUser(
 		context.TODO(),
 		&domain.OAuth2SaveUser{

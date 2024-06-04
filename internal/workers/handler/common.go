@@ -10,18 +10,18 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-type CommonHandler struct {
+type Common struct {
 	common.Task                       // embedded delay function here
 	handler     common.ICommonService // create handler for services
 }
 
-func NewCommonHandler() *CommonHandler {
-	return &CommonHandler{
-		handler: common.New(),
+func NewCommonConsume(_common *common.CommonService) *Common {
+	return &Common{
+		handler: _common,
 	}
 }
 
-func (common *CommonHandler) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
+func (common *Common) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
 	// get task name from delay function
 	taskName = worker.GetTaskName(common.DelayWorkerCheck)
 	// implement handler function base on delay function

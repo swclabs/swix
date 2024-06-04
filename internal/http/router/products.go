@@ -12,9 +12,9 @@ type Products struct {
 	controller controller.IProducts
 }
 
-func newProducts() *Products {
+func NewProducts(controllers *controller.Products) *Products {
 	return &Products{
-		controller: controller.NewProducts(),
+		controller: controllers,
 	}
 }
 

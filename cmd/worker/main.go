@@ -6,14 +6,17 @@
 package main
 
 import (
-	"log"
-
+	"go.uber.org/fx"
 	"swclabs/swipecore/boot"
 )
 
 func main() {
-	w := boot.NewWorker()
-	if err := w.Run(10); err != nil {
-		log.Fatal(err)
-	}
+	app := fx.New(
+		boot.FxWorkerModule,
+		fx.Provide(
+			boot.NewWorker,
+		),
+		fx.Invoke(boot.StartWorker),
+	)
+	app.Run()
 }

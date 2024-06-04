@@ -6,20 +6,19 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
+	"go.uber.org/fx"
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/boot/adapter"
-	"swclabs/swipecore/internal/config"
 )
 
 func main() {
-	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-	server := boot.NewServer(addr)
-	adapt := adapter.New(adapter.TypeBase)
-
-	if err := server.Connect(adapt); err != nil {
-		log.Fatal(err)
-	}
+	app := fx.New(
+		boot.FxRestModule,
+		fx.Provide(
+			adapter.NewAdapter,
+			boot.NewServer,
+		),
+		fx.Invoke(boot.StartServer),
+	)
+	app.Run()
 }

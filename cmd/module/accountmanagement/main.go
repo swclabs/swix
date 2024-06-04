@@ -9,18 +9,16 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"sort"
 
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/boot/adapter"
-	"swclabs/swipecore/internal/config"
+	_ "swclabs/swipecore/docs"
 
 	"github.com/urfave/cli/v2"
-
-	_ "swclabs/swipecore/docs"
+	"go.uber.org/fx"
 )
 
 var Command = []*cli.Command{
@@ -29,8 +27,15 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			w := boot.NewWorker()
-			return w.Run(10)
+			app := fx.New(
+				boot.FxWorkerModule,
+				fx.Provide(
+					boot.NewWorker,
+				),
+				fx.Invoke(boot.StartWorker),
+			)
+			app.Run()
+			return nil
 		},
 	},
 	{
@@ -38,11 +43,16 @@ var Command = []*cli.Command{
 		Aliases: []string{"s"},
 		Usage:   "run app server",
 		Action: func(_ *cli.Context) error {
-			addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-			server := boot.NewServer(addr)
-			adapter := adapter.New(adapter.TypeAccountManagement)
-
-			return server.Connect(adapter)
+			app := fx.New(
+				boot.FxRestModule,
+				fx.Provide(
+					adapter.NewAccountManagements,
+					boot.NewServer,
+				),
+				fx.Invoke(boot.StartServer),
+			)
+			app.Run()
+			return nil
 		},
 	},
 }

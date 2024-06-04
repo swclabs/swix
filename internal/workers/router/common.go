@@ -5,8 +5,16 @@ import (
 	"swclabs/swipecore/pkg/lib/worker"
 )
 
-var common = handler.NewCommonHandler()
+type Common struct {
+	handlers *handler.Common
+}
 
-func Common(eng *worker.Engine) {
-	eng.Queue(common.HandleHealthCheck)
+func NewCommon(handler *handler.Common) *Common {
+	return &Common{
+		handlers: handler,
+	}
+}
+
+func (c *Common) Register(eng *worker.Engine) {
+	eng.RegisterQueue(c.handlers.HandleHealthCheck)
 }

@@ -22,9 +22,10 @@ Example:
 package boot
 
 import (
-	"swclabs/swipecore/internal/config"
+	"context"
+	"fmt"
+	"go.uber.org/fx"
 	"swclabs/swipecore/internal/workers"
-	"swclabs/swipecore/pkg/lib/worker"
 )
 
 // IWorker interface of type Worker
@@ -38,19 +39,26 @@ type _Worker struct {
 }
 
 // NewWorker create new worker consume
-// ENV:
-//
-// REDIS_HOST=localhost
-// REDIS_PORT=6379
-// REDIS_PASSWORD=password
-func NewWorker() IWorker {
-	worker.SetBroker(config.RedisHost, config.RedisPort, config.RedisPassword)
+func NewWorker(writer *workers.Writer) IWorker {
 	return &_Worker{
-		engine: workers.New(),
+		engine: writer,
 	}
 }
 
 // Run worker with concurrency is number of worker
 func (w *_Worker) Run(concurrency int) error {
 	return w.engine.Run(concurrency)
+}
+
+func StartWorker(lc fx.Lifecycle, worker IWorker) {
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			go worker.Run(10)
+			return nil
+		},
+		OnStop: func(ctx context.Context) error {
+			fmt.Println("Server worker stopping")
+			return nil
+		},
+	})
 }

@@ -13,9 +13,9 @@ type Posts struct {
 	Collections collections.ICollections
 }
 
-func New() IPostsService {
+func New(collection *collections.Collections) *Posts {
 	return &Posts{
-		Collections: collections.New(),
+		Collections: collection,
 	}
 }
 

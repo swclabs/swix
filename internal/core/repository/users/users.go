@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"swclabs/swipecore/internal/core/repository/accounts"
 	"swclabs/swipecore/pkg/lib/jwt"
 
@@ -22,13 +21,9 @@ type Users struct {
 	conn *gorm.DB
 }
 
-func New() IUserRepository {
-	_conn, err := db.Connection()
-	if err != nil {
-		log.Fatal(err)
-	}
+func New(conn *gorm.DB) *Users {
 	return &Users{
-		conn: _conn,
+		conn: conn,
 	}
 }
 
@@ -179,14 +174,29 @@ func (usr *Users) TransactionSignUp(ctx context.Context, user *domain.User, pass
 		if err != nil {
 			return err
 		}
-		if err := New().Use(tx).Insert(ctx, user); err != nil {
+		//if err := NewUsers().Use(tx).Insert(ctx, user); err != nil {
+		//	return err
+		//}
+
+		if err := New(tx).Insert(ctx, user); err != nil {
 			return err
 		}
-		userInfo, err := New().Use(tx).GetByEmail(ctx, user.Email)
+		//userInfo, err := NewUsers().Use(tx).GetByEmail(ctx, user.Email)
+
+		userInfo, err := New(tx).GetByEmail(ctx, user.Email)
 		if err != nil {
 			return err
 		}
-		return accounts.New().Use(tx).Insert(ctx, &domain.Account{
+
+		//return accounts.NewAccounts().Use(tx).Insert(ctx, &domain.Account{
+		//	Username: fmt.Sprintf("user#%d", userInfo.Id),
+		//	Password: hash,
+		//	Role:     "Customer",
+		//	Email:    user.Email,
+		//	Type:     "swc",
+		//})
+
+		return accounts.New(tx).Insert(ctx, &domain.Account{
 			Username: fmt.Sprintf("user#%d", userInfo.Id),
 			Password: hash,
 			Role:     "Customer",
@@ -203,14 +213,27 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user *domain.User) 
 		if err != nil {
 			return err
 		}
-		if err := New().Use(tx).OAuth2SaveInfo(ctx, user); err != nil {
+		//if err := NewUsers().Use(tx).OAuth2SaveInfo(ctx, user); err != nil {
+		//	return err
+		//}
+		if err := New(tx).OAuth2SaveInfo(ctx, user); err != nil {
 			return err
 		}
-		userInfo, err := New().Use(tx).GetByEmail(ctx, user.Email)
+		//userInfo, err := NewUsers().Use(tx).GetByEmail(ctx, user.Email)
+		userInfo, err := New(tx).GetByEmail(ctx, user.Email)
 		if err != nil {
 			return err
 		}
-		return accounts.New().Use(tx).Insert(ctx, &domain.Account{
+
+		//return accounts.NewAccounts().Use(tx).Insert(ctx, &domain.Account{
+		//	Username: fmt.Sprintf("user#%d", userInfo.Id),
+		//	Password: hash,
+		//	Role:     "Customer",
+		//	Email:    user.Email,
+		//	Type:     "oauth2-google",
+		//})
+
+		return accounts.New(tx).Insert(ctx, &domain.Account{
 			Username: fmt.Sprintf("user#%d", userInfo.Id),
 			Password: hash,
 			Role:     "Customer",

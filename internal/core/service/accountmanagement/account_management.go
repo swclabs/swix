@@ -33,12 +33,15 @@ type AccountManagement struct {
 	Address addresses.IAddressRepository
 }
 
-// New return new AccountManagement instance
-func New() *AccountManagement {
+func New(
+	user *users.Users,
+	account *accounts.Accounts,
+	address *addresses.Addresses,
+) *AccountManagement {
 	return &AccountManagement{
-		User:    users.New(),
-		Account: accounts.New(),
-		Address: addresses.New(),
+		User:    user,
+		Account: account,
+		Address: address,
 	}
 }
 
@@ -99,7 +102,7 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 		log.Fatal(err)
 	}
 	// call repository layer to save user
-	return users.New().SaveInfo(context.TODO(), &domain.User{
+	return manager.User.SaveInfo(context.TODO(), &domain.User{
 		Email: email,
 		Image: resp.SecureURL,
 	})

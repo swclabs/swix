@@ -27,7 +27,15 @@ Example:
 
 package boot
 
-import "swclabs/swipecore/boot/adapter"
+import (
+	"context"
+	"fmt"
+	"swclabs/swipecore/boot/adapter"
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/pkg/lib/worker"
+
+	"go.uber.org/fx"
+)
 
 type IServer interface {
 	// Connect to adapter of other module
@@ -41,12 +49,9 @@ type _Server struct {
 	address string //
 }
 
-// NewServer
-//
-// Example :host:port - 127.0.0.1:8000
-func NewServer(addr string) IServer {
+func NewServer(env config.Env) IServer {
 	return &_Server{
-		address: addr,
+		address: fmt.Sprintf("%s:%s", env.Host, env.Port),
 	}
 }
 
@@ -59,4 +64,20 @@ func NewServer(addr string) IServer {
 //	server.Connect(adapter)
 func (server *_Server) Connect(adapter adapter.IAdapter) error {
 	return adapter.Run(server.address)
+}
+
+func StartServer(lc fx.Lifecycle, server IServer, env config.Env,
+	adapter adapter.IAdapter,
+) {
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			worker.SetBroker(env.RedisHost, env.RedisPort, env.RedisPassword)
+			go server.Connect(adapter)
+			return nil
+		},
+		OnStop: func(ctx context.Context) error {
+			fmt.Println("Server stopping")
+			return nil
+		},
+	})
 }

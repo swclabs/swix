@@ -19,14 +19,14 @@ type IPosts interface {
 	GetSliceOfHeadlineBanner(c echo.Context) error
 }
 
-func NewPosts() IPosts {
-	return &Posts{
-		Services: posts.New(),
-	}
-}
-
 type Posts struct {
 	Services posts.IPostsService
+}
+
+func NewPosts(service *posts.Posts) *Posts {
+	return &Posts{
+		Services: service,
+	}
 }
 
 // GetSliceOfHeadlineBanner implements IPosts.
@@ -46,7 +46,7 @@ func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
 // @Produce json
 // @Param collection body domain.CollectionTypeSwagger true "collections Request"
 // @Success 201 {object} domain.CollectionUploadRes
-// @Router /collections [POST]
+// @Register /collections [POST]
 func (p *Posts) UploadCollections(c echo.Context) error {
 	var cardBanner domain.CollectionType
 	if err := c.Bind(&cardBanner); err != nil {
@@ -79,7 +79,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 // @Param img formData file true "image of collections"
 // @Param id formData string true "collections identifier"
 // @Success 200 {object} domain.OK
-// @Router /collections/img [PUT]
+// @Register /collections/img [PUT]
 func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 	file, err := c.FormFile("img")
 	if err != nil {
@@ -113,7 +113,7 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 // @Param position query string true "position of collections"
 // @Param limit query string true "limit of cards banner slices"
 // @Success 200 {object} domain.Collections
-// @Router /collections [GET]
+// @Register /collections [GET]
 func (p *Posts) GetSlicesOfCollections(c echo.Context) error {
 	position := c.QueryParam("position")
 	limit := c.QueryParam("limit")
