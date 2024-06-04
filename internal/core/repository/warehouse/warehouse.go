@@ -16,13 +16,6 @@ type Warehouse struct {
 var _ IWarehouseRepository = (*Warehouse)(nil)
 
 func New(conn *gorm.DB) *Warehouse {
-	return &Warehouse{
-		conn: conn,
-	}
-}
-
-// GetProducts implements domain.IWarehouseRepository.
-func (w *Warehouse) GetProducts(
 	ctx context.Context, productID, ram, ssd, color string) (*domain.Warehouse, error) {
 	var warehouse domain.Warehouse
 	if err := w.conn.
