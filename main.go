@@ -13,13 +13,10 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
+	"go.uber.org/fx"
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/boot/adapter"
 	_ "swclabs/swipecore/docs"
-	"swclabs/swipecore/internal/config"
 )
 
 // @title Swipe API Documentation
@@ -28,11 +25,13 @@ import (
 // @host
 // @basePath /
 func main() {
-	addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-	server := boot.NewServer(addr)
-	myAdapter := adapter.New(adapter.TypeBase)
-
-	if err := server.Connect(myAdapter); err != nil {
-		log.Fatal(err)
-	}
+	app := fx.New(
+		boot.FxRestModule,
+		fx.Provide(
+			adapter.NewAdapter,
+			boot.NewServer,
+		),
+		fx.Invoke(boot.StartServer),
+	)
+	app.Run()
 }

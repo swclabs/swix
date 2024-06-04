@@ -16,9 +16,9 @@ type AccountManagement struct {
 	handler accountmanagement.IAccountManagement
 }
 
-func NewAccountManagement() *AccountManagement {
+func NewAccountManagementConsume(handler accountmanagement.IAccountManagement) *AccountManagement {
 	return &AccountManagement{
-		handler: accountmanagement.New(),
+		handler: handler,
 	}
 }
 

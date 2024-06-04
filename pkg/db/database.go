@@ -4,8 +4,10 @@ import (
 	"context"
 	"sync"
 
+	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/pkg/utils"
 
+	"go.uber.org/fx"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -29,6 +31,34 @@ func Connection() (*gorm.DB, error) {
 	}
 	return connection, nil
 	// return gorm.Open(postgres.Open(dsn), &gorm.Config{})
+}
+
+func TransactionConnection() *gorm.DB {
+	return connection
+}
+
+func CreatePostgresConnection(lc fx.Lifecycle, env config.Env) *gorm.DB {
+	dsn, _ := utils.ConnectionURLBuilderWithEnv("postgres", env)
+	var err error = nil
+	if connection == nil {
+		lock.Lock()
+		defer lock.Unlock()
+		if connection == nil {
+			connection, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		}
+	}
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			if err != nil {
+				return err
+			}
+			return nil
+		},
+		OnStop: func(ctx context.Context) error {
+			return nil
+		},
+	})
+	return connection
 }
 
 func SafeWriteQuery(ctx context.Context, connection *gorm.DB, sql string, args ...interface{}) error {

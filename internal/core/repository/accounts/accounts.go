@@ -6,7 +6,6 @@ package accounts
 import (
 	"context"
 	"errors"
-	"log"
 	"time"
 
 	"swclabs/swipecore/internal/core/domain"
@@ -16,18 +15,12 @@ import (
 )
 
 type Accounts struct {
-	data *domain.Account
 	conn *gorm.DB
 }
 
-func New() IAccountRepository {
-	_conn, err := db.Connection()
-	if err != nil {
-		log.Fatal(err)
-	}
+func New(conn *gorm.DB) *Accounts {
 	return &Accounts{
-		conn: _conn,
-		data: &domain.Account{},
+		conn: conn,
 	}
 }
 
@@ -39,13 +32,14 @@ func (account *Accounts) Use(tx *gorm.DB) IAccountRepository {
 
 // GetByEmail implements domain.IAccountRepository.
 func (account *Accounts) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
+	var acc domain.Account
 	if err := account.conn.WithContext(ctx).
 		Table("accounts").
 		Where("email = ?", email).
-		First(account.data).Error; err != nil {
+		First(acc).Error; err != nil {
 		return nil, err
 	}
-	return account.data, nil
+	return &acc, nil
 }
 
 // Insert implements domain.IAccountRepository.

@@ -1,4 +1,4 @@
-// account management adapter, base on base.adapt.go
+// account management adapter
 
 package adapter
 
@@ -7,22 +7,21 @@ import (
 	"swclabs/swipecore/internal/http/router"
 )
 
-const TypeAccountManagement = "AccountManagementAdapter"
-
-type _AccountManagementAdapter struct {
+type _AccountManagement struct {
 	server http.IServer
 }
 
-func _NewAccountManagement() IAdapter {
-	account := &_AccountManagementAdapter{
-		server: http.New(),
+func NewAccountManagements(
+	server http.IServer,
+	router *router.AccountManagement,
+) IAdapter {
+	product := &_AccountManagement{
+		server: server,
 	}
-	// initialize cron job
-	// account._StartAccountManagementJob()
-	return account
+	product.server.Connect(router)
+	return product
 }
 
-func (account *_AccountManagementAdapter) Run(addr string) error {
-	account.server.Connect(router.New(router.TypeAccountManagement))
-	return account.server.Run(addr)
+func (accountmanagement *_AccountManagement) Run(addr string) error {
+	return accountmanagement.server.Run(addr)
 }

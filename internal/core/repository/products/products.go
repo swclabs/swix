@@ -5,11 +5,11 @@ package products
 import (
 	"context"
 	"encoding/json"
-	"gorm.io/gorm"
-	"log"
 	"strings"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
+
+	"gorm.io/gorm"
 )
 
 type Products struct {
@@ -17,14 +17,9 @@ type Products struct {
 	conn *gorm.DB
 }
 
-func New() IProductRepository {
-	_conn, err := db.Connection()
-	if err != nil {
-		log.Fatal(err)
-	}
+func New(conn *gorm.DB) *Products {
 	return &Products{
-		data: &domain.Products{},
-		conn: _conn,
+		conn: conn,
 	}
 }
 

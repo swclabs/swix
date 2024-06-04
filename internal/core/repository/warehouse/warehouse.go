@@ -3,10 +3,10 @@ package warehouse
 import (
 	"context"
 	"encoding/json"
-	"gorm.io/gorm"
-	"log"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
+
+	"gorm.io/gorm"
 )
 
 type Warehouse struct {
@@ -15,13 +15,9 @@ type Warehouse struct {
 
 var _ IWarehouseRepository = (*Warehouse)(nil)
 
-func New() IWarehouseRepository {
-	_conn, err := db.Connection()
-	if err != nil {
-		log.Fatal(err)
-	}
+func New(conn *gorm.DB) *Warehouse {
 	return &Warehouse{
-		conn: _conn,
+		conn: conn,
 	}
 }
 

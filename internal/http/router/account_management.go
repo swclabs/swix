@@ -13,9 +13,9 @@ type AccountManagement struct {
 	controller controller.IAccountManagement
 }
 
-func newAccountManagement() *AccountManagement {
+func NewAccountManagement(controllers *controller.AccountManagement) *AccountManagement {
 	return &AccountManagement{
-		controller: controller.NewAccountManagement(),
+		controller: controllers,
 	}
 }
 

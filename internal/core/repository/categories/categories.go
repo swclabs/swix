@@ -4,7 +4,6 @@ package categories
 
 import (
 	"context"
-	"log"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
 
@@ -12,18 +11,12 @@ import (
 )
 
 type Categories struct {
-	data *domain.Categories
 	conn *gorm.DB
 }
 
-func New() ICategoriesRepository {
-	_conn, err := db.Connection()
-	if err != nil {
-		log.Fatal(err)
-	}
+func New(conn *gorm.DB) *Categories {
 	return &Categories{
-		data: &domain.Categories{},
-		conn: _conn,
+		conn: conn,
 	}
 }
 

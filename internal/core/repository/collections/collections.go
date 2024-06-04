@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"gorm.io/gorm"
-	"log"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
 )
@@ -15,13 +14,9 @@ type Collections struct {
 
 var _ ICollections = (*Collections)(nil)
 
-func New() ICollections {
-	_conn, err := db.Connection()
-	if err != nil {
-		log.Fatal(err)
-	}
+func New(conn *gorm.DB) *Collections {
 	return &Collections{
-		conn: _conn,
+		conn: conn,
 	}
 }
 

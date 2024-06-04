@@ -5,10 +5,7 @@ package carts
 
 import (
 	"context"
-	"log"
 	"swclabs/swipecore/internal/core/domain"
-
-	"swclabs/swipecore/pkg/db"
 
 	"gorm.io/gorm"
 )
@@ -17,13 +14,9 @@ type Carts struct {
 	conn *gorm.DB
 }
 
-func New() ICartRepository {
-	_conn, err := db.Connection()
-	if err != nil {
-		log.Fatal(err)
-	}
+func New(connection *gorm.DB) *Carts {
 	return &Carts{
-		conn: _conn,
+		conn: connection,
 	}
 }
 

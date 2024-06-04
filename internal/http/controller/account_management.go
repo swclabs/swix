@@ -15,9 +15,9 @@ type AccountManagement struct {
 	Service *accountmanagement.AccountManagement
 }
 
-func NewAccountManagement() IAccountManagement {
+func NewAccountManagement(services *accountmanagement.AccountManagement) *AccountManagement {
 	return &AccountManagement{
-		Service: accountmanagement.New(),
+		Service: services,
 	}
 }
 
@@ -38,7 +38,7 @@ type IAccountManagement interface {
 // @Produce json
 // @Param login body domain.LoginReq true "Login"
 // @Success 200 {object} domain.LoginRes
-// @Router /auth/login [POST]
+// @Register /auth/login [POST]
 func (account *AccountManagement) Login(c echo.Context) error {
 	var request domain.LoginReq
 	if err := c.Bind(&request); err != nil {
@@ -84,7 +84,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 // @Produce json
 // @Param sign_up body domain.SignUpReq true "Sign Up"
 // @Success 200 {object} domain.SignUpRes
-// @Router /auth/signup [POST]
+// @Register /auth/signup [POST]
 func (account *AccountManagement) SignUp(c echo.Context) error {
 	var request domain.SignUpReq
 	if err := c.Bind(&request); err != nil {
@@ -114,7 +114,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
-// @Router /auth/logout [GET]
+// @Register /auth/logout [GET]
 func (account *AccountManagement) Logout(c echo.Context) error {
 	// session := sessions.Default(c)
 	// session.Delete("access_token")
@@ -137,7 +137,7 @@ func (account *AccountManagement) Logout(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.UserInfo
-// @Router /users [GET]
+// @Register /users [GET]
 func (account *AccountManagement) GetMe(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
@@ -158,7 +158,7 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 // @Produce json
 // @Param UserInfo body domain.UserUpdate true "Update User"
 // @Success 200 {object} domain.OK
-// @Router /users [PUT]
+// @Register /users [PUT]
 func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 	var request domain.UserUpdate
 	if err := c.Bind(&request); err != nil {
@@ -188,7 +188,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
-// @Router /users/image [PUT]
+// @Register /users/image [PUT]
 func (account *AccountManagement) UpdateUserImage(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
@@ -216,7 +216,7 @@ func (account *AccountManagement) UpdateUserImage(c echo.Context) error {
 // @Produce json
 // @Param email query string true "email address"
 // @Success 200 {object} domain.OK
-// @Router /auth [GET]
+// @Register /auth [GET]
 func (account *AccountManagement) CheckLoginEmail(c echo.Context) error {
 	email := c.QueryParam("email")
 	if email == "" {

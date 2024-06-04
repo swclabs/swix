@@ -14,6 +14,10 @@ func newCommon() *Common {
 	return &Common{}
 }
 
+func NewCommon() *Common {
+	return &Common{}
+}
+
 func (c *Common) Routers(e *echo.Echo) {
 	r := e.Group("/common")
 	r.GET("/healthcheck", controller.HealthCheck)

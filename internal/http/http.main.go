@@ -9,15 +9,12 @@ import (
 
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/pkg/sentry"
-	"swclabs/swipecore/pkg/lib/worker"
 )
 
 var _ IServer = &_Server{}
 
 func init() {
 	sentry.Init()
-	// mailers.Config(config.Email, config.EmailAppPassword)
-	worker.SetBroker(config.RedisHost, config.RedisPort, config.RedisPassword)
 }
 
 func (server *_Server) _LoggerWriter(file *os.File) {

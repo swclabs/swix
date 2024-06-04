@@ -12,9 +12,9 @@ type Posts struct {
 	controller controller.IPosts
 }
 
-func newPosts() *Posts {
+func NewPosts(controllers *controller.Posts) *Posts {
 	return &Posts{
-		controller: controller.NewPosts(),
+		controller: controllers,
 	}
 }
 
