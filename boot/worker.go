@@ -24,9 +24,10 @@ package boot
 import (
 	"context"
 	"fmt"
-	"go.uber.org/fx"
 	"log"
 	"swclabs/swipecore/internal/workers"
+
+	"go.uber.org/fx"
 )
 
 // IWorker interface of type Worker
