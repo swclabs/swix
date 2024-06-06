@@ -2,6 +2,8 @@ package db
 
 import (
 	"context"
+	"errors"
+	"github.com/golang-migrate/migrate/v4"
 	"sync"
 
 	"swclabs/swipecore/internal/config"
@@ -33,7 +35,7 @@ func Connection() (*gorm.DB, error) {
 	// return gorm.Open(postgres.Open(dsn), &gorm.Config{})
 }
 
-func TransactionConnection() *gorm.DB {
+func DatabaseConnection() *gorm.DB {
 	return connection
 }
 
@@ -79,4 +81,36 @@ func SafeWriteQueryReturnId(ctx context.Context, connection *gorm.DB, sql string
 		return -1, err
 	}
 	return id, nil
+}
+
+func MigrateUp() error {
+	const migrateUrl = "file://pkg/db/migration/"
+	databaseUrl, err := utils.ConnectionURLBuilder("pg-migrate")
+	if err != nil {
+		return err
+	}
+	_migrate, err := migrate.New(migrateUrl, databaseUrl)
+	if err != nil {
+		return err
+	}
+	if err := _migrate.Up(); !errors.Is(err, migrate.ErrNoChange) {
+		return err
+	}
+	return nil
+}
+
+func MigrateDown() error {
+	const migrateUrl = "file://pkg/db/migration/"
+	databaseUrl, err := utils.ConnectionURLBuilder("pg-migrate")
+	if err != nil {
+		return err
+	}
+	_migrate, err := migrate.New(migrateUrl, databaseUrl)
+	if err != nil {
+		return err
+	}
+	if err := _migrate.Down(); !errors.Is(err, migrate.ErrNoChange) {
+		return err
+	}
+	return nil
 }

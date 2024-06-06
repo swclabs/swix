@@ -39,6 +39,8 @@ type FavoriteProduct struct {
 	ProductID int64 `json:"product_id" gorm:"column:product_id"`
 }
 
+/*****************************************************************************/
+
 type Specs struct {
 	Screen  string `json:"screen"`
 	Display string `json:"display"`

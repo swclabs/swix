@@ -18,6 +18,8 @@ type UserAddress struct {
 	AddressID string `json:"address_uuid" gorm:"column:address_uuid"`
 }
 
+/*****************************************************************************/
+
 // SignUpReq schema
 type SignUpReq struct {
 	Email       string `json:"email" validate:"email,required"`

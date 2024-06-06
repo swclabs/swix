@@ -12,10 +12,6 @@ const TypeDocs = "docs"
 
 type Docs struct{}
 
-func newDocs() *Docs {
-	return &Docs{}
-}
-
 func NewDocs() *Docs {
 	return &Docs{}
 }

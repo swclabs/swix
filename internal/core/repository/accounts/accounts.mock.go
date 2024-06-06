@@ -5,7 +5,6 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 
 	"github.com/stretchr/testify/mock"
-	"gorm.io/gorm"
 )
 
 type Mock struct {
@@ -20,20 +19,18 @@ func NewAccountsMock() *Mock {
 
 // GetByEmail implements domain.IAccountRepository.
 func (a *Mock) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
-	panic("unimplemented")
+	args := a.Called(ctx, email)
+	return args.Get(0).(*domain.Account), args.Error(0)
 }
 
 // Insert implements domain.IAccountRepository.
 func (a *Mock) Insert(ctx context.Context, acc *domain.Account) error {
-	panic("unimplemented")
+	args := a.Called(ctx, acc)
+	return args.Error(0)
 }
 
 // SaveInfo implements domain.IAccountRepository.
 func (a *Mock) SaveInfo(ctx context.Context, acc *domain.Account) error {
-	panic("unimplemented")
-}
-
-// Use implements domain.IAccountRepository.
-func (a *Mock) Use(tx *gorm.DB) IAccountRepository {
-	panic("unimplemented")
+	args := a.Called(ctx, acc)
+	return args.Error(0)
 }

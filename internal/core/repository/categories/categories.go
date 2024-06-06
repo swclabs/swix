@@ -22,11 +22,13 @@ func New(conn *gorm.DB) *Categories {
 
 // Insert implements domain.ICategoriesRepository.
 func (category *Categories) Insert(ctx context.Context, ctg *domain.Categories) error {
-	return db.SafeWriteQuery(ctx, category.conn, InsertIntoCategory, ctg.Name, ctg.Description)
+	return db.SafeWriteQuery(
+		ctx, category.conn, InsertIntoCategory, ctg.Name, ctg.Description)
 }
 
 // GetLimit implements domain.ICategoriesRepository.
-func (category *Categories) GetLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+func (category *Categories) GetLimit(
+	ctx context.Context, limit string) ([]domain.Categories, error) {
 	var categories []domain.Categories
 	if err := category.conn.WithContext(ctx).Raw(
 		SelectCategoryLimit,

@@ -25,6 +25,7 @@ import (
 	"context"
 	"fmt"
 	"go.uber.org/fx"
+	"log"
 	"swclabs/swipecore/internal/workers"
 )
 
@@ -53,7 +54,12 @@ func (w *_Worker) Run(concurrency int) error {
 func StartWorker(lc fx.Lifecycle, worker IWorker) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			go worker.Run(10)
+			go func() {
+				err := worker.Run(10)
+				if err != nil {
+					log.Fatal(err)
+				}
+			}()
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {

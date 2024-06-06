@@ -15,6 +15,8 @@ type IAccountManagementTask interface {
 // IAccountManagement : Module for Account Management with use-cases.
 // Actor: Admin & Customer (User)
 type IAccountManagement interface {
+	IAccountManagementTask
+
 	// SignUp registers a new user.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the sign-up request details.

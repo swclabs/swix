@@ -5,7 +5,6 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 
 	"github.com/stretchr/testify/mock"
-	"gorm.io/gorm"
 )
 
 type Mock struct {
@@ -16,7 +15,8 @@ var _ ISuppliersRepository = (*Mock)(nil)
 
 // GetByPhone implements domain.ISuppliersRepository.
 func (s *Mock) GetByPhone(ctx context.Context, email string) (*domain.Suppliers, error) {
-	panic("unimplemented")
+	args := s.Called(ctx, email)
+	return args.Get(0).(*domain.Suppliers), args.Error(1)
 }
 
 // GetLimit implements domain.ISuppliersRepository.
@@ -27,15 +27,12 @@ func (s *Mock) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, err
 
 // Insert implements domain.ISuppliersRepository.
 func (s *Mock) Insert(ctx context.Context, sup domain.Suppliers, addr domain.Addresses) error {
-	panic("unimplemented")
+	args := s.Called(ctx, sup, addr)
+	return args.Error(0)
 }
 
 // InsertAddress implements domain.ISuppliersRepository.
 func (s *Mock) InsertAddress(ctx context.Context, addr domain.SuppliersAddress) error {
-	panic("unimplemented")
-}
-
-// Use implements domain.ISuppliersRepository.
-func (s *Mock) Use(tx *gorm.DB) ISuppliersRepository {
-	panic("unimplemented")
+	args := s.Called(ctx, addr)
+	return args.Error(0)
 }

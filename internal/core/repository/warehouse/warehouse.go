@@ -35,12 +35,14 @@ func (w *Warehouse) GetProducts(
 }
 
 // InsertProduct implements domain.IWarehouseRepository.
-func (w *Warehouse) InsertProduct(ctx context.Context, product domain.WarehouseStructure) error {
+func (w *Warehouse) InsertProduct(
+	ctx context.Context, product domain.WarehouseStructure) error {
 	specsjson, _ := json.Marshal(product.Specs)
 	return db.SafeWriteQuery(
 		ctx,
 		w.conn,
 		InsertIntoWarehouse,
-		product.ProductID, product.Model, product.Price, string(specsjson), product.Available,
+		product.ProductID, product.Model, product.Price,
+		string(specsjson), product.Available,
 	)
 }

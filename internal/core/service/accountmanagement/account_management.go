@@ -3,11 +3,11 @@
 // Description: account management service implementation
 //
 // Three layer
-//		Controller _____
+//		Controller_____
 //		|			   |
 //		Service _______|___ Domain
 //	 	|			   |
-//	 	Repository ___|
+//	 	Repository ____|
 
 package accountmanagement
 
@@ -20,6 +20,7 @@ import (
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/users"
 	"swclabs/swipecore/pkg/lib/jwt"
+	"swclabs/swipecore/pkg/lib/worker"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/blob"
@@ -37,8 +38,12 @@ func New(
 	user *users.Users,
 	account *accounts.Accounts,
 	address *addresses.Addresses,
+	client *worker.Client,
 ) *AccountManagement {
 	return &AccountManagement{
+		Task: Task{
+			worker: client,
+		},
 		User:    user,
 		Account: account,
 		Address: address,
@@ -46,7 +51,8 @@ func New(
 }
 
 // SignUp user to access system, return error if exist
-func (manager *AccountManagement) SignUp(ctx context.Context, req *domain.SignUpReq) error {
+func (manager *AccountManagement) SignUp(
+	ctx context.Context, req *domain.SignUpReq) error {
 	// call repository layer
 	return manager.User.TransactionSignUp(ctx, &domain.User{
 		Email:       req.Email,
@@ -59,7 +65,8 @@ func (manager *AccountManagement) SignUp(ctx context.Context, req *domain.SignUp
 }
 
 // Login to system, return token if error not exist
-func (manager *AccountManagement) Login(ctx context.Context, req *domain.LoginReq) (string, error) {
+func (manager *AccountManagement) Login(
+	ctx context.Context, req *domain.LoginReq) (string, error) {
 	// get account form email
 	account, err := manager.Account.GetByEmail(ctx, req.Email)
 	if err != nil {
@@ -73,13 +80,15 @@ func (manager *AccountManagement) Login(ctx context.Context, req *domain.LoginRe
 }
 
 // UserInfo return user information from Database
-func (manager *AccountManagement) UserInfo(ctx context.Context, email string) (*domain.UserInfo, error) {
+func (manager *AccountManagement) UserInfo(
+	ctx context.Context, email string) (*domain.UserInfo, error) {
 	// get user information
 	return manager.User.Info(ctx, email)
 }
 
 // UpdateUserInfo update user information to database
-func (manager *AccountManagement) UpdateUserInfo(ctx context.Context, req *domain.UserUpdate) error {
+func (manager *AccountManagement) UpdateUserInfo(
+	ctx context.Context, req *domain.UserUpdate) error {
 	// call repository layer
 	return manager.User.SaveInfo(ctx, &domain.User{
 		Id:          req.Id,
@@ -91,7 +100,8 @@ func (manager *AccountManagement) UpdateUserInfo(ctx context.Context, req *domai
 }
 
 // UploadAvatar upload image to blob storage and save img url to database
-func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
+func (manager *AccountManagement) UploadAvatar(
+	email string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return err
@@ -109,7 +119,8 @@ func (manager *AccountManagement) UploadAvatar(email string, fileHeader *multipa
 }
 
 // OAuth2SaveUser save user use oauth2 protocol
-func (manager *AccountManagement) OAuth2SaveUser(ctx context.Context, req *domain.OAuth2SaveUser) error {
+func (manager *AccountManagement) OAuth2SaveUser(
+	ctx context.Context, req *domain.OAuth2SaveUser) error {
 	return manager.User.TransactionSaveOAuth2(
 		ctx,
 		&domain.User{
@@ -122,7 +133,8 @@ func (manager *AccountManagement) OAuth2SaveUser(ctx context.Context, req *domai
 }
 
 // CheckLoginEmail check email already exist in database
-func (manager *AccountManagement) CheckLoginEmail(ctx context.Context, email string) error {
+func (manager *AccountManagement) CheckLoginEmail(
+	ctx context.Context, email string) error {
 	_, err := manager.Account.GetByEmail(ctx, email)
 	if err != nil {
 		return errors.New("account not found: " + email)
@@ -131,7 +143,8 @@ func (manager *AccountManagement) CheckLoginEmail(ctx context.Context, email str
 }
 
 // UploadAddress update user address to database
-func (manager *AccountManagement) UploadAddress(ctx context.Context, data *domain.Addresses) error {
+func (manager *AccountManagement) UploadAddress(
+	ctx context.Context, data *domain.Addresses) error {
 	//TODO:
 	return manager.Address.Insert(ctx, data)
 }

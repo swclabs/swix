@@ -3,17 +3,10 @@ package suppliers
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
-
-	"gorm.io/gorm"
 )
 
 // ISuppliersRepository implements all methods to access and manage supplier data in the database.
 type ISuppliersRepository interface {
-	// Use sets the transaction connection.
-	// tx is the transaction connection using gorm.DB.
-	// Returns an instance of ISuppliersRepository with the transaction set.
-	Use(tx *gorm.DB) ISuppliersRepository
-
 	// Insert adds a new supplier and their address to the database.
 	// ctx is the context to manage the request's lifecycle.
 	// sup is the Suppliers object to be added.

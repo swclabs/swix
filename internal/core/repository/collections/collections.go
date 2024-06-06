@@ -3,9 +3,10 @@ package collections
 import (
 	"context"
 	"encoding/json"
-	"gorm.io/gorm"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
+
+	"gorm.io/gorm"
 )
 
 type Collections struct {
@@ -23,9 +24,7 @@ func New(conn *gorm.DB) *Collections {
 func (collection *Collections) UploadCollectionImage(
 	ctx context.Context, collectionId string, url string) error {
 	return db.SafeWriteQuery(
-		ctx,
-		collection.conn,
-		UpdateCollectionImage,
+		ctx, collection.conn, UpdateCollectionImage,
 		url, collectionId,
 	)
 }
@@ -37,9 +36,7 @@ func (collection *Collections) AddCollection(
 		return -1, err
 	}
 	return db.SafeWriteQueryReturnId(
-		ctx,
-		collection.conn,
-		InsertIntoCollections,
+		ctx, collection.conn, InsertIntoCollections,
 		collectionType.Position, collectionType.Headline, string(_collection),
 	)
 }
@@ -48,7 +45,8 @@ func (collection *Collections) SlicesOfCollections(
 	ctx context.Context, position string, limit int) ([]domain.Collection, error) {
 	var collections []domain.Collection
 	if err := collection.conn.WithContext(ctx).
-		Raw(SelectCollectionByPosition, position, limit).Scan(&collections).Error; err != nil {
+		Raw(SelectCollectionByPosition, position, limit).
+		Scan(&collections).Error; err != nil {
 		return nil, err
 	}
 	return collections, nil

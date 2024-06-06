@@ -22,5 +22,6 @@ func (w *Mock) GetProducts(
 
 // InsertProduct implements domain.IWarehouseRepository.
 func (w *Mock) InsertProduct(ctx context.Context, product domain.WarehouseStructure) error {
-	panic("unimplemented")
+	args := w.Called(ctx, product)
+	return args.Error(0)
 }

@@ -23,23 +23,24 @@ func New(collection *collections.Collections) *Posts {
 func (p *Posts) SliceOfHeadlineBanner(
 	ctx context.Context, position string, limit int) (*domain.HeadlineBannerSlice, error) {
 
-	collections, err := p.Collections.SlicesOfCollections(ctx, position, limit)
+	_collections, err := p.Collections.SlicesOfCollections(ctx, position, limit)
 	if err != nil {
 		return nil, err
 	}
 
 	var headlineBanners domain.HeadlineBannerSlice
-	headlineBanners.Position = collections[0].Position
-	for _, collection := range collections {
+	headlineBanners.Position = _collections[0].Position
+	for _, collection := range _collections {
 		var body domain.HeadlineBannerBody
 		if err := json.Unmarshal([]byte(collection.Body), &body); err != nil {
 			return nil, err
 		}
-		headlineBanners.Headlines = append(headlineBanners.Headlines, domain.HeadlineBannerSliceBody{
-			HeadlineBannerBody: body,
-			Id:                 collection.Id,
-			Created:            collection.Created,
-		})
+		headlineBanners.Headlines = append(headlineBanners.Headlines,
+			domain.HeadlineBannerSliceBody{
+				HeadlineBannerBody: body,
+				Id:                 collection.Id,
+				Created:            collection.Created,
+			})
 	}
 	return &headlineBanners, nil
 }
@@ -50,32 +51,35 @@ func (p *Posts) UploadHeadlineBanner(ctx context.Context, banner domain.Headline
 }
 
 // SlicesOfCollections implements domain.IPostsService.
-func (p *Posts) SlicesOfCollections(ctx context.Context, position string, limit int) (*domain.Collections, error) {
-	collections, err := p.Collections.SlicesOfCollections(ctx, position, limit)
+func (p *Posts) SlicesOfCollections(
+	ctx context.Context, position string, limit int) (*domain.Collections, error) {
+	collectionSlice, err := p.Collections.SlicesOfCollections(ctx, position, limit)
 	if err != nil {
 		return nil, err
 	}
 
 	var _collections domain.Collections
-	_collections.Position = collections[0].Position
-	_collections.Headline = collections[0].Headline
+	_collections.Position = collectionSlice[0].Position
+	_collections.Headline = collectionSlice[0].Headline
 
-	for _, _collection := range collections {
+	for _, _collection := range collectionSlice {
 		var body domain.CollectionBody
 		if err := json.Unmarshal([]byte(_collection.Body), &body); err != nil {
 			return nil, err
 		}
-		_collections.CardBanner = append(_collections.CardBanner, domain.CollectionsBody{
-			CollectionBody: body,
-			Id:             _collection.Id,
-			Created:        _collection.Created,
-		})
+		_collections.CardBanner = append(_collections.CardBanner,
+			domain.CollectionsBody{
+				CollectionBody: body,
+				Id:             _collection.Id,
+				Created:        _collection.Created,
+			})
 	}
 	return &_collections, nil
 }
 
 // UploadCollections implements domain.IPostsService.
-func (p *Posts) UploadCollections(ctx context.Context, banner domain.CollectionType) (int64, error) {
+func (p *Posts) UploadCollections(
+	ctx context.Context, banner domain.CollectionType) (int64, error) {
 	return p.Collections.AddCollection(ctx, banner)
 }
 
@@ -90,5 +94,6 @@ func (p *Posts) UploadCollectionsImage(
 	if err != nil {
 		return err
 	}
-	return p.Collections.UploadCollectionImage(ctx, cardBannerId, resp.SecureURL)
+	return p.Collections.UploadCollectionImage(
+		ctx, cardBannerId, resp.SecureURL)
 }

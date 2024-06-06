@@ -3,14 +3,11 @@ package users
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
-
-	"gorm.io/gorm"
 )
 
 // IUserRepository User Repository interface
-// implement at /internal/repository/user.go
+// implement at /internal/repository/users.go
 type IUserRepository interface {
-	Use(tx *gorm.DB) IUserRepository
 
 	// GetByEmail retrieves a User based on email address.
 	GetByEmail(ctx context.Context, email string) (*domain.User, error)

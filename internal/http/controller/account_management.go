@@ -12,7 +12,7 @@ import (
 )
 
 type AccountManagement struct {
-	Service *accountmanagement.AccountManagement
+	Service accountmanagement.IAccountManagement
 }
 
 func NewAccountManagement(services *accountmanagement.AccountManagement) *AccountManagement {

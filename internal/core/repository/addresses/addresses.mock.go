@@ -5,7 +5,6 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 
 	"github.com/stretchr/testify/mock"
-	"gorm.io/gorm"
 )
 
 type Mock struct {
@@ -20,10 +19,6 @@ func NewAddressesMock() *Mock {
 
 // Insert implements domain.IAddressRepository.
 func (a *Mock) Insert(ctx context.Context, data *domain.Addresses) error {
-	panic("unimplemented")
-}
-
-// Use implements domain.IAddressRepository.
-func (a *Mock) Use(tx *gorm.DB) IAddressRepository {
-	panic("unimplemented")
+	args := a.Called(ctx, data)
+	return args.Error(0)
 }

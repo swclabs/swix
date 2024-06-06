@@ -15,8 +15,8 @@ var _FxDataLayer = fx.Options(
 	fx.Provide(
 		config.LoadEnv,
 		db.CreatePostgresConnection,
-		repository.FxModule,
 	),
+	repository.FxModule,
 )
 
 var _FxBusinessLogic = fx.Options(
@@ -32,5 +32,5 @@ var FxRestModule = fx.Options(
 var FxWorkerModule = fx.Options(
 	_FxDataLayer,     // data layer constructor
 	_FxBusinessLogic, // business logic constructor
-	workers.FxModule, // presenter layer contructor
+	workers.FxModule, // presenter layer constructor
 )

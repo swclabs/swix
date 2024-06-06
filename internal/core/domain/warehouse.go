@@ -11,6 +11,8 @@ type Warehouse struct {
 	Available string `json:"available" gorm:"column:available"`
 }
 
+/*****************************************************************************/
+
 type SpecsDetail struct {
 	Color      string `json:"color"`
 	Ram        string `json:"ram"`

@@ -21,6 +21,8 @@ type SuppliersAddress struct {
 	AddressUuiD string `json:"address_uuid" gorm:"column:address_uuid"`
 }
 
+/*****************************************************************************/
+
 type SupplierSlices struct {
 	Data []Suppliers `json:"data"`
 }

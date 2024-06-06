@@ -35,21 +35,22 @@ func New(
 }
 
 // GetProductsInWarehouse implements domain.IProductService.
-func (s *ProductService) GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseType, error) {
-	warehouse, err := s.Warehouse.GetProducts(ctx, productID, ram, ssd, color)
+func (s *ProductService) GetProductsInWarehouse(
+	ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseType, error) {
+	_warehouse, err := s.Warehouse.GetProducts(ctx, productID, ram, ssd, color)
 	if err != nil {
 		return nil, err
 	}
 	var warehouseRes = domain.WarehouseType{
-		Id: warehouse.Id,
+		Id: _warehouse.Id,
 		WarehouseStructure: domain.WarehouseStructure{
-			ProductID: warehouse.Id,
-			Price:     warehouse.Price,
-			Model:     warehouse.Model,
-			Available: warehouse.Available,
+			ProductID: _warehouse.Id,
+			Price:     _warehouse.Price,
+			Model:     _warehouse.Model,
+			Available: _warehouse.Available,
 		},
 	}
-	if err := json.Unmarshal([]byte(warehouse.Specs), &warehouseRes.Specs); err != nil {
+	if err := json.Unmarshal([]byte(_warehouse.Specs), &warehouseRes.Specs); err != nil {
 		return &warehouseRes, nil // don't find anything, just return empty object
 	}
 	if warehouseRes.Available == "" {
@@ -60,27 +61,33 @@ func (s *ProductService) GetProductsInWarehouse(ctx context.Context, productID, 
 }
 
 // InsertIntoWarehouse implements domain.IProductService.
-func (s *ProductService) InsertIntoWarehouse(ctx context.Context, product domain.WarehouseStructure) error {
+func (s *ProductService) InsertIntoWarehouse(
+	ctx context.Context, product domain.WarehouseStructure) error {
 	return s.Warehouse.InsertProduct(ctx, product)
 }
 
-func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+func (s *ProductService) GetCategoriesLimit(
+	ctx context.Context, limit string) ([]domain.Categories, error) {
 	return s.Categories.GetLimit(ctx, limit)
 }
 
-func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
+func (s *ProductService) GetProductsLimit(
+	ctx context.Context, limit int) ([]domain.ProductRes, error) {
 	return s.Products.GetLimit(ctx, limit)
 }
 
-func (s *ProductService) InsertCategory(ctx context.Context, ctg *domain.Categories) error {
+func (s *ProductService) InsertCategory(
+	ctx context.Context, ctg *domain.Categories) error {
 	return s.Categories.Insert(ctx, ctg)
 }
 
-func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
+func (s *ProductService) GetSuppliersLimit(
+	ctx context.Context, limit int) ([]domain.Suppliers, error) {
 	return s.Suppliers.GetLimit(ctx, limit)
 }
 
-func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHeader []*multipart.FileHeader) error {
+func (s *ProductService) UploadProductImage(
+	ctx context.Context, Id int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
 		return errors.New("missing image file")
 	}
@@ -103,7 +110,8 @@ func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHea
 	return nil
 }
 
-func (s *ProductService) UploadProduct(ctx context.Context, products domain.ProductReq) (int64, error) {
+func (s *ProductService) UploadProduct(
+	ctx context.Context, products domain.ProductReq) (int64, error) {
 	specs, err := json.Marshal(domain.Specs{
 		Screen:  products.Screen,
 		Display: products.Display,
@@ -125,7 +133,8 @@ func (s *ProductService) UploadProduct(ctx context.Context, products domain.Prod
 	return s.Products.Insert(ctx, &prd)
 }
 
-func (s *ProductService) InsertSuppliers(ctx context.Context, supplierReq domain.SuppliersReq) error {
+func (s *ProductService) InsertSuppliers(
+	ctx context.Context, supplierReq domain.SuppliersReq) error {
 	supplier := domain.Suppliers{
 		Name:  supplierReq.Name,
 		Email: supplierReq.Email,

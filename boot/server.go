@@ -30,11 +30,11 @@ package boot
 import (
 	"context"
 	"fmt"
+	"go.uber.org/fx"
+	"log"
 	"swclabs/swipecore/boot/adapter"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/lib/worker"
-
-	"go.uber.org/fx"
+	"swclabs/swipecore/pkg/db"
 )
 
 type IServer interface {
@@ -71,8 +71,15 @@ func StartServer(lc fx.Lifecycle, server IServer, env config.Env,
 ) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			worker.SetBroker(env.RedisHost, env.RedisPort, env.RedisPassword)
-			go server.Connect(adapter)
+			if err := db.MigrateUp(); err != nil {
+				return err
+			}
+			go func() {
+				err := server.Connect(adapter)
+				if err != nil {
+					log.Fatal(err)
+				}
+			}()
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
