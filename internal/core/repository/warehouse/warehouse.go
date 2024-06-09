@@ -24,6 +24,7 @@ func New(conn *gorm.DB) *Warehouse {
 // GetProducts implements domain.IWarehouseRepository.
 func (w *Warehouse) GetProducts(
 	ctx context.Context, productID, ram, ssd, color string) (*domain.Warehouse, error) {
+
 	var warehouse domain.Warehouse
 	if err := w.conn.
 		WithContext(ctx).
@@ -36,13 +37,13 @@ func (w *Warehouse) GetProducts(
 
 // InsertProduct implements domain.IWarehouseRepository.
 func (w *Warehouse) InsertProduct(
-	ctx context.Context, product domain.WarehouseStructure) error {
+	ctx context.Context, product domain.WarehouseStruct) error {
 	specsjson, _ := json.Marshal(product.Specs)
 	return db.SafeWriteQuery(
 		ctx,
 		w.conn,
 		InsertIntoWarehouse,
 		product.ProductID, product.Model, product.Price,
-		string(specsjson), product.Available,
+		string(specsjson), product.Available, product.CurrencyCode,
 	)
 }

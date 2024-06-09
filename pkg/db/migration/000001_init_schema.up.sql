@@ -69,16 +69,15 @@ CREATE TABLE "categories" (
 
 CREATE TABLE "carts" (
   "id" bigserial PRIMARY KEY,
-  "quantity" bigint NOT NULL,
-  "total_price" bigint NOT NULL,
+  "total_quantity" bigint NOT NULL,
   "user_id" bigint NOT NULL
 );
 
 CREATE TABLE "product_in_cart" (
   "id" bigserial PRIMARY KEY,
   "cart_id" bigint NOT NULL,
-  "product_id" bigint NOT NULL,
-  "amount" bigint NOT NULL
+  "product_in_warehouse_id" bigint NOT NULL,
+  "quantity" bigint NOT NULL
 );
 
 CREATE TABLE "orders" (
@@ -86,16 +85,17 @@ CREATE TABLE "orders" (
   "uuid" varchar NOT NULL,
   "time" timestamptz NOT NULL,
   "user_id" bigint NOT NULL,
-  "total_price" bigint NOT NULL,
-  "status" varchar NOT NULL,
-  "quantity" bigint NOT NULL
+  "in_word" bigint NOT NULL,
+  "status" varchar NOT NULL
 );
 
 CREATE TABLE "product_in_order" (
   "id" bigserial PRIMARY KEY,
   "order_id" bigint NOT NULL,
-  "product_id" bigint NOT NULL,
-  "amount" bigint NOT NULL
+  "product_in_warehouse_id" bigint NOT NULL,
+  "quantity" bigint NOT NULL,
+  "total_amount" NUMERIC(19, 4) NOT NULL,
+  "currency_code" varchar(3) NOT NULL
 );
 
 CREATE TABLE "deliveries" (
@@ -126,13 +126,14 @@ CREATE TABLE "suppliers_address" (
 CREATE TABLE "favorite_product" (
   "id" bigserial PRIMARY KEY,
   "user_id" bigint NOT NULL,
-  "product_id" bigint NOT NULL
+  "product_in_warehouse_id" bigint NOT NULL
 );
 
 CREATE TABLE "warehouse" (
   "id" bigserial PRIMARY KEY,
   "product_id" int NOT NULL,
-  "price" varchar NOT NULL,
+  "price" NUMERIC(19, 4) NOT NULL,
+  "currency_code" varchar(3) NOT NULL,
   "model" varchar,
   "specs" jsonb,
   "available" int NOT NULL

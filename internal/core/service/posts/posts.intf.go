@@ -13,7 +13,7 @@ type IPostsService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// banner contains the collection details to be uploaded.
 	// Returns id of collection was uploaded and error if any issues occur during the upload process.
-	UploadCollections(ctx context.Context, banner domain.CollectionType) (int64, error)
+	UploadCollections(ctx context.Context, banner domain.CollectionSchema) (int64, error)
 
 	// UploadCollectionsImage uploads a new image of collection.
 	// ctx is the context to manage the request's lifecycle.
@@ -29,6 +29,6 @@ type IPostsService interface {
 	// Returns an error if any issues occur during the upload process.
 	SlicesOfCollections(ctx context.Context, position string, limit int) (*domain.Collections, error)
 
-	UploadHeadlineBanner(ctx context.Context, banner domain.HeadlineBannerType) error
+	UploadHeadlineBanner(ctx context.Context, banner domain.HeadlineBannerSchema) error
 	SliceOfHeadlineBanner(ctx context.Context, position string, limit int) (*domain.HeadlineBannerSlice, error)
 }

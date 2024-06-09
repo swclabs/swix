@@ -30,7 +30,7 @@ func (collection *Collections) UploadCollectionImage(
 }
 
 func (collection *Collections) AddCollection(
-	ctx context.Context, collectionType domain.CollectionType) (int64, error) {
+	ctx context.Context, collectionType domain.CollectionSchema) (int64, error) {
 	_collection, err := json.Marshal(collectionType.Body)
 	if err != nil {
 		return -1, err
@@ -54,7 +54,7 @@ func (collection *Collections) SlicesOfCollections(
 
 // AddHeadlineBanner implements domain.IHeadlineBannerCollections.
 func (collection *Collections) AddHeadlineBanner(
-	ctx context.Context, headline domain.HeadlineBannerType) error {
+	ctx context.Context, headline domain.HeadlineBannerSchema) error {
 	body, err := json.Marshal(headline.Body)
 	if err != nil {
 		return err

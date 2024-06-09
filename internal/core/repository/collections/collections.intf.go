@@ -7,8 +7,8 @@ import (
 
 // ICollections Bind form json data to structure data
 type ICollections interface {
-	AddCollection(ctx context.Context, banner domain.CollectionType) (int64, error)
+	AddCollection(ctx context.Context, banner domain.CollectionSchema) (int64, error)
 	SlicesOfCollections(ctx context.Context, position string, limit int) ([]domain.Collection, error)
 	UploadCollectionImage(ctx context.Context, collectionId string, url string) error
-	AddHeadlineBanner(ctx context.Context, headline domain.HeadlineBannerType) error
+	AddHeadlineBanner(ctx context.Context, headline domain.HeadlineBannerSchema) error
 }

@@ -31,7 +31,7 @@ func NewCommon(services *common.CommonService) *Common {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Register /common/healthcheck [GET]
+// @Router /common/healthcheck [GET]
 func (common *Common) HealthCheck(c echo.Context) error {
 	return c.JSON(200, common.service.HealthCheck(c.Request().Context()))
 }
@@ -42,7 +42,7 @@ func (common *Common) HealthCheck(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Register /oauth2/login [GET]
+// @Router /oauth2/login [GET]
 func Auth0Login(c echo.Context) error {
 	auth := oauth2.New()
 	url := auth.AuthCodeURL(auth.State)
@@ -65,7 +65,7 @@ func Auth0Callback(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Register /common/worker [GET]
+// @Router /common/worker [GET]
 func (common *Common) WorkerCheck(c echo.Context) error {
 	results, err := common.service.DelayWorkerCheckResult(c.Request().Context())
 	if err != nil {

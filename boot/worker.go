@@ -52,14 +52,24 @@ func (w *_Worker) Run(concurrency int) error {
 	return w.engine.Run(concurrency)
 }
 
+// StartWorker used to start a worker consume server,
+// through to fx.Invoke() method
+//
+// app := fx.New(
+//
+//	boot.FxWorkerModule,
+//	fx.Provide(
+//		boot.NewWorker,
+//	),
+//	fx.Invoke(boot.StartWorker),
+//
+// )
+// app.Run()
 func StartWorker(lc fx.Lifecycle, worker IWorker) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			go func() {
-				err := worker.Run(10)
-				if err != nil {
-					log.Fatal(err)
-				}
+				log.Fatal(worker.Run(10))
 			}()
 			return nil
 		},

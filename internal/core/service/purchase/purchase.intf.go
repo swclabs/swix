@@ -11,7 +11,7 @@ type IPurchaseService interface {
 	// AddToCart adds a product to the shopping cart.
 	// ctx is the context to manage the request's lifecycle.
 	// cart contains the cart information to be added.
-	AddToCart(ctx context.Context, cart domain.CartInfo)
+	AddToCart(ctx context.Context, cart domain.CartSchema)
 
 	// GetCart retrieves the shopping cart with a specified limit.
 	// ctx is the context to manage the request's lifecycle.

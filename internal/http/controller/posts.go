@@ -44,11 +44,11 @@ func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
 // @Tags posts
 // @Accept json
 // @Produce json
-// @Param collection body domain.CollectionTypeSwagger true "collections Request"
+// @Param collection body domain.CollectionSchemaSwagger true "collections Request"
 // @Success 201 {object} domain.CollectionUploadRes
-// @Register /collections [POST]
+// @Router /collections [POST]
 func (p *Posts) UploadCollections(c echo.Context) error {
-	var cardBanner domain.CollectionType
+	var cardBanner domain.CollectionSchema
 	if err := c.Bind(&cardBanner); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -79,7 +79,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 // @Param img formData file true "image of collections"
 // @Param id formData string true "collections identifier"
 // @Success 200 {object} domain.OK
-// @Register /collections/img [PUT]
+// @Router /collections/img [PUT]
 func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 	file, err := c.FormFile("img")
 	if err != nil {
@@ -113,7 +113,7 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 // @Param position query string true "position of collections"
 // @Param limit query string true "limit of cards banner slices"
 // @Success 200 {object} domain.Collections
-// @Register /collections [GET]
+// @Router /collections [GET]
 func (p *Posts) GetSlicesOfCollections(c echo.Context) error {
 	position := c.QueryParam("position")
 	limit := c.QueryParam("limit")

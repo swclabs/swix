@@ -36,18 +36,19 @@ func New(
 
 // GetProductsInWarehouse implements domain.IProductService.
 func (s *ProductService) GetProductsInWarehouse(
-	ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseType, error) {
+	ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseSchema, error) {
 	_warehouse, err := s.Warehouse.GetProducts(ctx, productID, ram, ssd, color)
 	if err != nil {
 		return nil, err
 	}
-	var warehouseRes = domain.WarehouseType{
+	var warehouseRes = domain.WarehouseSchema{
 		Id: _warehouse.Id,
-		WarehouseStructure: domain.WarehouseStructure{
-			ProductID: _warehouse.Id,
-			Price:     _warehouse.Price,
-			Model:     _warehouse.Model,
-			Available: _warehouse.Available,
+		WarehouseStruct: domain.WarehouseStruct{
+			ProductID:    _warehouse.Id,
+			Price:        _warehouse.Price.String(),
+			Model:        _warehouse.Model,
+			Available:    _warehouse.Available,
+			CurrencyCode: _warehouse.CurrencyCode,
 		},
 	}
 	if err := json.Unmarshal([]byte(_warehouse.Specs), &warehouseRes.Specs); err != nil {
@@ -62,7 +63,7 @@ func (s *ProductService) GetProductsInWarehouse(
 
 // InsertIntoWarehouse implements domain.IProductService.
 func (s *ProductService) InsertIntoWarehouse(
-	ctx context.Context, product domain.WarehouseStructure) error {
+	ctx context.Context, product domain.WarehouseStruct) error {
 	return s.Warehouse.InsertProduct(ctx, product)
 }
 

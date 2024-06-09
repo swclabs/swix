@@ -46,7 +46,7 @@ func (p *Posts) SliceOfHeadlineBanner(
 }
 
 // UploadHeadlineBanner implements domain.IPostsService.
-func (p *Posts) UploadHeadlineBanner(ctx context.Context, banner domain.HeadlineBannerType) error {
+func (p *Posts) UploadHeadlineBanner(ctx context.Context, banner domain.HeadlineBannerSchema) error {
 	return p.Collections.AddHeadlineBanner(ctx, banner)
 }
 
@@ -79,7 +79,7 @@ func (p *Posts) SlicesOfCollections(
 
 // UploadCollections implements domain.IPostsService.
 func (p *Posts) UploadCollections(
-	ctx context.Context, banner domain.CollectionType) (int64, error) {
+	ctx context.Context, banner domain.CollectionSchema) (int64, error) {
 	return p.Collections.AddCollection(ctx, banner)
 }
 

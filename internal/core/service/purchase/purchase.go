@@ -3,18 +3,27 @@ package purchase
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/repository/carts"
+	"swclabs/swipecore/internal/core/repository/orders"
 )
 
 type Purchase struct {
-	// PurchaseTask
+	order orders.IOrdersRepository
+	cart  carts.ICartRepository
 }
 
-func New() IPurchaseService {
-	return &Purchase{}
+func New(
+	order *orders.Orders,
+	cart *carts.Carts,
+) IPurchaseService {
+	return &Purchase{
+		cart:  cart,
+		order: order,
+	}
 }
 
 // AddToCart implements domain.IPurchaseService.
-func (p *Purchase) AddToCart(ctx context.Context, cart domain.CartInfo) {
+func (p *Purchase) AddToCart(ctx context.Context, cart domain.CartSchema) {
 	panic("unimplemented")
 }
 

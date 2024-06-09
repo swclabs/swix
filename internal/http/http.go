@@ -20,13 +20,13 @@ type _Server struct {
 	engine *echo.Echo
 }
 
-func NewServer(common *router.Common, docs *router.Docs) IServer {
+func NewServer(common *router.Common, swaggerdocs *router.Docs) IServer {
 	server := &_Server{
 		engine: echo.New(),
 	}
 	server._InitMiddleware()
 	server.Connect(common)
-	server.Connect(docs)
+	server.Connect(swaggerdocs)
 	return server
 }
 

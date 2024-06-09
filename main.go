@@ -4,7 +4,7 @@
 
 // Author: - Ho Duc Hung : @kieranhoo
 // 		   - Nguyen Van Khoa: @anthony2704
-// Description: This is Graduation project in computer science
+// This is Graduation project in computer science
 // 2023 - Ho Chi Minh City University of Technology, VNUHCM
 
 // THIS IS FILE USED TO CREATE SWAGGER DOCS ONLY
@@ -13,10 +13,16 @@
 package main
 
 import (
-	"go.uber.org/fx"
+	"log"
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/boot/adapter"
 	_ "swclabs/swipecore/docs"
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/internal/core/service/common"
+	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/http/controller"
+	"swclabs/swipecore/internal/http/router"
+	"swclabs/swipecore/pkg/lib/worker"
 )
 
 // @title Swipe API Documentation
@@ -25,13 +31,16 @@ import (
 // @host
 // @basePath /
 func main() {
-	app := fx.New(
-		boot.FxRestModule,
-		fx.Provide(
-			adapter.NewAdapter,
-			boot.NewServer,
-		),
-		fx.Invoke(boot.StartServer),
+	var (
+		env = config.LoadEnv()
+		commonService = common.New(worker.NewClient(env))
+		commonController = controller.NewCommon(commonService)
+		commonRouter = router.NewCommon(commonController)
+	
+		httpServer = http.NewServer(commonRouter, router.NewDocs())
+		adapt = adapter.NewBaseAdapter(httpServer)
+		server = boot.NewServer(env)
 	)
-	app.Run()
+
+	log.Fatal(server.Connect(adapt))
 }

@@ -1,17 +1,28 @@
 package domain
 
-const WarehouseTable = "warehouse"
+import "github.com/shopspring/decimal"
 
 type Warehouse struct {
-	Id        string `json:"id" gorm:"column:id"`
-	ProductID string `json:"product_id" gorm:"column:product_id"`
-	Price     string `json:"price" gorm:"column:price"`
-	Model     string `json:"model" gorm:"column:model"`
-	Specs     string `json:"specs" gorm:"column:specs"`
-	Available string `json:"available" gorm:"column:available"`
+	Id           string          `json:"id" gorm:"column:id"`
+	ProductID    string          `json:"product_id" gorm:"column:product_id"`
+	Model        string          `json:"model" gorm:"column:model"`
+	Specs        string          `json:"specs" gorm:"column:specs"`
+	Available    string          `json:"available" gorm:"column:available"`
+	CurrencyCode string          `json:"currency_code" gorm:"column:currency_code"`
+	Price        decimal.Decimal `json:"price" gorm:"column:price;type:decimal(19,4)"`
 }
 
 /*****************************************************************************/
+
+type WarehouseSchemaReq struct {
+	Id           string `json:"id" gorm:"column:id"`
+	ProductID    string `json:"product_id" gorm:"column:product_id"`
+	Price        string `json:"price" gorm:"column:price;type:decimal(19,4)"`
+	Model        string `json:"model" gorm:"column:model"`
+	Specs        string `json:"specs" gorm:"column:specs"`
+	Available    string `json:"available" gorm:"column:available"`
+	CurrencyCode string `json:"currency_code" gorm:"column:currency_code"`
+}
 
 type SpecsDetail struct {
 	Color      string `json:"color"`
@@ -21,15 +32,16 @@ type SpecsDetail struct {
 	Image      string `json:"image"`
 }
 
-type WarehouseStructure struct {
-	ProductID string      `json:"product_id" validate:"required"`
-	Price     string      `json:"price" validate:"required"`
-	Model     string      `json:"model" validate:"required"`
-	Available string      `json:"available" validate:"required"`
-	Specs     SpecsDetail `json:"specs"`
+type WarehouseStruct struct {
+	ProductID    string      `json:"product_id" validate:"required"`
+	Price        string      `json:"price" validate:"number,required"`
+	Model        string      `json:"model" validate:"required"`
+	Available    string      `json:"available" validate:"number,required"`
+	CurrencyCode string      `json:"currency_code" validate:"required"`
+	Specs        SpecsDetail `json:"specs"`
 }
 
-type WarehouseType struct {
+type WarehouseSchema struct {
 	Id string `json:"id"`
-	WarehouseStructure
+	WarehouseStruct
 }

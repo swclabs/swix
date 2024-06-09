@@ -11,9 +11,8 @@ import (
 )
 
 var FxModule = fx.Options(
+	fx.Provide(worker.NewClient),
 	fx.Provide(
-		worker.NewClient,
-
 		common.New,
 		products.New,
 		accountmanagement.New,

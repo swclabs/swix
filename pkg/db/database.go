@@ -3,8 +3,9 @@ package db
 import (
 	"context"
 	"errors"
-	"github.com/golang-migrate/migrate/v4"
 	"sync"
+
+	"github.com/golang-migrate/migrate/v4"
 
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/pkg/utils"
@@ -18,8 +19,8 @@ var connection *gorm.DB = nil
 var lock *sync.Mutex = &sync.Mutex{}
 var writeLock *sync.Mutex = &sync.Mutex{}
 
-func Connection() (*gorm.DB, error) {
-	dsn, _ := utils.ConnectionURLBuilder("postgres")
+func Connection(env config.Env) (*gorm.DB, error) {
+	dsn, _ := utils.ConnectionURLBuilderWithEnv("postgres", env)
 	if connection == nil {
 		lock.Lock()
 		defer lock.Unlock()

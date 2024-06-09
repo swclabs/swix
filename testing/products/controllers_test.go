@@ -12,6 +12,7 @@ import (
 	"testing"
 
 	"github.com/labstack/echo/v4"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -27,13 +28,15 @@ func TestGetProductAvailability(t *testing.T) {
 		Image:      "",
 	})
 	repos := warehouse.Mock{}
+	price, _ := decimal.NewFromString("10000")
 	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.Warehouse{
-		Id:        "1",
-		ProductID: "1",
-		Model:     "iPhone 15 Pro Max",
-		Available: "100",
-		Price:     "$1000",
-		Specs:     string(specs),
+		Id:           "1",
+		ProductID:    "1",
+		Model:        "iPhone 15 Pro Max",
+		Available:    "100",
+		Price:        price,
+		Specs:        string(specs),
+		CurrencyCode: "USD",
 	}, nil)
 
 	// business logic layers
@@ -53,6 +56,6 @@ func TestGetProductAvailability(t *testing.T) {
 
 	e.ServeHTTP(rr, req)
 
-	expected := "{\"id\":\"1\",\"product_id\":\"1\",\"price\":\"$1000\",\"model\":\"iPhone 15 Pro Max\",\"available\":\"100\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
+	expected := "{\"id\":\"1\",\"product_id\":\"1\",\"price\":\"10000\",\"model\":\"iPhone 15 Pro Max\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
 }

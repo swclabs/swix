@@ -2,8 +2,8 @@ package warehouse
 
 const (
 	InsertIntoWarehouse string = `
-		INSERT INTO warehouse (product_id, model, price, specs, available)
-		VALUES (?, ?, ?, ?, ?);
+		INSERT INTO warehouse (product_id, model, price, specs, available, currency_code)
+		VALUES (?, ?, ?, ?, ?, ?);
 	`
 
 	GetAvailableProducts string = `

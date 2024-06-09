@@ -244,7 +244,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CollectionTypeSwagger"
+                            "$ref": "#/definitions/domain.CollectionSchemaSwagger"
                         }
                     }
                 ],
@@ -642,7 +642,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.WarehouseType"
+                            "$ref": "#/definitions/domain.WarehouseSchema"
                         }
                     }
                 }
@@ -661,11 +661,11 @@
                 "parameters": [
                     {
                         "description": "Warehouse Request",
-                        "name": "WarehouseStructure",
+                        "name": "WarehouseStruct",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.WarehouseStructure"
+                            "$ref": "#/definitions/domain.WarehouseStruct"
                         }
                     }
                 ],
@@ -748,7 +748,7 @@
                 }
             }
         },
-        "domain.CollectionTypeSwagger": {
+        "domain.CollectionSchemaSwagger": {
             "type": "object",
             "required": [
                 "body",
@@ -1187,16 +1187,23 @@
                 }
             }
         },
-        "domain.WarehouseStructure": {
+        "domain.WarehouseSchema": {
             "type": "object",
             "required": [
                 "available",
+                "currency_code",
                 "model",
                 "price",
                 "product_id"
             ],
             "properties": {
                 "available": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "model": {
@@ -1213,10 +1220,11 @@
                 }
             }
         },
-        "domain.WarehouseType": {
+        "domain.WarehouseStruct": {
             "type": "object",
             "required": [
                 "available",
+                "currency_code",
                 "model",
                 "price",
                 "product_id"
@@ -1225,7 +1233,7 @@
                 "available": {
                     "type": "string"
                 },
-                "id": {
+                "currency_code": {
                     "type": "string"
                 },
                 "model": {

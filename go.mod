@@ -19,6 +19,7 @@ require (
 	github.com/labstack/echo-contrib v0.15.0
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/redis/go-redis/v9 v9.5.1
+	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.8.4
 	github.com/swaggo/echo-swagger v1.4.1
 	github.com/swaggo/swag v1.16.2

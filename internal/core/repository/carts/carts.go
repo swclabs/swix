@@ -21,21 +21,21 @@ func New(connection *gorm.DB) *Carts {
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Carts) GetCartByUserID(ctx context.Context, userId int64) (*domain.CartInfo, error) {
+func (c *Carts) GetCartByUserID(ctx context.Context, userId int64) (*domain.CartSchema, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.ICartRepository.
-func (c *Carts) Insert(ctx context.Context, productID int64) error {
+func (c *Carts) Insert(ctx context.Context, warehouseId int64) error {
 	panic("unimplemented")
 }
 
 // InsertMany implements domain.ICartRepository.
-func (c *Carts) InsertMany(ctx context.Context, products []int64) error {
+func (c *Carts) InsertMany(ctx context.Context, warehouseIds []int64) error {
 	panic("unimplemented")
 }
 
-// RemoveProduct implements domain.ICartRepository.
-func (c *Carts) RemoveProduct(ctx context.Context, productID int64, userId int64) error {
+// RemoveItem implements domain.ICartRepository.
+func (c *Carts) RemoveItem(ctx context.Context, warehouseId int64, userId int64) error {
 	panic("unimplemented")
 }
