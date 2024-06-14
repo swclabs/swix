@@ -2,11 +2,11 @@ package domain
 
 // Collection use to query data from database, define in database, used to save a CollectionBody
 type Collection struct {
-	Id       int64  `json:"id"`
-	Created  string `json:"created"`
-	Position string `json:"position"` // Example: mac#1, mac#2
-	Headline string `json:"headline"` // Ex: Get to know Mac
-	Body     string `json:"body"`
+	Id       int64  `json:"id" db:"collection"`
+	Created  string `json:"created" db:"created"`
+	Position string `json:"position" db:"position"` // Example: mac#1, mac#2
+	Headline string `json:"headline" db:"headline"` // Ex: Get to know Mac
+	Body     string `json:"body" db:"body"`
 }
 
 /***********************************************************************************************/

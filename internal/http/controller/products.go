@@ -137,7 +137,7 @@ func (p *Products) InsertCategory(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := p.Services.InsertCategory(c.Request().Context(), &request); err != nil {
+	if err := p.Services.InsertCategory(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "category data invalid",
 		})

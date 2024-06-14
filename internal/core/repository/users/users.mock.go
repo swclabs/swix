@@ -36,37 +36,37 @@ func (u *Mock) Info(ctx context.Context, email string) (*domain.UserInfo, error)
 }
 
 // Insert implements domain.IUserRepository.
-func (u *Mock) Insert(ctx context.Context, usr *domain.User) error {
+func (u *Mock) Insert(ctx context.Context, usr domain.User) error {
 	args := u.Called(ctx, usr)
 	return args.Error(0)
 }
 
 // OAuth2SaveInfo implements domain.IUserRepository.
-func (u *Mock) OAuth2SaveInfo(ctx context.Context, user *domain.User) error {
+func (u *Mock) OAuth2SaveInfo(ctx context.Context, user domain.User) error {
 	args := u.Called(ctx, user)
 	return args.Error(0)
 }
 
 // SaveInfo implements domain.IUserRepository.
-func (u *Mock) SaveInfo(ctx context.Context, user *domain.User) error {
+func (u *Mock) SaveInfo(ctx context.Context, user domain.User) error {
 	args := u.Called(ctx, user)
 	return args.Error(0)
 }
 
 // TransactionSaveOAuth2 implements domain.IUserRepository.
-func (u *Mock) TransactionSaveOAuth2(ctx context.Context, data *domain.User) error {
+func (u *Mock) TransactionSaveOAuth2(ctx context.Context, data domain.User) error {
 	args := u.Called(ctx, data)
 	return args.Error(0)
 }
 
 // TransactionSignUp implements domain.IUserRepository.
-func (u *Mock) TransactionSignUp(ctx context.Context, user *domain.User, password string) error {
+func (u *Mock) TransactionSignUp(ctx context.Context, user domain.User, password string) error {
 	args := u.Called(ctx, user, password)
 	return args.Error(0)
 }
 
 // UpdateProperties implements domain.IUserRepository.
-func (u *Mock) UpdateProperties(ctx context.Context, query string, user *domain.User) error {
+func (u *Mock) UpdateProperties(ctx context.Context, query string, user domain.User) error {
 	args := u.Called(ctx, query, user)
 	return args.Error(0)
 }

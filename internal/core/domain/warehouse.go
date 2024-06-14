@@ -3,25 +3,25 @@ package domain
 import "github.com/shopspring/decimal"
 
 type Warehouse struct {
-	Id           string          `json:"id" gorm:"column:id"`
-	ProductID    string          `json:"product_id" gorm:"column:product_id"`
-	Model        string          `json:"model" gorm:"column:model"`
-	Specs        string          `json:"specs" gorm:"column:specs"`
-	Available    string          `json:"available" gorm:"column:available"`
-	CurrencyCode string          `json:"currency_code" gorm:"column:currency_code"`
-	Price        decimal.Decimal `json:"price" gorm:"column:price;type:decimal(19,4)"`
+	Id           string          `json:"id" db:"id"`
+	ProductID    string          `json:"product_id" db:"product_id"`
+	Model        string          `json:"model" db:"model"`
+	Specs        string          `json:"specs" db:"specs"`
+	Available    string          `json:"available" db:"available"`
+	CurrencyCode string          `json:"currency_code" db:"currency_code"`
+	Price        decimal.Decimal `json:"price" db:"price"`
 }
 
 /*****************************************************************************/
 
 type WarehouseSchemaReq struct {
-	Id           string `json:"id" gorm:"column:id"`
-	ProductID    string `json:"product_id" gorm:"column:product_id"`
-	Price        string `json:"price" gorm:"column:price;type:decimal(19,4)"`
-	Model        string `json:"model" gorm:"column:model"`
-	Specs        string `json:"specs" gorm:"column:specs"`
-	Available    string `json:"available" gorm:"column:available"`
-	CurrencyCode string `json:"currency_code" gorm:"column:currency_code"`
+	Id           string `json:"id" db:"id"`
+	ProductID    string `json:"product_id" db:"product_id"`
+	Price        string `json:"price" db:"price"`
+	Model        string `json:"model" db:"model"`
+	Specs        string `json:"specs" db:"specs"`
+	Available    string `json:"available" db:"available"`
+	CurrencyCode string `json:"currency_code" db:"currency_code"`
 }
 
 type SpecsDetail struct {

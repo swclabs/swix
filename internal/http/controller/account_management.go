@@ -52,7 +52,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 		})
 	}
 	// var account = service.New()
-	accessToken, err := account.Service.Login(c.Request().Context(), &request)
+	accessToken, err := account.Service.Login(c.Request().Context(), request)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -97,7 +97,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := account.Service.SignUp(c.Request().Context(), &request); err != nil {
+	if err := account.Service.SignUp(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "user data invalid",
 		})
@@ -171,7 +171,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := account.Service.UpdateUserInfo(c.Request().Context(), &request); err != nil {
+	if err := account.Service.UpdateUserInfo(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})

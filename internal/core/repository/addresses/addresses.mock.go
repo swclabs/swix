@@ -18,7 +18,7 @@ func NewAddressesMock() *Mock {
 }
 
 // Insert implements domain.IAddressRepository.
-func (a *Mock) Insert(ctx context.Context, data *domain.Addresses) error {
+func (a *Mock) Insert(ctx context.Context, data domain.Addresses) error {
 	args := a.Called(ctx, data)
 	return args.Error(0)
 }

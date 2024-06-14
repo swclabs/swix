@@ -17,24 +17,24 @@ CREATE TABLE "product_in_cart" (
 
 // Carts table
 type Carts struct {
-	Id     int64 `json:"id" gorm:"column:id"`
-	UserId int64 `json:"user_id" gorm:"column:user_id"`
+	Id     int64 `json:"id" db:"id"`
+	UserId int64 `json:"user_id" db:"user_id"`
 }
 
 // ProductInCart Table
 type ProductInCart struct {
-	Id                   int64 `json:"id" gorm:"column:id"`
-	CartId               int64 `json:"cart_id" gorm:"column:cart_id"`
-	ProductInWarehouseId int64 `json:"product_in_warehouse_id" gorm:"column:product_in_warehouse_id"`
-	Quantity             int64 `json:"quantity" gorm:"column:quantity"`
+	Id                   int64 `json:"id" db:"id"`
+	CartId               int64 `json:"cart_id" db:"cart_id"`
+	ProductInWarehouseId int64 `json:"product_in_warehouse_id" db:"product_in_warehouse_id"`
+	Quantity             int64 `json:"quantity" db:"quantity"`
 }
 
 type CartBodySchema struct {
 	Img         string `json:"img"`
 	ProductName string `json:"product_name"`
-	Amount      string `json:"amount" gorm:"column:amount"`
+	Amount      string `json:"amount" db:"amount"`
 	Quantity    int    `json:"quantity"`
-	Category    string `json:"category" gorm:"column:category"`
+	Category    string `json:"category" db:"category"`
 }
 
 // CartSchema schema

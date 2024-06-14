@@ -1,5 +1,5 @@
 // Package service
-// Author: Duc Hung Ho @kieranhoo
+// Author: Duc Hung Ho @kyeranyo
 // Description: account management service implementation
 //
 // Three layer
@@ -34,6 +34,8 @@ type AccountManagement struct {
 	Address addresses.IAddressRepository
 }
 
+var _ IAccountManagement = (*AccountManagement)(nil)
+
 func New(
 	user *users.Users,
 	account *accounts.Accounts,
@@ -52,9 +54,9 @@ func New(
 
 // SignUp user to access system, return error if exist
 func (manager *AccountManagement) SignUp(
-	ctx context.Context, req *domain.SignUpReq) error {
+	ctx context.Context, req domain.SignUpReq) error {
 	// call repository layer
-	return manager.User.TransactionSignUp(ctx, &domain.User{
+	return manager.User.TransactionSignUp(ctx, domain.User{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -66,7 +68,7 @@ func (manager *AccountManagement) SignUp(
 
 // Login to system, return token if error not exist
 func (manager *AccountManagement) Login(
-	ctx context.Context, req *domain.LoginReq) (string, error) {
+	ctx context.Context, req domain.LoginReq) (string, error) {
 	// get account form email
 	account, err := manager.Account.GetByEmail(ctx, req.Email)
 	if err != nil {
@@ -88,9 +90,9 @@ func (manager *AccountManagement) UserInfo(
 
 // UpdateUserInfo update user information to database
 func (manager *AccountManagement) UpdateUserInfo(
-	ctx context.Context, req *domain.UserUpdate) error {
+	ctx context.Context, req domain.UserUpdate) error {
 	// call repository layer
-	return manager.User.SaveInfo(ctx, &domain.User{
+	return manager.User.SaveInfo(ctx, domain.User{
 		Id:          req.Id,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -112,7 +114,7 @@ func (manager *AccountManagement) UploadAvatar(
 		log.Fatal(err)
 	}
 	// call repository layer to save user
-	return manager.User.SaveInfo(context.TODO(), &domain.User{
+	return manager.User.SaveInfo(context.TODO(), domain.User{
 		Email: email,
 		Image: resp.SecureURL,
 	})
@@ -120,10 +122,9 @@ func (manager *AccountManagement) UploadAvatar(
 
 // OAuth2SaveUser save user use oauth2 protocol
 func (manager *AccountManagement) OAuth2SaveUser(
-	ctx context.Context, req *domain.OAuth2SaveUser) error {
-	return manager.User.TransactionSaveOAuth2(
-		ctx,
-		&domain.User{
+	ctx context.Context, req domain.OAuth2SaveUser) error {
+	return manager.User.TransactionSaveOAuth2(ctx,
+		domain.User{
 			Email:       req.Email,
 			PhoneNumber: req.PhoneNumber,
 			FirstName:   req.FirstName,
@@ -144,7 +145,6 @@ func (manager *AccountManagement) CheckLoginEmail(
 
 // UploadAddress update user address to database
 func (manager *AccountManagement) UploadAddress(
-	ctx context.Context, data *domain.Addresses) error {
-	//TODO:
+	ctx context.Context, data domain.Addresses) error {
 	return manager.Address.Insert(ctx, data)
 }

@@ -2,10 +2,10 @@ package domain
 
 // Account table
 type Account struct {
-	Username  string `json:"username" gorm:"column:username"`
-	Role      string `json:"role" gorm:"column:role"`
-	Email     string `json:"email" gorm:"column:email"`
-	Password  string `json:"password" gorm:"column:password"`
-	CreatedAt string `json:"created_at" gorm:"column:created"`
-	Type      string `json:"type" gorm:"column:type"`
+	Username  string `json:"username" db:"username"`
+	Role      string `json:"role" db:"role"`
+	Email     string `json:"email" db:"email"`
+	Password  string `json:"password" db:"password"`
+	CreatedAt string `json:"created_at" db:"created"`
+	Type      string `json:"type" db:"type"`
 }

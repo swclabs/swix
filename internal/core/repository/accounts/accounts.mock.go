@@ -24,13 +24,13 @@ func (a *Mock) GetByEmail(ctx context.Context, email string) (*domain.Account, e
 }
 
 // Insert implements domain.IAccountRepository.
-func (a *Mock) Insert(ctx context.Context, acc *domain.Account) error {
+func (a *Mock) Insert(ctx context.Context, acc domain.Account) error {
 	args := a.Called(ctx, acc)
 	return args.Error(0)
 }
 
 // SaveInfo implements domain.IAccountRepository.
-func (a *Mock) SaveInfo(ctx context.Context, acc *domain.Account) error {
+func (a *Mock) SaveInfo(ctx context.Context, acc domain.Account) error {
 	args := a.Called(ctx, acc)
 	return args.Error(0)
 }

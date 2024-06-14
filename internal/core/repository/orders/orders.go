@@ -1,12 +1,13 @@
 package orders
 
 import (
-	"gorm.io/gorm"
 	"swclabs/swipecore/internal/core/domain"
+
+	"github.com/jackc/pgx/v5"
 )
 
 type Orders struct {
-	conn *gorm.DB
+	conn *pgx.Conn
 }
 
 func (order *Orders) Create() error {
@@ -29,7 +30,7 @@ func (order *Orders) Delete(id string) error {
 	panic("implement me")
 }
 
-func New(conn *gorm.DB) *Orders {
+func New(conn *pgx.Conn) *Orders {
 	return &Orders{
 		conn: conn,
 	}

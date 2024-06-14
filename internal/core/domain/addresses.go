@@ -2,10 +2,10 @@ package domain
 
 // Addresses Table
 type Addresses struct {
-	ID       int64  `json:"id" gorm:"column:id"`
-	Uuid     string `json:"uuid" gorm:"column:uuid"`
-	City     string `json:"city" gorm:"column:city"`
-	Ward     string `json:"ward" gorm:"column:ward"`
-	District string `json:"district" gorm:"column:district"`
-	Street   string `json:"street" gorm:"column:street"`
+	ID       int64  `json:"id" db:"id"`
+	Uuid     string `json:"uuid" db:"uuid"`
+	City     string `json:"city" db:"city"`
+	Ward     string `json:"ward" db:"ward"`
+	District string `json:"district" db:"district"`
+	Street   string `json:"street" db:"street"`
 }

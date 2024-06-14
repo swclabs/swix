@@ -55,14 +55,14 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 	}
 
 	account := accountmanagement.New(
-		users.New(db.DatabaseConnection()),
-		accounts.New(db.DatabaseConnection()),
-		addresses.New(db.DatabaseConnection()),
+		users.New(db.PgxConnection()),
+		accounts.New(db.PgxConnection()),
+		addresses.New(db.PgxConnection()),
 		worker.NewClient(config.LoadEnv()),
 	)
 	if err := account.OAuth2SaveUser(
 		context.TODO(),
-		&domain.OAuth2SaveUser{
+		domain.OAuth2SaveUser{
 			Email:     profile.Email,
 			FirstName: profile.GivenName,
 			LastName:  profile.FamilyName,

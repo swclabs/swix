@@ -12,21 +12,21 @@ type Task struct {
 	worker worker.IWorkerClient
 }
 
-func (t *Task) DelaySignUp(req *domain.SignUpReq) error {
+func (t *Task) DelaySignUp(req domain.SignUpReq) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.DelaySignUp),
 		req,
 	))
 }
 
-func (t *Task) DelayUpdateUserInfo(req *domain.UserUpdate) error {
+func (t *Task) DelayUpdateUserInfo(req domain.UserUpdate) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.DelayUpdateUserInfo),
 		req,
 	))
 }
 
-func (t *Task) DelayOAuth2SaveUser(req *domain.OAuth2SaveUser) error {
+func (t *Task) DelayOAuth2SaveUser(req domain.OAuth2SaveUser) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.DelayOAuth2SaveUser),
 		req,

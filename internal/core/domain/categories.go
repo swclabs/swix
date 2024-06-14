@@ -2,9 +2,9 @@ package domain
 
 // Categories Table
 type Categories struct {
-	Id          string `json:"id" gorm:"column:id"`
-	Name        string `json:"name" gorm:"column:name" validate:"required"`
-	Description string `json:"description" gorm:"column:description" validate:"required"`
+	Id          string `json:"id" db:"id"`
+	Name        string `json:"name" db:"name" validate:"required"`
+	Description string `json:"description" db:"description" validate:"required"`
 }
 
 /*****************************************************************************/

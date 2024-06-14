@@ -6,16 +6,16 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
 
-	"gorm.io/gorm"
+	"github.com/jackc/pgx/v5"
 )
 
 type Warehouse struct {
-	conn *gorm.DB
+	conn *pgx.Conn
 }
 
 var _ IWarehouseRepository = (*Warehouse)(nil)
 
-func New(conn *gorm.DB) *Warehouse {
+func New(conn *pgx.Conn) *Warehouse {
 	return &Warehouse{
 		conn: conn,
 	}
@@ -24,12 +24,12 @@ func New(conn *gorm.DB) *Warehouse {
 // GetProducts implements domain.IWarehouseRepository.
 func (w *Warehouse) GetProducts(
 	ctx context.Context, productID, ram, ssd, color string) (*domain.Warehouse, error) {
-
-	var warehouse domain.Warehouse
-	if err := w.conn.
-		WithContext(ctx).
-		Raw(GetAvailableProducts, productID, ram, ssd, color).
-		Scan(&warehouse).Error; err != nil {
+	rows, err := w.conn.Query(ctx, GetAvailableProducts, productID, ram, ssd, color)
+	if err != nil {
+		return nil, err
+	}
+	warehouse, err := pgx.CollectOneRow[domain.Warehouse](rows, pgx.RowToStructByName[domain.Warehouse])
+	if err != nil {
 		return nil, err
 	}
 	return &warehouse, nil
@@ -39,10 +39,7 @@ func (w *Warehouse) GetProducts(
 func (w *Warehouse) InsertProduct(
 	ctx context.Context, product domain.WarehouseStruct) error {
 	specsjson, _ := json.Marshal(product.Specs)
-	return db.SafeWriteQuery(
-		ctx,
-		w.conn,
-		InsertIntoWarehouse,
+	return db.SafePgxWriteQuery(ctx, w.conn, InsertIntoWarehouse,
 		product.ProductID, product.Model, product.Price,
 		string(specsjson), product.Available, product.CurrencyCode,
 	)

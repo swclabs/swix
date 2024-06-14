@@ -20,6 +20,8 @@ type ProductService struct {
 	Warehouse  warehouse.IWarehouseRepository
 }
 
+var _ IProductService = (*ProductService)(nil)
+
 func New(
 	categories *categories.Categories,
 	products *products.Products,
@@ -78,7 +80,7 @@ func (s *ProductService) GetProductsLimit(
 }
 
 func (s *ProductService) InsertCategory(
-	ctx context.Context, ctg *domain.Categories) error {
+	ctx context.Context, ctg domain.Categories) error {
 	return s.Categories.Insert(ctx, ctg)
 }
 
@@ -131,7 +133,7 @@ func (s *ProductService) UploadProduct(
 		Status:      products.Status,
 		Spec:        string(specs),
 	}
-	return s.Products.Insert(ctx, &prd)
+	return s.Products.Insert(ctx, prd)
 }
 
 func (s *ProductService) InsertSuppliers(

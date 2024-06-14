@@ -25,7 +25,7 @@ type IProductService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// ctg is a pointer to the Categories object to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertCategory(ctx context.Context, ctg *domain.Categories) error
+	InsertCategory(ctx context.Context, ctg domain.Categories) error
 
 	// UploadProductImage uploads images for a product.
 	// ctx is the context to manage the request's lifecycle.

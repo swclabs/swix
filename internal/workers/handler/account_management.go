@@ -29,7 +29,7 @@ func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
-			return account.handler.SignUp(context.Background(), &data)
+			return account.handler.SignUp(context.Background(), data)
 		}
 }
 
@@ -40,7 +40,7 @@ func (account *AccountManagement) HandleOAuth2SaveUser() (string, worker.HandleF
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
-			return account.handler.OAuth2SaveUser(context.Background(), &data)
+			return account.handler.OAuth2SaveUser(context.Background(), data)
 		}
 }
 
@@ -51,6 +51,6 @@ func (account *AccountManagement) HandleUpdateUserInfo() (string, worker.HandleF
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
-			return account.handler.UpdateUserInfo(context.Background(), &data)
+			return account.handler.UpdateUserInfo(context.Background(), data)
 		}
 }

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a MIT license
 // that can be found in the LICENSE file.
 
-// Author: - Ho Duc Hung : @kieranhoo
+// Author: - Ho Duc Hung : @kyeranyo
 // 		   - Nguyen Van Khoa: @anthony2704
 // This is Graduation project in computer science
 // 2023 - Ho Chi Minh City University of Technology, VNUHCM

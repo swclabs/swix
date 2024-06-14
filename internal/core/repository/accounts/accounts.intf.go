@@ -17,11 +17,11 @@ type IAccountRepository interface {
 	// ctx is the context to manage the request's lifecycle.
 	// acc is a pointer to the Account object to be added.
 	// Returns an error if any issues occur during the insertion process.
-	Insert(ctx context.Context, acc *domain.Account) error
+	Insert(ctx context.Context, acc domain.Account) error
 
 	// SaveInfo saves the account information to the database.
 	// ctx is the context to manage the request's lifecycle.
 	// acc is a pointer to the Account object to be saved.
 	// Returns an error if any issues occur during the saving process.
-	SaveInfo(ctx context.Context, acc *domain.Account) error
+	SaveInfo(ctx context.Context, acc domain.Account) error
 }

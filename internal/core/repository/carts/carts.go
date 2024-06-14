@@ -1,5 +1,5 @@
 // Package carts
-// Author: Duc Hung Ho @kieranhoo
+// Author: Duc Hung Ho @kyeranyo
 // Description: cart repository implementation
 package carts
 
@@ -7,14 +7,14 @@ import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
 
-	"gorm.io/gorm"
+	"github.com/jackc/pgx/v5"
 )
 
 type Carts struct {
-	conn *gorm.DB
+	conn *pgx.Conn
 }
 
-func New(connection *gorm.DB) *Carts {
+func New(connection *pgx.Conn) *Carts {
 	return &Carts{
 		conn: connection,
 	}

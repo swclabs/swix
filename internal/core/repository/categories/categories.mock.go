@@ -24,7 +24,7 @@ func (c *Mock) GetLimit(ctx context.Context, limit string) ([]domain.Categories,
 }
 
 // Insert implements domain.ICategoriesRepository.
-func (c *Mock) Insert(ctx context.Context, ctg *domain.Categories) error {
+func (c *Mock) Insert(ctx context.Context, ctg domain.Categories) error {
 	args := c.Called(ctx, ctg)
 	return args.Error(0)
 }

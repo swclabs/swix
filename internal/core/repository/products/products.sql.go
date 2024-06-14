@@ -9,7 +9,13 @@ const (
 
 	UpdateProductImage string = `
 		UPDATE products
-		SET image = image || ',' || ?
-		WHERE id = ?;
+		SET image = image || ',' || $1
+		WHERE id = $2;
+	`
+
+	selectLimit string = `
+		SELECT *
+		FROM products
+		LIMIT $1;
 	`
 )
