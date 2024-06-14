@@ -6,6 +6,6 @@ import (
 )
 
 type IWarehouseRepository interface {
-	InsertProduct(ctx context.Context, product domain.WarehouseStructure) error
+	InsertProduct(ctx context.Context, product domain.WarehouseStruct) error
 	GetProducts(ctx context.Context, productID, ram, ssd, color string) (*domain.Warehouse, error)
 }

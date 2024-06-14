@@ -12,7 +12,7 @@ import (
 )
 
 type AccountManagement struct {
-	Service *accountmanagement.AccountManagement
+	Service accountmanagement.IAccountManagement
 }
 
 func NewAccountManagement(services *accountmanagement.AccountManagement) *AccountManagement {
@@ -38,7 +38,7 @@ type IAccountManagement interface {
 // @Produce json
 // @Param login body domain.LoginReq true "Login"
 // @Success 200 {object} domain.LoginRes
-// @Register /auth/login [POST]
+// @Router /auth/login [POST]
 func (account *AccountManagement) Login(c echo.Context) error {
 	var request domain.LoginReq
 	if err := c.Bind(&request); err != nil {
@@ -52,7 +52,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 		})
 	}
 	// var account = service.New()
-	accessToken, err := account.Service.Login(c.Request().Context(), &request)
+	accessToken, err := account.Service.Login(c.Request().Context(), request)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -84,7 +84,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 // @Produce json
 // @Param sign_up body domain.SignUpReq true "Sign Up"
 // @Success 200 {object} domain.SignUpRes
-// @Register /auth/signup [POST]
+// @Router /auth/signup [POST]
 func (account *AccountManagement) SignUp(c echo.Context) error {
 	var request domain.SignUpReq
 	if err := c.Bind(&request); err != nil {
@@ -97,7 +97,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := account.Service.SignUp(c.Request().Context(), &request); err != nil {
+	if err := account.Service.SignUp(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "user data invalid",
 		})
@@ -114,7 +114,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
-// @Register /auth/logout [GET]
+// @Router /auth/logout [GET]
 func (account *AccountManagement) Logout(c echo.Context) error {
 	// session := sessions.Default(c)
 	// session.Delete("access_token")
@@ -137,7 +137,7 @@ func (account *AccountManagement) Logout(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.UserInfo
-// @Register /users [GET]
+// @Router /users [GET]
 func (account *AccountManagement) GetMe(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
@@ -158,7 +158,7 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 // @Produce json
 // @Param UserInfo body domain.UserUpdate true "Update User"
 // @Success 200 {object} domain.OK
-// @Register /users [PUT]
+// @Router /users [PUT]
 func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 	var request domain.UserUpdate
 	if err := c.Bind(&request); err != nil {
@@ -171,7 +171,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := account.Service.UpdateUserInfo(c.Request().Context(), &request); err != nil {
+	if err := account.Service.UpdateUserInfo(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
 		})
@@ -188,7 +188,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200 {object} domain.OK
-// @Register /users/image [PUT]
+// @Router /users/image [PUT]
 func (account *AccountManagement) UpdateUserImage(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
@@ -216,7 +216,7 @@ func (account *AccountManagement) UpdateUserImage(c echo.Context) error {
 // @Produce json
 // @Param email query string true "email address"
 // @Success 200 {object} domain.OK
-// @Register /auth [GET]
+// @Router /auth [GET]
 func (account *AccountManagement) CheckLoginEmail(c echo.Context) error {
 	email := c.QueryParam("email")
 	if email == "" {

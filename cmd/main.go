@@ -1,26 +1,24 @@
-// Author:
-// - Ho Duc Hung : @kieranhoo
-// - Nguyen Van Khoa: @anthony2704
-// This is Graduation project in computer science
-// 2023 - Ho Chi Minh City University of Technology, VNUHCM
-
-// RUN APPLICATION CLI, IF YOU DON'T WANT TO RUN CLI APP
-// SEE: server/main.go and worker/main.go
+/**
+ * A: Ho Duc Hung <hunghd.dev@gmail.com> @kyeranyo
+ * This is Graduation project in computer science
+ * 2023 - Ho Chi Minh City University of Technology, VNUHCM
+ *
+ * * RUN APPLICATION CLI, IF YOU DON'T WANT TO RUN CLI APP
+ * * SEE: server/main.go and worker/main.go
+ */
 
 package main
 
 import (
-	"errors"
-	"go.uber.org/fx"
 	"log"
 	"os"
 	"sort"
 
+	"go.uber.org/fx"
+
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/boot/adapter"
-	"swclabs/swipecore/pkg/utils"
 
-	"github.com/golang-migrate/migrate/v4"
 	"github.com/urfave/cli/v2"
 
 	_ "swclabs/swipecore/docs"
@@ -30,33 +28,6 @@ import (
 )
 
 var Command = []*cli.Command{
-	{
-		Name:    "migrate",
-		Aliases: []string{"m"},
-		Usage:   "migrate database",
-		Action: func(c *cli.Context) error {
-			const migrateUrl = "file://pkg/db/migration/"
-			databaseUrl, err := utils.ConnectionURLBuilder("pg-migrate")
-			if err != nil {
-				return err
-			}
-			_migrate, err := migrate.New(migrateUrl, databaseUrl)
-			if err != nil {
-				return err
-			}
-			switch c.Args().First() {
-			case "up":
-				if err := _migrate.Up(); !errors.Is(err, migrate.ErrNoChange) {
-					return err
-				}
-			case "down":
-				if err := _migrate.Down(); !errors.Is(err, migrate.ErrNoChange) {
-					return err
-				}
-			}
-			return nil
-		},
-	},
 	{
 		Name:    "worker",
 		Aliases: []string{"w"},
@@ -76,7 +47,7 @@ var Command = []*cli.Command{
 	{
 		Name:    "server",
 		Aliases: []string{"s"},
-		Usage:   "run app server",
+		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
 			app := fx.New(
 				boot.FxRestModule,
@@ -95,9 +66,9 @@ var Command = []*cli.Command{
 func NewClient() *cli.App {
 	newApp := &cli.App{
 		Name:        "swipe",
-		Usage:       "Swipe Project",
+		Usage:       "swipe",
 		Version:     "0.0.1",
-		Description: "Swipe API server",
+		Description: "Swipe API server cli",
 		Commands:    Command,
 	}
 

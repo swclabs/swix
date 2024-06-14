@@ -25,7 +25,7 @@ type IProductService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// ctg is a pointer to the Categories object to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertCategory(ctx context.Context, ctg *domain.Categories) error
+	InsertCategory(ctx context.Context, ctg domain.Categories) error
 
 	// UploadProductImage uploads images for a product.
 	// ctx is the context to manage the request's lifecycle.
@@ -56,11 +56,11 @@ type IProductService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// product contains the warehouse product details to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertIntoWarehouse(ctx context.Context, product domain.WarehouseStructure) error
+	InsertIntoWarehouse(ctx context.Context, product domain.WarehouseStruct) error
 
 	// GetProductsInWarehouse retrieves product details from the warehouse.
 	// ctx is the context to manage the request's lifecycle.
 	// productID, ram, ssd, and color specify the product attributes to retrieve.
-	// Returns a pointer to the WarehouseType object and an error if any issues occur during the retrieval process.
-	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseType, error)
+	// Returns a pointer to the WarehouseSchema object and an error if any issues occur during the retrieval process.
+	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseSchema, error)
 }

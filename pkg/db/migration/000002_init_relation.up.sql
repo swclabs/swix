@@ -26,11 +26,11 @@ ALTER TABLE "suppliers_address" ADD FOREIGN KEY ("address_uuid") REFERENCES "add
 ALTER TABLE "suppliers_address" ADD FOREIGN KEY ("suppliers_id") REFERENCES "suppliers" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "product_in_cart" ADD FOREIGN KEY ("cart_id") REFERENCES "carts" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "product_in_cart" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "product_in_cart" ADD FOREIGN KEY ("product_in_warehouse_id") REFERENCES "warehouse" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "product_in_order" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "product_in_order" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "product_in_order" ADD FOREIGN KEY ("product_in_warehouse_id") REFERENCES "warehouse" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "favorite_product" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "favorite_product" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "favorite_product" ADD FOREIGN KEY ("product_in_warehouse_id") REFERENCES "warehouse" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "warehouse" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,13 +1,10 @@
 package domain
 
-const SuppliersTable = "suppliers"
-const SuppliersAddressTable = "supplier_address"
-
 // Suppliers table
 type Suppliers struct {
-	Id    string `json:"id" gorm:"column:id"`
-	Name  string `json:"name" gorm:"column:name"`
-	Email string `json:"email" gorm:"column:email"`
+	Id    string `json:"id" db:"id"`
+	Name  string `json:"name" db:"name"`
+	Email string `json:"email" db:"email"`
 }
 
 // SuppliersAddress suppliers address table
@@ -17,9 +14,11 @@ type Suppliers struct {
 //		"address_uuid" bigint NOT NULL
 //	  );
 type SuppliersAddress struct {
-	SuppliersID string `json:"suppliers_id" gorm:"column:suppliers_id"`
-	AddressUuiD string `json:"address_uuid" gorm:"column:address_uuid"`
+	SuppliersID string `json:"suppliers_id" db:"suppliers_id"`
+	AddressUuiD string `json:"address_uuid" db:"address_uuid"`
 }
+
+/*****************************************************************************/
 
 type SupplierSlices struct {
 	Data []Suppliers `json:"data"`
@@ -28,8 +27,8 @@ type SupplierSlices struct {
 type SuppliersReq struct {
 	Name     string `json:"name" validate:"required"`
 	Email    string `json:"email" validate:"email,required"`
-	City     string `json:"city" gorm:"column:city"`
-	Ward     string `json:"ward" gorm:"column:ward"`
-	District string `json:"district" gorm:"column:district"`
-	Street   string `json:"street" gorm:"column:street"`
+	City     string `json:"city" db:"city"`
+	Ward     string `json:"ward" db:"ward"`
+	District string `json:"district" db:"district"`
+	Street   string `json:"street" db:"street"`
 }

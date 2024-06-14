@@ -41,8 +41,8 @@ func NewProducts(services *products.ProductService) *Products {
 // @Param ram query number true "ram"
 // @Param ssd query number true "ssd"
 // @Param color query string true "color"
-// @Success 200 {object} domain.WarehouseType
-// @Register /warehouse [GET]
+// @Success 200 {object} domain.WarehouseSchema
+// @Router /warehouse [GET]
 func (p *Products) GetProductAvailability(c echo.Context) error {
 	pid := c.QueryParam("pid")
 	if pid == "" {
@@ -70,7 +70,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 // @Produce json
 // @Param limit query number true "limit number"
 // @Success 200 {object} domain.CategorySlices
-// @Register /categories [GET]
+// @Router /categories [GET]
 func (p *Products) GetCategories(c echo.Context) error {
 	limit := c.QueryParam("limit")
 	if limit == "" {
@@ -98,7 +98,7 @@ func (p *Products) GetCategories(c echo.Context) error {
 // @Produce json
 // @Param limit query int true "limit number of products"
 // @Success 200 {object} domain.ProductsRes
-// @Register /products [GET]
+// @Router /products [GET]
 func (p *Products) GetProductLimit(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil {
@@ -124,7 +124,7 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 // @Produce json
 // @Param login body domain.CategoriesSwagger true "Categories Request"
 // @Success 201 {object} domain.OK
-// @Register /categories [POST]
+// @Router /categories [POST]
 func (p *Products) InsertCategory(c echo.Context) error {
 	var request domain.Categories
 	if err := c.Bind(&request); err != nil {
@@ -137,7 +137,7 @@ func (p *Products) InsertCategory(c echo.Context) error {
 			Msg: _valid,
 		})
 	}
-	if err := p.Services.InsertCategory(c.Request().Context(), &request); err != nil {
+	if err := p.Services.InsertCategory(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "category data invalid",
 		})
@@ -156,7 +156,7 @@ func (p *Products) InsertCategory(c echo.Context) error {
 // @Param img formData file true "image of product"
 // @Success 200 {object} domain.OK
 // @Failure 400 {object} domain.Error
-// @Register /products/img [POST]
+// @Router /products/img [POST]
 func (p *Products) UploadProductImage(c echo.Context) error {
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -190,7 +190,7 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 // @Produce json
 // @Param product body domain.ProductReq true "Product Request"
 // @Success 200 {object} domain.UploadProductRes
-// @Register /products [POST]
+// @Router /products [POST]
 func (p *Products) UploadProduct(c echo.Context) error {
 	// bind json to structure
 	var productReq domain.ProductReq
@@ -225,7 +225,7 @@ func (p *Products) UploadProduct(c echo.Context) error {
 // @Produce json
 // @Param limit query int true "limit number of suppliers"
 // @Success 200 {object} domain.SupplierSlices
-// @Register /suppliers [GET]
+// @Router /suppliers [GET]
 func (p *Products) GetSupplier(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil {
@@ -251,7 +251,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 // @Produce json
 // @Param SuppliersReq body domain.SuppliersReq true "Suppliers Request"
 // @Success 201 {object} domain.OK
-// @Register /suppliers [POST]
+// @Router /suppliers [POST]
 func (p *Products) InsertSupplier(c echo.Context) error {
 	var req domain.SuppliersReq
 	if err := c.Bind(&req); err != nil {
@@ -279,11 +279,11 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param WarehouseStructure body domain.WarehouseStructure true "Warehouse Request"
+// @Param WarehouseStruct body domain.WarehouseStruct true "Warehouse Request"
 // @Success 201 {object} domain.OK
-// @Register /warehouse [POST]
+// @Router /warehouse [POST]
 func (p *Products) AddToWarehouse(c echo.Context) error {
-	var req domain.WarehouseStructure
+	var req domain.WarehouseStruct
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),

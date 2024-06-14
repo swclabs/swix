@@ -3,17 +3,10 @@ package accounts
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
-
-	"gorm.io/gorm"
 )
 
 // IAccountRepository implements all methods of Account to access the database.
 type IAccountRepository interface {
-	// Use sets the transaction connection.
-	// tx is the transaction connection using gorm.DB.
-	// Returns an instance of IAccountRepository with the transaction set.
-	Use(tx *gorm.DB) IAccountRepository
-
 	// GetByEmail retrieves an account by email.
 	// ctx is the context to manage the request's lifecycle.
 	// email is the email address to search for.
@@ -24,11 +17,11 @@ type IAccountRepository interface {
 	// ctx is the context to manage the request's lifecycle.
 	// acc is a pointer to the Account object to be added.
 	// Returns an error if any issues occur during the insertion process.
-	Insert(ctx context.Context, acc *domain.Account) error
+	Insert(ctx context.Context, acc domain.Account) error
 
 	// SaveInfo saves the account information to the database.
 	// ctx is the context to manage the request's lifecycle.
 	// acc is a pointer to the Account object to be saved.
 	// Returns an error if any issues occur during the saving process.
-	SaveInfo(ctx context.Context, acc *domain.Account) error
+	SaveInfo(ctx context.Context, acc domain.Account) error
 }

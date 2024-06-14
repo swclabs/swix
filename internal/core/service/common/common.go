@@ -4,14 +4,21 @@ import (
 	"context"
 	"fmt"
 	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/pkg/lib/worker"
 )
 
 type CommonService struct {
 	Task
 }
 
-func New() *CommonService {
-	return &CommonService{}
+func New(
+	client *worker.Client,
+) *CommonService {
+	return &CommonService{
+		Task{
+			worker: client,
+		},
+	}
 }
 
 func (common *CommonService) HealthCheck(ctx context.Context) domain.HealthCheckResponse {

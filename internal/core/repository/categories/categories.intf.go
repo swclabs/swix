@@ -11,7 +11,7 @@ type ICategoriesRepository interface {
 	// ctx is the context to manage the request's lifecycle.
 	// ctg is a pointer to the Categories object to be added.
 	// Returns an error if any issues occur during the insertion process.
-	Insert(ctx context.Context, ctg *domain.Categories) error
+	Insert(ctx context.Context, ctg domain.Categories) error
 
 	// GetLimit retrieves a list of categories with a specified limit.
 	// ctx is the context to manage the request's lifecycle.

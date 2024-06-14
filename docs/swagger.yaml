@@ -45,7 +45,7 @@ definitions:
     - text_color
     - title
     type: object
-  domain.CollectionTypeSwagger:
+  domain.CollectionSchemaSwagger:
     properties:
       body:
         $ref: '#/definitions/domain.CollectionBodySwagger'
@@ -341,27 +341,11 @@ definitions:
     - phone_number
     - username
     type: object
-  domain.WarehouseStructure:
+  domain.WarehouseSchema:
     properties:
       available:
         type: string
-      model:
-        type: string
-      price:
-        type: string
-      product_id:
-        type: string
-      specs:
-        $ref: '#/definitions/domain.SpecsDetail'
-    required:
-    - available
-    - model
-    - price
-    - product_id
-    type: object
-  domain.WarehouseType:
-    properties:
-      available:
+      currency_code:
         type: string
       id:
         type: string
@@ -375,6 +359,28 @@ definitions:
         $ref: '#/definitions/domain.SpecsDetail'
     required:
     - available
+    - currency_code
+    - model
+    - price
+    - product_id
+    type: object
+  domain.WarehouseStruct:
+    properties:
+      available:
+        type: string
+      currency_code:
+        type: string
+      model:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: string
+      specs:
+        $ref: '#/definitions/domain.SpecsDetail'
+    required:
+    - available
+    - currency_code
     - model
     - price
     - product_id
@@ -536,7 +542,7 @@ paths:
         name: collection
         required: true
         schema:
-          $ref: '#/definitions/domain.CollectionTypeSwagger'
+          $ref: '#/definitions/domain.CollectionSchemaSwagger'
       produces:
       - application/json
       responses:
@@ -796,7 +802,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.WarehouseType'
+            $ref: '#/definitions/domain.WarehouseSchema'
       tags:
       - products
     post:
@@ -806,10 +812,10 @@ paths:
       parameters:
       - description: Warehouse Request
         in: body
-        name: WarehouseStructure
+        name: WarehouseStruct
         required: true
         schema:
-          $ref: '#/definitions/domain.WarehouseStructure'
+          $ref: '#/definitions/domain.WarehouseStruct'
       produces:
       - application/json
       responses:

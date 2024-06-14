@@ -1,28 +1,56 @@
-/*
-Package boot implement api server for swipe application
+/**
+ * boot folder representing the delevery layer in clean architecture
+ * you can use this folder to define any configuration settings or
+ * operation, start-up applications
+
+ * Package boot implement api server for swipe application
+
+ * You can use _Server to connect to specific service adapters.
+ * use fx Framework (uber-go/fx) to create your own adapters
+ * with dependency injection pattern.
+
+ * For each FxModule from the layers in the project, you can
+ * add them to the Fx.New method to provide the necessary
+ * constructors for a smooth application startup.
+
+ * You can find more information about the fx.go in each directory
+ * representing the layers of the project
+
+ * Then you can use _Server to connect adapter through Connect methods
+
+ * See the example below.
 
 Example:
 
-	package main
+package main
 
-	import (
-		"fmt"
-		"log"
+import (
+	"log"
+	"swclabs/swipecore/boot"
+	"swclabs/swipecore/boot/adapter"
 
-		"swclabs/swipecore/boot"
-		"swclabs/swipecore/boot/adapter"
-		"swclabs/swipecore/internal/config"
+	"go.uber.org/fx"
+)
+
+func StartServer(server boot.IServer, adapter adapter.IAdapter) {
+	go func() {
+		log.Fatal(server.Connect(adapter))
+	}()
+}
+
+func main() {
+	app := fx.New(
+		boot.FxRestModule,
+		fx.Provide(
+			adapter.NewAdapter,
+			boot.NewServer,
+		),
+		fx.Invoke(StartServer),
 	)
+	app.Run()
+}
 
-	func main() {
-		addr := fmt.Sprintf("%s:%s", config.Host, config.Port)
-		server := boot.NewServer(addr)
-		adapt := adapter.New(adapter.TypeBase)
 
-		if err := server.Connect(adapt); err != nil {
-			log.Fatal(err)
-		}
-	}
 */
 
 package boot
@@ -30,9 +58,10 @@ package boot
 import (
 	"context"
 	"fmt"
+	"log"
 	"swclabs/swipecore/boot/adapter"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/lib/worker"
+	"swclabs/swipecore/pkg/db"
 
 	"go.uber.org/fx"
 )
@@ -49,6 +78,8 @@ type _Server struct {
 	address string //
 }
 
+// NewServer creates a new server instance
+// Use for fx Framework and more
 func NewServer(env config.Env) IServer {
 	return &_Server{
 		address: fmt.Sprintf("%s:%s", env.Host, env.Port),
@@ -57,22 +88,43 @@ func NewServer(env config.Env) IServer {
 
 // Connect to module via adapter
 //
-// Example:
+//	func main() {
+//		var (
+//			env = config.LoadEnv()
+//			commonService = common.New(worker.NewClient(env))
+//			commonController = controller.NewCommon(commonService)
+//			commonRouter = router.NewCommon(commonController)
+//			httpServer = http.NewServer(commonRouter, router.NewDocs())
+//			adapt = adapter.NewBaseAdapter(httpServer)
+//			server = boot.NewServer(env)
+//		)
 //
-//	server := boot.NewServer("localhost:8000")
-//	adapter := adapter.NewAdapter()
-//	server.Connect(adapter)
+//		log.Fatal(server.Connect(adapt))
+//	}
 func (server *_Server) Connect(adapter adapter.IAdapter) error {
 	return adapter.Run(server.address)
 }
 
-func StartServer(lc fx.Lifecycle, server IServer, env config.Env,
-	adapter adapter.IAdapter,
-) {
+// StartServer used to start a server, through to fx.Invoke() method
+//
+//	app := fx.New(
+//		boot.FxRestModule,
+//		fx.Provide(
+//			adapter.NewAdapter,
+//			boot.NewServer,
+//		),
+//		fx.Invoke(boot.StartServer), // <-- run here
+//	)
+//	app.Run()
+func StartServer(lc fx.Lifecycle, server IServer, adapter adapter.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			worker.SetBroker(env.RedisHost, env.RedisPort, env.RedisPassword)
-			go server.Connect(adapter)
+			if err := db.MigrateUp(); err != nil {
+				return err
+			}
+			go func() {
+				log.Fatal(server.Connect(adapter))
+			}()
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {

@@ -8,19 +8,19 @@ import (
 
 const TypeCommon = "common"
 
-type Common struct{}
-
-func newCommon() *Common {
-	return &Common{}
+type Common struct {
+	controllers controller.ICommon
 }
 
-func NewCommon() *Common {
-	return &Common{}
+func NewCommon(controllers *controller.Common) *Common {
+	return &Common{
+		controllers: controllers,
+	}
 }
 
 func (c *Common) Routers(e *echo.Echo) {
 	r := e.Group("/common")
-	r.GET("/healthcheck", controller.HealthCheck)
-	r.GET("/worker", controller.WorkerCheck)
+	r.GET("/healthcheck", c.controllers.HealthCheck)
+	r.GET("/worker", c.controllers.WorkerCheck)
 	r.GET("/foo", controller.Foo)
 }

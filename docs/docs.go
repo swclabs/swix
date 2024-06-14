@@ -251,7 +251,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CollectionTypeSwagger"
+                            "$ref": "#/definitions/domain.CollectionSchemaSwagger"
                         }
                     }
                 ],
@@ -649,7 +649,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.WarehouseType"
+                            "$ref": "#/definitions/domain.WarehouseSchema"
                         }
                     }
                 }
@@ -668,11 +668,11 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Warehouse Request",
-                        "name": "WarehouseStructure",
+                        "name": "WarehouseStruct",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.WarehouseStructure"
+                            "$ref": "#/definitions/domain.WarehouseStruct"
                         }
                     }
                 ],
@@ -755,7 +755,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CollectionTypeSwagger": {
+        "domain.CollectionSchemaSwagger": {
             "type": "object",
             "required": [
                 "body",
@@ -1194,16 +1194,23 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.WarehouseStructure": {
+        "domain.WarehouseSchema": {
             "type": "object",
             "required": [
                 "available",
+                "currency_code",
                 "model",
                 "price",
                 "product_id"
             ],
             "properties": {
                 "available": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "model": {
@@ -1220,10 +1227,11 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.WarehouseType": {
+        "domain.WarehouseStruct": {
             "type": "object",
             "required": [
                 "available",
+                "currency_code",
                 "model",
                 "price",
                 "product_id"
@@ -1232,7 +1240,7 @@ const docTemplate = `{
                 "available": {
                     "type": "string"
                 },
-                "id": {
+                "currency_code": {
                     "type": "string"
                 },
                 "model": {

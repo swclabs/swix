@@ -7,87 +7,92 @@ import (
 	"swclabs/swipecore/pkg/db"
 
 	"github.com/google/uuid"
-	"gorm.io/gorm"
+	"github.com/jackc/pgx/v5"
 )
 
 type Suppliers struct {
-	conn *gorm.DB
+	conn *pgx.Conn
 }
 
-func New(conn *gorm.DB) *Suppliers {
-	return &Suppliers{
-		conn: conn,
-	}
-}
-
-// Use implements domain.ISuppliersRepository.
-func (supplier *Suppliers) Use(tx *gorm.DB) ISuppliersRepository {
-	supplier.conn = tx
-	return supplier
+func New(conn *pgx.Conn) *Suppliers {
+	return &Suppliers{conn: conn}
 }
 
 // Insert implements domain.ISuppliersRepository.
-func (supplier *Suppliers) Insert(ctx context.Context, supp domain.Suppliers, addr domain.Addresses) error {
-	return supplier.conn.Transaction(func(tx *gorm.DB) error {
-		if err := db.SafeWriteQuery(
-			ctx,
-			tx,
-			InsertIntoSuppliers,
-			supp.Name, supp.Email,
-		); err != nil {
-			return err
-		}
-		//_supplier, err := NewSuppliers().Use(tx).GetByPhone(ctx, supp.Email)
-		_supplier, err := New(tx).GetByPhone(ctx, supp.Email)
-		if err != nil {
-			return err
-		}
-		addr.Uuid = uuid.New().String()
+func (supplier *Suppliers) Insert(
+	ctx context.Context, supp domain.Suppliers, addr domain.Addresses) error {
 
-		//if err := addresses.NewAddresses().Use(tx).Insert(ctx, &addr); err != nil {
-		//	return err
-		//}
+	tx, err := supplier.conn.Begin(ctx)
+	if err != nil {
+		return err
+	}
 
-		//return NewSuppliers().Use(tx).InsertAddress(ctx, domain.SuppliersAddress{
-		//	SuppliersID: _supplier.Id,
-		//	AddressUuiD: addr.Uuid,
-		//})
-
-		if err := addresses.New(tx).Insert(ctx, &addr); err != nil {
-			return err
+	var errTx error = nil
+	defer func() {
+		if errTx != nil {
+			// Sentry Capture failed
+			tx.Rollback(ctx)
 		}
-		return New(tx).InsertAddress(ctx, domain.SuppliersAddress{
-			SuppliersID: _supplier.Id,
-			AddressUuiD: addr.Uuid,
-		})
+	}()
+
+	if errTx = db.SafePgxWriteQuery(
+		ctx, tx.Conn(), insertIntoSuppliers, supp.Name, supp.Email); errTx != nil {
+		return errTx
+	}
+
+	_supplier, errTx := New(tx.Conn()).GetByPhone(ctx, supp.Email)
+	if errTx != nil {
+		return errTx
+	}
+
+	addr.Uuid = uuid.New().String()
+	if errTx = addresses.New(tx.Conn()).Insert(ctx, addr); errTx != nil {
+		return errTx
+	}
+
+	errTx = New(tx.Conn()).InsertAddress(ctx, domain.SuppliersAddress{
+		SuppliersID: _supplier.Id,
+		AddressUuiD: addr.Uuid,
 	})
+
+	return tx.Commit(ctx)
 }
 
 // InsertAddress implements domain.ISuppliersRepository.
-func (supplier *Suppliers) InsertAddress(ctx context.Context, addr domain.SuppliersAddress) error {
-	return db.SafeWriteQuery(
-		ctx,
-		supplier.conn,
-		InsertIntoSuppliersAddress,
+func (supplier *Suppliers) InsertAddress(
+	ctx context.Context, addr domain.SuppliersAddress) error {
+	return db.SafePgxWriteQuery(
+		ctx, supplier.conn,
+		insertIntoSuppliersAddress,
 		addr.SuppliersID, addr.AddressUuiD,
 	)
 }
 
 // GetLimit implements domain.ISuppliersRepository.
-func (supplier *Suppliers) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
-	var _suppliers []domain.Suppliers
-	if err := supplier.conn.
-		Table(domain.SuppliersTable).Find(&_suppliers).Limit(limit).Error; err != nil {
+func (supplier *Suppliers) GetLimit(
+	ctx context.Context, limit int) ([]domain.Suppliers, error) {
+	// var _suppliers []domain.Suppliers
+	rows, err := supplier.conn.Query(ctx, selectSupplierByEmailLimit, limit)
+	if err != nil {
+		return nil, err
+	}
+	_suppliers, err := pgx.CollectRows[domain.Suppliers](rows, pgx.RowToStructByName[domain.Suppliers])
+	if err != nil {
 		return nil, err
 	}
 	return _suppliers, nil
 }
 
 // GetByPhone implements domain.ISuppliersRepository.
-func (supplier *Suppliers) GetByPhone(ctx context.Context, email string) (*domain.Suppliers, error) {
-	var _supplier domain.Suppliers
-	if err := supplier.conn.
-		Table(domain.SuppliersTable).Where("email = ?", email).First(&_supplier).Error; err != nil {
+func (supplier *Suppliers) GetByPhone(
+	ctx context.Context, email string) (*domain.Suppliers, error) {
+	// var _supplier domain.Suppliers
+	rows, err := supplier.conn.Query(ctx, selectByEmail, email)
+	if err != nil {
+		return nil, err
+	}
+	_supplier, err := pgx.CollectOneRow[domain.Suppliers](rows, pgx.RowToStructByName[domain.Suppliers])
+	if err != nil {
 		return nil, err
 	}
 	return &_supplier, nil

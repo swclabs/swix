@@ -2,29 +2,11 @@ package domain
 
 // Collection use to query data from database, define in database, used to save a CollectionBody
 type Collection struct {
-	Id       int64  `json:"id"`
-	Created  string `json:"created"`
-	Position string `json:"position"` // Example: mac#1, mac#2
-	Headline string `json:"headline"` // Ex: Get to know Mac
-	Body     string `json:"body"`
-}
-
-/***********************************************************************************************/
-
-// LocalizationCollection is a structure define in Database used to save a Localization json file
-type LocalizationCollection struct {
-	Id           int64  `json:"id"`
-	Localization string `json:"localization"` // see Localization bellows
-}
-
-// Localization is a struct to bind body of LocalizationCollection to structure type
-type Localization struct {
-}
-
-// LocalizationType is a type used to request and responses
-type LocalizationType struct {
-	Id           int64        `json:"id"`
-	Localization Localization `json:"localization"`
+	Id       int64  `json:"id" db:"collection"`
+	Created  string `json:"created" db:"created"`
+	Position string `json:"position" db:"position"` // Example: mac#1, mac#2
+	Headline string `json:"headline" db:"headline"` // Ex: Get to know Mac
+	Body     string `json:"body" db:"body"`
 }
 
 /***********************************************************************************************/
@@ -45,8 +27,8 @@ type CollectionsBody struct {
 	Created string `json:"created"`
 }
 
-// CollectionType is a type use to accept request and response
-type CollectionType struct {
+// CollectionSchema is a type use to accept request and response
+type CollectionSchema struct {
 	Id       int64          `json:"id"`
 	Created  string         `json:"created"`
 	Position string         `json:"position" validate:"required"`
@@ -68,7 +50,7 @@ type CollectionUploadRes struct {
 
 /*** Swagger ***/
 
-type CollectionTypeSwagger struct {
+type CollectionSchemaSwagger struct {
 	Position string                `json:"position" validate:"required"`
 	Headline string                `json:"headline" validate:"required"`
 	Body     CollectionBodySwagger `json:"body" validate:"required"`
@@ -93,15 +75,15 @@ type HeadlineBannerSliceBody struct {
 	Created string `json:"created"`
 }
 
-// HeadlineBannerType user body request & response
-type HeadlineBannerType struct {
+// HeadlineBannerSchema user body request & response
+type HeadlineBannerSchema struct {
 	Position string             `json:"position" validate:"required"`
 	Created  string             `json:"created"`
 	Body     HeadlineBannerBody `json:"body" validate:"required"`
 }
 
-// HeadlineBannerTypeSwagger used to generate swagger documents
-type HeadlineBannerTypeSwagger struct {
+// HeadlineBannerSchemaSwagger used to generate swagger documents
+type HeadlineBannerSchemaSwagger struct {
 	Position string             `json:"position" validate:"required"`
 	Body     HeadlineBannerBody `json:"body" validate:"required"`
 }

@@ -1,40 +1,29 @@
 // Package repository
-// Author: Duc Hung Ho @kieranhoo
+// Author: Duc Hung Ho @kyeranyo
 package addresses
 
 import (
 	"context"
-	"errors"
-	"gorm.io/gorm"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
+
+	"github.com/jackc/pgx/v5"
 )
 
 type Addresses struct {
-	conn *gorm.DB
+	conn *pgx.Conn
 }
 
-func New(conn *gorm.DB) *Addresses {
+func New(conn *pgx.Conn) *Addresses {
 	return &Addresses{
 		conn: conn,
 	}
 }
 
-// Use implements domain.IAddressRepository.
-func (addr *Addresses) Use(tx *gorm.DB) IAddressRepository {
-	addr.conn = tx
-	return addr
-}
-
 // Insert implements domain.IAddressRepository.
-func (addr *Addresses) Insert(ctx context.Context, data *domain.Addresses) error {
-	if data == nil {
-		return errors.New("input data invalid (nil)")
-	}
-	return db.SafeWriteQuery(
-		ctx,
-		addr.conn,
-		InsertIntoAddresses,
+func (addr *Addresses) Insert(ctx context.Context, data domain.Addresses) error {
+	return db.SafePgxWriteQuery(
+		ctx, addr.conn, insertIntoAddresses,
 		data.Street, data.Ward, data.District, data.City, data.Uuid,
 	)
 }

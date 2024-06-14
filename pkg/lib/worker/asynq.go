@@ -9,14 +9,16 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-// Priority is a queue priority define in asynq
-type Priority map[string]int
+type (
+	// Priority is a queue priority define in asynq
+	Priority map[string]int
 
-// Queue is a map of queue name and handler function
-type Queue map[string]func(context.Context, *asynq.Task) error
+	// Queue is a map of queue name and handler function
+	Queue map[string]func(context.Context, *asynq.Task) error
 
-// HandleFunc is a sort of handler function type
-type HandleFunc func(ctx context.Context, task *asynq.Task) error
+	// HandleFunc is a sort of handler function type
+	HandleFunc func(ctx context.Context, task *asynq.Task) error
+)
 
 // Engine includes all components of the asynq server
 type Engine struct {
@@ -53,7 +55,7 @@ func (w *Engine) RegisterQueue(hfn func() (taskName string, fn HandleFunc)) {
 }
 
 func (w *Engine) Run(concurrency int) error {
-	//// Create a new Asynq server
+	// Create a new Asynq server
 	w.server = asynq.NewServer(w.broker, asynq.Config{
 		// Specify how many concurrent workers to use.
 		Concurrency: concurrency,

@@ -15,7 +15,7 @@ type IProductInCartRepository interface {
 	// AddProduct adds a new product to the shopping cart.
 	// product is a pointer to the ProductInCart object to be added.
 	// Returns an error if any issues occur during the addition process.
-	AddProduct(product *domain.ProductInCart) error
+	AddProduct(product domain.ProductInCart) error
 
 	// RemoveProduct removes a product from the shopping cart.
 	// productID is the ID of the product to be removed.
@@ -26,7 +26,7 @@ type IProductInCartRepository interface {
 	// Save updates the information of an existing product in the shopping cart.
 	// product is a pointer to the ProductInCart object to be saved.
 	// Returns an error if any issues occur during the saving process.
-	Save(product *domain.ProductInCart) error
+	Save(product domain.ProductInCart) error
 }
 
 // IProductRepository defines methods to interact with product (Products) data.
@@ -35,7 +35,7 @@ type IProductRepository interface {
 	// ctx is the context to manage the request's lifecycle.
 	// prd is a pointer to the Products object to be added.
 	// Returns the ID of the newly inserted product and an error if any issues occur during the insertion process.
-	Insert(ctx context.Context, prd *domain.Products) (int64, error)
+	Insert(ctx context.Context, prd domain.Products) (int64, error)
 
 	// GetLimit retrieves a list of products with a specified limit.
 	// ctx is the context to manage the request's lifecycle.
