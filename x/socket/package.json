@@ -50,7 +50,7 @@
     "eslint": "8.42.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.29.1",
-    "typescript": "5.3.3"
+    "typescript": "5.5.2"
   },
   "resolutions": {
     "string-width": "4.2.3"
