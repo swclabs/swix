@@ -4,7 +4,7 @@ import "github.com/shopspring/decimal"
 
 type Warehouse struct {
 	Id           string          `json:"id" db:"id"`
-	ProductID    string          `json:"product_id" db:"product_id"`
+	ProductID    int64           `json:"product_id" db:"product_id"`
 	Model        string          `json:"model" db:"model"`
 	Specs        string          `json:"specs" db:"specs"`
 	Available    string          `json:"available" db:"available"`

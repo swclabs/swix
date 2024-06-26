@@ -18,4 +18,15 @@ const (
 		FROM products
 		LIMIT $1;
 	`
+
+	selectById string = `
+		SELECT *
+		FROM products
+		WHERE id = $1;
+	`
+
+	deleteById = `
+		DELETE FROM products
+		WHERE id = $1;
+	`
 )

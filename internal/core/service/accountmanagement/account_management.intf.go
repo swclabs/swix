@@ -6,17 +6,10 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 )
 
-type IAccountManagementTask interface {
-	DelaySignUp(req domain.SignUpReq) error
-	DelayUpdateUserInfo(req domain.UserUpdate) error
-	DelayOAuth2SaveUser(req domain.OAuth2SaveUser) error
-}
-
 // IAccountManagement : Module for Account Management with use-cases.
 // Actor: Admin & Customer (User)
 type IAccountManagement interface {
-	IAccountManagementTask
-
+	CallTask() IAccountManagement
 	// SignUp registers a new user.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the sign-up request details.

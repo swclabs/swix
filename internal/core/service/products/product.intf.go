@@ -63,4 +63,6 @@ type IProductService interface {
 	// productID, ram, ssd, and color specify the product attributes to retrieve.
 	// Returns a pointer to the WarehouseSchema object and an error if any issues occur during the retrieval process.
 	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseSchema, error)
+
+	DeleteProductById(ctx context.Context, productId int64) error
 }

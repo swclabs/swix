@@ -10,26 +10,24 @@ import (
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
-
-	"github.com/jackc/pgx/v5"
 )
 
 type Accounts struct {
-	conn *pgx.Conn
+	db db.IDatabase
 }
 
-func New(conn *pgx.Conn) *Accounts {
+func New(conn db.IDatabase) IAccountRepository {
 	return &Accounts{conn}
 }
 
 // GetByEmail implements domain.IAccountRepository.
 func (account *Accounts) GetByEmail(
 	ctx context.Context, email string) (*domain.Account, error) {
-	rows, err := account.conn.Query(ctx, SelectByEmail, email)
+	rows, err := account.db.Query(ctx, SelectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
-	acc, err := pgx.CollectOneRow[domain.Account](rows, pgx.RowToStructByName[domain.Account])
+	acc, err := db.CollectOneRow[domain.Account](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -40,8 +38,7 @@ func (account *Accounts) GetByEmail(
 func (account *Accounts) Insert(
 	ctx context.Context, acc domain.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
-	return db.SafePgxWriteQuery(
-		ctx, account.conn,
+	return account.db.SafeWrite(ctx,
 		InsertIntoAccounts,
 		acc.Username, acc.Role, acc.Email, acc.Password,
 		createdAt, acc.Type,
@@ -55,23 +52,20 @@ func (account *Accounts) SaveInfo(
 		return errors.New("missing key: email ")
 	}
 	if acc.Username != "" {
-		if err := db.SafePgxWriteQuery(
-			ctx, account.conn, UpdateAccountsUsername,
+		if err := account.db.SafeWrite(ctx, UpdateAccountsUsername,
 			acc.Username, acc.Email); err != nil {
 			return err
 		}
 
 	}
 	if acc.Password != "" {
-		if err := db.SafePgxWriteQuery(
-			ctx, account.conn, UpdateAccountsPassword,
+		if err := account.db.SafeWrite(ctx, UpdateAccountsPassword,
 			acc.Password, acc.Email); err != nil {
 			return err
 		}
 	}
 	if acc.Role != "" {
-		if err := db.SafePgxWriteQuery(
-			ctx, account.conn, UpdateAccountsRole,
+		if err := account.db.SafeWrite(ctx, UpdateAccountsRole,
 			acc.Role, acc.Email); err != nil {
 			return err
 		}

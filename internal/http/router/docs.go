@@ -12,7 +12,7 @@ const TypeDocs = "docs"
 
 type Docs struct{}
 
-func NewDocs() *Docs {
+func NewDocs() IRouter {
 	return &Docs{}
 }
 

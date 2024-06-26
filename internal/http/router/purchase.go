@@ -1,21 +1,26 @@
 package router
 
 import (
-	"github.com/labstack/echo/v4"
 	"swclabs/swipecore/internal/http/controller"
+
+	"github.com/labstack/echo/v4"
 )
+
+type IPurchase interface {
+	IRouter
+}
 
 type Purchase struct {
 	controllers controller.IPurchase
 }
 
-func (p Purchase) Routers(e *echo.Echo) {
-	//TODO implement me
-	panic("implement me")
-}
+var _ IRouter = (*Purchase)(nil)
 
-func NewPurchase(controllers *controller.Purchase) *Purchase {
+func NewPurchase(controllers controller.IPurchase) IPurchase {
 	return &Purchase{controllers: controllers}
 }
 
-var _ IRouter = (*Purchase)(nil)
+func (p *Purchase) Routers(e *echo.Echo) {
+	e.POST("/purchase/carts", p.controllers.AddToCarts)
+	e.GET("/purchase/carts", p.controllers.GetCarts)
+}

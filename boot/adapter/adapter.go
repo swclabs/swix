@@ -35,9 +35,10 @@ import (
 	}
 */
 func NewAdapter(server http.IServer,
-	products *router.Products,
-	accountManagement *router.AccountManagement,
-	posts *router.Posts,
+	products router.IProducts,
+	accountManagement router.IAccountManagement,
+	posts router.IPosts,
+	purchase router.IPurchase,
 ) IAdapter {
 	adapter := &_Adapter{
 		server: server,
@@ -46,6 +47,7 @@ func NewAdapter(server http.IServer,
 	adapter.server.Connect(products)
 	adapter.server.Connect(accountManagement)
 	adapter.server.Connect(posts)
+	adapter.server.Connect(purchase)
 
 	return adapter
 }

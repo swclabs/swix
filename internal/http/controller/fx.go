@@ -9,6 +9,7 @@ var FxModule = fx.Options(
 		NewPosts,
 		NewProducts,
 		NewAccountManagement,
+		NewPurchase,
 		NewCommon,
 	),
 )

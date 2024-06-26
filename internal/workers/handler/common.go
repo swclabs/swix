@@ -15,7 +15,7 @@ type Common struct {
 	handler     common.ICommonService // create handler for services
 }
 
-func NewCommonConsume(_common *common.CommonService) *Common {
+func NewCommonConsume(_common *common.Service) *Common {
 	return &Common{
 		handler: _common,
 	}
@@ -23,7 +23,7 @@ func NewCommonConsume(_common *common.CommonService) *Common {
 
 func (common *Common) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
 	// get task name from delay function
-	taskName = worker.GetTaskName(common.DelayWorkerCheck)
+	taskName = worker.GetTaskName(common.WorkerCheck)
 	// implement handler function base on delay function
 	return taskName, func(_ context.Context, task *asynq.Task) error {
 		var num int64

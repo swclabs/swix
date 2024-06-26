@@ -1,6 +1,6 @@
 package domain
 
-type HealthCheckResponse struct {
+type HealthCheckRes struct {
 	Status string `json:"status"`
 }
 
@@ -11,4 +11,3 @@ type Error struct {
 type OK struct {
 	Msg string `json:"msg"`
 }
-

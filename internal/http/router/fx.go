@@ -6,10 +6,10 @@ import (
 
 var FxModule = fx.Options(
 	fx.Provide(
+		New,
 		NewProducts,
-		NewCommon,
-		NewDocs,
 		NewAccountManagement,
 		NewPosts,
+		NewPurchase,
 	),
 )

@@ -28,7 +28,7 @@ import (
 
 // AccountManagement implement domain.AccountManagementService
 type AccountManagement struct {
-	Task    // embedded tasks to call worker consume
+	Task    *Task // embedded tasks to call worker consume
 	User    users.IUserRepository
 	Account accounts.IAccountRepository
 	Address addresses.IAddressRepository
@@ -37,19 +37,23 @@ type AccountManagement struct {
 var _ IAccountManagement = (*AccountManagement)(nil)
 
 func New(
-	user *users.Users,
-	account *accounts.Accounts,
-	address *addresses.Addresses,
+	user users.IUserRepository,
+	account accounts.IAccountRepository,
+	address addresses.IAddressRepository,
 	client *worker.Client,
-) *AccountManagement {
+) IAccountManagement {
 	return &AccountManagement{
-		Task: Task{
+		Task: &Task{
 			worker: client,
 		},
 		User:    user,
 		Account: account,
 		Address: address,
 	}
+}
+
+func (manager *AccountManagement) CallTask() IAccountManagement {
+	return manager.Task
 }
 
 // SignUp user to access system, return error if exist

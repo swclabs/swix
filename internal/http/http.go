@@ -27,14 +27,15 @@ type _Server struct {
 
 var _ IServer = &_Server{}
 
-func NewServer(common *router.Common, swaggerdocs *router.Docs) IServer {
+func NewServer(routers []router.IRouter) IServer {
 	sentry.Init()
 	server := &_Server{
 		engine: echo.New(),
 	}
 	server._InitMiddleware()
-	server.Connect(common)
-	server.Connect(swaggerdocs)
+	for _, _router := range routers {
+		server.Connect(_router)
+	}
 	return server
 }
 

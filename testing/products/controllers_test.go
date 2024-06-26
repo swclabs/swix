@@ -31,7 +31,7 @@ func TestGetProductAvailability(t *testing.T) {
 	price, _ := decimal.NewFromString("10000")
 	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.Warehouse{
 		Id:           "1",
-		ProductID:    "1",
+		ProductID:    1,
 		Model:        "iPhone 15 Pro Max",
 		Available:    "100",
 		Price:        price,

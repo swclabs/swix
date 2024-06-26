@@ -17,6 +17,17 @@ func NewProductsMock() *Mock {
 	return &Mock{}
 }
 
+// DeleteById implements IProductRepository.
+func (p *Mock) DeleteById(ctx context.Context, Id int64) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+// GetById implements IProductRepository.
+func (p *Mock) GetById(ctx context.Context, productId int64) (*domain.Products, error) {
+	panic("unimplemented")
+}
+
 // GetLimit implements domain.IProductRepository.
 func (p *Mock) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
 	args := p.Called(ctx, limit)

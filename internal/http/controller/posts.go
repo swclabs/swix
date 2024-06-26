@@ -23,7 +23,7 @@ type Posts struct {
 	Services posts.IPostsService
 }
 
-func NewPosts(service *posts.Posts) *Posts {
+func NewPosts(service posts.IPostsService) IPosts {
 	return &Posts{
 		Services: service,
 	}
@@ -61,7 +61,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 	}
 	id, err := p.Services.UploadCollections(c.Request().Context(), cardBanner)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -95,7 +95,7 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 	}
 
 	if err := p.Services.UploadCollectionsImage(c.Request().Context(), id, file); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -132,7 +132,7 @@ func (p *Posts) GetSlicesOfCollections(c echo.Context) error {
 
 	slices, err := p.Services.SlicesOfCollections(c.Request().Context(), position, _limit)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}

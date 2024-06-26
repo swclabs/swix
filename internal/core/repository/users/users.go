@@ -18,10 +18,10 @@ import (
 )
 
 type Users struct {
-	conn *pgx.Conn
+	db db.IDatabase
 }
 
-func New(conn *pgx.Conn) *Users {
+func New(conn db.IDatabase) IUserRepository {
 	return &Users{conn}
 }
 
@@ -29,7 +29,7 @@ var _ IUserRepository = (*Users)(nil)
 
 // GetByEmail implements domain.IUserRepository.
 func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
-	rows, err := usr.conn.Query(ctx, SelectByEmail, email)
+	rows, err := usr.db.Query(ctx, SelectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
@@ -42,8 +42,8 @@ func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, e
 
 // Insert implements domain.IUserRepository.
 func (usr *Users) Insert(ctx context.Context, _usr domain.User) error {
-	return db.SafePgxWriteQuery(
-		ctx, usr.conn,
+	return usr.db.SafeWrite(
+		ctx,
 		InsertIntoUsers,
 		_usr.Email, _usr.PhoneNumber, _usr.FirstName, _usr.LastName, _usr.Image,
 	)
@@ -51,7 +51,7 @@ func (usr *Users) Insert(ctx context.Context, _usr domain.User) error {
 
 // Info implements domain.IUserRepository.
 func (usr *Users) Info(ctx context.Context, email string) (*domain.UserInfo, error) {
-	rows, err := usr.conn.Query(ctx, SelectUserInfo, email)
+	rows, err := usr.db.Query(ctx, SelectUserInfo, email)
 	if err != nil {
 		return nil, err
 	}
@@ -68,29 +68,29 @@ func (usr *Users) SaveInfo(ctx context.Context, user domain.User) error {
 		return errors.New("missing key: email ")
 	}
 	if user.FirstName != "" {
-		if err := db.SafePgxWriteQuery(
-			ctx, usr.conn, UpdateUsersFirstname, user.FirstName, user.Email,
+		if err := usr.db.SafeWrite(
+			ctx, UpdateUsersFirstname, user.FirstName, user.Email,
 		); err != nil {
 			return err
 		}
 	}
 	if user.LastName != "" {
-		if err := db.SafePgxWriteQuery(
-			ctx, usr.conn, UpdateUsersFirstname, user.FirstName, user.Email,
+		if err := usr.db.SafeWrite(
+			ctx, UpdateUsersFirstname, user.FirstName, user.Email,
 		); err != nil {
 			return err
 		}
 	}
 	if user.Image != "" {
-		if err := db.SafePgxWriteQuery(
-			ctx, usr.conn, UpdateUsersImage, user.Image, user.Email,
+		if err := usr.db.SafeWrite(
+			ctx, UpdateUsersImage, user.Image, user.Email,
 		); err != nil {
 			return err
 		}
 	}
 	if user.PhoneNumber != "" {
-		if err := db.SafePgxWriteQuery(
-			ctx, usr.conn, UpdateUsersPhoneNumber, user.PhoneNumber, user.Email,
+		if err := usr.db.SafeWrite(
+			ctx, UpdateUsersPhoneNumber, user.PhoneNumber, user.Email,
 		); err != nil {
 			return err
 		}
@@ -103,29 +103,25 @@ func (usr *Users) UpdateProperties(
 	ctx context.Context, query string, user domain.User) error {
 	switch query {
 	case UpdateUsersLastname:
-		if err := db.SafePgxWriteQuery(
-			ctx, usr.conn,
+		if err := usr.db.SafeWrite(ctx,
 			UpdateUsersLastname, user.LastName, user.Email,
 		); err != nil {
 			return err
 		}
 	case UpdateUsersFirstname:
-		if err := db.SafePgxWriteQuery(
-			ctx, usr.conn,
+		if err := usr.db.SafeWrite(ctx,
 			UpdateUsersFirstname, user.FirstName, user.Email,
 		); err != nil {
 			return err
 		}
 	case UpdateUsersPhoneNumber:
-		if err := db.SafePgxWriteQuery(
-			ctx, usr.conn,
+		if err := usr.db.SafeWrite(ctx,
 			UpdateUsersPhoneNumber, user.PhoneNumber, user.Email,
 		); err != nil {
 			return err
 		}
 	case UpdateUsersImage:
-		if err := db.SafePgxWriteQuery(
-			ctx, usr.conn,
+		if err := usr.db.SafeWrite(ctx,
 			UpdateUsersImage, user.Image, user.Email,
 		); err != nil {
 			return err
@@ -136,8 +132,8 @@ func (usr *Users) UpdateProperties(
 
 // OAuth2SaveInfo implements domain.IUserRepository.
 func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.User) error {
-	return db.SafePgxWriteQuery(
-		ctx, usr.conn, InsertUsersConflict, user.Email, user.PhoneNumber,
+	return usr.db.SafeWrite(
+		ctx, InsertUsersConflict, user.Email, user.PhoneNumber,
 		user.FirstName, user.LastName, user.Image,
 	)
 }
@@ -149,22 +145,22 @@ func (usr *Users) TransactionSignUp(
 	if err != nil {
 		return err
 	}
-	tx, err := usr.conn.Begin(ctx)
+	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
 		return err
 	}
-	if err := New(tx.Conn()).Insert(ctx, user); err != nil {
+	if err := New(tx).Insert(ctx, user); err != nil {
 		tx.Rollback(ctx)
 		return err
 	}
 
-	userInfo, err := New(tx.Conn()).GetByEmail(ctx, user.Email)
+	userInfo, err := New(tx).GetByEmail(ctx, user.Email)
 	if err != nil {
 		tx.Rollback(ctx)
 		return err
 	}
 
-	if err := accounts.New(tx.Conn()).Insert(ctx, domain.Account{
+	if err := accounts.New(tx).Insert(ctx, domain.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.Id),
 		Password: hash,
 		Role:     "Customer",
@@ -183,20 +179,20 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.User) e
 	if err != nil {
 		return err
 	}
-	tx, err := usr.conn.Begin(ctx)
+	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
 		return err
 	}
-	if err := New(tx.Conn()).OAuth2SaveInfo(ctx, user); err != nil {
+	if err := New(tx).OAuth2SaveInfo(ctx, user); err != nil {
 		tx.Rollback(ctx)
 		return err
 	}
-	userInfo, err := New(tx.Conn()).GetByEmail(ctx, user.Email)
+	userInfo, err := New(tx).GetByEmail(ctx, user.Email)
 	if err != nil {
 		tx.Rollback(ctx)
 		return err
 	}
-	if err := accounts.New(tx.Conn()).Insert(ctx, domain.Account{
+	if err := accounts.New(tx).Insert(ctx, domain.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.Id),
 		Password: hash,
 		Role:     "Customer",
@@ -211,11 +207,11 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.User) e
 
 // GetByPhone implements domain.IUserRepository.
 func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*domain.User, error) {
-	rows, err := usr.conn.Query(ctx, selectByPhone, nPhone)
+	rows, err := usr.db.Query(ctx, selectByPhone, nPhone)
 	if err != nil {
 		return nil, err
 	}
-	user, err := pgx.CollectOneRow[domain.User](rows, pgx.RowToStructByName[domain.User])
+	user, err := db.CollectOneRow[domain.User](rows)
 	if err != nil {
 		return nil, err
 	}
