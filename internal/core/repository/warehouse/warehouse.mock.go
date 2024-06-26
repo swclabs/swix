@@ -13,6 +13,11 @@ type Mock struct {
 
 var _ IWarehouseRepository = (*Mock)(nil)
 
+// GetById implements IWarehouseRepository.
+func (w *Mock) GetById(ctx context.Context, warehouseId int64) (*domain.Warehouse, error) {
+	panic("unimplemented")
+}
+
 // GetProducts implements domain.IWarehouseRepository.
 func (w *Mock) GetProducts(
 	ctx context.Context, productID, ram, ssd, color string) (*domain.Warehouse, error) {

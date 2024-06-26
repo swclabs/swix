@@ -2,13 +2,20 @@ package orders
 
 import (
 	"swclabs/swipecore/internal/core/domain"
-
-	"github.com/jackc/pgx/v5"
+	"swclabs/swipecore/pkg/db"
 )
 
 type Orders struct {
-	conn *pgx.Conn
+	db db.IDatabase
 }
+
+func New(conn db.IDatabase) IOrdersRepository {
+	return &Orders{
+		db: conn,
+	}
+}
+
+var _ IOrdersRepository = (*Orders)(nil)
 
 func (order *Orders) Create() error {
 	//TODO implement me
@@ -29,11 +36,3 @@ func (order *Orders) Delete(id string) error {
 	//TODO implement me
 	panic("implement me")
 }
-
-func New(conn *pgx.Conn) *Orders {
-	return &Orders{
-		conn: conn,
-	}
-}
-
-var _ IOrdersRepository = (*Orders)(nil)

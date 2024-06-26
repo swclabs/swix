@@ -10,21 +10,21 @@ import (
 )
 
 type Collections struct {
-	conn *pgx.Conn
+	db db.IDatabase
 }
 
 var _ ICollections = (*Collections)(nil)
 
-func New(conn *pgx.Conn) *Collections {
+func New(conn db.IDatabase) ICollections {
 	return &Collections{
-		conn: conn,
+		db: conn,
 	}
 }
 
 func (collection *Collections) UploadCollectionImage(
 	ctx context.Context, collectionId string, url string) error {
-	return db.SafePgxWriteQuery(
-		ctx, collection.conn, UpdateCollectionImage,
+	return collection.db.SafeWrite(
+		ctx, UpdateCollectionImage,
 		url, collectionId,
 	)
 }
@@ -35,15 +35,15 @@ func (collection *Collections) AddCollection(
 	if err != nil {
 		return -1, err
 	}
-	return db.SafePgxWriteQueryReturnId(
-		ctx, collection.conn, InsertIntoCollections,
+	return collection.db.SafeWriteReturn(
+		ctx, InsertIntoCollections,
 		collectionType.Position, collectionType.Headline, string(_collection),
 	)
 }
 
 func (collection *Collections) SlicesOfCollections(
 	ctx context.Context, position string, limit int) ([]domain.Collection, error) {
-	rows, err := collection.conn.Query(ctx, SelectCollectionByPosition, position, limit)
+	rows, err := collection.db.Query(ctx, SelectCollectionByPosition, position, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -61,6 +61,6 @@ func (collection *Collections) AddHeadlineBanner(
 	if err != nil {
 		return err
 	}
-	return db.SafePgxWriteQuery(
-		ctx, collection.conn, InsertIntoCollections, headline.Position, "", string(body))
+	return collection.db.SafeWrite(
+		ctx, InsertIntoCollections, headline.Position, "", string(body))
 }

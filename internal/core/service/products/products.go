@@ -23,17 +23,22 @@ type ProductService struct {
 var _ IProductService = (*ProductService)(nil)
 
 func New(
-	categories *categories.Categories,
-	products *products.Products,
-	suppliers *suppliers.Suppliers,
-	warehouses *warehouse.Warehouse,
-) *ProductService {
+	categories categories.ICategoriesRepository,
+	products products.IProductRepository,
+	suppliers suppliers.ISuppliersRepository,
+	warehouses warehouse.IWarehouseRepository,
+) IProductService {
 	return &ProductService{
 		Categories: categories,
 		Products:   products,
 		Suppliers:  suppliers,
 		Warehouse:  warehouses,
 	}
+}
+
+// DeleteProductById implements domain.IProductService.
+func (s *ProductService) DeleteProductById(ctx context.Context, productId int64) error {
+	return s.Products.DeleteById(ctx, productId)
 }
 
 // GetProductsInWarehouse implements domain.IProductService.

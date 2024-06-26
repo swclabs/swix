@@ -15,4 +15,8 @@ const (
 			specs->>'ssd' = $3 AND 
 			specs->>'color' = $4;
 	`
+
+	getById string = `
+		SELECT * FROM warehouse where id = $1;
+	`
 )

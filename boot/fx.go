@@ -14,7 +14,7 @@ import (
 var _FxDataLayer = fx.Options(
 	fx.Provide(
 		config.LoadEnv,
-		db.CreateConnection,
+		db.New,
 	),
 	repository.FxModule,
 )

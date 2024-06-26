@@ -5,6 +5,7 @@ import (
 	"swclabs/swipecore/internal/core/service/common"
 	"swclabs/swipecore/internal/core/service/posts"
 	"swclabs/swipecore/internal/core/service/products"
+	"swclabs/swipecore/internal/core/service/purchase"
 	"swclabs/swipecore/pkg/lib/worker"
 
 	"go.uber.org/fx"
@@ -17,5 +18,6 @@ var FxModule = fx.Options(
 		products.New,
 		accountmanagement.New,
 		posts.New,
+		purchase.New,
 	),
 )

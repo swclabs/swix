@@ -1,5 +1,40 @@
 basePath: /
 definitions:
+  domain.CartBodySchema:
+    properties:
+      amount:
+        type: string
+      category:
+        type: string
+      img:
+        type: string
+      product_name:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  domain.CartInsertReq:
+    properties:
+      quantity:
+        type: integer
+      user_id:
+        type: integer
+      warehouse_id:
+        type: integer
+    required:
+    - quantity
+    - user_id
+    - warehouse_id
+    type: object
+  domain.CartSchema:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/domain.CartBodySchema'
+        type: array
+      user_id:
+        type: integer
+    type: object
   domain.Categories:
     properties:
       description:
@@ -614,6 +649,25 @@ paths:
       tags:
       - common
   /products:
+    delete:
+      consumes:
+      - application/json
+      description: delete product by id
+      parameters:
+      - description: product id
+        in: query
+        name: pid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - products
     get:
       consumes:
       - application/json
@@ -682,6 +736,70 @@ paths:
             $ref: '#/definitions/domain.Error'
       tags:
       - products
+  /purchase/carts:
+    delete:
+      consumes:
+      - application/json
+      description: delete item from carts
+      parameters:
+      - description: user id
+        in: query
+        name: uid
+        required: true
+        type: integer
+      - description: warehouse id
+        in: query
+        name: wid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - purchase
+    get:
+      consumes:
+      - application/json
+      description: get list of items from carts
+      parameters:
+      - description: user id
+        in: query
+        name: uid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.CartSchema'
+      tags:
+      - purchase
+    post:
+      consumes:
+      - application/json
+      description: add item to carts.
+      parameters:
+      - description: cart insert request
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CartInsertReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - purchase
   /suppliers:
     get:
       consumes:

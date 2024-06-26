@@ -10,21 +10,34 @@ import (
 )
 
 type Warehouse struct {
-	conn *pgx.Conn
+	db db.IDatabase
 }
 
 var _ IWarehouseRepository = (*Warehouse)(nil)
 
-func New(conn *pgx.Conn) *Warehouse {
+func New(conn db.IDatabase) IWarehouseRepository {
 	return &Warehouse{
-		conn: conn,
+		db: conn,
 	}
+}
+
+// GetById implements IWarehouseRepository.
+func (w *Warehouse) GetById(ctx context.Context, warehouseId int64) (*domain.Warehouse, error) {
+	rows, err := w.db.Query(ctx, getById, warehouseId)
+	if err != nil {
+		return nil, err
+	}
+	warehouse, err := db.CollectOneRow[domain.Warehouse](rows)
+	if err != nil {
+		return nil, err
+	}
+	return &warehouse, nil
 }
 
 // GetProducts implements domain.IWarehouseRepository.
 func (w *Warehouse) GetProducts(
 	ctx context.Context, productID, ram, ssd, color string) (*domain.Warehouse, error) {
-	rows, err := w.conn.Query(ctx, GetAvailableProducts, productID, ram, ssd, color)
+	rows, err := w.db.Query(ctx, GetAvailableProducts, productID, ram, ssd, color)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +52,7 @@ func (w *Warehouse) GetProducts(
 func (w *Warehouse) InsertProduct(
 	ctx context.Context, product domain.WarehouseStruct) error {
 	specsjson, _ := json.Marshal(product.Specs)
-	return db.SafePgxWriteQuery(ctx, w.conn, InsertIntoWarehouse,
+	return w.db.SafeWrite(ctx, InsertIntoWarehouse,
 		product.ProductID, product.Model, product.Price,
 		string(specsjson), product.Available, product.CurrencyCode,
 	)

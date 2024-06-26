@@ -15,7 +15,7 @@ type AccountManagement struct {
 	Service accountmanagement.IAccountManagement
 }
 
-func NewAccountManagement(services *accountmanagement.AccountManagement) *AccountManagement {
+func NewAccountManagement(services accountmanagement.IAccountManagement) IAccountManagement {
 	return &AccountManagement{
 		Service: services,
 	}
@@ -98,7 +98,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 		})
 	}
 	if err := account.Service.SignUp(c.Request().Context(), request); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: "user data invalid",
 		})
 	}
@@ -144,7 +144,7 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 	email := utils.Session(c, utils.BaseSessions, "email").(string)
 	response, err := account.Service.UserInfo(c.Request().Context(), email)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -172,7 +172,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 		})
 	}
 	if err := account.Service.UpdateUserInfo(c.Request().Context(), request); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -225,7 +225,7 @@ func (account *AccountManagement) CheckLoginEmail(c echo.Context) error {
 		})
 	}
 	if err := account.Service.CheckLoginEmail(c.Request().Context(), email); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}

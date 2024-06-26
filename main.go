@@ -37,7 +37,10 @@ func main() {
 		commonController = controller.NewCommon(commonService)
 		commonRouter = router.NewCommon(commonController)
 	
-		httpServer = http.NewServer(commonRouter, router.NewDocs())
+		httpServer = http.NewServer([]router.IRouter{
+			commonRouter,
+			router.NewDocs(),
+		})
 		adapt = adapter.NewBaseAdapter(httpServer)
 		server = boot.NewServer(env)
 	)

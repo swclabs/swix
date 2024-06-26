@@ -16,7 +16,9 @@ var (
 	Purchase   = "purchase"
 )
 
-func init() {
+var _ = initQueue()
+
+func initQueue() error {
 	var queues = []*string{
 		&CriticalQueue,
 		&DefaultQueue,
@@ -31,8 +33,8 @@ func init() {
 			*queue = *queue + "_dev"
 		}
 	}
+	return nil
 }
-
 func New() worker.Priority {
 	return worker.Priority{
 		CriticalQueue: 6, // processed 60% of the time

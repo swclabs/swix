@@ -18,21 +18,16 @@ func NewCartsMock() *Mock {
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Mock) GetCartByUserID(ctx context.Context, userId int64) (*domain.CartSchema, error) {
+func (c *Mock) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSchema, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.ICartRepository.
-func (c *Mock) Insert(ctx context.Context, productID int64) error {
-	panic("unimplemented")
-}
-
-// InsertMany implements domain.ICartRepository.
-func (c *Mock) InsertMany(ctx context.Context, products []int64) error {
+func (c *Mock) Insert(ctx context.Context, userId int64, WarehouseId int64, quantity int64) error {
 	panic("unimplemented")
 }
 
 // RemoveItem implements domain.ICartRepository.
-func (c *Mock) RemoveItem(ctx context.Context, productID int64, userId int64) error {
+func (c *Mock) RemoveItem(ctx context.Context, warehouseId int64, userId int64) error {
 	panic("unimplemented")
 }

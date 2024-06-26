@@ -15,7 +15,7 @@ CREATE TABLE "orders" (
 CREATE TABLE "product_in_order" (
   "id" bigserial PRIMARY KEY,
   "order_id" bigint NOT NULL,
-  "product_in_warehouse_id" bigint NOT NULL,
+  "warehouse_id" bigint NOT NULL,
   "quantity" bigint NOT NULL,
   "total_amount" NUMERIC(19, 4) NOT NULL,
   "currency_code" varchar(3) NOT NULL
@@ -33,21 +33,21 @@ type Orders struct {
 }
 
 type ProductInOrder struct {
-	Id                   int64           `json:"id" db:"id"`
-	OrderId              int64           `json:"order_id" db:"order_id"`
-	ProductInWarehouseId int64           `json:"product_in_warehouse_id" db:"product_in_warehouse_id"`
-	Quantity             int64           `json:"quantity" db:"quantity"`
-	CurrencyCode         string          `json:"currency_code" db:"currency_code"`
-	TotalAmount          decimal.Decimal `json:"total_amount" db:"total_amount"`
+	Id           int64           `json:"id" db:"id"`
+	OrderId      int64           `json:"order_id" db:"order_id"`
+	WarehouseId  int64           `json:"product_in_warehouse_id" db:"product_in_warehouse_id"`
+	Quantity     int64           `json:"quantity" db:"quantity"`
+	CurrencyCode string          `json:"currency_code" db:"currency_code"`
+	TotalAmount  decimal.Decimal `json:"total_amount" db:"total_amount"`
 }
 
 type ProductOrderSchema struct {
-	Id                   int64  `json:"id"`
-	OrderId              int64  `json:"order_id"`
-	ProductInWarehouseId int64  `json:"product_in_warehouse_id" db:"product_in_warehouse_id"`
-	Quantity             int64  `json:"quantity"`
-	CurrencyCode         string `json:"currency_code"`
-	TotalAmount          string `json:"total_amount"`
+	Id           int64  `json:"id"`
+	OrderId      int64  `json:"order_id"`
+	WarehouseId  int64  `json:"product_in_warehouse_id" db:"product_in_warehouse_id"`
+	Quantity     int64  `json:"quantity"`
+	CurrencyCode string `json:"currency_code"`
+	TotalAmount  string `json:"total_amount"`
 }
 type OrderSchema struct {
 	Id        int64                `json:"id"`

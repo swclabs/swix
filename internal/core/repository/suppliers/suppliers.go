@@ -7,22 +7,21 @@ import (
 	"swclabs/swipecore/pkg/db"
 
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v5"
 )
 
 type Suppliers struct {
-	conn *pgx.Conn
+	db db.IDatabase
 }
 
-func New(conn *pgx.Conn) *Suppliers {
-	return &Suppliers{conn: conn}
+func New(conn db.IDatabase) ISuppliersRepository {
+	return &Suppliers{db: conn}
 }
 
 // Insert implements domain.ISuppliersRepository.
 func (supplier *Suppliers) Insert(
 	ctx context.Context, supp domain.Suppliers, addr domain.Addresses) error {
 
-	tx, err := supplier.conn.Begin(ctx)
+	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
 		return err
 	}
@@ -35,22 +34,22 @@ func (supplier *Suppliers) Insert(
 		}
 	}()
 
-	if errTx = db.SafePgxWriteQuery(
-		ctx, tx.Conn(), insertIntoSuppliers, supp.Name, supp.Email); errTx != nil {
+	if errTx = tx.SafeWrite(
+		ctx, insertIntoSuppliers, supp.Name, supp.Email); errTx != nil {
 		return errTx
 	}
 
-	_supplier, errTx := New(tx.Conn()).GetByPhone(ctx, supp.Email)
+	_supplier, errTx := New(tx).GetByPhone(ctx, supp.Email)
 	if errTx != nil {
 		return errTx
 	}
 
 	addr.Uuid = uuid.New().String()
-	if errTx = addresses.New(tx.Conn()).Insert(ctx, addr); errTx != nil {
+	if errTx = addresses.New(tx).Insert(ctx, addr); errTx != nil {
 		return errTx
 	}
 
-	errTx = New(tx.Conn()).InsertAddress(ctx, domain.SuppliersAddress{
+	errTx = New(tx).InsertAddress(ctx, domain.SuppliersAddress{
 		SuppliersID: _supplier.Id,
 		AddressUuiD: addr.Uuid,
 	})
@@ -61,8 +60,8 @@ func (supplier *Suppliers) Insert(
 // InsertAddress implements domain.ISuppliersRepository.
 func (supplier *Suppliers) InsertAddress(
 	ctx context.Context, addr domain.SuppliersAddress) error {
-	return db.SafePgxWriteQuery(
-		ctx, supplier.conn,
+	return supplier.db.SafeWrite(
+		ctx,
 		insertIntoSuppliersAddress,
 		addr.SuppliersID, addr.AddressUuiD,
 	)
@@ -72,11 +71,11 @@ func (supplier *Suppliers) InsertAddress(
 func (supplier *Suppliers) GetLimit(
 	ctx context.Context, limit int) ([]domain.Suppliers, error) {
 	// var _suppliers []domain.Suppliers
-	rows, err := supplier.conn.Query(ctx, selectSupplierByEmailLimit, limit)
+	rows, err := supplier.db.Query(ctx, selectSupplierByEmailLimit, limit)
 	if err != nil {
 		return nil, err
 	}
-	_suppliers, err := pgx.CollectRows[domain.Suppliers](rows, pgx.RowToStructByName[domain.Suppliers])
+	_suppliers, err := db.CollectRows[domain.Suppliers](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -87,11 +86,11 @@ func (supplier *Suppliers) GetLimit(
 func (supplier *Suppliers) GetByPhone(
 	ctx context.Context, email string) (*domain.Suppliers, error) {
 	// var _supplier domain.Suppliers
-	rows, err := supplier.conn.Query(ctx, selectByEmail, email)
+	rows, err := supplier.db.Query(ctx, selectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
-	_supplier, err := pgx.CollectOneRow[domain.Suppliers](rows, pgx.RowToStructByName[domain.Suppliers])
+	_supplier, err := db.CollectOneRow[domain.Suppliers](rows)
 	if err != nil {
 		return nil, err
 	}

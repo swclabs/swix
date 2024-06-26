@@ -23,7 +23,7 @@ func NewAccountManagementConsume(handler *accountmanagement.AccountManagement) *
 }
 
 func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
-	return worker.GetTaskName(account.DelaySignUp),
+	return worker.GetTaskName(account.SignUp),
 		func(_ context.Context, task *asynq.Task) error {
 			var data domain.SignUpReq
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
@@ -34,7 +34,7 @@ func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 }
 
 func (account *AccountManagement) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
-	return worker.GetTaskName(account.DelayOAuth2SaveUser),
+	return worker.GetTaskName(account.OAuth2SaveUser),
 		func(_ context.Context, task *asynq.Task) error {
 			var data domain.OAuth2SaveUser
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
@@ -45,7 +45,7 @@ func (account *AccountManagement) HandleOAuth2SaveUser() (string, worker.HandleF
 }
 
 func (account *AccountManagement) HandleUpdateUserInfo() (string, worker.HandleFunc) {
-	return worker.GetTaskName(account.DelayUpdateUserInfo),
+	return worker.GetTaskName(account.UpdateUserInfo),
 		func(_ context.Context, task *asynq.Task) error {
 			var data domain.UserUpdate
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {

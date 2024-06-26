@@ -1,7 +1,5 @@
 package domain
 
-const UsersTable = "users"
-
 // User : Table users
 type User struct {
 	Id          int64  `json:"id" db:"id"`

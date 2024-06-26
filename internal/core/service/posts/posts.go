@@ -13,7 +13,7 @@ type Posts struct {
 	Collections collections.ICollections
 }
 
-func New(collection *collections.Collections) *Posts {
+func New(collection collections.ICollections) IPostsService {
 	return &Posts{
 		Collections: collection,
 	}

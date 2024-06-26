@@ -3,8 +3,10 @@ package repository
 import (
 	"swclabs/swipecore/internal/core/repository/accounts"
 	"swclabs/swipecore/internal/core/repository/addresses"
+	"swclabs/swipecore/internal/core/repository/carts"
 	"swclabs/swipecore/internal/core/repository/categories"
 	"swclabs/swipecore/internal/core/repository/collections"
+	"swclabs/swipecore/internal/core/repository/orders"
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/internal/core/repository/suppliers"
 	"swclabs/swipecore/internal/core/repository/users"
@@ -23,5 +25,7 @@ var FxModule = fx.Options(
 		suppliers.New,
 		warehouse.New,
 		collections.New,
+		orders.New,
+		carts.New,
 	),
 )

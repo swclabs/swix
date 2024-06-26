@@ -13,20 +13,40 @@ import (
 )
 
 type Products struct {
-	conn *pgx.Conn
+	db db.IDatabase
 }
 
-func New(conn *pgx.Conn) *Products {
+var _ IProductRepository = (*Products)(nil)
+
+func New(conn db.IDatabase) IProductRepository {
 	return &Products{
-		conn: conn,
+		db: conn,
 	}
+}
+
+// DeleteById implements IProductRepository.
+func (product *Products) DeleteById(ctx context.Context, Id int64) error {
+	return product.db.SafeWrite(ctx, deleteById, Id)
+}
+
+// GetById implements IProductRepository.
+func (product *Products) GetById(ctx context.Context, productId int64) (*domain.Products, error) {
+	rows, err := product.db.Query(ctx, selectById, productId)
+	if err != nil {
+		return nil, err
+	}
+	_product, err := pgx.CollectOneRow[domain.Products](rows, pgx.RowToStructByName[domain.Products])
+	if err != nil {
+		return nil, err
+	}
+	return &_product, nil
 }
 
 // Insert implements domain.IProductRepository.
 func (product *Products) Insert(
 	ctx context.Context, prd domain.Products) (int64, error) {
-	return db.SafePgxWriteQueryReturnId(
-		ctx, product.conn, InsertIntoProducts,
+	return product.db.SafeWriteReturn(
+		ctx, InsertIntoProducts,
 		prd.Image, prd.Price, prd.Name, prd.Description,
 		prd.SupplierID, prd.CategoryID, prd.Status, prd.Spec,
 	)
@@ -38,7 +58,7 @@ func (product *Products) GetLimit(
 
 	var productResponse []domain.ProductRes
 
-	rows, err := product.conn.Query(ctx, selectLimit, limit)
+	rows, err := product.db.Query(ctx, selectLimit, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -72,8 +92,8 @@ func (product *Products) GetLimit(
 // UploadNewImage implements domain.IProductRepository.
 func (product *Products) UploadNewImage(
 	ctx context.Context, urlImg string, id int) error {
-	return db.SafePgxWriteQuery(
-		ctx, product.conn, UpdateProductImage,
+	return product.db.SafeWrite(
+		ctx, UpdateProductImage,
 		urlImg, id,
 	)
 }

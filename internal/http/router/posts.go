@@ -6,13 +6,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-const TypePosts = "posts"
+type IPosts interface {
+	IRouter
+}
 
 type Posts struct {
 	controller controller.IPosts
 }
 
-func NewPosts(controllers *controller.Posts) *Posts {
+func NewPosts(controllers controller.IPosts) IPosts {
 	return &Posts{
 		controller: controllers,
 	}

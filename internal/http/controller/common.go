@@ -19,7 +19,7 @@ type Common struct {
 	service common.ICommonService
 }
 
-func NewCommon(services *common.CommonService) *Common {
+func NewCommon(services common.ICommonService) ICommon {
 	return &Common{
 		service: services,
 	}
@@ -67,7 +67,7 @@ func Auth0Callback(c echo.Context) error {
 // @Success 200
 // @Router /common/worker [GET]
 func (common *Common) WorkerCheck(c echo.Context) error {
-	results, err := common.service.DelayWorkerCheckResult(c.Request().Context())
+	results, err := common.service.CallTask().WorkerCheckResult(c.Request().Context(), 10)
 	if err != nil {
 		return c.JSON(400, domain.Error{
 			Msg: err.Error(),

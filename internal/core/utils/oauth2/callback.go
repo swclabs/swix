@@ -54,10 +54,11 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
+	dbpool := db.GetPool()
 	account := accountmanagement.New(
-		users.New(db.PgxConnection()),
-		accounts.New(db.PgxConnection()),
-		addresses.New(db.PgxConnection()),
+		users.New(dbpool),
+		accounts.New(dbpool),
+		addresses.New(dbpool),
 		worker.NewClient(config.LoadEnv()),
 	)
 	if err := account.OAuth2SaveUser(

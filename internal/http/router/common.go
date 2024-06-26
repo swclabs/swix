@@ -12,7 +12,7 @@ type Common struct {
 	controllers controller.ICommon
 }
 
-func NewCommon(controllers *controller.Common) *Common {
+func NewCommon(controllers controller.ICommon) IRouter {
 	return &Common{
 		controllers: controllers,
 	}
