@@ -1,12 +1,12 @@
 package categories
 
 const (
-	InsertIntoCategory = `
+	insertIntoCategory = `
 		INSERT INTO categories (name, description) 
 		VALUES ($1, $2)
 	`
 
-	SelectCategoryLimit string = `
+	selectCategoryLimit string = `
 		SELECT *
 		FROM categories
 		LIMIT $1;

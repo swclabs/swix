@@ -40,7 +40,7 @@ func New(
 	user users.IUserRepository,
 	account accounts.IAccountRepository,
 	address addresses.IAddressRepository,
-	client *worker.Client,
+	client worker.IWorkerClient,
 ) IAccountManagement {
 	return &AccountManagement{
 		Task: &Task{

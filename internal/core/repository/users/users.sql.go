@@ -1,43 +1,43 @@
 package users
 
 const (
-	InsertIntoUsers string = `
+	insertIntoUsers string = `
 		INSERT INTO users (email, phone_number, first_name, last_name, image) 
 		VALUES ($1,$2,$3,$4,$5)
 	`
 
-	SelectUserInfo string = `
+	selectUserInfo string = `
 		SELECT users.id, users.email, phone_number, first_name, last_name, image, username, role
 		FROM users 
 		JOIN accounts ON users.email = accounts.email
 		WHERE users.email = $1;
 	`
 
-	UpdateUsersFirstname string = `
+	updateUsersFirstname string = `
 		UPDATE users
 		SET first_name = $1
 		WHERE email = $2;
 	`
 
-	UpdateUsersImage string = `
+	updateUsersImage string = `
 		UPDATE users
 		SET image = $1
 		WHERE email = $2;
 	`
 
-	UpdateUsersLastname string = `
+	updateUsersLastname string = `
 		UPDATE users
 		SET last_name = $1
 		WHERE email = $2;
 	`
 
-	UpdateUsersPhoneNumber string = `
+	updateUsersPhoneNumber string = `
 		UPDATE users
 		SET phone_number = $1
 		WHERE email = $2;
 	`
 
-	InsertUsersConflict string = `
+	insertUsersConflict string = `
 		INSERT INTO users (email, phone_number, first_name, last_name, image) 
 		VALUES ($1, $2, $3, $4, $5) 
 		ON CONFLICT (email)
@@ -47,7 +47,7 @@ const (
 				last_name = EXCLUDED.last_name,
 				image = EXCLUDED.image;
 	`
-	SelectByEmail string = `
+	selectByEmail string = `
 		SELECT *
 		FROM users
 		WHERE email = $1;

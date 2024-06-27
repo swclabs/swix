@@ -74,7 +74,7 @@ func StartWorker(lc fx.Lifecycle, worker IWorker) {
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
-			fmt.Println("Server worker stopping")
+			fmt.Println("[Swipe]   OnStop                server worker stopping")
 			return nil
 		},
 	})

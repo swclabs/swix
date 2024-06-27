@@ -1,12 +1,12 @@
 package warehouse
 
 const (
-	InsertIntoWarehouse string = `
+	insertIntoWarehouse string = `
 		INSERT INTO warehouse (product_id, model, price, specs, available, currency_code)
 		VALUES ($1, $2, $3, $4, $5, $6);
 	`
 
-	GetAvailableProducts string = `
+	getAvailableProducts string = `
 		SELECT *
 		FROM warehouse
 		WHERE 

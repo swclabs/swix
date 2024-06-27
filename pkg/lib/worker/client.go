@@ -18,7 +18,7 @@ type Client struct {
 	broker asynq.RedisClientOpt
 }
 
-func NewClient(env config.Env) *Client {
+func NewClient(env config.Env) IWorkerClient {
 	return &Client{
 		broker: asynq.RedisClientOpt{
 			Addr:     fmt.Sprintf("%s:%s", env.RedisHost, env.RedisPort), // Redis server address

@@ -1,9 +1,10 @@
 package http
 
 import (
-	"go.uber.org/fx"
 	"swclabs/swipecore/internal/http/controller"
 	"swclabs/swipecore/internal/http/router"
+
+	"go.uber.org/fx"
 )
 
 var FxModule = fx.Options(

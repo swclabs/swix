@@ -46,7 +46,7 @@ func (product *Products) GetById(ctx context.Context, productId int64) (*domain.
 func (product *Products) Insert(
 	ctx context.Context, prd domain.Products) (int64, error) {
 	return product.db.SafeWriteReturn(
-		ctx, InsertIntoProducts,
+		ctx, insertIntoProducts,
 		prd.Image, prd.Price, prd.Name, prd.Description,
 		prd.SupplierID, prd.CategoryID, prd.Status, prd.Spec,
 	)
@@ -93,7 +93,7 @@ func (product *Products) GetLimit(
 func (product *Products) UploadNewImage(
 	ctx context.Context, urlImg string, id int) error {
 	return product.db.SafeWrite(
-		ctx, UpdateProductImage,
+		ctx, updateProductImage,
 		urlImg, id,
 	)
 }

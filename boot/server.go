@@ -27,12 +27,12 @@ package main
 import (
 	"log"
 	"swclabs/swipecore/boot"
-	"swclabs/swipecore/boot/adapter"
+	"swclabs/swipecore/internal/http"
 
 	"go.uber.org/fx"
 )
 
-func StartServer(server boot.IServer, adapter adapter.IAdapter) {
+func StartServer(server boot.IServer, adapter http.IAdapter) {
 	go func() {
 		log.Fatal(server.Connect(adapter))
 	}()
@@ -59,8 +59,8 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"swclabs/swipecore/boot/adapter"
 	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/internal/http"
 	"swclabs/swipecore/pkg/db"
 
 	"go.uber.org/fx"
@@ -68,7 +68,8 @@ import (
 
 type IServer interface {
 	// Connect to adapter of other module
-	Connect(adapter adapter.IAdapter) error
+	Connect(adapter http.IAdapter) error
+	Routes(adapter http.IAdapter) []string
 }
 
 // struct server in project
@@ -86,6 +87,10 @@ func NewServer(env config.Env) IServer {
 	}
 }
 
+func (server *_Server) Routes(adapter http.IAdapter) []string {
+	return adapter.Routers()
+}
+
 // Connect to module via adapter
 //
 //	func main() {
@@ -94,14 +99,17 @@ func NewServer(env config.Env) IServer {
 //			commonService = common.New(worker.NewClient(env))
 //			commonController = controller.NewCommon(commonService)
 //			commonRouter = router.NewCommon(commonController)
-//			httpServer = http.NewServer(commonRouter, router.NewDocs())
+//			httpServer = http.NewServer([]router.IRouter{
+//				commonRouter,
+//				router.NewDocs(),
+//			})
 //			adapt = adapter.NewBaseAdapter(httpServer)
 //			server = boot.NewServer(env)
 //		)
 //
 //		log.Fatal(server.Connect(adapt))
 //	}
-func (server *_Server) Connect(adapter adapter.IAdapter) error {
+func (server *_Server) Connect(adapter http.IAdapter) error {
 	return adapter.Run(server.address)
 }
 
@@ -116,7 +124,7 @@ func (server *_Server) Connect(adapter adapter.IAdapter) error {
 //		fx.Invoke(boot.StartServer), // <-- run here
 //	)
 //	app.Run()
-func StartServer(lc fx.Lifecycle, server IServer, adapter adapter.IAdapter) {
+func StartServer(lc fx.Lifecycle, server IServer, adapter http.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			if err := db.MigrateUp(); err != nil {
@@ -128,7 +136,7 @@ func StartServer(lc fx.Lifecycle, server IServer, adapter adapter.IAdapter) {
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
-			fmt.Println("Server stopping")
+			fmt.Println("[Swipe]   OnStop                server stopping")
 			return nil
 		},
 	})

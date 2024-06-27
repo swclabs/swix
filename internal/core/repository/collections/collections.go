@@ -24,7 +24,7 @@ func New(conn db.IDatabase) ICollections {
 func (collection *Collections) UploadCollectionImage(
 	ctx context.Context, collectionId string, url string) error {
 	return collection.db.SafeWrite(
-		ctx, UpdateCollectionImage,
+		ctx, updateCollectionImage,
 		url, collectionId,
 	)
 }
@@ -36,14 +36,14 @@ func (collection *Collections) AddCollection(
 		return -1, err
 	}
 	return collection.db.SafeWriteReturn(
-		ctx, InsertIntoCollections,
+		ctx, insertIntoCollections,
 		collectionType.Position, collectionType.Headline, string(_collection),
 	)
 }
 
 func (collection *Collections) SlicesOfCollections(
 	ctx context.Context, position string, limit int) ([]domain.Collection, error) {
-	rows, err := collection.db.Query(ctx, SelectCollectionByPosition, position, limit)
+	rows, err := collection.db.Query(ctx, selectCollectionByPosition, position, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -62,5 +62,5 @@ func (collection *Collections) AddHeadlineBanner(
 		return err
 	}
 	return collection.db.SafeWrite(
-		ctx, InsertIntoCollections, headline.Position, "", string(body))
+		ctx, insertIntoCollections, headline.Position, "", string(body))
 }

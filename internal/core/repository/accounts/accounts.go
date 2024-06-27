@@ -23,7 +23,7 @@ func New(conn db.IDatabase) IAccountRepository {
 // GetByEmail implements domain.IAccountRepository.
 func (account *Accounts) GetByEmail(
 	ctx context.Context, email string) (*domain.Account, error) {
-	rows, err := account.db.Query(ctx, SelectByEmail, email)
+	rows, err := account.db.Query(ctx, selectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (account *Accounts) Insert(
 	ctx context.Context, acc domain.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
 	return account.db.SafeWrite(ctx,
-		InsertIntoAccounts,
+		insertIntoAccounts,
 		acc.Username, acc.Role, acc.Email, acc.Password,
 		createdAt, acc.Type,
 	)
@@ -52,20 +52,20 @@ func (account *Accounts) SaveInfo(
 		return errors.New("missing key: email ")
 	}
 	if acc.Username != "" {
-		if err := account.db.SafeWrite(ctx, UpdateAccountsUsername,
+		if err := account.db.SafeWrite(ctx, updateAccountsUsername,
 			acc.Username, acc.Email); err != nil {
 			return err
 		}
 
 	}
 	if acc.Password != "" {
-		if err := account.db.SafeWrite(ctx, UpdateAccountsPassword,
+		if err := account.db.SafeWrite(ctx, updateAccountsPassword,
 			acc.Password, acc.Email); err != nil {
 			return err
 		}
 	}
 	if acc.Role != "" {
-		if err := account.db.SafeWrite(ctx, UpdateAccountsRole,
+		if err := account.db.SafeWrite(ctx, updateAccountsRole,
 			acc.Role, acc.Email); err != nil {
 			return err
 		}
