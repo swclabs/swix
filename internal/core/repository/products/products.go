@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"strings"
 	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/errors"
 	"swclabs/swipecore/pkg/db"
-
-	"github.com/jackc/pgx/v5"
+	"time"
 )
 
 type Products struct {
@@ -26,52 +26,62 @@ func New(conn db.IDatabase) IProductRepository {
 
 // DeleteById implements IProductRepository.
 func (product *Products) DeleteById(ctx context.Context, Id int64) error {
-	return product.db.SafeWrite(ctx, deleteById, Id)
+	return errors.Repository(
+		"write safe data", product.db.SafeWrite(ctx, deleteById, Id))
 }
 
 // GetById implements IProductRepository.
 func (product *Products) GetById(ctx context.Context, productId int64) (*domain.Products, error) {
 	rows, err := product.db.Query(ctx, selectById, productId)
 	if err != nil {
-		return nil, err
+		return nil, errors.Repository("query", err)
 	}
-	_product, err := pgx.CollectOneRow[domain.Products](rows, pgx.RowToStructByName[domain.Products])
+	_product, err := db.CollectOneRow[domain.Products](rows)
 	if err != nil {
-		return nil, err
+		return nil, errors.Repository("collect row", err)
 	}
 	return &_product, nil
 }
 
 // Insert implements domain.IProductRepository.
-func (product *Products) Insert(
-	ctx context.Context, prd domain.Products) (int64, error) {
-	return product.db.SafeWriteReturn(
+func (product *Products) Insert(ctx context.Context, prd domain.Products) (int64, error) {
+	id, err := product.db.SafeWriteReturn(
 		ctx, insertIntoProducts,
 		prd.Image, prd.Price, prd.Name, prd.Description,
 		prd.SupplierID, prd.CategoryID, prd.Status, prd.Spec,
 	)
+	if err != nil {
+		return -1, errors.Repository("write data", err)
+	}
+	return id, nil
 }
 
 // GetLimit implements domain.IProductRepository.
-func (product *Products) GetLimit(
-	ctx context.Context, limit int) ([]domain.ProductRes, error) {
+func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
 
 	var productResponse []domain.ProductRes
 
 	rows, err := product.db.Query(ctx, selectLimit, limit)
 	if err != nil {
-		return nil, err
+		return nil, errors.Repository("query", err)
 	}
 
-	products, err := pgx.CollectRows[domain.Products](rows, pgx.RowToStructByName[domain.Products])
+	products, err := db.CollectRows[domain.Products](rows)
 	if err != nil {
-		return nil, err
+		return nil, errors.Repository("collect rows", err)
 	}
 
 	for _, p := range products {
-		var spec domain.Specs
+		var (
+			spec   domain.Specs
+			isSpec = true
+		)
 		if err := json.Unmarshal([]byte(p.Spec), &spec); err != nil {
-			return nil, err // don't find anything, just return empty object
+			// don't find anything, just return empty object
+			return nil, errors.Repository("json", err)
+		}
+		if spec.Screen == "" {
+			isSpec = false
 		}
 		images := strings.Split(p.Image, ",")
 		productResponse = append(productResponse,
@@ -81,8 +91,9 @@ func (product *Products) GetLimit(
 				Description: p.Description,
 				Name:        p.Name,
 				Status:      p.Status,
-				Created:     p.Created,
+				Created:     p.Created.In(time.FixedZone("GMT+7", 7*60*60)).Format(time.DateTime),
 				Image:       images[1:],
+				IsSpec:      isSpec,
 				Spec:        spec,
 			})
 	}
@@ -90,10 +101,9 @@ func (product *Products) GetLimit(
 }
 
 // UploadNewImage implements domain.IProductRepository.
-func (product *Products) UploadNewImage(
-	ctx context.Context, urlImg string, id int) error {
-	return product.db.SafeWrite(
+func (product *Products) UploadNewImage(ctx context.Context, urlImg string, id int) error {
+	return errors.Repository("write data", product.db.SafeWrite(
 		ctx, updateProductImage,
 		urlImg, id,
-	)
+	))
 }

@@ -1,19 +1,19 @@
 package domain
 
-const ProductsTable = "products"
+import "time"
 
 // Products Table
 type Products struct {
-	ID          int64  `json:"id" db:"id"`
-	Image       string `json:"image" db:"image"`
-	Price       string `json:"price" db:"price"`
-	Description string `json:"description" db:"description"`
-	Name        string `json:"name" db:"name"`
-	SupplierID  string `json:"supplier_id" db:"supplier_id"`
-	CategoryID  string `json:"category_id" db:"category_id"`
-	Spec        string `json:"spec" db:"spec"`
-	Status      string `json:"status" db:"status"`
-	Created     string `json:"created" db:"created"`
+	ID          int64     `json:"id" db:"id"`
+	Image       string    `json:"image" db:"image"`
+	Price       string    `json:"price" db:"price"`
+	Description string    `json:"description" db:"description"`
+	Name        string    `json:"name" db:"name"`
+	SupplierID  string    `json:"supplier_id" db:"supplier_id"`
+	CategoryID  string    `json:"category_id" db:"category_id"`
+	Spec        string    `json:"spec" db:"spec"`
+	Status      string    `json:"status" db:"status"`
+	Created     time.Time `json:"created" db:"created"`
 }
 
 // FavoriteProduct Table
@@ -50,6 +50,7 @@ type ProductRes struct {
 	Name        string   `json:"name"`
 	Status      string   `json:"status"`
 	Created     string   `json:"created"`
+	IsSpec      bool     `json:"is_spec"`
 	Spec        Specs    `json:"spec"`
 }
 
@@ -59,5 +60,7 @@ type UploadProductRes struct {
 }
 
 type ProductsRes struct {
-	Data []ProductRes `json:"data" db:"data"`
+	Limit int          `json:"limit"`
+	Page  int          `json:"page"`
+	Data  []ProductRes `json:"data" db:"data"`
 }
