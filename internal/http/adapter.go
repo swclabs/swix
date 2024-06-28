@@ -1,13 +1,14 @@
-package adapter
+package http
 
 import (
-	"swclabs/swipecore/internal/http"
 	"swclabs/swipecore/internal/http/router"
 )
 
 type _Adapter struct {
-	server http.IServer
+	server IServer
 }
+
+var _ IAdapter = (*_Adapter)(nil)
 
 // NewAdapter Example
 /*
@@ -16,7 +17,7 @@ package main
 import (
 
 	"swclabs/swipecore/boot"
-	"swclabs/swipecore/boot/adapter"
+	"swclabs/swipecore/internal/http"
 
 	"go.uber.org/fx"
 
@@ -34,7 +35,7 @@ import (
 		app.Run()
 	}
 */
-func NewAdapter(server http.IServer,
+func NewAdapter(server IServer,
 	products router.IProducts,
 	accountManagement router.IAccountManagement,
 	posts router.IPosts,
@@ -55,4 +56,8 @@ func NewAdapter(server http.IServer,
 // Run : run all services one server
 func (adapter *_Adapter) Run(addr string) error {
 	return adapter.server.Run(addr)
+}
+
+func (adapter *_Adapter) Routers() []string {
+	return adapter.server.Routes()
 }

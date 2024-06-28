@@ -8,8 +8,6 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-const TypeDocs = "docs"
-
 type Docs struct{}
 
 func NewDocs() IRouter {

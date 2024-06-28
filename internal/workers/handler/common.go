@@ -15,7 +15,7 @@ type Common struct {
 	handler     common.ICommonService // create handler for services
 }
 
-func NewCommonConsume(_common *common.Service) *Common {
+func NewCommonConsume(_common common.ICommonService) *Common {
 	return &Common{
 		handler: _common,
 	}

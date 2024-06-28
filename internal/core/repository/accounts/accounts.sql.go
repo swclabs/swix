@@ -1,32 +1,32 @@
 package accounts
 
 const (
-	InsertIntoAccounts string = `
+	insertIntoAccounts string = `
 		INSERT INTO accounts (username, role, email, password, created_at, type) 
 		VALUES ($1, $2, $3, $4, $5, $6)
 		ON CONFLICT (email) 
 		DO NOTHING;
 	`
 
-	UpdateAccountsUsername string = `
+	updateAccountsUsername string = `
 		UPDATE accounts
 		SET username = $1
 		WHERE email = $2;
 	`
 
-	UpdateAccountsPassword string = `
+	updateAccountsPassword string = `
 		UPDATE accounts
 		SET password = $1
 		WHERE email = $2;
 	`
 
-	UpdateAccountsRole string = `
+	updateAccountsRole string = `
 		UPDATE accounts
 		SET role = $1
 		WHERE email = $2;
 	`
 
-	SelectByEmail string = `
+	selectByEmail string = `
 		SELECT * FROM accounts
 		WHERE email = $1	
 	`

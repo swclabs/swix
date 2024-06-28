@@ -2,6 +2,7 @@ package http
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"swclabs/swipecore/internal/config"
@@ -11,15 +12,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 )
-
-type IServer interface {
-	_BackgroundTask(tasks ...func())
-	_InitMiddleware()
-	_LoggerWriter(*os.File)
-	middleware(mdws ...func(*echo.Echo))
-	Connect(routers router.IRouter)
-	Run(string) error
-}
 
 type _Server struct {
 	engine *echo.Echo
@@ -32,7 +24,7 @@ func NewServer(routers []router.IRouter) IServer {
 	server := &_Server{
 		engine: echo.New(),
 	}
-	server._InitMiddleware()
+	server.initMiddleware()
 	for _, _router := range routers {
 		server.Connect(_router)
 	}
@@ -45,22 +37,33 @@ func (server *_Server) middleware(mdws ...func(*echo.Echo)) {
 	}
 }
 
-func (server *_Server) _BackgroundTask(tasks ...func()) {
+func (server *_Server) backgroundTask(tasks ...func()) {
 	for _, t := range tasks {
 		go t()
 	}
 }
 
-func (server *_Server) _LoggerWriter(file *os.File) {
+func (server *_Server) loggerWriter(file *os.File) {
 	middleware.Logger(file, server.engine)
 }
 
-func (server *_Server) _InitMiddleware() {
+func (server *_Server) initMiddleware() {
 	server.middleware(
 		middleware.BaseSetting,
 		middleware.CookieSetting,
 		middleware.Sentry,
 	)
+}
+
+func (server *_Server) Routes() []string {
+	var path []string = make([]string, 0)
+	for _, route := range server.engine.Routes() {
+		if route != nil {
+			path = append(path,
+				fmt.Sprintf("[%s]    %s \n", route.Method, route.Path))
+		}
+	}
+	return path
 }
 
 func (server *_Server) Connect(routers router.IRouter) {
@@ -80,7 +83,7 @@ func (server *_Server) Run(addr string) error {
 				log.Fatal(err)
 			}
 		}(file)
-		server._LoggerWriter(file)
+		server.loggerWriter(file)
 	}
 	return server.engine.Start(addr)
 }

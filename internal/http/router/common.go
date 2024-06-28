@@ -6,8 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-const TypeCommon = "common"
-
 type Common struct {
 	controllers controller.ICommon
 }

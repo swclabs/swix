@@ -7,8 +7,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-const TypeAccountManagement = "AccountManagement"
-
 type IAccountManagement interface {
 	IRouter
 }

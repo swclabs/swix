@@ -114,7 +114,9 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, domain.ProductsRes{
-		Data: prd,
+		Limit: _limit,
+		Page:  1,
+		Data:  prd,
 	})
 }
 

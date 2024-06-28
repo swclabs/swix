@@ -37,7 +37,7 @@ func (w *Warehouse) GetById(ctx context.Context, warehouseId int64) (*domain.War
 // GetProducts implements domain.IWarehouseRepository.
 func (w *Warehouse) GetProducts(
 	ctx context.Context, productID, ram, ssd, color string) (*domain.Warehouse, error) {
-	rows, err := w.db.Query(ctx, GetAvailableProducts, productID, ram, ssd, color)
+	rows, err := w.db.Query(ctx, getAvailableProducts, productID, ram, ssd, color)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (w *Warehouse) GetProducts(
 func (w *Warehouse) InsertProduct(
 	ctx context.Context, product domain.WarehouseStruct) error {
 	specsjson, _ := json.Marshal(product.Specs)
-	return w.db.SafeWrite(ctx, InsertIntoWarehouse,
+	return w.db.SafeWrite(ctx, insertIntoWarehouse,
 		product.ProductID, product.Model, product.Price,
 		string(specsjson), product.Available, product.CurrencyCode,
 	)

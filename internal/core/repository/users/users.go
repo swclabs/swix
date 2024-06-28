@@ -29,7 +29,7 @@ var _ IUserRepository = (*Users)(nil)
 
 // GetByEmail implements domain.IUserRepository.
 func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
-	rows, err := usr.db.Query(ctx, SelectByEmail, email)
+	rows, err := usr.db.Query(ctx, selectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
@@ -44,14 +44,14 @@ func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, e
 func (usr *Users) Insert(ctx context.Context, _usr domain.User) error {
 	return usr.db.SafeWrite(
 		ctx,
-		InsertIntoUsers,
+		insertIntoUsers,
 		_usr.Email, _usr.PhoneNumber, _usr.FirstName, _usr.LastName, _usr.Image,
 	)
 }
 
 // Info implements domain.IUserRepository.
 func (usr *Users) Info(ctx context.Context, email string) (*domain.UserInfo, error) {
-	rows, err := usr.db.Query(ctx, SelectUserInfo, email)
+	rows, err := usr.db.Query(ctx, selectUserInfo, email)
 	if err != nil {
 		return nil, err
 	}
@@ -69,28 +69,28 @@ func (usr *Users) SaveInfo(ctx context.Context, user domain.User) error {
 	}
 	if user.FirstName != "" {
 		if err := usr.db.SafeWrite(
-			ctx, UpdateUsersFirstname, user.FirstName, user.Email,
+			ctx, updateUsersFirstname, user.FirstName, user.Email,
 		); err != nil {
 			return err
 		}
 	}
 	if user.LastName != "" {
 		if err := usr.db.SafeWrite(
-			ctx, UpdateUsersFirstname, user.FirstName, user.Email,
+			ctx, updateUsersFirstname, user.FirstName, user.Email,
 		); err != nil {
 			return err
 		}
 	}
 	if user.Image != "" {
 		if err := usr.db.SafeWrite(
-			ctx, UpdateUsersImage, user.Image, user.Email,
+			ctx, updateUsersImage, user.Image, user.Email,
 		); err != nil {
 			return err
 		}
 	}
 	if user.PhoneNumber != "" {
 		if err := usr.db.SafeWrite(
-			ctx, UpdateUsersPhoneNumber, user.PhoneNumber, user.Email,
+			ctx, updateUsersPhoneNumber, user.PhoneNumber, user.Email,
 		); err != nil {
 			return err
 		}
@@ -102,27 +102,27 @@ func (usr *Users) SaveInfo(ctx context.Context, user domain.User) error {
 func (usr *Users) UpdateProperties(
 	ctx context.Context, query string, user domain.User) error {
 	switch query {
-	case UpdateUsersLastname:
+	case updateUsersLastname:
 		if err := usr.db.SafeWrite(ctx,
-			UpdateUsersLastname, user.LastName, user.Email,
+			updateUsersLastname, user.LastName, user.Email,
 		); err != nil {
 			return err
 		}
-	case UpdateUsersFirstname:
+	case updateUsersFirstname:
 		if err := usr.db.SafeWrite(ctx,
-			UpdateUsersFirstname, user.FirstName, user.Email,
+			updateUsersFirstname, user.FirstName, user.Email,
 		); err != nil {
 			return err
 		}
-	case UpdateUsersPhoneNumber:
+	case updateUsersPhoneNumber:
 		if err := usr.db.SafeWrite(ctx,
-			UpdateUsersPhoneNumber, user.PhoneNumber, user.Email,
+			updateUsersPhoneNumber, user.PhoneNumber, user.Email,
 		); err != nil {
 			return err
 		}
-	case UpdateUsersImage:
+	case updateUsersImage:
 		if err := usr.db.SafeWrite(ctx,
-			UpdateUsersImage, user.Image, user.Email,
+			updateUsersImage, user.Image, user.Email,
 		); err != nil {
 			return err
 		}
@@ -133,7 +133,7 @@ func (usr *Users) UpdateProperties(
 // OAuth2SaveInfo implements domain.IUserRepository.
 func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.User) error {
 	return usr.db.SafeWrite(
-		ctx, InsertUsersConflict, user.Email, user.PhoneNumber,
+		ctx, insertUsersConflict, user.Email, user.PhoneNumber,
 		user.FirstName, user.LastName, user.Image,
 	)
 }

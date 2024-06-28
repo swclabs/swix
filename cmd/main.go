@@ -13,18 +13,12 @@ import (
 	"log"
 	"os"
 	"sort"
-
-	"go.uber.org/fx"
-
-	"swclabs/swipecore/boot"
-	"swclabs/swipecore/boot/adapter"
+	"swclabs/swipecore/internal/http"
 
 	"github.com/urfave/cli/v2"
+	"swclabs/swipecore/boot"
 
-	_ "swclabs/swipecore/docs"
-
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "swclabs/swipecore/boot/init"
 )
 
 var Command = []*cli.Command{
@@ -33,13 +27,7 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			app := fx.New(
-				boot.FxWorkerModule,
-				fx.Provide(
-					boot.NewWorker,
-				),
-				fx.Invoke(boot.StartWorker),
-			)
+			app := boot.NewWorkerApp()
 			app.Run()
 			return nil
 		},
@@ -49,14 +37,7 @@ var Command = []*cli.Command{
 		Aliases: []string{"s"},
 		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
-			app := fx.New(
-				boot.FxRestModule,
-				fx.Provide(
-					adapter.NewAdapter,
-					boot.NewServer,
-				),
-				fx.Invoke(boot.StartServer),
-			)
+			app := boot.NewRestApp(http.NewAdapter)
 			app.Run()
 			return nil
 		},

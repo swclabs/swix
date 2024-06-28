@@ -21,12 +21,12 @@ func New(conn db.IDatabase) ICategoriesRepository {
 // Insert implements domain.ICategoriesRepository.
 func (category *Categories) Insert(ctx context.Context, ctg domain.Categories) error {
 	return category.db.SafeWrite(
-		ctx, InsertIntoCategory, ctg.Name, ctg.Description)
+		ctx, insertIntoCategory, ctg.Name, ctg.Description)
 }
 
 // GetLimit implements domain.ICategoriesRepository.
 func (category *Categories) GetLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
-	rows, err := category.db.Query(ctx, SelectCategoryLimit, limit)
+	rows, err := category.db.Query(ctx, selectCategoryLimit, limit)
 	if err != nil {
 		return nil, err
 	}

@@ -15,7 +15,7 @@ type Service struct {
 }
 
 func New(
-	client *worker.Client,
+	client worker.IWorkerClient,
 ) ICommonService {
 	return &Service{
 		&Task{

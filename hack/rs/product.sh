@@ -11,40 +11,13 @@ check_result() {
   fi
 }
 
-
-curl --location "$BASE_URL/categories" \
---header "Content-Type: application/json" \
---header "Accept: application/json" \
---data '{
-  "description": "iPhone",
-  "name": "Phone"
-}'
-check_result $?
-echo "categories ... ok"
-
-
-curl --location "$BASE_URL/suppliers" \
---header "Content-Type: application/json" \
---header "Accept: application/json" \
---data-raw '{
-  "email": "exam@example2.com",
-  "name": "Apple2",
-  "city": "Ho Chi Minh City",
-  "district": "D1",
-  "street": "Ton Duc Thang",
-  "ward": "14"
-}'
-check_result $?
-echo "suppliers ... ok"
-
-
 curl --location "$BASE_URL/products" \
 --header "Content-Type: application/json" \
 --header "Accept: application/json" \
 --data '{
   "category_id": "1",
   "description": "iphone",
-  "name": "iphone",
+  "name": "iphone 16",
   "price": "1666-111111",
   "status": "active",
   "supplier_id": "1"

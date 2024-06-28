@@ -13,10 +13,9 @@ import (
 	"log"
 	"os"
 	"sort"
-
 	"swclabs/swipecore/boot"
-	"swclabs/swipecore/boot/adapter"
 	_ "swclabs/swipecore/docs"
+	"swclabs/swipecore/internal/http"
 
 	"github.com/urfave/cli/v2"
 	"go.uber.org/fx"
@@ -47,7 +46,7 @@ var Command = []*cli.Command{
 			app := fx.New(
 				boot.FxRestModule,
 				fx.Provide(
-					adapter.NewProducts,
+					http.NewProductsAdapter,
 					boot.NewServer,
 				),
 				fx.Invoke(boot.StartServer),
