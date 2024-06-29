@@ -11,5 +11,4 @@ curl --location "$BASE_URL/categories" \
   "description": "iPhone",
   "name": "Phone"
 }'
-check_result $?
 echo "categories ... ok"

@@ -2,7 +2,7 @@ package carts
 
 const (
 	insertItemToCart = `
-		INSERT INTO carts (user_id, warehouse_id, quantity)
+		INSERT INTO carts (user_id, inventory_id, quantity)
 		VALUES ($1, $2, $3);
 	`
 
@@ -14,6 +14,6 @@ const (
 
 	deleteItem = `
 		DELETE FROM carts 
-		WHERE users_id = $1 AND warehouse_id = $2
+		WHERE users_id = $1 AND inventory_id = $2
 	`
 )

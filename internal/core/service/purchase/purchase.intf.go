@@ -20,7 +20,7 @@ type IPurchaseService interface {
 	// Returns a slice of Carts objects and an error if any issues occur during the retrieval process.
 	GetCart(ctx context.Context, userId int64, limit int) (*domain.CartSchema, error)
 
-	DeleteItemFromCart(ctx context.Context, userId int64, warehouseId int64) error
+	DeleteItemFromCart(ctx context.Context, userId int64, inventoryId int64) error
 
 	// GetOrders retrieves orders with a specified limit.
 	// ctx is the context to manage the request's lifecycle.

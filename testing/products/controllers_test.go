@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/repository/warehouse"
+	"swclabs/swipecore/internal/core/repository/inventory"
 	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/internal/http/controller"
 	"testing"
@@ -27,9 +27,9 @@ func TestGetProductAvailability(t *testing.T) {
 		ColorImage: "",
 		Image:      "",
 	})
-	repos := warehouse.Mock{}
+	repos := inventory.Mock{}
 	price, _ := decimal.NewFromString("10000")
-	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.Warehouse{
+	repos.On("GetProducts", context.Background(), "1", "64", "512", "black").Return(&domain.Inventory{
 		Id:           "1",
 		ProductID:    1,
 		Model:        "iPhone 15 Pro Max",
@@ -41,7 +41,7 @@ func TestGetProductAvailability(t *testing.T) {
 
 	// business logic layers
 	services := products.ProductService{
-		Warehouse: &repos,
+		Inventory: &repos,
 	}
 
 	// presenter layers
@@ -49,9 +49,9 @@ func TestGetProductAvailability(t *testing.T) {
 		Services: &services,
 	}
 
-	e.GET("/warehouse", controllers.GetProductAvailability)
+	e.GET("/inventory", controllers.GetProductAvailability)
 
-	req := httptest.NewRequest(http.MethodGet, "/warehouse?pid=1&ram=64&ssd=512&color=black", nil)
+	req := httptest.NewRequest(http.MethodGet, "/inventory?pid=1&ram=64&ssd=512&color=black", nil)
 	rr := httptest.NewRecorder()
 
 	e.ServeHTTP(rr, req)

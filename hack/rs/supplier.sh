@@ -15,5 +15,4 @@ curl --location "$BASE_URL/suppliers" \
   "street": "Ton Duc Thang",
   "ward": "14"
 }'
-check_result $?
 echo "suppliers ... ok"

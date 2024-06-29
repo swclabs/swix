@@ -19,7 +19,7 @@ type IProducts interface {
 	UploadProductImage(c echo.Context) error
 	UploadProduct(c echo.Context) error
 	GetProductAvailability(c echo.Context) error
-	AddToWarehouse(c echo.Context) error
+	AddToInventory(c echo.Context) error
 	DeleteProduct(c echo.Context) error
 }
 
@@ -34,7 +34,7 @@ func NewProducts(services products.IProductService) IProducts {
 }
 
 // GetProductAvailability
-// @Description Get product availability in warehouse
+// @Description Get product availability in inventory
 // @Tags products
 // @Accept json
 // @Produce json
@@ -42,8 +42,8 @@ func NewProducts(services products.IProductService) IProducts {
 // @Param ram query number true "ram"
 // @Param ssd query number true "ssd"
 // @Param color query string true "color"
-// @Success 200 {object} domain.WarehouseSchema
-// @Router /warehouse [GET]
+// @Success 200 {object} domain.InventorySchema
+// @Router /inventory [GET]
 func (p *Products) GetProductAvailability(c echo.Context) error {
 	pid := c.QueryParam("pid")
 	if pid == "" {
@@ -55,7 +55,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 	ssd := c.QueryParam("ssd")
 	color := c.QueryParam("color")
 
-	product, err := p.Services.GetProductsInWarehouse(c.Request().Context(), pid, ram, ssd, color)
+	product, err := p.Services.GetProductsInInventory(c.Request().Context(), pid, ram, ssd, color)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
@@ -218,7 +218,7 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 }
 
 // UploadProduct
-// @Description Create new product
+// @Description create new product
 // @Tags products
 // @Accept json
 // @Produce json
@@ -308,16 +308,16 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 	})
 }
 
-// AddToWarehouse
-// @Description add product to warehouse
+// AddToInventory
+// @Description add product to inventory
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param WarehouseStruct body domain.WarehouseStruct true "Warehouse Request"
+// @Param InventoryStruct body domain.InventoryStruct true "Inventory Request"
 // @Success 201 {object} domain.OK
-// @Router /warehouse [POST]
-func (p *Products) AddToWarehouse(c echo.Context) error {
-	var req domain.WarehouseStruct
+// @Router /inventory [POST]
+func (p *Products) AddToInventory(c echo.Context) error {
+	var req domain.InventoryStruct
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -328,12 +328,12 @@ func (p *Products) AddToWarehouse(c echo.Context) error {
 			Msg: validate,
 		})
 	}
-	if err := p.Services.InsertIntoWarehouse(c.Request().Context(), req); err != nil {
+	if err := p.Services.InsertIntoInventory(c.Request().Context(), req); err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}
 	return c.JSON(http.StatusCreated, domain.OK{
-		Msg: "add product to warehouse created successfully",
+		Msg: "add product to inventory created successfully",
 	})
 }

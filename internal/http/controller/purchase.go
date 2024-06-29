@@ -93,7 +93,7 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param uid query int true "user id"
-// @Param wid query int true "warehouse id"
+// @Param wid query int true "inventory id"
 // @Success 200 {object} domain.OK
 // @Router /purchase/carts [DELETE]
 func (purchase *Purchase) DeleteItem(c echo.Context) error {

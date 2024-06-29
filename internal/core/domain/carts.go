@@ -4,7 +4,7 @@ package domain
 CREATE TABLE "carts" (
   "id" bigserial PRIMARY KEY,
   "user_id" bigint NOT NULL,
-  "warehouse_id" bigint NOT NULL,
+  "inventory_id" bigint NOT NULL,
   "quantity" bigint NOT NULL
 );
 */
@@ -13,7 +13,7 @@ CREATE TABLE "carts" (
 type Carts struct {
 	Id          int64 `json:"id" db:"id"`
 	UserId      int64 `json:"user_id" db:"user_id"`
-	WarehouseId int64 `json:"warehouse_id" db:"warehouse_id"`
+	InventoryId int64 `json:"inventory_id" db:"inventory_id"`
 	Quantity    int64 `json:"quantity" db:"quantity"`
 }
 type CartBodySchema struct {
@@ -32,6 +32,6 @@ type CartSchema struct {
 
 type CartInsertReq struct {
 	UserId      int64 `json:"user_id" validate:"required"`
-	WarehouseId int64 `json:"warehouse_id" validate:"required"`
+	InventoryId int64 `json:"inventory_id" validate:"required"`
 	Quantity    int64 `json:"quantity" validate:"required"`
 }

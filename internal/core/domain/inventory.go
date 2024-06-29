@@ -2,7 +2,7 @@ package domain
 
 import "github.com/shopspring/decimal"
 
-type Warehouse struct {
+type Inventory struct {
 	Id           string          `json:"id" db:"id"`
 	ProductID    int64           `json:"product_id" db:"product_id"`
 	Model        string          `json:"model" db:"model"`
@@ -14,7 +14,7 @@ type Warehouse struct {
 
 /*****************************************************************************/
 
-type WarehouseSchemaReq struct {
+type InventorySchemaReq struct {
 	Id           string `json:"id" db:"id"`
 	ProductID    string `json:"product_id" db:"product_id"`
 	Price        string `json:"price" db:"price"`
@@ -32,7 +32,7 @@ type SpecsDetail struct {
 	Image      string `json:"image"`
 }
 
-type WarehouseStruct struct {
+type InventoryStruct struct {
 	ProductID    string      `json:"product_id" validate:"required"`
 	Price        string      `json:"price" validate:"number,required"`
 	Model        string      `json:"model" validate:"required"`
@@ -41,7 +41,7 @@ type WarehouseStruct struct {
 	Specs        SpecsDetail `json:"specs"`
 }
 
-type WarehouseSchema struct {
+type InventorySchema struct {
 	Id string `json:"id"`
-	WarehouseStruct
+	InventoryStruct
 }
