@@ -2,6 +2,7 @@ package common
 
 import (
 	"context"
+	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/workers/queue"
 	"swclabs/swipecore/pkg/lib/worker"
@@ -10,11 +11,15 @@ import (
 var _ ICommonService = (*Task)(nil)
 
 type Task struct {
-	worker worker.IWorkerClient
+	worker  worker.IWorkerClient
+	service ICommonService
 }
 
-func (t *Task) CallTask() ICommonService {
-	return t
+func UseTask(service ICommonService) ICommonService {
+	return &Task{
+		worker:  worker.NewClient(config.LoadEnv()),
+		service: service,
+	}
 }
 
 func (t *Task) HealthCheck(ctx context.Context) domain.HealthCheckRes {
@@ -33,7 +38,7 @@ func (t *Task) WorkerCheck(ctx context.Context, num int64) error {
 func (t *Task) WorkerCheckResult(ctx context.Context, num int64) (string, error) {
 	result, err := t.worker.ExecGetResult(ctx, queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.WorkerCheckResult),
-		1,
+		num,
 	))
 	if err != nil {
 		return "", err

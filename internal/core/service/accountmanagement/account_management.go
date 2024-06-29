@@ -20,7 +20,6 @@ import (
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/users"
 	"swclabs/swipecore/pkg/lib/jwt"
-	"swclabs/swipecore/pkg/lib/worker"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/blob"
@@ -28,7 +27,6 @@ import (
 
 // AccountManagement implement domain.AccountManagementService
 type AccountManagement struct {
-	Task    *Task // embedded tasks to call worker consume
 	User    users.IUserRepository
 	Account accounts.IAccountRepository
 	Address addresses.IAddressRepository
@@ -40,20 +38,12 @@ func New(
 	user users.IUserRepository,
 	account accounts.IAccountRepository,
 	address addresses.IAddressRepository,
-	client worker.IWorkerClient,
 ) IAccountManagement {
 	return &AccountManagement{
-		Task: &Task{
-			worker: client,
-		},
 		User:    user,
 		Account: account,
 		Address: address,
 	}
-}
-
-func (manager *AccountManagement) CallTask() IAccountManagement {
-	return manager.Task
 }
 
 // SignUp user to access system, return error if exist

@@ -8,7 +8,6 @@ import (
 // ICommonService : Common utility methods for the service.
 // Actor: System
 type ICommonService interface {
-	CallTask() ICommonService
 	// HealthCheck performs a health check on the service.
 	// ctx is the context to manage the request's lifecycle.
 	// Returns a HealthCheckRes object with the health check status.

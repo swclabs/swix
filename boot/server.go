@@ -95,10 +95,10 @@ func (server *_Server) Routes(adapter http.IAdapter) []string {
 //
 //	func main() {
 //		var (
-//			env = config.LoadEnv()
-//			commonService = common.New(worker.NewClient(env))
+//			env              = config.LoadEnv()
+//			commonService    = common.New()
 //			commonController = controller.NewCommon(commonService)
-//			commonRouter = router.NewCommon(commonController)
+//			commonRouter     = router.NewCommon(commonController)
 //			httpServer = http.NewServer([]router.IRouter{
 //				commonRouter,
 //				router.NewDocs(),

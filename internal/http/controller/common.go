@@ -32,8 +32,27 @@ func NewCommon(services common.ICommonService) ICommon {
 // @Produce json
 // @Success 200
 // @Router /common/healthcheck [GET]
-func (common *Common) HealthCheck(c echo.Context) error {
-	return c.JSON(200, common.service.HealthCheck(c.Request().Context()))
+func (cm *Common) HealthCheck(c echo.Context) error {
+	return c.JSON(200, cm.service.HealthCheck(c.Request().Context()))
+}
+
+// WorkerCheck .
+// @Description health check worker consume server.
+// @Tags common
+// @Accept json
+// @Produce json
+// @Success 200
+// @Router /common/worker [GET]
+func (cm *Common) WorkerCheck(c echo.Context) error {
+	results, err := common.UseTask(cm.service).WorkerCheckResult(c.Request().Context(), 10)
+	if err != nil {
+		return c.JSON(400, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(200, domain.OK{
+		Msg: results,
+	})
 }
 
 // Auth0Login .
@@ -57,25 +76,6 @@ func Auth0Login(c echo.Context) error {
 func Auth0Callback(c echo.Context) error {
 	auth := oauth2.New()
 	return auth.OAuth2CallBack(c)
-}
-
-// WorkerCheck .
-// @Description health check worker consume server.
-// @Tags common
-// @Accept json
-// @Produce json
-// @Success 200
-// @Router /common/worker [GET]
-func (common *Common) WorkerCheck(c echo.Context) error {
-	results, err := common.service.CallTask().WorkerCheckResult(c.Request().Context(), 10)
-	if err != nil {
-		return c.JSON(400, domain.Error{
-			Msg: err.Error(),
-		})
-	}
-	return c.JSON(200, domain.OK{
-		Msg: results,
-	})
 }
 
 func Foo(ctx echo.Context) error {

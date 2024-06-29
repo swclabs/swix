@@ -16,9 +16,9 @@ type Carts struct {
 var _ ICartRepository = (*Carts)(nil)
 
 func New(connection db.IDatabase) ICartRepository {
-	return &Carts{
+	return useCache(&Carts{
 		db: connection,
-	}
+	})
 }
 
 // GetCartByUserID implements domain.ICartRepository.

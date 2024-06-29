@@ -13,8 +13,6 @@ import (
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
-
-	"github.com/jackc/pgx/v5"
 )
 
 type Users struct {
@@ -22,25 +20,25 @@ type Users struct {
 }
 
 func New(conn db.IDatabase) IUserRepository {
-	return &Users{conn}
+	return useCache(&Users{conn})
 }
 
 var _ IUserRepository = (*Users)(nil)
 
-// GetByEmail implements domain.IUserRepository.
+// GetByEmail implements IUserRepository.
 func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
 	rows, err := usr.db.Query(ctx, selectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
-	user, err := pgx.CollectOneRow[domain.User](rows, pgx.RowToStructByName[domain.User])
+	user, err := db.CollectOneRow[domain.User](rows)
 	if err != nil {
 		return nil, err
 	}
 	return &user, nil
 }
 
-// Insert implements domain.IUserRepository.
+// Insert implements IUserRepository.
 func (usr *Users) Insert(ctx context.Context, _usr domain.User) error {
 	return usr.db.SafeWrite(
 		ctx,
@@ -49,20 +47,20 @@ func (usr *Users) Insert(ctx context.Context, _usr domain.User) error {
 	)
 }
 
-// Info implements domain.IUserRepository.
+// Info implements IUserRepository.
 func (usr *Users) Info(ctx context.Context, email string) (*domain.UserInfo, error) {
 	rows, err := usr.db.Query(ctx, selectUserInfo, email)
 	if err != nil {
 		return nil, err
 	}
-	user, err := pgx.CollectOneRow[domain.UserInfo](rows, pgx.RowToStructByName[domain.UserInfo])
+	user, err := db.CollectOneRow[domain.UserInfo](rows)
 	if err != nil {
 		return nil, err
 	}
 	return &user, nil
 }
 
-// SaveInfo implements domain.IUserRepository.
+// SaveInfo implements IUserRepository.
 func (usr *Users) SaveInfo(ctx context.Context, user domain.User) error {
 	if user.Email == "" {
 		return errors.New("missing key: email ")
@@ -98,7 +96,7 @@ func (usr *Users) SaveInfo(ctx context.Context, user domain.User) error {
 	return nil
 }
 
-// UpdateProperties implements domain.IUserRepository.
+// UpdateProperties implements IUserRepository.
 func (usr *Users) UpdateProperties(
 	ctx context.Context, query string, user domain.User) error {
 	switch query {
@@ -130,7 +128,7 @@ func (usr *Users) UpdateProperties(
 	return errors.New("unknown :" + query)
 }
 
-// OAuth2SaveInfo implements domain.IUserRepository.
+// OAuth2SaveInfo implements IUserRepository.
 func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.User) error {
 	return usr.db.SafeWrite(
 		ctx, insertUsersConflict, user.Email, user.PhoneNumber,
@@ -138,7 +136,7 @@ func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.User) error {
 	)
 }
 
-// TransactionSignUp implements domain.IUserRepository.
+// TransactionSignUp implements IUserRepository.
 func (usr *Users) TransactionSignUp(
 	ctx context.Context, user domain.User, password string) error {
 	hash, err := jwt.GenPassword(password)
@@ -173,7 +171,7 @@ func (usr *Users) TransactionSignUp(
 	return tx.Commit(ctx)
 }
 
-// TransactionSaveOAuth2 implements domain.IUserRepository.
+// TransactionSaveOAuth2 implements IUserRepository.
 func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.User) error {
 	hash, err := jwt.GenPassword(utils.RandomString(18))
 	if err != nil {
@@ -205,7 +203,7 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.User) e
 	return tx.Commit(ctx)
 }
 
-// GetByPhone implements domain.IUserRepository.
+// GetByPhone implements IUserRepository.
 func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*domain.User, error) {
 	rows, err := usr.db.Query(ctx, selectByPhone, nPhone)
 	if err != nil {

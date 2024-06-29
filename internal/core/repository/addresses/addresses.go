@@ -13,9 +13,9 @@ type Addresses struct {
 }
 
 func New(conn db.IDatabase) IAddressRepository {
-	return &Addresses{
+	return useCache(&Addresses{
 		db: conn,
-	}
+	})
 }
 
 // Insert implements domain.IAddressRepository.

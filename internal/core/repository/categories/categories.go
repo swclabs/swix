@@ -6,8 +6,6 @@ import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
-
-	"github.com/jackc/pgx/v5"
 )
 
 type Categories struct {
@@ -15,7 +13,7 @@ type Categories struct {
 }
 
 func New(conn db.IDatabase) ICategoriesRepository {
-	return &Categories{db: conn}
+	return useCache(&Categories{db: conn})
 }
 
 // Insert implements domain.ICategoriesRepository.
@@ -30,7 +28,7 @@ func (category *Categories) GetLimit(ctx context.Context, limit string) ([]domai
 	if err != nil {
 		return nil, err
 	}
-	categories, err := pgx.CollectRows[domain.Categories](rows, pgx.RowToStructByName[domain.Categories])
+	categories, err := db.CollectRows[domain.Categories](rows)
 	if err != nil {
 		return nil, err
 	}
