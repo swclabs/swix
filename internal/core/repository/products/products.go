@@ -19,9 +19,9 @@ type Products struct {
 var _ IProductRepository = (*Products)(nil)
 
 func New(conn db.IDatabase) IProductRepository {
-	return &Products{
+	return useCache(&Products{
 		db: conn,
-	}
+	})
 }
 
 // DeleteById implements IProductRepository.

@@ -23,7 +23,7 @@ func NewCommonConsume(_common common.ICommonService) *Common {
 
 func (common *Common) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
 	// get task name from delay function
-	taskName = worker.GetTaskName(common.WorkerCheck)
+	taskName = worker.GetTaskName(common.WorkerCheckResult)
 	// implement handler function base on delay function
 	return taskName, func(_ context.Context, task *asynq.Task) error {
 		var num int64

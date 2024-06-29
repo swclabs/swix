@@ -21,7 +21,6 @@ import (
 	"swclabs/swipecore/internal/http"
 	"swclabs/swipecore/internal/http/controller"
 	"swclabs/swipecore/internal/http/router"
-	"swclabs/swipecore/pkg/lib/worker"
 )
 
 // @title Swipe API Documentation
@@ -32,7 +31,7 @@ import (
 func main() {
 	var (
 		env              = config.LoadEnv()
-		commonService    = common.New(worker.NewClient(env))
+		commonService    = common.New()
 		commonController = controller.NewCommon(commonService)
 		commonRouter     = router.NewCommon(commonController)
 

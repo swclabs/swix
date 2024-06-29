@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
-
-	"github.com/jackc/pgx/v5"
 )
 
 type Inventory struct {
@@ -16,9 +14,9 @@ type Inventory struct {
 var _ IInventoryRepository = (*Inventory)(nil)
 
 func New(conn db.IDatabase) IInventoryRepository {
-	return &Inventory{
+	return useCache(&Inventory{
 		db: conn,
-	}
+	})
 }
 
 // GetById implements IInventoryRepository.
@@ -41,7 +39,7 @@ func (w *Inventory) GetProducts(
 	if err != nil {
 		return nil, err
 	}
-	inventory, err := pgx.CollectOneRow[domain.Inventory](rows, pgx.RowToStructByName[domain.Inventory])
+	inventory, err := db.CollectOneRow[domain.Inventory](rows)
 	if err != nil {
 		return nil, err
 	}

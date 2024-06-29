@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
-
-	"github.com/jackc/pgx/v5"
 )
 
 type Collections struct {
@@ -16,9 +14,9 @@ type Collections struct {
 var _ ICollections = (*Collections)(nil)
 
 func New(conn db.IDatabase) ICollections {
-	return &Collections{
+	return useCache(&Collections{
 		db: conn,
-	}
+	})
 }
 
 func (collection *Collections) UploadCollectionImage(
@@ -47,7 +45,7 @@ func (collection *Collections) SlicesOfCollections(
 	if err != nil {
 		return nil, err
 	}
-	collections, err := pgx.CollectRows[domain.Collection](rows, pgx.RowToStructByName[domain.Collection])
+	collections, err := db.CollectRows[domain.Collection](rows)
 	if err != nil {
 		return nil, err
 	}

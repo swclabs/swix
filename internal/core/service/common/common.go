@@ -5,27 +5,14 @@ import (
 	"fmt"
 	"strconv"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/pkg/lib/worker"
 )
 
 var _ ICommonService = (*Service)(nil)
 
-type Service struct {
-	Task *Task
-}
+type Service struct{}
 
-func New(
-	client worker.IWorkerClient,
-) ICommonService {
-	return &Service{
-		&Task{
-			worker: client,
-		},
-	}
-}
-
-func (common *Service) CallTask() ICommonService {
-	return common.Task
+func New() ICommonService {
+	return &Service{}
 }
 
 func (common *Service) WorkerCheckResult(ctx context.Context, num int64) (string, error) {

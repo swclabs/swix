@@ -17,7 +17,7 @@ type Accounts struct {
 }
 
 func New(conn db.IDatabase) IAccountRepository {
-	return &Accounts{conn}
+	return useCache(&Accounts{conn})
 }
 
 // GetByEmail implements domain.IAccountRepository.

@@ -14,7 +14,7 @@ type Suppliers struct {
 }
 
 func New(conn db.IDatabase) ISuppliersRepository {
-	return &Suppliers{db: conn}
+	return useCache(&Suppliers{db: conn})
 }
 
 // Insert implements domain.ISuppliersRepository.

@@ -2,8 +2,8 @@ package accountmanagement
 
 import (
 	"context"
-	"fmt"
 	"mime/multipart"
+	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/workers/queue"
 	"swclabs/swipecore/pkg/lib/worker"
@@ -12,11 +12,15 @@ import (
 var _ IAccountManagement = (*Task)(nil)
 
 type Task struct {
-	worker worker.IWorkerClient
+	worker  worker.IWorkerClient
+	service IAccountManagement
 }
 
-func (t *Task) CallTask() IAccountManagement {
-	return t
+func QueueOf(service IAccountManagement) IAccountManagement {
+	return &Task{
+		worker:  worker.NewClient(config.LoadEnv()),
+		service: service,
+	}
 }
 
 func (t *Task) SignUp(_ context.Context, req domain.SignUpReq) error {
@@ -41,25 +45,21 @@ func (t *Task) OAuth2SaveUser(_ context.Context, req domain.OAuth2SaveUser) erro
 }
 
 func (t *Task) Login(ctx context.Context, req domain.LoginReq) (string, error) {
-	return "", fmt.Errorf("%s: function not available", worker.GetTaskName(t.Login))
+	return t.service.Login(ctx, req)
 }
 
 func (t *Task) CheckLoginEmail(ctx context.Context, email string) error {
-	return fmt.Errorf(
-		"%s: function not available", worker.GetTaskName(t.CheckLoginEmail))
+	return t.service.CheckLoginEmail(ctx, email)
 }
 
 func (t *Task) UserInfo(ctx context.Context, email string) (*domain.UserInfo, error) {
-	return nil, fmt.Errorf(
-		"%s: function not available", worker.GetTaskName(t.UserInfo))
+	return t.service.UserInfo(ctx, email)
 }
 
 func (t *Task) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
-	return fmt.Errorf(
-		"%s: function not available", worker.GetTaskName(t.UploadAvatar))
+	return t.service.UploadAvatar(email, fileHeader)
 }
 
 func (t *Task) UploadAddress(ctx context.Context, data domain.Addresses) error {
-	return fmt.Errorf(
-		"%s: function not available", worker.GetTaskName(t.UploadAddress))
+	return t.service.UploadAddress(ctx, data)
 }

@@ -5,9 +5,32 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 )
 
-func CacheSlicesOfCollections(
-	collection ICollections, ctx context.Context, position string, limit int,
-) ([]domain.Collection, error) {
+type cache struct {
+	collection ICollections
+}
 
-	return collection.SlicesOfCollections(ctx, position, limit)
+var _ ICollections = (*cache)(nil)
+
+func useCache(collection ICollections) ICollections {
+	return &cache{collection: collection}
+}
+
+// AddCollection implements ICollections.
+func (c *cache) AddCollection(ctx context.Context, banner domain.CollectionSchema) (int64, error) {
+	return c.collection.AddCollection(ctx, banner)
+}
+
+// AddHeadlineBanner implements ICollections.
+func (c *cache) AddHeadlineBanner(ctx context.Context, headline domain.HeadlineBannerSchema) error {
+	return c.collection.AddHeadlineBanner(ctx, headline)
+}
+
+// SlicesOfCollections implements ICollections.
+func (c *cache) SlicesOfCollections(ctx context.Context, position string, limit int) ([]domain.Collection, error) {
+	return c.collection.SlicesOfCollections(ctx, position, limit)
+}
+
+// UploadCollectionImage implements ICollections.
+func (c *cache) UploadCollectionImage(ctx context.Context, collectionId string, url string) error {
+	return c.collection.UploadCollectionImage(ctx, collectionId, url)
 }

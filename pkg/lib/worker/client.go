@@ -3,9 +3,11 @@ package worker
 import (
 	"context"
 	"fmt"
-	"github.com/hibiken/asynq"
-	"swclabs/swipecore/internal/config"
 	"time"
+
+	"swclabs/swipecore/internal/config"
+
+	"github.com/hibiken/asynq"
 )
 
 type IWorkerClient interface {

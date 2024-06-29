@@ -27,5 +27,6 @@ type IProductRepository interface {
 	UploadNewImage(ctx context.Context, urlImg string, id int) error
 
 	GetById(ctx context.Context, productId int64) (*domain.Products, error)
+	
 	DeleteById(ctx context.Context, Id int64) error
 }
