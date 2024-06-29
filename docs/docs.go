@@ -341,6 +341,89 @@ const docTemplate = `{
                 }
             }
         },
+        "/inventory": {
+            "get": {
+                "description": "Get product availability in inventory",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "product id",
+                        "name": "pid",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "ram",
+                        "name": "ram",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "ssd",
+                        "name": "ssd",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "color",
+                        "name": "color",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.InventorySchema"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "add product to inventory",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "description": "Inventory Request",
+                        "name": "InventoryStruct",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.InventoryStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
+                        }
+                    }
+                }
+            }
+        },
         "/oauth2/login": {
             "get": {
                 "description": "Auth0 Login form.",
@@ -391,7 +474,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create new product",
+                "description": "create new product",
                 "consumes": [
                     "application/json"
                 ],
@@ -577,7 +660,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "warehouse id",
+                        "description": "inventory id",
                         "name": "wid",
                         "in": "query",
                         "required": true
@@ -729,89 +812,6 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/warehouse": {
-            "get": {
-                "description": "Get product availability in warehouse",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "products"
-                ],
-                "parameters": [
-                    {
-                        "type": "number",
-                        "description": "product id",
-                        "name": "pid",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "ram",
-                        "name": "ram",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "ssd",
-                        "name": "ssd",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "color",
-                        "name": "color",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/domain.WarehouseSchema"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "add product to warehouse",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "products"
-                ],
-                "parameters": [
-                    {
-                        "description": "Warehouse Request",
-                        "name": "WarehouseStruct",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.WarehouseStruct"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/domain.OK"
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -838,18 +838,18 @@ const docTemplate = `{
         "domain.CartInsertReq": {
             "type": "object",
             "required": [
+                "inventory_id",
                 "quantity",
-                "user_id",
-                "warehouse_id"
+                "user_id"
             ],
             "properties": {
+                "inventory_id": {
+                    "type": "integer"
+                },
                 "quantity": {
                     "type": "integer"
                 },
                 "user_id": {
-                    "type": "integer"
-                },
-                "warehouse_id": {
                     "type": "integer"
                 }
             }
@@ -1022,6 +1022,69 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.InventorySchema": {
+            "type": "object",
+            "required": [
+                "available",
+                "currency_code",
+                "model",
+                "price",
+                "product_id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "specs": {
+                    "$ref": "#/definitions/domain.SpecsDetail"
+                }
+            }
+        },
+        "domain.InventoryStruct": {
+            "type": "object",
+            "required": [
+                "available",
+                "currency_code",
+                "model",
+                "price",
+                "product_id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "specs": {
+                    "$ref": "#/definitions/domain.SpecsDetail"
+                }
+            }
+        },
         "domain.LoginReq": {
             "type": "object",
             "required": [
@@ -1131,6 +1194,9 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "is_spec": {
+                    "type": "boolean"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -1153,6 +1219,12 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/domain.ProductRes"
                     }
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
                 }
             }
         },
@@ -1371,69 +1443,6 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
-                }
-            }
-        },
-        "domain.WarehouseSchema": {
-            "type": "object",
-            "required": [
-                "available",
-                "currency_code",
-                "model",
-                "price",
-                "product_id"
-            ],
-            "properties": {
-                "available": {
-                    "type": "string"
-                },
-                "currency_code": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "string"
-                },
-                "specs": {
-                    "$ref": "#/definitions/domain.SpecsDetail"
-                }
-            }
-        },
-        "domain.WarehouseStruct": {
-            "type": "object",
-            "required": [
-                "available",
-                "currency_code",
-                "model",
-                "price",
-                "product_id"
-            ],
-            "properties": {
-                "available": {
-                    "type": "string"
-                },
-                "currency_code": {
-                    "type": "string"
-                },
-                "model": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "string"
-                },
-                "specs": {
-                    "$ref": "#/definitions/domain.SpecsDetail"
                 }
             }
         }

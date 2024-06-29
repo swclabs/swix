@@ -23,14 +23,14 @@ func New(
 }
 
 // DeleteItemFromCart implements domain.IPurchaseService.
-func (p *Purchase) DeleteItemFromCart(ctx context.Context, userId int64, warehouseId int64) error {
-	return p.cart.RemoveItem(ctx, userId, warehouseId)
+func (p *Purchase) DeleteItemFromCart(ctx context.Context, userId int64, inventoryId int64) error {
+	return p.cart.RemoveItem(ctx, userId, inventoryId)
 }
 
 // AddToCart implements domain.IPurchaseService.
 func (p *Purchase) AddToCart(ctx context.Context, cart domain.CartInsertReq) error {
 	return p.cart.Insert(
-		ctx, cart.UserId, cart.WarehouseId, cart.Quantity)
+		ctx, cart.UserId, cart.InventoryId, cart.Quantity)
 }
 
 // GetCart implements domain.IPurchaseService.

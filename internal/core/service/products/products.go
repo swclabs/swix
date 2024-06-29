@@ -7,9 +7,9 @@ import (
 	"mime/multipart"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository/categories"
+	"swclabs/swipecore/internal/core/repository/inventory"
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/internal/core/repository/suppliers"
-	"swclabs/swipecore/internal/core/repository/warehouse"
 	"swclabs/swipecore/pkg/blob"
 )
 
@@ -17,7 +17,7 @@ type ProductService struct {
 	Categories categories.ICategoriesRepository
 	Products   products.IProductRepository
 	Suppliers  suppliers.ISuppliersRepository
-	Warehouse  warehouse.IWarehouseRepository
+	Inventory  inventory.IInventoryRepository
 }
 
 var _ IProductService = (*ProductService)(nil)
@@ -26,13 +26,13 @@ func New(
 	categories categories.ICategoriesRepository,
 	products products.IProductRepository,
 	suppliers suppliers.ISuppliersRepository,
-	warehouses warehouse.IWarehouseRepository,
+	inventory inventory.IInventoryRepository,
 ) IProductService {
 	return &ProductService{
 		Categories: categories,
 		Products:   products,
 		Suppliers:  suppliers,
-		Warehouse:  warehouses,
+		Inventory:  inventory,
 	}
 }
 
@@ -41,37 +41,37 @@ func (s *ProductService) DeleteProductById(ctx context.Context, productId int64)
 	return s.Products.DeleteById(ctx, productId)
 }
 
-// GetProductsInWarehouse implements domain.IProductService.
-func (s *ProductService) GetProductsInWarehouse(
-	ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseSchema, error) {
-	_warehouse, err := s.Warehouse.GetProducts(ctx, productID, ram, ssd, color)
+// GetProductsInInventory implements domain.IProductService.
+func (s *ProductService) GetProductsInInventory(
+	ctx context.Context, productID, ram, ssd, color string) (*domain.InventorySchema, error) {
+	_inventory, err := s.Inventory.GetProducts(ctx, productID, ram, ssd, color)
 	if err != nil {
 		return nil, err
 	}
-	var warehouseRes = domain.WarehouseSchema{
-		Id: _warehouse.Id,
-		WarehouseStruct: domain.WarehouseStruct{
-			ProductID:    _warehouse.Id,
-			Price:        _warehouse.Price.String(),
-			Model:        _warehouse.Model,
-			Available:    _warehouse.Available,
-			CurrencyCode: _warehouse.CurrencyCode,
+	var inventoryRes = domain.InventorySchema{
+		Id: _inventory.Id,
+		InventoryStruct: domain.InventoryStruct{
+			ProductID:    _inventory.Id,
+			Price:        _inventory.Price.String(),
+			Model:        _inventory.Model,
+			Available:    _inventory.Available,
+			CurrencyCode: _inventory.CurrencyCode,
 		},
 	}
-	if err := json.Unmarshal([]byte(_warehouse.Specs), &warehouseRes.Specs); err != nil {
-		return &warehouseRes, nil // don't find anything, just return empty object
+	if err := json.Unmarshal([]byte(_inventory.Specs), &inventoryRes.Specs); err != nil {
+		return &inventoryRes, nil // don't find anything, just return empty object
 	}
-	if warehouseRes.Available == "" {
-		warehouseRes.Available = "0"
-		return &warehouseRes, nil
+	if inventoryRes.Available == "" {
+		inventoryRes.Available = "0"
+		return &inventoryRes, nil
 	}
-	return &warehouseRes, nil
+	return &inventoryRes, nil
 }
 
-// InsertIntoWarehouse implements domain.IProductService.
-func (s *ProductService) InsertIntoWarehouse(
-	ctx context.Context, product domain.WarehouseStruct) error {
-	return s.Warehouse.InsertProduct(ctx, product)
+// InsertIntoInventory implements domain.IProductService.
+func (s *ProductService) InsertIntoInventory(
+	ctx context.Context, product domain.InventoryStruct) error {
+	return s.Inventory.InsertProduct(ctx, product)
 }
 
 func (s *ProductService) GetCategoriesLimit(

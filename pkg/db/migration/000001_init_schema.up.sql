@@ -70,7 +70,7 @@ CREATE TABLE "categories" (
 CREATE TABLE "carts" (
   "id" bigserial PRIMARY KEY,
   "user_id" bigint NOT NULL,
-  "warehouse_id" bigint NOT NULL,
+  "inventory_id" bigint NOT NULL,
   "quantity" bigint NOT NULL
 );
 
@@ -86,7 +86,7 @@ CREATE TABLE "orders" (
 CREATE TABLE "product_in_order" (
   "id" bigserial PRIMARY KEY,
   "order_id" bigint NOT NULL,
-  "warehouse_id" bigint NOT NULL,
+  "inventory_id" bigint NOT NULL,
   "quantity" bigint NOT NULL,
   "total_amount" NUMERIC(19, 4) NOT NULL,
   "currency_code" varchar(3) NOT NULL
@@ -120,10 +120,10 @@ CREATE TABLE "suppliers_address" (
 CREATE TABLE "favorite_product" (
   "id" bigserial PRIMARY KEY,
   "user_id" bigint NOT NULL,
-  "warehouse_id" bigint NOT NULL
+  "inventory_id" bigint NOT NULL
 );
 
-CREATE TABLE "warehouse" (
+CREATE TABLE "inventory" (
   "id" bigserial PRIMARY KEY,
   "product_id" int NOT NULL,
   "price" NUMERIC(19, 4) NOT NULL,

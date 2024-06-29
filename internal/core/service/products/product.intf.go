@@ -52,17 +52,17 @@ type IProductService interface {
 	// Returns an error if any issues occur during the insertion process.
 	InsertSuppliers(ctx context.Context, supplierReq domain.SuppliersReq) error
 
-	// InsertIntoWarehouse adds a product to the warehouse inventory.
+	// InsertIntoInventory adds a product to the Inventory.
 	// ctx is the context to manage the request's lifecycle.
-	// product contains the warehouse product details to be added.
+	// product contains the inventory product details to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertIntoWarehouse(ctx context.Context, product domain.WarehouseStruct) error
+	InsertIntoInventory(ctx context.Context, product domain.InventoryStruct) error
 
-	// GetProductsInWarehouse retrieves product details from the warehouse.
+	// GetProductsInInventory retrieves product details from the Inventory.
 	// ctx is the context to manage the request's lifecycle.
 	// productID, ram, ssd, and color specify the product attributes to retrieve.
-	// Returns a pointer to the WarehouseSchema object and an error if any issues occur during the retrieval process.
-	GetProductsInWarehouse(ctx context.Context, productID, ram, ssd, color string) (*domain.WarehouseSchema, error)
+	// Returns a pointer to the InventorySchema object and an error if any issues occur during the retrieval process.
+	GetProductsInInventory(ctx context.Context, productID, ram, ssd, color string) (*domain.InventorySchema, error)
 
 	DeleteProductById(ctx context.Context, productId int64) error
 }

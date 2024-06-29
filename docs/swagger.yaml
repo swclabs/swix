@@ -15,16 +15,16 @@ definitions:
     type: object
   domain.CartInsertReq:
     properties:
+      inventory_id:
+        type: integer
       quantity:
         type: integer
       user_id:
         type: integer
-      warehouse_id:
-        type: integer
     required:
+    - inventory_id
     - quantity
     - user_id
-    - warehouse_id
     type: object
   domain.CartSchema:
     properties:
@@ -138,6 +138,50 @@ definitions:
       msg:
         type: string
     type: object
+  domain.InventorySchema:
+    properties:
+      available:
+        type: string
+      currency_code:
+        type: string
+      id:
+        type: string
+      model:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: string
+      specs:
+        $ref: '#/definitions/domain.SpecsDetail'
+    required:
+    - available
+    - currency_code
+    - model
+    - price
+    - product_id
+    type: object
+  domain.InventoryStruct:
+    properties:
+      available:
+        type: string
+      currency_code:
+        type: string
+      model:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: string
+      specs:
+        $ref: '#/definitions/domain.SpecsDetail'
+    required:
+    - available
+    - currency_code
+    - model
+    - price
+    - product_id
+    type: object
   domain.LoginReq:
     properties:
       email:
@@ -212,6 +256,8 @@ definitions:
         items:
           type: string
         type: array
+      is_spec:
+        type: boolean
       name:
         type: string
       price:
@@ -227,6 +273,10 @@ definitions:
         items:
           $ref: '#/definitions/domain.ProductRes'
         type: array
+      limit:
+        type: integer
+      page:
+        type: integer
     type: object
   domain.SignUpReq:
     properties:
@@ -375,50 +425,6 @@ definitions:
     - last_name
     - phone_number
     - username
-    type: object
-  domain.WarehouseSchema:
-    properties:
-      available:
-        type: string
-      currency_code:
-        type: string
-      id:
-        type: string
-      model:
-        type: string
-      price:
-        type: string
-      product_id:
-        type: string
-      specs:
-        $ref: '#/definitions/domain.SpecsDetail'
-    required:
-    - available
-    - currency_code
-    - model
-    - price
-    - product_id
-    type: object
-  domain.WarehouseStruct:
-    properties:
-      available:
-        type: string
-      currency_code:
-        type: string
-      model:
-        type: string
-      price:
-        type: string
-      product_id:
-        type: string
-      specs:
-        $ref: '#/definitions/domain.SpecsDetail'
-    required:
-    - available
-    - currency_code
-    - model
-    - price
-    - product_id
     type: object
 info:
   contact: {}
@@ -636,6 +642,61 @@ paths:
           description: OK
       tags:
       - common
+  /inventory:
+    get:
+      consumes:
+      - application/json
+      description: Get product availability in inventory
+      parameters:
+      - description: product id
+        in: query
+        name: pid
+        required: true
+        type: number
+      - description: ram
+        in: query
+        name: ram
+        required: true
+        type: number
+      - description: ssd
+        in: query
+        name: ssd
+        required: true
+        type: number
+      - description: color
+        in: query
+        name: color
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.InventorySchema'
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: add product to inventory
+      parameters:
+      - description: Inventory Request
+        in: body
+        name: InventoryStruct
+        required: true
+        schema:
+          $ref: '#/definitions/domain.InventoryStruct'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - products
   /oauth2/login:
     get:
       consumes:
@@ -690,7 +751,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create new product
+      description: create new product
       parameters:
       - description: Product Request
         in: body
@@ -747,7 +808,7 @@ paths:
         name: uid
         required: true
         type: integer
-      - description: warehouse id
+      - description: inventory id
         in: query
         name: wid
         required: true
@@ -888,59 +949,4 @@ paths:
             $ref: '#/definitions/domain.OK'
       tags:
       - account_management
-  /warehouse:
-    get:
-      consumes:
-      - application/json
-      description: Get product availability in warehouse
-      parameters:
-      - description: product id
-        in: query
-        name: pid
-        required: true
-        type: number
-      - description: ram
-        in: query
-        name: ram
-        required: true
-        type: number
-      - description: ssd
-        in: query
-        name: ssd
-        required: true
-        type: number
-      - description: color
-        in: query
-        name: color
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.WarehouseSchema'
-      tags:
-      - products
-    post:
-      consumes:
-      - application/json
-      description: add product to warehouse
-      parameters:
-      - description: Warehouse Request
-        in: body
-        name: WarehouseStruct
-        required: true
-        schema:
-          $ref: '#/definitions/domain.WarehouseStruct'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/domain.OK'
-      tags:
-      - products
 swagger: "2.0"
