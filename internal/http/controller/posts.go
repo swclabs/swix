@@ -54,9 +54,9 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := valid.Validate(cardBanner); _valid != "" {
+	if _valid := valid.Validate(&cardBanner); _valid != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: _valid,
+			Msg: _valid.Error(),
 		})
 	}
 	id, err := p.Services.UploadCollections(c.Request().Context(), cardBanner)

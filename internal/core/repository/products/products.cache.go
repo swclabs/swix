@@ -15,6 +15,11 @@ func useCache(product IProductRepository) IProductRepository {
 	return &cache{products: product}
 }
 
+// Update implements IProductRepository.
+func (c *cache) Update(ctx context.Context, product domain.Products) error {
+	return c.products.Update(ctx, product)
+}
+
 // DeleteById implements IProductRepository.
 func (c *cache) DeleteById(ctx context.Context, Id int64) error {
 	return c.products.DeleteById(ctx, Id)

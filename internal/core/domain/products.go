@@ -54,6 +54,11 @@ type ProductRes struct {
 	Spec        Specs    `json:"spec"`
 }
 
+type UpdateProductInfoReq struct {
+	ProductReq
+	Id int64 `json:"id" validate:"required"`
+}
+
 type UploadProductRes struct {
 	Msg string `json:"msg"`
 	Id  int64  `json:"id"`

@@ -46,9 +46,9 @@ func (account *AccountManagement) Login(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := valid.Validate(request); _valid != "" {
+	if _valid := valid.Validate(&request); _valid != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: _valid,
+			Msg: _valid.Error(),
 		})
 	}
 	// var account = service.New()
@@ -92,9 +92,9 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := valid.Validate(request); _valid != "" {
+	if _valid := valid.Validate(&request); _valid != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: _valid,
+			Msg: _valid.Error(),
 		})
 	}
 	if err := account.Service.SignUp(c.Request().Context(), request); err != nil {
@@ -166,9 +166,9 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := valid.Validate(request); _valid != "" {
+	if _valid := valid.Validate(&request); _valid != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: _valid,
+			Msg: _valid.Error(),
 		})
 	}
 	if err := account.Service.UpdateUserInfo(c.Request().Context(), request); err != nil {

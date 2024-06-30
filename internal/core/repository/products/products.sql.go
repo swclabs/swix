@@ -29,4 +29,18 @@ const (
 		DELETE FROM products
 		WHERE id = $1;
 	`
+
+	updateById = `
+		UPDATE products
+		SET 
+			name = $1,
+			price = $2,
+			description = $3,
+			supplier_id = $4,
+			category_id = $5,
+			spec = $6,
+			satus = $7,
+			created = now() AT TIME ZONE 'utc',
+		WHERE id = $9;
+	`
 )

@@ -21,6 +21,7 @@ type IProducts interface {
 	GetProductAvailability(c echo.Context) error
 	AddToInventory(c echo.Context) error
 	DeleteProduct(c echo.Context) error
+	UpdateProductInfo(c echo.Context) error
 }
 
 type Products struct {
@@ -33,8 +34,38 @@ func NewProducts(services products.IProductService) IProducts {
 	}
 }
 
+// UpdateProductInfo
+// @Description update product information
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param product body domain.UpdateProductInfoReq true "Product Information Request"
+// @Success 200 {object} domain.OK
+// @Router /products [PUT]
+func (p *Products) UpdateProductInfo(c echo.Context) error {
+	var payload domain.UpdateProductInfoReq
+	if err := c.Bind(&payload); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	if _valid := valid.Validate(&payload); _valid != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: _valid.Error(),
+		})
+	}
+	if err := p.Services.UpdateProductInfor(c.Request().Context(), payload); err != nil {
+		return c.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, domain.OK{
+		Msg: "your product has been updated successfully",
+	})
+}
+
 // GetProductAvailability
-// @Description Get product availability in inventory
+// @Description get product availability in inventory
 // @Tags products
 // @Accept json
 // @Produce json
@@ -65,7 +96,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 }
 
 // GetCategories
-// @Description Get categories
+// @Description get categories
 // @Tags products
 // @Accept json
 // @Produce json
@@ -152,7 +183,7 @@ func (p *Products) DeleteProduct(c echo.Context) error {
 }
 
 // InsertCategory
-// @Description Insert new category
+// @Description insert new category
 // @Tags products
 // @Accept json
 // @Produce json
@@ -166,9 +197,9 @@ func (p *Products) InsertCategory(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if _valid := valid.Validate(request); _valid != "" {
+	if _valid := valid.Validate(&request); _valid != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: _valid,
+			Msg: _valid.Error(),
 		})
 	}
 	if err := p.Services.InsertCategory(c.Request().Context(), request); err != nil {
@@ -182,7 +213,7 @@ func (p *Products) InsertCategory(c echo.Context) error {
 }
 
 // UploadProductImage
-// @Description Insert new product image
+// @Description insert new product image
 // @Tags products
 // @Accept multipart/form-data
 // @Produce json
@@ -234,9 +265,9 @@ func (p *Products) UploadProduct(c echo.Context) error {
 		})
 	}
 	// check validate struct
-	if validate := valid.Validate(&productReq); validate != "" {
+	if validate := valid.Validate(&productReq); validate != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: validate,
+			Msg: validate.Error(),
 		})
 	}
 	// call services
@@ -293,9 +324,9 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if validate := valid.Validate(req); validate != "" {
+	if validate := valid.Validate(&req); validate != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: validate,
+			Msg: validate.Error(),
 		})
 	}
 	if err := p.Services.InsertSuppliers(c.Request().Context(), req); err != nil {
@@ -323,9 +354,9 @@ func (p *Products) AddToInventory(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if validate := valid.Validate(req); validate != "" {
+	if validate := valid.Validate(&req); validate != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: validate,
+			Msg: validate.Error(),
 		})
 	}
 	if err := p.Services.InsertIntoInventory(c.Request().Context(), req); err != nil {

@@ -28,6 +28,7 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.GET("/products", r.controller.GetProductLimit)
 	e.POST("/products", r.controller.UploadProduct)
 	e.DELETE("/products", r.controller.DeleteProduct)
+	e.PUT("/products", r.controller.UpdateProductInfo)
 	e.POST("/products/img", r.controller.UploadProductImage)
 	// endpoint for suppliers
 	e.GET("/suppliers", r.controller.GetSupplier)

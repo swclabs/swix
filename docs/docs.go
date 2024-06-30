@@ -136,7 +136,7 @@ const docTemplate = `{
         },
         "/categories": {
             "get": {
-                "description": "Get categories",
+                "description": "get categories",
                 "consumes": [
                     "application/json"
                 ],
@@ -165,7 +165,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Insert new category",
+                "description": "insert new category",
                 "consumes": [
                     "application/json"
                 ],
@@ -343,7 +343,7 @@ const docTemplate = `{
         },
         "/inventory": {
             "get": {
-                "description": "Get product availability in inventory",
+                "description": "get product availability in inventory",
                 "consumes": [
                     "application/json"
                 ],
@@ -473,6 +473,37 @@ const docTemplate = `{
                     }
                 }
             },
+            "put": {
+                "description": "update product information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "description": "Product Information Request",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.UpdateProductInfoReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create new product",
                 "consumes": [
@@ -536,7 +567,7 @@ const docTemplate = `{
         },
         "/products/img": {
             "post": {
-                "description": "Insert new product image",
+                "description": "insert new product image",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -1361,6 +1392,59 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ward": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.UpdateProductInfoReq": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "description",
+                "id",
+                "name",
+                "price",
+                "status",
+                "supplier_id"
+            ],
+            "properties": {
+                "RAM": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "SSD": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "category_id": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "display": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "screen": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "supplier_id": {
                     "type": "string"
                 }
             }

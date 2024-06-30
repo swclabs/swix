@@ -24,10 +24,20 @@ func New(conn db.IDatabase) IProductRepository {
 	})
 }
 
+// Update implements IProductRepository.
+func (product *Products) Update(ctx context.Context, prod domain.Products) error {
+	return errors.Repository("safely write data",
+		product.db.SafeWrite(ctx, updateById, 
+			prod.Name, prod.Price,prod.Description, prod.SupplierID, 
+			prod.CategoryID, prod.Spec, prod.Status, prod.ID,
+		),
+	)
+}
+
 // DeleteById implements IProductRepository.
 func (product *Products) DeleteById(ctx context.Context, Id int64) error {
 	return errors.Repository(
-		"write safe data", product.db.SafeWrite(ctx, deleteById, Id))
+		"safely write data", product.db.SafeWrite(ctx, deleteById, Id))
 }
 
 // GetById implements IProductRepository.
