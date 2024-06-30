@@ -65,4 +65,5 @@ type IProductService interface {
 	GetProductsInInventory(ctx context.Context, productID, ram, ssd, color string) (*domain.InventorySchema, error)
 
 	DeleteProductById(ctx context.Context, productId int64) error
+	UpdateProductInfor(ctx context.Context, product domain.UpdateProductInfoReq) error
 }

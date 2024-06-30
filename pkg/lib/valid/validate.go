@@ -1,6 +1,7 @@
 package valid
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -39,7 +40,7 @@ func _Validate(data interface{}) []ErrorResponse {
 	return validationErrors
 }
 
-func Validate(data interface{}) string {
+func Validate(data interface{}) error {
 	if errs := _Validate(data); len(errs) > 0 && errs[0].Error {
 		errMsg := make([]string, 0)
 
@@ -52,7 +53,7 @@ func Validate(data interface{}) string {
 			))
 		}
 
-		return strings.Join(errMsg, " and ")
+		return errors.New(strings.Join(errMsg, " and "))
 	}
-	return ""
+	return nil
 }

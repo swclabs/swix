@@ -369,6 +369,43 @@ definitions:
     - email
     - name
     type: object
+  domain.UpdateProductInfoReq:
+    properties:
+      RAM:
+        items:
+          type: integer
+        type: array
+      SSD:
+        items:
+          type: integer
+        type: array
+      category_id:
+        type: string
+      description:
+        type: string
+      display:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: string
+      screen:
+        type: string
+      status:
+        type: string
+      supplier_id:
+        type: string
+    required:
+    - category_id
+    - description
+    - id
+    - name
+    - price
+    - status
+    - supplier_id
+    type: object
   domain.UploadProductRes:
     properties:
       id:
@@ -512,7 +549,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get categories
+      description: get categories
       parameters:
       - description: limit number
         in: query
@@ -531,7 +568,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Insert new category
+      description: insert new category
       parameters:
       - description: Categories Request
         in: body
@@ -646,7 +683,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Get product availability in inventory
+      description: get product availability in inventory
       parameters:
       - description: product id
         in: query
@@ -768,11 +805,31 @@ paths:
             $ref: '#/definitions/domain.UploadProductRes'
       tags:
       - products
+    put:
+      consumes:
+      - application/json
+      description: update product information
+      parameters:
+      - description: Product Information Request
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateProductInfoReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - products
   /products/img:
     post:
       consumes:
       - multipart/form-data
-      description: Insert new product image
+      description: insert new product image
       parameters:
       - description: id of product
         in: query

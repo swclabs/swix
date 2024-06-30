@@ -1,6 +1,8 @@
 package errors
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func Repository(msg string, err error) error {
 	if err == nil {

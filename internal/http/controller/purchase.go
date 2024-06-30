@@ -42,9 +42,9 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if err := valid.Validate(&cartReq); err != "" {
+	if err := valid.Validate(&cartReq); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
-			Msg: err,
+			Msg: err.Error(),
 		})
 	}
 	if err := purchase.services.AddToCart(c.Request().Context(), cartReq); err != nil {
