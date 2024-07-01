@@ -20,8 +20,8 @@ type CollectionBody struct {
 	TextColor   string `json:"text_color" validate:"required"`
 }
 
-// CollectionsBody is a body of CardBannerSlice
-type CollectionsBody struct {
+// CollectionSliceBody is a body of CardBannerSlice
+type CollectionSliceBody struct {
 	CollectionBody
 	Id      int64  `json:"id"`
 	Created string `json:"created"`
@@ -36,14 +36,14 @@ type CollectionSchema struct {
 	Body     CollectionBody `json:"body" validate:"required"`
 }
 
-// Collections is a type use to accept request and response
-type Collections struct {
-	Position   string            `json:"position"`
-	Headline   string            `json:"headline"`
-	CardBanner []CollectionsBody `json:"card_banner"`
+// CollectionSliceSchema is a type use to accept request and response
+type CollectionSliceSchema struct {
+	Position   string                `json:"position"`
+	Headline   string                `json:"headline"`
+	CardBanner []CollectionSliceBody `json:"card_banner"`
 }
 
-type CollectionUploadRes struct {
+type CollectionUploadSchema struct {
 	Msg string `json:"msg"`
 	Id  int64  `json:"id"`
 }

@@ -32,11 +32,11 @@ func NewPurchase(services purchase.IPurchaseService) IPurchase {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param login body domain.CartInsertReq true "cart insert request"
+// @Param login body domain.CartInsert true "cart insert request"
 // @Success 200 {object} domain.OK
 // @Router /purchase/carts [POST]
 func (purchase *Purchase) AddToCarts(c echo.Context) error {
-	var cartReq domain.CartInsertReq
+	var cartReq domain.CartInsert
 	if err := c.Bind(&cartReq); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -63,7 +63,7 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param uid query string true "user id"
-// @Success 200 {object} domain.CartSchema
+// @Success 200 {object} domain.CartSlices
 // @Router /purchase/carts [GET]
 func (purchase *Purchase) GetCarts(c echo.Context) error {
 	sUserId := c.QueryParam("uid")
@@ -93,7 +93,7 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param uid query int true "user id"
-// @Param wid query int true "inventory id"
+// @Param wid query int true "inventories id"
 // @Success 200 {object} domain.OK
 // @Router /purchase/carts [DELETE]
 func (purchase *Purchase) DeleteItem(c echo.Context) error {

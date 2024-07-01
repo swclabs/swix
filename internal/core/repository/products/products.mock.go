@@ -17,6 +17,11 @@ func NewProductsMock() *Mock {
 	return &Mock{}
 }
 
+// Search implements IProductRepository.
+func (p *Mock) Search(ctx context.Context, keyword string) ([]domain.Products, error) {
+	panic("unimplemented")
+}
+
 // Update implements IProductRepository.
 func (p *Mock) Update(ctx context.Context, product domain.Products) error {
 	args := p.Called(ctx, product)
@@ -36,9 +41,9 @@ func (p *Mock) GetById(ctx context.Context, productId int64) (*domain.Products, 
 }
 
 // GetLimit implements IProductRepository.
-func (p *Mock) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
+func (p *Mock) GetLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
 	args := p.Called(ctx, limit)
-	return args.Get(0).([]domain.ProductRes), args.Error(1)
+	return args.Get(0).([]domain.ProductSchema), args.Error(1)
 }
 
 // Insert implements IProductRepository.

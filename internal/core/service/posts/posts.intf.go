@@ -27,7 +27,7 @@ type IPostsService interface {
 	// cardBannerId contains the id of collection to be returns.
 	// limit is the maximum number of Collection to retrieve.
 	// Returns an error if any issues occur during the upload process.
-	SlicesOfCollections(ctx context.Context, position string, limit int) (*domain.Collections, error)
+	SlicesOfCollections(ctx context.Context, position string, limit int) (*domain.CollectionSliceSchema, error)
 
 	UploadHeadlineBanner(ctx context.Context, banner domain.HeadlineBannerSchema) error
 	SliceOfHeadlineBanner(ctx context.Context, position string, limit int) (*domain.HeadlineBannerSlice, error)

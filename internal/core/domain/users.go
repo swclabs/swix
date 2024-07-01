@@ -1,7 +1,7 @@
 package domain
 
-// User : Table users
-type User struct {
+// Users :Table users
+type Users struct {
 	Id          int64  `json:"id" db:"id"`
 	Email       string `json:"email" db:"email"`
 	PhoneNumber string `json:"phone_number" db:"phone_number"`
@@ -18,8 +18,8 @@ type UserAddress struct {
 
 /*****************************************************************************/
 
-// SignUpReq schema
-type SignUpReq struct {
+// SignUpSchema schema
+type SignUpSchema struct {
 	Email       string `json:"email" validate:"email,required"`
 	PhoneNumber string `json:"phone_number" validate:"number,required"`
 	FirstName   string `json:"first_name" validate:"required"`
@@ -27,27 +27,27 @@ type SignUpReq struct {
 	Password    string `json:"password" validate:"required"`
 }
 
-// SignUpRes schema
-type SignUpRes struct {
+// SignUpMessage schema
+type SignUpMessage struct {
 	Success bool   `json:"success" validate:"required"`
 	Msg     string `json:"msg" validate:"required"`
 }
 
-// LoginReq schema
-type LoginReq struct {
+// LoginSchema schema
+type LoginSchema struct {
 	Email    string `json:"email" validate:"email,required"`
 	Password string `json:"password" validate:"required"`
 }
 
-// LoginRes schema
-type LoginRes struct {
+// LoginMessage schema
+type LoginMessage struct {
 	Success bool   `json:"success" validate:"required"`
 	Token   string `json:"token" validate:"required"`
 	Email   string `json:"email" validate:"email,required"`
 }
 
-// UserInfo schema
-type UserInfo struct {
+// UserSchema schema
+type UserSchema struct {
 	Id          int64  `json:"id" validate:"required" db:"id"`
 	Email       string `json:"email" validate:"email,required" db:"email"`
 	PhoneNumber string `json:"phone_number" validate:"number,required" db:"phone_number"`

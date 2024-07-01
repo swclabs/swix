@@ -22,8 +22,8 @@ func UseTask(service ICommonService) ICommonService {
 	}
 }
 
-func (t *Task) HealthCheck(ctx context.Context) domain.HealthCheckRes {
-	return domain.HealthCheckRes{
+func (t *Task) HealthCheck(ctx context.Context) domain.HealthCheck {
+	return domain.HealthCheck{
 		Status: "Ok",
 	}
 }

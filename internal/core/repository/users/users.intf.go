@@ -5,34 +5,34 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 )
 
-// IUserRepository User Repository interface
+// IUserRepository Users Repository interface
 // implement at /internal/repository/users.go
 type IUserRepository interface {
 
-	// GetByEmail retrieves a User based on email address.
-	GetByEmail(ctx context.Context, email string) (*domain.User, error)
+	// GetByEmail retrieves a Users based on email address.
+	GetByEmail(ctx context.Context, email string) (*domain.Users, error)
 
-	// GetByPhone retrieves a User based on phone number.
-	GetByPhone(ctx context.Context, nPhone string) (*domain.User, error)
+	// GetByPhone retrieves a Users based on phone number.
+	GetByPhone(ctx context.Context, nPhone string) (*domain.Users, error)
 
-	// Insert inserts a new User into the database.
-	Insert(ctx context.Context, usr domain.User) error
+	// Insert inserts a new Users into the database.
+	Insert(ctx context.Context, usr domain.Users) error
 
-	// Info retrieves User information based on email address.
-	Info(ctx context.Context, email string) (*domain.UserInfo, error)
+	// Info retrieves Users information based on email address.
+	Info(ctx context.Context, email string) (*domain.UserSchema, error)
 
-	// SaveInfo saves User information.
-	SaveInfo(ctx context.Context, user domain.User) error
+	// SaveInfo saves Users information.
+	SaveInfo(ctx context.Context, user domain.Users) error
 
-	// OAuth2SaveInfo saves User information from OAuth2 login.
-	OAuth2SaveInfo(ctx context.Context, user domain.User) error
+	// OAuth2SaveInfo saves Users information from OAuth2 login.
+	OAuth2SaveInfo(ctx context.Context, user domain.Users) error
 
-	// TransactionSignUp signs up a User within a transaction.
-	TransactionSignUp(ctx context.Context, user domain.User, password string) error
+	// TransactionSignUp signs up a Users within a transaction.
+	TransactionSignUp(ctx context.Context, user domain.Users, password string) error
 
-	// TransactionSaveOAuth2 saves User information from OAuth2 login within a transaction.
-	TransactionSaveOAuth2(ctx context.Context, data domain.User) error
+	// TransactionSaveOAuth2 saves Users information from OAuth2 login within a transaction.
+	TransactionSaveOAuth2(ctx context.Context, data domain.Users) error
 
-	// UpdateProperties updates User properties.
-	UpdateProperties(ctx context.Context, query string, user domain.User) error
+	// UpdateProperties updates Users properties.
+	UpdateProperties(ctx context.Context, query string, user domain.Users) error
 }

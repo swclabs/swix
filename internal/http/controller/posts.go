@@ -45,7 +45,7 @@ func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param collection body domain.CollectionSchemaSwagger true "collections Request"
-// @Success 201 {object} domain.CollectionUploadRes
+// @Success 201 {object} domain.CollectionUploadSchema
 // @Router /collections [POST]
 func (p *Posts) UploadCollections(c echo.Context) error {
 	var cardBanner domain.CollectionSchema
@@ -65,7 +65,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, domain.CollectionUploadRes{
+	return c.JSON(http.StatusCreated, domain.CollectionUploadSchema{
 		Msg: "collection uploaded successfully",
 		Id:  id,
 	})
@@ -112,7 +112,7 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 // @Produce json
 // @Param position query string true "position of collections"
 // @Param limit query string true "limit of cards banner slices"
-// @Success 200 {object} domain.Collections
+// @Success 200 {object} domain.CollectionSliceSchema
 // @Router /collections [GET]
 func (p *Posts) GetSlicesOfCollections(c echo.Context) error {
 	position := c.QueryParam("position")

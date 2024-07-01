@@ -28,13 +28,13 @@ func (p *Purchase) DeleteItemFromCart(ctx context.Context, userId int64, invento
 }
 
 // AddToCart implements domain.IPurchaseService.
-func (p *Purchase) AddToCart(ctx context.Context, cart domain.CartInsertReq) error {
+func (p *Purchase) AddToCart(ctx context.Context, cart domain.CartInsert) error {
 	return p.cart.Insert(
 		ctx, cart.UserId, cart.InventoryId, cart.Quantity)
 }
 
 // GetCart implements domain.IPurchaseService.
-func (p *Purchase) GetCart(ctx context.Context, userId int64, limit int) (*domain.CartSchema, error) {
+func (p *Purchase) GetCart(ctx context.Context, userId int64, limit int) (*domain.CartSlices, error) {
 	return p.cart.GetCartByUserID(ctx, userId, limit)
 }
 

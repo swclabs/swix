@@ -48,9 +48,9 @@ func New(
 
 // SignUp user to access system, return error if exist
 func (manager *AccountManagement) SignUp(
-	ctx context.Context, req domain.SignUpReq) error {
+	ctx context.Context, req domain.SignUpSchema) error {
 	// call repository layer
-	return manager.User.TransactionSignUp(ctx, domain.User{
+	return manager.User.TransactionSignUp(ctx, domain.Users{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -62,7 +62,7 @@ func (manager *AccountManagement) SignUp(
 
 // Login to system, return token if error not exist
 func (manager *AccountManagement) Login(
-	ctx context.Context, req domain.LoginReq) (string, error) {
+	ctx context.Context, req domain.LoginSchema) (string, error) {
 	// get account form email
 	account, err := manager.Account.GetByEmail(ctx, req.Email)
 	if err != nil {
@@ -77,7 +77,7 @@ func (manager *AccountManagement) Login(
 
 // UserInfo return user information from Database
 func (manager *AccountManagement) UserInfo(
-	ctx context.Context, email string) (*domain.UserInfo, error) {
+	ctx context.Context, email string) (*domain.UserSchema, error) {
 	// get user information
 	return manager.User.Info(ctx, email)
 }
@@ -86,7 +86,7 @@ func (manager *AccountManagement) UserInfo(
 func (manager *AccountManagement) UpdateUserInfo(
 	ctx context.Context, req domain.UserUpdate) error {
 	// call repository layer
-	return manager.User.SaveInfo(ctx, domain.User{
+	return manager.User.SaveInfo(ctx, domain.Users{
 		Id:          req.Id,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -108,7 +108,7 @@ func (manager *AccountManagement) UploadAvatar(
 		log.Fatal(err)
 	}
 	// call repository layer to save user
-	return manager.User.SaveInfo(context.TODO(), domain.User{
+	return manager.User.SaveInfo(context.TODO(), domain.Users{
 		Email: email,
 		Image: resp.SecureURL,
 	})
@@ -118,7 +118,7 @@ func (manager *AccountManagement) UploadAvatar(
 func (manager *AccountManagement) OAuth2SaveUser(
 	ctx context.Context, req domain.OAuth2SaveUser) error {
 	return manager.User.TransactionSaveOAuth2(ctx,
-		domain.User{
+		domain.Users{
 			Email:       req.Email,
 			PhoneNumber: req.PhoneNumber,
 			FirstName:   req.FirstName,

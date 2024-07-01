@@ -32,7 +32,7 @@ type Specs struct {
 	RAM     []int  `json:"RAM"`
 }
 
-type ProductReq struct {
+type Product struct {
 	Specs
 	Price       string `json:"price" validate:"required"`
 	Description string `json:"description" validate:"required"`
@@ -42,7 +42,7 @@ type ProductReq struct {
 	Status      string `json:"status" validate:"required"`
 }
 
-type ProductRes struct {
+type ProductSchema struct {
 	ID          int64    `json:"id"`
 	Image       []string `json:"image"`
 	Price       string   `json:"price"`
@@ -54,18 +54,12 @@ type ProductRes struct {
 	Spec        Specs    `json:"spec"`
 }
 
-type UpdateProductInfoReq struct {
-	ProductReq
+type UpdateProductInfo struct {
+	Product
 	Id int64 `json:"id" validate:"required"`
 }
 
-type UploadProductRes struct {
+type CreateProductSchema struct {
 	Msg string `json:"msg"`
 	Id  int64  `json:"id"`
-}
-
-type ProductsRes struct {
-	Limit int          `json:"limit"`
-	Page  int          `json:"page"`
-	Data  []ProductRes `json:"data" db:"data"`
 }

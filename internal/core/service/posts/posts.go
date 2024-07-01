@@ -52,13 +52,13 @@ func (p *Posts) UploadHeadlineBanner(ctx context.Context, banner domain.Headline
 
 // SlicesOfCollections implements domain.IPostsService.
 func (p *Posts) SlicesOfCollections(
-	ctx context.Context, position string, limit int) (*domain.Collections, error) {
+	ctx context.Context, position string, limit int) (*domain.CollectionSliceSchema, error) {
 	collectionSlice, err := p.Collections.SlicesOfCollections(ctx, position, limit)
 	if err != nil {
 		return nil, err
 	}
 
-	var _collections domain.Collections
+	var _collections domain.CollectionSliceSchema
 	_collections.Position = collectionSlice[0].Position
 	_collections.Headline = collectionSlice[0].Headline
 
@@ -68,7 +68,7 @@ func (p *Posts) SlicesOfCollections(
 			return nil, err
 		}
 		_collections.CardBanner = append(_collections.CardBanner,
-			domain.CollectionsBody{
+			domain.CollectionSliceBody{
 				CollectionBody: body,
 				Id:             _collection.Id,
 				Created:        _collection.Created,

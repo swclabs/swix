@@ -22,12 +22,12 @@ func New(connection db.IDatabase) ICartRepository {
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Carts) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSchema, error) {
+func (c *Carts) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSlices, error) {
 	rows, err := c.db.Query(ctx, selectByUserId, userId, limit)
 	if err != nil {
 		return nil, err
 	}
-	var cartSchema domain.CartSchema
+	var cartSchema domain.CartSlices
 	cartSchema.UserId = userId
 
 	cartItems, err := db.CollectRows[domain.Carts](rows)
@@ -36,7 +36,7 @@ func (c *Carts) GetCartByUserID(ctx context.Context, userId int64, limit int) (*
 	}
 	for _, item := range cartItems {
 
-		cartSchema.Products = append(cartSchema.Products, domain.CartBodySchema{
+		cartSchema.Products = append(cartSchema.Products, domain.CartSchema{
 			Quantity: item.Quantity,
 		})
 	}

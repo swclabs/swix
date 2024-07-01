@@ -24,11 +24,24 @@ func New(conn db.IDatabase) IProductRepository {
 	})
 }
 
+// Search implements IProductRepository.
+func (product *Products) Search(ctx context.Context, keyword string) ([]domain.Products, error) {
+	rows, err := product.db.Query(ctx, searchByKeyword, keyword)
+	if err != nil {
+		return nil, errors.Repository("search", err)
+	}
+	products, err := db.CollectRows[domain.Products](rows)
+	if err != nil {
+		return nil, errors.Repository("search", err)
+	}
+	return products, nil
+}
+
 // Update implements IProductRepository.
 func (product *Products) Update(ctx context.Context, prod domain.Products) error {
 	return errors.Repository("safely write data",
-		product.db.SafeWrite(ctx, updateById, 
-			prod.Name, prod.Price,prod.Description, prod.SupplierID, 
+		product.db.SafeWrite(ctx, updateById,
+			prod.Name, prod.Price, prod.Description, prod.SupplierID,
 			prod.CategoryID, prod.Spec, prod.Status, prod.ID,
 		),
 	)
@@ -53,7 +66,7 @@ func (product *Products) GetById(ctx context.Context, productId int64) (*domain.
 	return &_product, nil
 }
 
-// Insert implements domain.IProductRepository.
+// Insert implements IProductRepository.
 func (product *Products) Insert(ctx context.Context, prd domain.Products) (int64, error) {
 	id, err := product.db.SafeWriteReturn(
 		ctx, insertIntoProducts,
@@ -66,10 +79,10 @@ func (product *Products) Insert(ctx context.Context, prd domain.Products) (int64
 	return id, nil
 }
 
-// GetLimit implements domain.IProductRepository.
-func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
+// GetLimit implements IProductRepository.
+func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
 
-	var productResponse []domain.ProductRes
+	var productResponse []domain.ProductSchema
 
 	rows, err := product.db.Query(ctx, selectLimit, limit)
 	if err != nil {
@@ -95,7 +108,7 @@ func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.Prod
 		}
 		images := strings.Split(p.Image, ",")
 		productResponse = append(productResponse,
-			domain.ProductRes{
+			domain.ProductSchema{
 				ID:          p.ID,
 				Price:       p.Price,
 				Description: p.Description,
@@ -110,7 +123,7 @@ func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.Prod
 	return productResponse, nil
 }
 
-// UploadNewImage implements domain.IProductRepository.
+// UploadNewImage implements IProductRepository.
 func (product *Products) UploadNewImage(ctx context.Context, urlImg string, id int) error {
 	return errors.Repository("write data", product.db.SafeWrite(
 		ctx, updateProductImage,

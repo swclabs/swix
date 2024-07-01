@@ -18,7 +18,7 @@ func useCache(repo ICartRepository) ICartRepository {
 var _ ICartRepository = (*cache)(nil)
 
 // GetCartByUserID implements ICartRepository.
-func (c *cache) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSchema, error) {
+func (c *cache) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSlices, error) {
 	return c.cart.GetCartByUserID(ctx, userId, limit)
 }
 

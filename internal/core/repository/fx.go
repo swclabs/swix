@@ -6,7 +6,7 @@ import (
 	"swclabs/swipecore/internal/core/repository/carts"
 	"swclabs/swipecore/internal/core/repository/categories"
 	"swclabs/swipecore/internal/core/repository/collections"
-	"swclabs/swipecore/internal/core/repository/inventory"
+	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/orders"
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/internal/core/repository/suppliers"
@@ -23,7 +23,7 @@ var FxModule = fx.Options(
 		categories.New,
 		products.New,
 		suppliers.New,
-		inventory.New,
+		inventories.New,
 		collections.New,
 		orders.New,
 		carts.New,

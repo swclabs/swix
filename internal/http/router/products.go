@@ -26,14 +26,14 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.POST("/categories", r.controller.InsertCategory)
 	// endpoint for products
 	e.GET("/products", r.controller.GetProductLimit)
-	e.POST("/products", r.controller.UploadProduct)
+	e.POST("/products", r.controller.CreateProduct)
 	e.DELETE("/products", r.controller.DeleteProduct)
 	e.PUT("/products", r.controller.UpdateProductInfo)
 	e.POST("/products/img", r.controller.UploadProductImage)
 	// endpoint for suppliers
 	e.GET("/suppliers", r.controller.GetSupplier)
 	e.POST("/suppliers", r.controller.InsertSupplier)
-	// endpoint for inventory
-	e.GET("/inventory", r.controller.GetProductAvailability)
-	e.POST("/inventory", r.controller.AddToInventory)
+	// endpoint for inventories
+	e.GET("/inventories", r.controller.GetProductAvailability)
+	e.POST("/inventories", r.controller.AddToInventory)
 }

@@ -1,4 +1,4 @@
-package inventory
+package inventories
 
 import (
 	"context"
@@ -13,16 +13,21 @@ type Mock struct {
 
 var _ IInventoryRepository = (*Mock)(nil)
 
+func (w *Mock) GetByProductId(ctx context.Context, productId int64) ([]domain.Inventories, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 // GetById implements IInventoryRepository.
-func (w *Mock) GetById(ctx context.Context, inventoryId int64) (*domain.Inventory, error) {
+func (w *Mock) GetById(ctx context.Context, inventoryId int64) (*domain.Inventories, error) {
 	panic("unimplemented")
 }
 
-// GetProducts implements IInventoryRepository.
-func (w *Mock) GetProducts(
-	ctx context.Context, productID, ram, ssd, color string) (*domain.Inventory, error) {
+// FindDevice implements IInventoryRepository.
+func (w *Mock) FindDevice(
+	ctx context.Context, productID, ram, ssd, color string) (*domain.Inventories, error) {
 	args := w.Called(ctx, productID, ram, ssd, color)
-	return args.Get(0).(*domain.Inventory), args.Error(1)
+	return args.Get(0).(*domain.Inventories), args.Error(1)
 }
 
 // InsertProduct implements IInventoryRepository.

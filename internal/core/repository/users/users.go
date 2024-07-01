@@ -26,12 +26,12 @@ func New(conn db.IDatabase) IUserRepository {
 var _ IUserRepository = (*Users)(nil)
 
 // GetByEmail implements IUserRepository.
-func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
+func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.Users, error) {
 	rows, err := usr.db.Query(ctx, selectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[domain.User](rows)
+	user, err := db.CollectOneRow[domain.Users](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.User, e
 }
 
 // Insert implements IUserRepository.
-func (usr *Users) Insert(ctx context.Context, _usr domain.User) error {
+func (usr *Users) Insert(ctx context.Context, _usr domain.Users) error {
 	return usr.db.SafeWrite(
 		ctx,
 		insertIntoUsers,
@@ -48,12 +48,12 @@ func (usr *Users) Insert(ctx context.Context, _usr domain.User) error {
 }
 
 // Info implements IUserRepository.
-func (usr *Users) Info(ctx context.Context, email string) (*domain.UserInfo, error) {
+func (usr *Users) Info(ctx context.Context, email string) (*domain.UserSchema, error) {
 	rows, err := usr.db.Query(ctx, selectUserInfo, email)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[domain.UserInfo](rows)
+	user, err := db.CollectOneRow[domain.UserSchema](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (usr *Users) Info(ctx context.Context, email string) (*domain.UserInfo, err
 }
 
 // SaveInfo implements IUserRepository.
-func (usr *Users) SaveInfo(ctx context.Context, user domain.User) error {
+func (usr *Users) SaveInfo(ctx context.Context, user domain.Users) error {
 	if user.Email == "" {
 		return errors.New("missing key: email ")
 	}
@@ -98,7 +98,7 @@ func (usr *Users) SaveInfo(ctx context.Context, user domain.User) error {
 
 // UpdateProperties implements IUserRepository.
 func (usr *Users) UpdateProperties(
-	ctx context.Context, query string, user domain.User) error {
+	ctx context.Context, query string, user domain.Users) error {
 	switch query {
 	case updateUsersLastname:
 		if err := usr.db.SafeWrite(ctx,
@@ -129,7 +129,7 @@ func (usr *Users) UpdateProperties(
 }
 
 // OAuth2SaveInfo implements IUserRepository.
-func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.User) error {
+func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.Users) error {
 	return usr.db.SafeWrite(
 		ctx, insertUsersConflict, user.Email, user.PhoneNumber,
 		user.FirstName, user.LastName, user.Image,
@@ -138,7 +138,7 @@ func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.User) error {
 
 // TransactionSignUp implements IUserRepository.
 func (usr *Users) TransactionSignUp(
-	ctx context.Context, user domain.User, password string) error {
+	ctx context.Context, user domain.Users, password string) error {
 	hash, err := jwt.GenPassword(password)
 	if err != nil {
 		return err
@@ -172,7 +172,7 @@ func (usr *Users) TransactionSignUp(
 }
 
 // TransactionSaveOAuth2 implements IUserRepository.
-func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.User) error {
+func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.Users) error {
 	hash, err := jwt.GenPassword(utils.RandomString(18))
 	if err != nil {
 		return err
@@ -204,12 +204,12 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.User) e
 }
 
 // GetByPhone implements IUserRepository.
-func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*domain.User, error) {
+func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*domain.Users, error) {
 	rows, err := usr.db.Query(ctx, selectByPhone, nPhone)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[domain.User](rows)
+	user, err := db.CollectOneRow[domain.Users](rows)
 	if err != nil {
 		return nil, err
 	}
