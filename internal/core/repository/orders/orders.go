@@ -1,7 +1,7 @@
 package orders
 
 import (
-	"swclabs/swipecore/internal/core/domain"
+	"context"
 	"swclabs/swipecore/pkg/db"
 )
 
@@ -17,22 +17,7 @@ func New(conn db.IDatabase) IOrdersRepository {
 
 var _ IOrdersRepository = (*Orders)(nil)
 
-func (order *Orders) Create() error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (order *Orders) GetById(id string) (domain.Orders, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (order *Orders) GetAll() ([]domain.Orders, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (order *Orders) Delete(id string) error {
+func (order *Orders) Create(ctx context.Context, userId string, cartId ...int64) error {
 	//TODO implement me
 	panic("implement me")
 }

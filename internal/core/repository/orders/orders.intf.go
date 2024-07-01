@@ -1,10 +1,7 @@
 package orders
 
-import "swclabs/swipecore/internal/core/domain"
+import "context"
 
 type IOrdersRepository interface {
-	Create() error
-	GetById(id string) (domain.Orders, error)
-	GetAll() ([]domain.Orders, error)
-	Delete(id string) error
+	Create(ctx context.Context, userId string, cartId ...int64) error
 }

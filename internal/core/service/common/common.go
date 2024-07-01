@@ -19,8 +19,8 @@ func (common *Service) WorkerCheckResult(ctx context.Context, num int64) (string
 	return strconv.Itoa(int(num)), common.WorkerCheck(ctx, num)
 }
 
-func (common *Service) HealthCheck(ctx context.Context) domain.HealthCheckRes {
-	return domain.HealthCheckRes{
+func (common *Service) HealthCheck(ctx context.Context) domain.HealthCheck {
+	return domain.HealthCheck{
 		Status: "ok",
 	}
 }

@@ -23,7 +23,7 @@ func QueueOf(service IAccountManagement) IAccountManagement {
 	}
 }
 
-func (t *Task) SignUp(_ context.Context, req domain.SignUpReq) error {
+func (t *Task) SignUp(_ context.Context, req domain.SignUpSchema) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.SignUp),
 		req,
@@ -44,7 +44,7 @@ func (t *Task) OAuth2SaveUser(_ context.Context, req domain.OAuth2SaveUser) erro
 	))
 }
 
-func (t *Task) Login(ctx context.Context, req domain.LoginReq) (string, error) {
+func (t *Task) Login(ctx context.Context, req domain.LoginSchema) (string, error) {
 	return t.service.Login(ctx, req)
 }
 
@@ -52,7 +52,7 @@ func (t *Task) CheckLoginEmail(ctx context.Context, email string) error {
 	return t.service.CheckLoginEmail(ctx, email)
 }
 
-func (t *Task) UserInfo(ctx context.Context, email string) (*domain.UserInfo, error) {
+func (t *Task) UserInfo(ctx context.Context, email string) (*domain.UserSchema, error) {
 	return t.service.UserInfo(ctx, email)
 }
 

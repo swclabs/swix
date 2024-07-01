@@ -18,7 +18,7 @@ func NewCartsMock() *Mock {
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Mock) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSchema, error) {
+func (c *Mock) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSlices, error) {
 	panic("unimplemented")
 }
 

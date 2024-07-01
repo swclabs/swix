@@ -17,7 +17,7 @@ type IProducts interface {
 	InsertCategory(c echo.Context) error
 	InsertSupplier(c echo.Context) error
 	UploadProductImage(c echo.Context) error
-	UploadProduct(c echo.Context) error
+	CreateProduct(c echo.Context) error
 	GetProductAvailability(c echo.Context) error
 	AddToInventory(c echo.Context) error
 	DeleteProduct(c echo.Context) error
@@ -39,11 +39,11 @@ func NewProducts(services products.IProductService) IProducts {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param product body domain.UpdateProductInfoReq true "Product Information Request"
+// @Param product body domain.UpdateProductInfo true "Product Information Request"
 // @Success 200 {object} domain.OK
 // @Router /products [PUT]
 func (p *Products) UpdateProductInfo(c echo.Context) error {
-	var payload domain.UpdateProductInfoReq
+	var payload domain.UpdateProductInfo
 	if err := c.Bind(&payload); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -54,7 +54,7 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 			Msg: _valid.Error(),
 		})
 	}
-	if err := p.Services.UpdateProductInfor(c.Request().Context(), payload); err != nil {
+	if err := p.Services.UpdateProductInfo(c.Request().Context(), payload); err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
@@ -65,7 +65,7 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 }
 
 // GetProductAvailability
-// @Description get product availability in inventory
+// @Description get product availability in inventories
 // @Tags products
 // @Accept json
 // @Produce json
@@ -74,7 +74,7 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 // @Param ssd query number true "ssd"
 // @Param color query string true "color"
 // @Success 200 {object} domain.InventorySchema
-// @Router /inventory [GET]
+// @Router /inventories [GET]
 func (p *Products) GetProductAvailability(c echo.Context) error {
 	pid := c.QueryParam("pid")
 	if pid == "" {
@@ -86,7 +86,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 	ssd := c.QueryParam("ssd")
 	color := c.QueryParam("color")
 
-	product, err := p.Services.GetProductsInInventory(c.Request().Context(), pid, ram, ssd, color)
+	product, err := p.Services.FindDeviceInInventory(c.Request().Context(), pid, ram, ssd, color)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
@@ -101,7 +101,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query number true "limit number"
-// @Success 200 {object} domain.CategorySlices
+// @Success 200 {object} domain.Slices[domain.Categories]
 // @Router /categories [GET]
 func (p *Products) GetCategories(c echo.Context) error {
 	limit := c.QueryParam("limit")
@@ -118,8 +118,8 @@ func (p *Products) GetCategories(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, domain.CategorySlices{
-		Data: resp,
+	return c.JSON(http.StatusOK, domain.Slices[domain.Categories]{
+		Body: resp,
 	})
 }
 
@@ -129,7 +129,7 @@ func (p *Products) GetCategories(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of products"
-// @Success 200 {object} domain.ProductsRes
+// @Success 200 {object} domain.Slices[domain.ProductSchema]
 // @Router /products [GET]
 func (p *Products) GetProductLimit(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
@@ -144,10 +144,8 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, domain.ProductsRes{
-		Limit: _limit,
-		Page:  1,
-		Data:  prd,
+	return c.JSON(http.StatusOK, domain.Slices[domain.ProductSchema]{
+		Body: prd,
 	})
 }
 
@@ -202,7 +200,7 @@ func (p *Products) InsertCategory(c echo.Context) error {
 			Msg: _valid.Error(),
 		})
 	}
-	if err := p.Services.InsertCategory(c.Request().Context(), request); err != nil {
+	if err := p.Services.CreateCategory(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: "category data invalid",
 		})
@@ -248,17 +246,17 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 	})
 }
 
-// UploadProduct
+// CreateProduct
 // @Description create new product
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param product body domain.ProductReq true "Product Request"
-// @Success 200 {object} domain.UploadProductRes
+// @Param product body domain.Product true "Product Request"
+// @Success 200 {object} domain.CreateProductSchema
 // @Router /products [POST]
-func (p *Products) UploadProduct(c echo.Context) error {
+func (p *Products) CreateProduct(c echo.Context) error {
 	// bind json to structure
-	var productReq domain.ProductReq
+	var productReq domain.Product
 	if err := c.Bind(&productReq); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -271,13 +269,13 @@ func (p *Products) UploadProduct(c echo.Context) error {
 		})
 	}
 	// call services
-	id, err := p.Services.UploadProduct(c.Request().Context(), productReq)
+	id, err := p.Services.CreateProduct(c.Request().Context(), productReq)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, domain.UploadProductRes{
+	return c.JSON(http.StatusCreated, domain.CreateProductSchema{
 		Msg: "upload product successfully",
 		Id:  id,
 	})
@@ -289,7 +287,7 @@ func (p *Products) UploadProduct(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of suppliers"
-// @Success 200 {object} domain.SupplierSlices
+// @Success 200 {object} domain.Slices[domain.Suppliers]
 // @Router /suppliers [GET]
 func (p *Products) GetSupplier(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
@@ -304,8 +302,8 @@ func (p *Products) GetSupplier(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, domain.SupplierSlices{
-		Data: _supp,
+	return c.JSON(http.StatusOK, domain.Slices[domain.Suppliers]{
+		Body: _supp,
 	})
 }
 
@@ -314,11 +312,11 @@ func (p *Products) GetSupplier(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param SuppliersReq body domain.SuppliersReq true "Suppliers Request"
+// @Param SupplierSchema body domain.SupplierSchema true "Suppliers Request"
 // @Success 201 {object} domain.OK
 // @Router /suppliers [POST]
 func (p *Products) InsertSupplier(c echo.Context) error {
-	var req domain.SuppliersReq
+	var req domain.SupplierSchema
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -329,7 +327,7 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 			Msg: validate.Error(),
 		})
 	}
-	if err := p.Services.InsertSuppliers(c.Request().Context(), req); err != nil {
+	if err := p.Services.CreateSuppliers(c.Request().Context(), req); err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
@@ -340,13 +338,13 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 }
 
 // AddToInventory
-// @Description add product to inventory
+// @Description add product to inventories
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param InventoryStruct body domain.InventoryStruct true "Inventory Request"
+// @Param InventoryStruct body domain.InventoryStruct true "Inventories Request"
 // @Success 201 {object} domain.OK
-// @Router /inventory [POST]
+// @Router /inventories [POST]
 func (p *Products) AddToInventory(c echo.Context) error {
 	var req domain.InventoryStruct
 	if err := c.Bind(&req); err != nil {
@@ -365,6 +363,6 @@ func (p *Products) AddToInventory(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusCreated, domain.OK{
-		Msg: "add product to inventory created successfully",
+		Msg: "add product to inventories created successfully",
 	})
 }

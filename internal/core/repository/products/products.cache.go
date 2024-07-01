@@ -15,6 +15,11 @@ func useCache(product IProductRepository) IProductRepository {
 	return &cache{products: product}
 }
 
+// Search implements IProductRepository.
+func (c *cache) Search(ctx context.Context, keyword string) ([]domain.Products, error) {
+	return c.products.Search(ctx, keyword)
+}
+
 // Update implements IProductRepository.
 func (c *cache) Update(ctx context.Context, product domain.Products) error {
 	return c.products.Update(ctx, product)
@@ -31,7 +36,7 @@ func (c *cache) GetById(ctx context.Context, productId int64) (*domain.Products,
 }
 
 // GetLimit implements IProductRepository.
-func (c *cache) GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error) {
+func (c *cache) GetLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
 	return c.products.GetLimit(ctx, limit)
 }
 

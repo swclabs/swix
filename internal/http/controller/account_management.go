@@ -36,11 +36,11 @@ type IAccountManagement interface {
 // @Tags account_management
 // @Accept json
 // @Produce json
-// @Param login body domain.LoginReq true "Login"
-// @Success 200 {object} domain.LoginRes
+// @Param login body domain.LoginSchema true "Login"
+// @Success 200 {object} domain.LoginMessage
 // @Router /auth/login [POST]
 func (account *AccountManagement) Login(c echo.Context) error {
-	var request domain.LoginReq
+	var request domain.LoginSchema
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -70,7 +70,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, domain.LoginRes{
+	return c.JSON(http.StatusOK, domain.LoginMessage{
 		Success: true,
 		Token:   accessToken,
 		Email:   request.Email,
@@ -82,11 +82,11 @@ func (account *AccountManagement) Login(c echo.Context) error {
 // @Tags account_management
 // @Accept json
 // @Produce json
-// @Param sign_up body domain.SignUpReq true "Sign Up"
-// @Success 200 {object} domain.SignUpRes
+// @Param sign_up body domain.SignUpSchema true "Sign Up"
+// @Success 200 {object} domain.SignUpMessage
 // @Router /auth/signup [POST]
 func (account *AccountManagement) SignUp(c echo.Context) error {
-	var request domain.SignUpReq
+	var request domain.SignUpSchema
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: err.Error(),
@@ -102,7 +102,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 			Msg: "user data invalid",
 		})
 	}
-	return c.JSON(http.StatusCreated, domain.SignUpRes{
+	return c.JSON(http.StatusCreated, domain.SignUpMessage{
 		Success: true,
 		Msg:     "user has been created",
 	})
@@ -136,7 +136,7 @@ func (account *AccountManagement) Logout(c echo.Context) error {
 // @Tags account_management
 // @Accept json
 // @Produce json
-// @Success 200 {object} domain.UserInfo
+// @Success 200 {object} domain.UserSchema
 // @Router /users [GET]
 func (account *AccountManagement) GetMe(c echo.Context) error {
 	// session := sessions.Default(c)
@@ -156,7 +156,7 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 // @Tags account_management
 // @Accept json
 // @Produce json
-// @Param UserInfo body domain.UserUpdate true "Update User"
+// @Param UserSchema body domain.UserUpdate true "Update Users"
 // @Success 200 {object} domain.OK
 // @Router /users [PUT]
 func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {

@@ -1,18 +1,5 @@
 basePath: /
 definitions:
-  domain.CartBodySchema:
-    properties:
-      amount:
-        type: string
-      category:
-        type: string
-      img:
-        type: string
-      product_name:
-        type: string
-      quantity:
-        type: integer
-    type: object
   domain.CartInsertReq:
     properties:
       inventory_id:
@@ -28,9 +15,22 @@ definitions:
     type: object
   domain.CartSchema:
     properties:
+      amount:
+        type: string
+      category:
+        type: string
+      img:
+        type: string
+      product_name:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  domain.CartSlices:
+    properties:
       products:
         items:
-          $ref: '#/definitions/domain.CartBodySchema'
+          $ref: '#/definitions/domain.CartSchema'
         type: array
       user_id:
         type: integer
@@ -56,13 +56,6 @@ definitions:
     required:
     - description
     - name
-    type: object
-  domain.CategorySlices:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Categories'
-        type: array
     type: object
   domain.CollectionBodySwagger:
     properties:
@@ -93,25 +86,7 @@ definitions:
     - headline
     - position
     type: object
-  domain.CollectionUploadRes:
-    properties:
-      id:
-        type: integer
-      msg:
-        type: string
-    type: object
-  domain.Collections:
-    properties:
-      card_banner:
-        items:
-          $ref: '#/definitions/domain.CollectionsBody'
-        type: array
-      headline:
-        type: string
-      position:
-        type: string
-    type: object
-  domain.CollectionsBody:
+  domain.CollectionSliceBody:
     properties:
       created:
         type: string
@@ -132,6 +107,31 @@ definitions:
     - subtitle
     - text_color
     - title
+    type: object
+  domain.CollectionSliceSchema:
+    properties:
+      card_banner:
+        items:
+          $ref: '#/definitions/domain.CollectionSliceBody'
+        type: array
+      headline:
+        type: string
+      position:
+        type: string
+    type: object
+  domain.CollectionUploadRes:
+    properties:
+      id:
+        type: integer
+      msg:
+        type: string
+    type: object
+  domain.CreateProductRes:
+    properties:
+      id:
+        type: integer
+      msg:
+        type: string
     type: object
   domain.Error:
     properties:
@@ -244,7 +244,7 @@ definitions:
     - status
     - supplier_id
     type: object
-  domain.ProductRes:
+  domain.ProductSchema:
     properties:
       created:
         type: string
@@ -266,17 +266,6 @@ definitions:
         $ref: '#/definitions/domain.Specs'
       status:
         type: string
-    type: object
-  domain.ProductsRes:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.ProductRes'
-        type: array
-      limit:
-        type: integer
-      page:
-        type: integer
     type: object
   domain.SignUpReq:
     properties:
@@ -307,6 +296,27 @@ definitions:
     - msg
     - success
     type: object
+  domain.Slices-domain_Categories:
+    properties:
+      body:
+        items:
+          $ref: '#/definitions/domain.Categories'
+        type: array
+    type: object
+  domain.Slices-domain_ProductSchema:
+    properties:
+      body:
+        items:
+          $ref: '#/definitions/domain.ProductSchema'
+        type: array
+    type: object
+  domain.Slices-domain_Suppliers:
+    properties:
+      body:
+        items:
+          $ref: '#/definitions/domain.Suppliers'
+        type: array
+    type: object
   domain.Specs:
     properties:
       RAM:
@@ -335,23 +345,7 @@ definitions:
       ssd:
         type: string
     type: object
-  domain.SupplierSlices:
-    properties:
-      data:
-        items:
-          $ref: '#/definitions/domain.Suppliers'
-        type: array
-    type: object
-  domain.Suppliers:
-    properties:
-      email:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-    type: object
-  domain.SuppliersReq:
+  domain.SupplierSchema:
     properties:
       city:
         type: string
@@ -368,6 +362,15 @@ definitions:
     required:
     - email
     - name
+    type: object
+  domain.Suppliers:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
     type: object
   domain.UpdateProductInfoReq:
     properties:
@@ -406,14 +409,7 @@ definitions:
     - status
     - supplier_id
     type: object
-  domain.UploadProductRes:
-    properties:
-      id:
-        type: integer
-      msg:
-        type: string
-    type: object
-  domain.UserInfo:
+  domain.UserSchema:
     properties:
       email:
         type: string
@@ -562,7 +558,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.CategorySlices'
+            $ref: '#/definitions/domain.Slices-domain_Categories'
       tags:
       - products
     post:
@@ -607,7 +603,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Collections'
+            $ref: '#/definitions/domain.CollectionSliceSchema'
       tags:
       - posts
     post:
@@ -683,7 +679,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get product availability in inventory
+      description: get product availability in inventories
       parameters:
       - description: product id
         in: query
@@ -717,7 +713,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: add product to inventory
+      description: add product to inventories
       parameters:
       - description: Inventory Request
         in: body
@@ -782,7 +778,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.ProductsRes'
+            $ref: '#/definitions/domain.Slices-domain_ProductSchema'
       tags:
       - products
     post:
@@ -802,7 +798,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.UploadProductRes'
+            $ref: '#/definitions/domain.CreateProductRes'
       tags:
       - products
     put:
@@ -865,7 +861,7 @@ paths:
         name: uid
         required: true
         type: integer
-      - description: inventory id
+      - description: inventories id
         in: query
         name: wid
         required: true
@@ -895,7 +891,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.CartSchema'
+            $ref: '#/definitions/domain.CartSlices'
       tags:
       - purchase
     post:
@@ -935,7 +931,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.SupplierSlices'
+            $ref: '#/definitions/domain.Slices-domain_Suppliers'
       tags:
       - products
     post:
@@ -945,10 +941,10 @@ paths:
       parameters:
       - description: Suppliers Request
         in: body
-        name: SuppliersReq
+        name: SupplierSchema
         required: true
         schema:
-          $ref: '#/definitions/domain.SuppliersReq'
+          $ref: '#/definitions/domain.SupplierSchema'
       produces:
       - application/json
       responses:
@@ -969,7 +965,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.UserInfo'
+            $ref: '#/definitions/domain.UserSchema'
       tags:
       - account_management
     put:
@@ -979,7 +975,7 @@ paths:
       parameters:
       - description: Update User
         in: body
-        name: UserInfo
+        name: UserSchema
         required: true
         schema:
           $ref: '#/definitions/domain.UserUpdate'

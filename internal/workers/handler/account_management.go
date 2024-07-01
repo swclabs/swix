@@ -25,7 +25,7 @@ func NewAccountManagementConsume(handler accountmanagement.IAccountManagement) *
 func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 	return worker.GetTaskName(account.SignUp),
 		func(_ context.Context, task *asynq.Task) error {
-			var data domain.SignUpReq
+			var data domain.SignUpSchema
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}

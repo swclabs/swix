@@ -43,4 +43,12 @@ const (
 			created = now() AT TIME ZONE 'utc',
 		WHERE id = $9;
 	`
+	searchByKeyword = `
+		SELECT *
+		FROM products
+		WHERE
+			name ILIKE '%$1%' or 
+			description ILIKE '%$1%';
+	
+	`
 )

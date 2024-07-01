@@ -8,7 +8,7 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/errors"
 	"swclabs/swipecore/internal/core/repository/categories"
-	"swclabs/swipecore/internal/core/repository/inventory"
+	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/internal/core/repository/suppliers"
 	"swclabs/swipecore/pkg/blob"
@@ -18,7 +18,7 @@ type ProductService struct {
 	Categories categories.ICategoriesRepository
 	Products   products.IProductRepository
 	Suppliers  suppliers.ISuppliersRepository
-	Inventory  inventory.IInventoryRepository
+	Inventory  inventories.IInventoryRepository
 }
 
 var _ IProductService = (*ProductService)(nil)
@@ -27,7 +27,7 @@ func New(
 	categories categories.ICategoriesRepository,
 	products products.IProductRepository,
 	suppliers suppliers.ISuppliersRepository,
-	inventory inventory.IInventoryRepository,
+	inventory inventories.IInventoryRepository,
 ) IProductService {
 	return &ProductService{
 		Categories: categories,
@@ -37,11 +37,22 @@ func New(
 	}
 }
 
-// UpdateProductInfor implements IProductService.
-func (s *ProductService) UpdateProductInfor(ctx context.Context, product domain.UpdateProductInfoReq) error {
-	spec, err := json.Marshal(product.ProductReq.Specs)
+// GetInventory implements IProductService.
+func (s *ProductService) GetInventory(ctx context.Context, productId int64) ([]domain.Inventories, error) {
+	return s.Inventory.GetByProductId(ctx, productId)
+}
+
+// Search implements IProductService.
+func (s *ProductService) Search(ctx context.Context, keyword string) ([]domain.ProductSchema, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// UpdateProductInfo implements IProductService.
+func (s *ProductService) UpdateProductInfo(ctx context.Context, product domain.UpdateProductInfo) error {
+	spec, err := json.Marshal(product.Product.Specs)
 	if err != nil {
-		return errors.Service("update product infor", err)
+		return errors.Service("update product info", err)
 	}
 	return s.Products.Update(ctx,
 		domain.Products{
@@ -56,41 +67,10 @@ func (s *ProductService) UpdateProductInfor(ctx context.Context, product domain.
 		})
 }
 
-// DeleteProductById implements IProductService.
-func (s *ProductService) DeleteProductById(ctx context.Context, productId int64) error {
-	return s.Products.DeleteById(ctx, productId)
-}
-
-// InsertIntoInventory implements IProductService.
-func (s *ProductService) InsertIntoInventory(
-	ctx context.Context, product domain.InventoryStruct) error {
-	return s.Inventory.InsertProduct(ctx, product)
-}
-
-func (s *ProductService) GetCategoriesLimit(
-	ctx context.Context, limit string) ([]domain.Categories, error) {
-	return s.Categories.GetLimit(ctx, limit)
-}
-
-func (s *ProductService) GetProductsLimit(
-	ctx context.Context, limit int) ([]domain.ProductRes, error) {
-	return s.Products.GetLimit(ctx, limit)
-}
-
-func (s *ProductService) InsertCategory(
-	ctx context.Context, ctg domain.Categories) error {
-	return s.Categories.Insert(ctx, ctg)
-}
-
-func (s *ProductService) GetSuppliersLimit(
-	ctx context.Context, limit int) ([]domain.Suppliers, error) {
-	return s.Suppliers.GetLimit(ctx, limit)
-}
-
-// GetProductsInInventory implements IProductService.
-func (s *ProductService) GetProductsInInventory(
+// FindDeviceInInventory implements IProductService.
+func (s *ProductService) FindDeviceInInventory(
 	ctx context.Context, productID, ram, ssd, color string) (*domain.InventorySchema, error) {
-	_inventory, err := s.Inventory.GetProducts(ctx, productID, ram, ssd, color)
+	_inventory, err := s.Inventory.FindDevice(ctx, productID, ram, ssd, color)
 	if err != nil {
 		return nil, err
 	}
@@ -114,8 +94,7 @@ func (s *ProductService) GetProductsInInventory(
 	return &inventoryRes, nil
 }
 
-func (s *ProductService) UploadProductImage(
-	ctx context.Context, Id int, fileHeader []*multipart.FileHeader) error {
+func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHeader []*multipart.FileHeader) error {
 
 	if fileHeader == nil {
 		return fmt.Errorf("missing image file")
@@ -139,8 +118,7 @@ func (s *ProductService) UploadProductImage(
 	return nil
 }
 
-func (s *ProductService) UploadProduct(
-	ctx context.Context, products domain.ProductReq) (int64, error) {
+func (s *ProductService) CreateProduct(ctx context.Context, products domain.Product) (int64, error) {
 	specs, err := json.Marshal(domain.Specs{
 		Screen:  products.Screen,
 		Display: products.Display,
@@ -162,8 +140,7 @@ func (s *ProductService) UploadProduct(
 	return s.Products.Insert(ctx, prd)
 }
 
-func (s *ProductService) InsertSuppliers(
-	ctx context.Context, supplierReq domain.SuppliersReq) error {
+func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain.SupplierSchema) error {
 	supplier := domain.Suppliers{
 		Name:  supplierReq.Name,
 		Email: supplierReq.Email,
@@ -175,4 +152,30 @@ func (s *ProductService) InsertSuppliers(
 		Street:   supplierReq.Street,
 	}
 	return s.Suppliers.Insert(ctx, supplier, addr)
+}
+
+// DeleteProductById implements IProductService.
+func (s *ProductService) DeleteProductById(ctx context.Context, productId int64) error {
+	return s.Products.DeleteById(ctx, productId)
+}
+
+// InsertIntoInventory implements IProductService.
+func (s *ProductService) InsertIntoInventory(ctx context.Context, product domain.InventoryStruct) error {
+	return s.Inventory.InsertProduct(ctx, product)
+}
+
+func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+	return s.Categories.GetLimit(ctx, limit)
+}
+
+func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
+	return s.Products.GetLimit(ctx, limit)
+}
+
+func (s *ProductService) CreateCategory(ctx context.Context, ctg domain.Categories) error {
+	return s.Categories.Insert(ctx, ctg)
+}
+
+func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
+	return s.Suppliers.GetLimit(ctx, limit)
 }

@@ -16,8 +16,8 @@ type IProductRepository interface {
 	// GetLimit retrieves a list of products with a specified limit.
 	// ctx is the context to manage the request's lifecycle.
 	// limit is the maximum number of products to retrieve.
-	// Returns a slice of ProductRes objects and an error if any issues occur during the retrieval process.
-	GetLimit(ctx context.Context, limit int) ([]domain.ProductRes, error)
+	// Returns a slice of ProductSchema objects and an error if any issues occur during the retrieval process.
+	GetLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error)
 
 	// UploadNewImage updates the image URL of a specified product.
 	// ctx is the context to manage the request's lifecycle.
@@ -27,8 +27,7 @@ type IProductRepository interface {
 	UploadNewImage(ctx context.Context, urlImg string, id int) error
 
 	GetById(ctx context.Context, productId int64) (*domain.Products, error)
-	
 	DeleteById(ctx context.Context, Id int64) error
-
 	Update(ctx context.Context, product domain.Products) error
+	Search(ctx context.Context, keyword string) ([]domain.Products, error)
 }

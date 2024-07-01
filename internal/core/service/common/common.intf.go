@@ -10,8 +10,8 @@ import (
 type ICommonService interface {
 	// HealthCheck performs a health check on the service.
 	// ctx is the context to manage the request's lifecycle.
-	// Returns a HealthCheckRes object with the health check status.
-	HealthCheck(ctx context.Context) domain.HealthCheckRes
+	// Returns a HealthCheck object with the health check status.
+	HealthCheck(ctx context.Context) domain.HealthCheck
 
 	// WorkerCheck checks the status of a worker.
 	// ctx is the context to manage the request's lifecycle.

@@ -16,7 +16,7 @@ type Carts struct {
 	InventoryId int64 `json:"inventory_id" db:"inventory_id"`
 	Quantity    int64 `json:"quantity" db:"quantity"`
 }
-type CartBodySchema struct {
+type CartSchema struct {
 	Img         string `json:"img"`
 	ProductName string `json:"product_name"`
 	Amount      string `json:"amount" db:"amount"`
@@ -24,13 +24,13 @@ type CartBodySchema struct {
 	Category    string `json:"category" db:"category"`
 }
 
-// CartSchema schema
-type CartSchema struct {
-	UserId   int64            `json:"user_id"`
-	Products []CartBodySchema `json:"products"`
+// CartSlices schema
+type CartSlices struct {
+	UserId   int64        `json:"user_id"`
+	Products []CartSchema `json:"products"`
 }
 
-type CartInsertReq struct {
+type CartInsert struct {
 	UserId      int64 `json:"user_id" validate:"required"`
 	InventoryId int64 `json:"inventory_id" validate:"required"`
 	Quantity    int64 `json:"quantity" validate:"required"`

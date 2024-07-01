@@ -7,19 +7,19 @@ import (
 )
 
 // IAccountManagement : Module for Account Management with use-cases.
-// Actor: Admin & Customer (User)
+// Actor: Admin & Customer (Users)
 type IAccountManagement interface {
 	// SignUp registers a new user.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the sign-up request details.
 	// Returns an error if any issues occur during the sign-up process.
-	SignUp(ctx context.Context, req domain.SignUpReq) error
+	SignUp(ctx context.Context, req domain.SignUpSchema) error
 
 	// Login authenticates a user and returns a token.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the login request details.
 	// Returns a token string and an error if any issues occur during the login process.
-	Login(ctx context.Context, req domain.LoginReq) (string, error)
+	Login(ctx context.Context, req domain.LoginSchema) (string, error)
 
 	// CheckLoginEmail checks if the email is already registered.
 	// ctx is the context to manage the request's lifecycle.
@@ -31,7 +31,7 @@ type IAccountManagement interface {
 	// ctx is the context to manage the request's lifecycle.
 	// email is the email address to retrieve user information for.
 	// Returns a pointer to the UserInfo object and an error if any issues occur during the retrieval process.
-	UserInfo(ctx context.Context, email string) (*domain.UserInfo, error)
+	UserInfo(ctx context.Context, email string) (*domain.UserSchema, error)
 
 	// UpdateUserInfo updates the user information.
 	// ctx is the context to manage the request's lifecycle.
