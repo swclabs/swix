@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"mime/multipart"
 	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/errors"
 	"swclabs/swipecore/internal/core/repository/collections"
 	"swclabs/swipecore/pkg/blob"
+	"swclabs/swipecore/pkg/utils"
 )
 
 type Posts struct {
@@ -25,11 +27,11 @@ func (p *Posts) SliceOfHeadlineBanner(
 
 	_collections, err := p.Collections.SlicesOfCollections(ctx, position, limit)
 	if err != nil {
-		return nil, err
+		return nil, errors.Service("get collections", err)
 	}
 
 	var headlineBanners domain.HeadlineBannerSlices
-	headlineBanners.Position = _collections[0].Position
+	headlineBanners.Position = position
 	for _, collection := range _collections {
 		var body domain.HeadlineBannerBody
 		if err := json.Unmarshal([]byte(collection.Body), &body); err != nil {
@@ -39,7 +41,7 @@ func (p *Posts) SliceOfHeadlineBanner(
 			domain.HeadlineBannerSlicesBody{
 				HeadlineBannerBody: body,
 				Id:                 collection.Id,
-				Created:            collection.Created,
+				Created:            utils.HanoiTimezone(collection.Created),
 			})
 	}
 	return &headlineBanners, nil
@@ -71,7 +73,7 @@ func (p *Posts) SlicesOfCollections(
 			domain.CollectionSliceBody{
 				CollectionBody: body,
 				Id:             _collection.Id,
-				Created:        _collection.Created,
+				Created:        utils.HanoiTimezone(_collection.Created),
 			})
 	}
 	return &_collections, nil

@@ -4,7 +4,7 @@ CREATE TABLE "accounts" (
   "email" varchar UNIQUE NOT NULL,
   "password" varchar NOT NULL,
   "type" varchar NOT NULL,
-  "created_at" timestamptz NOT NULL DEFAULT (now())
+  "created_at" timestamptz NOT NULL DEFAULT (now() at time zone 'utc')
 );
 
 CREATE TABLE "users" (
@@ -77,7 +77,7 @@ CREATE TABLE "carts" (
 CREATE TABLE "orders" (
   "id" bigserial PRIMARY KEY,
   "uuid" varchar NOT NULL,
-  "time" timestamptz NOT NULL,
+  "time" timestamp default (now() at time zone 'utc'),
   "user_id" bigint NOT NULL,
   "in_word" bigint NOT NULL,
   "status" varchar NOT NULL

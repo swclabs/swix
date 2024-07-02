@@ -1659,7 +1659,7 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Swipe API Documentation",
+	Title:            "Swipe API documentation",
 	Description:      "This is a documentation for the Swipe API",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
