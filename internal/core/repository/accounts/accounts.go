@@ -20,7 +20,7 @@ func New(conn db.IDatabase) IAccountRepository {
 	return useCache(&Accounts{conn})
 }
 
-// GetByEmail implements domain.IAccountRepository.
+// GetByEmail implements IAccountRepository.
 func (account *Accounts) GetByEmail(
 	ctx context.Context, email string) (*domain.Account, error) {
 	rows, err := account.db.Query(ctx, selectByEmail, email)
@@ -34,7 +34,7 @@ func (account *Accounts) GetByEmail(
 	return &acc, nil
 }
 
-// Insert implements domain.IAccountRepository.
+// Insert implements IAccountRepository.
 func (account *Accounts) Insert(
 	ctx context.Context, acc domain.Account) error {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
@@ -45,7 +45,7 @@ func (account *Accounts) Insert(
 	)
 }
 
-// SaveInfo implements domain.IAccountRepository.
+// SaveInfo implements IAccountRepository.
 func (account *Accounts) SaveInfo(
 	ctx context.Context, acc domain.Account) error {
 	if acc.Email == "" {

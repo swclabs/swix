@@ -16,7 +16,7 @@ type IPosts interface {
 	GetSlicesOfCollections(c echo.Context) error
 
 	UploadHeadlineBanner(c echo.Context) error
-	GetSliceOfHeadlineBanner(c echo.Context) error
+	GetSlicesOfHeadlineBanner(c echo.Context) error
 }
 
 type Posts struct {
@@ -29,18 +29,67 @@ func NewPosts(service posts.IPostsService) IPosts {
 	}
 }
 
-// GetSliceOfHeadlineBanner implements IPosts.
-func (p *Posts) GetSliceOfHeadlineBanner(c echo.Context) error {
-	panic("unimplemented")
+// GetSlicesOfHeadlineBanner
+// @Description get list of headline banner
+// @Tags posts
+// @Accept json
+// @Produce json
+// @Param position query string true "position of collections"
+// @Param limit query int true "limit headline of collections"
+// @Success 200 {object} domain.HeadlineBannerSlices
+// @Router /collections/headline [GET]
+func (p *Posts) GetSlicesOfHeadlineBanner(c echo.Context) error {
+	var (
+		pos    = c.QueryParam("position")
+		sLimit = c.QueryParam("limit")
+	)
+	limit, err := strconv.Atoi(sLimit)
+	if pos == "" || err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "position and limit are required. limit must be a number",
+		})
+	}
+	headlines, err := p.Services.SliceOfHeadlineBanner(c.Request().Context(), pos, limit)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, headlines)
 }
 
-// UploadHeadlineBanner implements IPosts.
+// UploadHeadlineBanner
+// @Description create headline banner into collections
+// @Tags posts
+// @Accept json
+// @Produce json
+// @Param banner body domain.HeadlineBannerSchema true "headline banner data request"
+// @Success 201 {object} domain.OK
+// @Router /collections/headline [POST]
 func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
-	panic("unimplemented")
+	var banner domain.HeadlineBannerSchema
+	if err := c.Bind(&banner); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := valid.Validate(&banner); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := p.Services.UploadHeadlineBanner(c.Request().Context(), banner); err != nil {
+		return c.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, domain.OK{
+		Msg: "your headline has been created successfully",
+	})
 }
 
 // UploadCollections
-// @Description Create collections
+// @Description create collections
 // @Tags posts
 // @Accept json
 // @Produce json
@@ -72,7 +121,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 }
 
 // UpdateCollectionsImage
-// @Description Create collections
+// @Description create collections
 // @Tags posts
 // @Accept json
 // @Produce json
@@ -106,7 +155,7 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 }
 
 // GetSlicesOfCollections
-// @Description Create collections
+// @Description create collections
 // @Tags posts
 // @Accept json
 // @Produce json

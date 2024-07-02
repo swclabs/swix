@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mime/multipart"
+	"strings"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/errors"
 	"swclabs/swipecore/internal/core/repository/categories"
@@ -12,6 +13,7 @@ import (
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/internal/core/repository/suppliers"
 	"swclabs/swipecore/pkg/blob"
+	"time"
 )
 
 type ProductService struct {
@@ -44,8 +46,31 @@ func (s *ProductService) GetInventory(ctx context.Context, productId int64) ([]d
 
 // Search implements IProductService.
 func (s *ProductService) Search(ctx context.Context, keyword string) ([]domain.ProductSchema, error) {
-	//TODO implement me
-	panic("implement me")
+	products, err := s.Products.Search(ctx, keyword)
+	if err != nil {
+		return nil, errors.Service("keyword error", err)
+	}
+	var (
+		productSchema []domain.ProductSchema
+		specs         domain.Specs
+	)
+	for _, p := range products {
+		err := json.Unmarshal([]byte(p.Spec), &specs)
+		if err != nil {
+			return nil, errors.Service("failed to unmarshal", err)
+		}
+		productSchema = append(productSchema, domain.ProductSchema{
+			ID:          p.ID,
+			Price:       p.Price,
+			Description: p.Description,
+			Name:        p.Name,
+			Status:      p.Status,
+			Spec:        specs,
+			Image:       strings.Split(p.Image, ",")[1:],
+			Created:     p.Created.In(time.FixedZone("GMT+7", 7*60*60)).Format(time.DateTime),
+		})
+	}
+	return productSchema, nil
 }
 
 // UpdateProductInfo implements IProductService.

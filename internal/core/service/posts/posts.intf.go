@@ -30,5 +30,5 @@ type IPostsService interface {
 	SlicesOfCollections(ctx context.Context, position string, limit int) (*domain.CollectionSliceSchema, error)
 
 	UploadHeadlineBanner(ctx context.Context, banner domain.HeadlineBannerSchema) error
-	SliceOfHeadlineBanner(ctx context.Context, position string, limit int) (*domain.HeadlineBannerSlice, error)
+	SliceOfHeadlineBanner(ctx context.Context, position string, limit int) (*domain.HeadlineBannerSlices, error)
 }

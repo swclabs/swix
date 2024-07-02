@@ -65,7 +65,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.LoginReq"
+                            "$ref": "#/definitions/domain.LoginSchema"
                         }
                     }
                 ],
@@ -73,7 +73,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.LoginRes"
+                            "$ref": "#/definitions/domain.LoginMessage"
                         }
                     }
                 }
@@ -120,7 +120,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.SignUpReq"
+                            "$ref": "#/definitions/domain.SignUpSchema"
                         }
                     }
                 ],
@@ -128,7 +128,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.SignUpRes"
+                            "$ref": "#/definitions/domain.SignUpMessage"
                         }
                     }
                 }
@@ -198,7 +198,7 @@ const docTemplate = `{
         },
         "/collections": {
             "get": {
-                "description": "Create collections",
+                "description": "create collections",
                 "consumes": [
                     "application/json"
                 ],
@@ -234,7 +234,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create collections",
+                "description": "create collections",
                 "consumes": [
                     "application/json"
                 ],
@@ -259,7 +259,76 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/domain.CollectionUploadRes"
+                            "$ref": "#/definitions/domain.CollectionUploadSchema"
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/headline": {
+            "get": {
+                "description": "get list of headline banner",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position of collections",
+                        "name": "position",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "limit headline of collections",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.HeadlineBannerSlices"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create headline banner into collections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "posts"
+                ],
+                "parameters": [
+                    {
+                        "description": "headline banner data request",
+                        "name": "banner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.HeadlineBannerSchema"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -267,7 +336,7 @@ const docTemplate = `{
         },
         "/collections/img": {
             "put": {
-                "description": "Create collections",
+                "description": "create collections",
                 "consumes": [
                     "application/json"
                 ],
@@ -405,7 +474,7 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "description": "Inventory Request",
+                        "description": "Inventories Request",
                         "name": "InventoryStruct",
                         "in": "body",
                         "required": true,
@@ -491,7 +560,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.UpdateProductInfoReq"
+                            "$ref": "#/definitions/domain.UpdateProductInfo"
                         }
                     }
                 ],
@@ -530,7 +599,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.CreateProductRes"
+                            "$ref": "#/definitions/domain.CreateProductSchema"
                         }
                     }
                 }
@@ -657,7 +726,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.CartInsertReq"
+                            "$ref": "#/definitions/domain.CartInsert"
                         }
                     }
                 ],
@@ -803,7 +872,7 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "description": "Update User",
+                        "description": "Update Users",
                         "name": "UserSchema",
                         "in": "body",
                         "required": true,
@@ -846,7 +915,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "domain.CartInsertReq": {
+        "domain.CartInsert": {
             "type": "object",
             "required": [
                 "inventory_id",
@@ -1023,7 +1092,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CollectionUploadRes": {
+        "domain.CollectionUploadSchema": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1034,7 +1103,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.CreateProductRes": {
+        "domain.CreateProductSchema": {
             "type": "object",
             "properties": {
                 "id": {
@@ -1050,6 +1119,66 @@ const docTemplate = `{
             "properties": {
                 "msg": {
                     "type": "string"
+                }
+            }
+        },
+        "domain.HeadlineBannerBody": {
+            "type": "object",
+            "required": [
+                "headline"
+            ],
+            "properties": {
+                "headline": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.HeadlineBannerSchema": {
+            "type": "object",
+            "required": [
+                "body",
+                "position"
+            ],
+            "properties": {
+                "body": {
+                    "$ref": "#/definitions/domain.HeadlineBannerBody"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.HeadlineBannerSlices": {
+            "type": "object",
+            "properties": {
+                "headlines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.HeadlineBannerSlicesBody"
+                    }
+                },
+                "position": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.HeadlineBannerSlicesBody": {
+            "type": "object",
+            "required": [
+                "headline"
+            ],
+            "properties": {
+                "created": {
+                    "type": "string"
+                },
+                "headline": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 }
             }
         },
@@ -1116,22 +1245,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.LoginReq": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "domain.LoginRes": {
+        "domain.LoginMessage": {
             "type": "object",
             "required": [
                 "email",
@@ -1146,6 +1260,21 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.LoginSchema": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }
@@ -1225,9 +1354,6 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
-                "is_spec": {
-                    "type": "boolean"
-                },
                 "name": {
                     "type": "string"
                 },
@@ -1242,7 +1368,22 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.SignUpReq": {
+        "domain.SignUpMessage": {
+            "type": "object",
+            "required": [
+                "msg",
+                "success"
+            ],
+            "properties": {
+                "msg": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "domain.SignUpSchema": {
             "type": "object",
             "required": [
                 "email",
@@ -1266,21 +1407,6 @@ const docTemplate = `{
                 },
                 "phone_number": {
                     "type": "string"
-                }
-            }
-        },
-        "domain.SignUpRes": {
-            "type": "object",
-            "required": [
-                "msg",
-                "success"
-            ],
-            "properties": {
-                "msg": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
                 }
             }
         },
@@ -1401,7 +1527,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.UpdateProductInfoReq": {
+        "domain.UpdateProductInfo": {
             "type": "object",
             "required": [
                 "category_id",

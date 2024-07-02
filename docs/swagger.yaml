@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  domain.CartInsertReq:
+  domain.CartInsert:
     properties:
       inventory_id:
         type: integer
@@ -119,14 +119,14 @@ definitions:
       position:
         type: string
     type: object
-  domain.CollectionUploadRes:
+  domain.CollectionUploadSchema:
     properties:
       id:
         type: integer
       msg:
         type: string
     type: object
-  domain.CreateProductRes:
+  domain.CreateProductSchema:
     properties:
       id:
         type: integer
@@ -137,6 +137,45 @@ definitions:
     properties:
       msg:
         type: string
+    type: object
+  domain.HeadlineBannerBody:
+    properties:
+      headline:
+        type: string
+    required:
+    - headline
+    type: object
+  domain.HeadlineBannerSchema:
+    properties:
+      body:
+        $ref: '#/definitions/domain.HeadlineBannerBody'
+      created:
+        type: string
+      position:
+        type: string
+    required:
+    - body
+    - position
+    type: object
+  domain.HeadlineBannerSlices:
+    properties:
+      headlines:
+        items:
+          $ref: '#/definitions/domain.HeadlineBannerSlicesBody'
+        type: array
+      position:
+        type: string
+    type: object
+  domain.HeadlineBannerSlicesBody:
+    properties:
+      created:
+        type: string
+      headline:
+        type: string
+      id:
+        type: integer
+    required:
+    - headline
     type: object
   domain.InventorySchema:
     properties:
@@ -182,17 +221,7 @@ definitions:
     - price
     - product_id
     type: object
-  domain.LoginReq:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    required:
-    - email
-    - password
-    type: object
-  domain.LoginRes:
+  domain.LoginMessage:
     properties:
       email:
         type: string
@@ -205,12 +234,22 @@ definitions:
     - success
     - token
     type: object
+  domain.LoginSchema:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
   domain.OK:
     properties:
       msg:
         type: string
     type: object
-  domain.ProductReq:
+  domain.Product:
     properties:
       RAM:
         items:
@@ -256,8 +295,6 @@ definitions:
         items:
           type: string
         type: array
-      is_spec:
-        type: boolean
       name:
         type: string
       price:
@@ -267,7 +304,17 @@ definitions:
       status:
         type: string
     type: object
-  domain.SignUpReq:
+  domain.SignUpMessage:
+    properties:
+      msg:
+        type: string
+      success:
+        type: boolean
+    required:
+    - msg
+    - success
+    type: object
+  domain.SignUpSchema:
     properties:
       email:
         type: string
@@ -285,16 +332,6 @@ definitions:
     - last_name
     - password
     - phone_number
-    type: object
-  domain.SignUpRes:
-    properties:
-      msg:
-        type: string
-      success:
-        type: boolean
-    required:
-    - msg
-    - success
     type: object
   domain.Slices-domain_Categories:
     properties:
@@ -372,7 +409,7 @@ definitions:
       name:
         type: string
     type: object
-  domain.UpdateProductInfoReq:
+  domain.UpdateProductInfo:
     properties:
       RAM:
         items:
@@ -496,14 +533,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.LoginReq'
+          $ref: '#/definitions/domain.LoginSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.LoginRes'
+            $ref: '#/definitions/domain.LoginMessage'
       tags:
       - account_management
   /auth/logout:
@@ -531,14 +568,14 @@ paths:
         name: sign_up
         required: true
         schema:
-          $ref: '#/definitions/domain.SignUpReq'
+          $ref: '#/definitions/domain.SignUpSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.SignUpRes'
+            $ref: '#/definitions/domain.SignUpMessage'
       tags:
       - account_management
   /categories:
@@ -585,7 +622,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: Create collections
+      description: create collections
       parameters:
       - description: position of collections
         in: query
@@ -609,7 +646,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create collections
+      description: create collections
       parameters:
       - description: collections Request
         in: body
@@ -623,14 +660,59 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/domain.CollectionUploadRes'
+            $ref: '#/definitions/domain.CollectionUploadSchema'
+      tags:
+      - posts
+  /collections/headline:
+    get:
+      consumes:
+      - application/json
+      description: get list of headline banner
+      parameters:
+      - description: position of collections
+        in: query
+        name: position
+        required: true
+        type: string
+      - description: limit headline of collections
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.HeadlineBannerSlices'
+      tags:
+      - posts
+    post:
+      consumes:
+      - application/json
+      description: create headline banner into collections
+      parameters:
+      - description: headline banner data request
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/domain.HeadlineBannerSchema'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.OK'
       tags:
       - posts
   /collections/img:
     put:
       consumes:
       - application/json
-      description: Create collections
+      description: create collections
       parameters:
       - description: image of collections
         in: formData
@@ -675,7 +757,7 @@ paths:
           description: OK
       tags:
       - common
-  /inventory:
+  /inventories:
     get:
       consumes:
       - application/json
@@ -715,7 +797,7 @@ paths:
       - application/json
       description: add product to inventories
       parameters:
-      - description: Inventory Request
+      - description: Inventories Request
         in: body
         name: InventoryStruct
         required: true
@@ -791,14 +873,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/domain.ProductReq'
+          $ref: '#/definitions/domain.Product'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.CreateProductRes'
+            $ref: '#/definitions/domain.CreateProductSchema'
       tags:
       - products
     put:
@@ -811,7 +893,7 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/domain.UpdateProductInfoReq'
+          $ref: '#/definitions/domain.UpdateProductInfo'
       produces:
       - application/json
       responses:
@@ -904,7 +986,7 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.CartInsertReq'
+          $ref: '#/definitions/domain.CartInsert'
       produces:
       - application/json
       responses:
@@ -973,7 +1055,7 @@ paths:
       - application/json
       description: update information for users.
       parameters:
-      - description: Update User
+      - description: Update Users
         in: body
         name: UserSchema
         required: true
