@@ -13,7 +13,7 @@ import (
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/internal/core/repository/suppliers"
 	"swclabs/swipecore/pkg/blob"
-	"time"
+	"swclabs/swipecore/pkg/utils"
 )
 
 type ProductService struct {
@@ -67,7 +67,7 @@ func (s *ProductService) Search(ctx context.Context, keyword string) ([]domain.P
 			Status:      p.Status,
 			Spec:        specs,
 			Image:       strings.Split(p.Image, ",")[1:],
-			Created:     p.Created.In(time.FixedZone("GMT+7", 7*60*60)).Format(time.DateTime),
+			Created:     utils.HanoiTimezone(p.Created),
 		})
 	}
 	return productSchema, nil

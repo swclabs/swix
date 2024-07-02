@@ -499,7 +499,7 @@ definitions:
 info:
   contact: {}
   description: This is a documentation for the Swipe API
-  title: Swipe API Documentation
+  title: Swipe API documentation
   version: 1.0.0
 paths:
   /auth:

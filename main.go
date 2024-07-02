@@ -23,7 +23,7 @@ import (
 	"swclabs/swipecore/internal/http/router"
 )
 
-// @title Swipe API Documentation
+// @title Swipe API documentation
 // @version 1.0.0
 // @description This is a documentation for the Swipe API
 // @host

@@ -9,7 +9,7 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/errors"
 	"swclabs/swipecore/pkg/db"
-	"time"
+	"swclabs/swipecore/pkg/utils"
 )
 
 type Products struct {
@@ -108,7 +108,7 @@ func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.Prod
 				Description: p.Description,
 				Name:        p.Name,
 				Status:      p.Status,
-				Created:     p.Created.In(time.FixedZone("GMT+7", 7*60*60)).Format(time.DateTime),
+				Created:     utils.HanoiTimezone(p.Created),
 				Image:       images[1:],
 				Spec:        spec,
 			})

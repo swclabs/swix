@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "0f2162aa-a37c-4a7d-866b-f3cd1389f0a9",
-		"name": "Swipe API Documentation",
+		"_postman_id": "12c431f7-4287-4973-9a25-67c95508e4d0",
+		"name": "Swipe API documentation",
 		"description": "This is a documentation for the Swipe API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23388230"
@@ -20,13 +20,11 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"uuid": "21e47f67-2d1a-4212-a140-fd041c328d4e"
+										"value": "application/json"
 									},
 									{
 										"key": "Accept",
-										"value": "application/json",
-										"uuid": "96bf6e8d-16f8-4c13-be34-a7cf9a712d8c"
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -113,8 +111,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/json",
-										"uuid": "3f2c0059-a6ea-40d4-b96c-87b2fa3db3d8"
+										"value": "application/json"
 									}
 								],
 								"url": {
@@ -177,13 +174,11 @@
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json",
-										"uuid": "a3f9eebf-610d-4c6b-a328-f6e22ba9bc7a"
+										"value": "application/json"
 									},
 									{
 										"key": "Accept",
-										"value": "application/json",
-										"uuid": "64323bd2-8179-48fd-b7c9-ef85ce293d80"
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -267,8 +262,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "68f0e429-559a-4b11-95c7-32153f944a02"
+								"value": "application/json"
 							}
 						],
 						"url": {
@@ -337,14 +331,13 @@
 			"name": "categories",
 			"item": [
 				{
-					"name": "Get categories",
+					"name": "get categories",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "88cc90d8-774e-4a69-9d84-71dd4c028e79"
+								"value": "application/json"
 							}
 						],
 						"url": {
@@ -363,7 +356,7 @@
 								}
 							]
 						},
-						"description": "Get categories"
+						"description": "get categories"
 					},
 					"response": [
 						{
@@ -403,24 +396,22 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"data\": [\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}"
+							"body": "{\n  \"body\": [\n    {\n      \"description\": \"<string>\",\n      \"name\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"name\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ]\n}"
 						}
 					]
 				},
 				{
-					"name": "Insert new category",
+					"name": "insert new category",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"uuid": "2bee0f39-d810-4afc-81ee-6db955b9bb6e"
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "b2016132-7f1a-4a85-8fd3-2c3b781c7de5"
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -442,11 +433,11 @@
 								"categories"
 							]
 						},
-						"description": "Insert new category"
+						"description": "insert new category"
 					},
 					"response": [
 						{
-							"name": "OK",
+							"name": "Created",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -479,6 +470,365 @@
 									]
 								}
 							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"msg\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "collections",
+			"item": [
+				{
+					"name": "headline",
+					"item": [
+						{
+							"name": "get list of headline banner",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/collections/headline?position=<string>&limit=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections",
+										"headline"
+									],
+									"query": [
+										{
+											"key": "position",
+											"value": "<string>",
+											"description": "(Required) position of collections"
+										},
+										{
+											"key": "limit",
+											"value": "<integer>",
+											"description": "(Required) limit headline of collections"
+										}
+									]
+								},
+								"description": "get list of headline banner"
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/collections/headline?position=<string>&limit=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"collections",
+												"headline"
+											],
+											"query": [
+												{
+													"key": "position",
+													"value": "<string>",
+													"description": "(Required) position of collections"
+												},
+												{
+													"key": "limit",
+													"value": "<integer>",
+													"description": "(Required) limit headline of collections"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"headlines\": [\n    {\n      \"headline\": \"<string>\",\n      \"created\": \"<string>\",\n      \"id\": \"<integer>\"\n    },\n    {\n      \"headline\": \"<string>\",\n      \"created\": \"<string>\",\n      \"id\": \"<integer>\"\n    }\n  ],\n  \"position\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "create headline banner into collections",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"body\": {\n    \"headline\": \"saleoff 50% iphone 13\"\n  },\n  \"position\": \"#headline\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections/headline",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections",
+										"headline"
+									]
+								},
+								"description": "create headline banner into collections"
+							},
+							"response": [
+								{
+									"name": "Created",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"body\": {\n    \"headline\": \"<string>\"\n  },\n  \"position\": \"<string>\",\n  \"created\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/collections/headline",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"collections",
+												"headline"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "img",
+					"item": [
+						{
+							"name": "create collections",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "img",
+											"value": "<string>",
+											"description": "(Required) image of collections"
+										},
+										{
+											"key": "id",
+											"value": "<string>",
+											"description": "(Required) collections identifier"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections/img",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections",
+										"img"
+									]
+								},
+								"description": "create collections"
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "img",
+													"value": "<string>",
+													"description": "(Required) image of collections"
+												},
+												{
+													"key": "id",
+													"value": "<string>",
+													"description": "(Required) collections identifier"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{baseUrl}}/collections/img",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"collections",
+												"img"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "create collections",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/collections?position=<string>&limit=<string>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections"
+							],
+							"query": [
+								{
+									"key": "position",
+									"value": "<string>",
+									"description": "(Required) position of collections"
+								},
+								{
+									"key": "limit",
+									"value": "<string>",
+									"description": "(Required) limit of cards banner slices"
+								}
+							]
+						},
+						"description": "create collections"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/collections?position=<string>&limit=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections"
+									],
+									"query": [
+										{
+											"key": "position",
+											"value": "<string>",
+											"description": "(Required) position of collections"
+										},
+										{
+											"key": "limit",
+											"value": "<string>",
+											"description": "(Required) limit of cards banner slices"
+										}
+									]
+								}
+							},
 							"status": "OK",
 							"code": 200,
 							"_postman_previewlanguage": "json",
@@ -489,7 +839,91 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"email\": \"<string>\",\n  \"success\": \"<boolean>\",\n  \"token\": \"<string>\"\n}"
+							"body": "{\n  \"card_banner\": [\n    {\n      \"description\": \"<string>\",\n      \"subtitle\": \"<string>\",\n      \"text_color\": \"<string>\",\n      \"title\": \"<string>\",\n      \"created\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"image\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"subtitle\": \"<string>\",\n      \"text_color\": \"<string>\",\n      \"title\": \"<string>\",\n      \"created\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"image\": \"<string>\"\n    }\n  ],\n  \"headline\": \"<string>\",\n  \"position\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "create collections",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": {\n    \"description\": \"<string>\",\n    \"subtitle\": \"<string>\",\n    \"text_color\": \"<string>\",\n    \"title\": \"<string>\"\n  },\n  \"headline\": \"<string>\",\n  \"position\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections"
+							]
+						},
+						"description": "create collections"
+					},
+					"response": [
+						{
+							"name": "Created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"body\": {\n    \"description\": \"<string>\",\n    \"subtitle\": \"<string>\",\n    \"text_color\": \"<string>\",\n    \"title\": \"<string>\"\n  },\n  \"headline\": \"<string>\",\n  \"position\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/collections",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"collections"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"msg\": \"<string>\"\n}"
 						}
 					]
 				}
@@ -545,40 +979,102 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "worker",
+					"item": [
+						{
+							"name": "health check worker consume server.",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/common/worker",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"common",
+										"worker"
+									]
+								},
+								"description": "health check worker consume server."
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/common/worker",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"common",
+												"worker"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "newsletter",
+			"name": "inventories",
 			"item": [
 				{
-					"name": "Get Product Newsletter",
+					"name": "get product availability in inventories",
 					"request": {
 						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "13f25e67-634a-4cd6-a342-8c2889c208fb"
+								"value": "application/json"
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/newsletter?limit=<integer>",
+							"raw": "{{baseUrl}}/inventories?pid=<number>&ram=<number>&ssd=<number>&color=<string>",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"newsletter"
+								"inventories"
 							],
 							"query": [
 								{
-									"key": "limit",
-									"value": "<integer>",
-									"description": "(Required) limit number of newsletter"
+									"key": "pid",
+									"value": "<number>",
+									"description": "(Required) product id"
+								},
+								{
+									"key": "ram",
+									"value": "<number>",
+									"description": "(Required) ram"
+								},
+								{
+									"key": "ssd",
+									"value": "<number>",
+									"description": "(Required) ssd"
+								},
+								{
+									"key": "color",
+									"value": "<string>",
+									"description": "(Required) color"
 								}
 							]
 						},
-						"description": "Get Product Newsletter"
+						"description": "get product availability in inventories"
 					},
 					"response": [
 						{
@@ -592,18 +1088,33 @@
 									}
 								],
 								"url": {
-									"raw": "{{baseUrl}}/newsletter?limit=<integer>",
+									"raw": "{{baseUrl}}/inventories?pid=<number>&ram=<number>&ssd=<number>&color=<string>",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"newsletter"
+										"inventories"
 									],
 									"query": [
 										{
-											"key": "limit",
-											"value": "<integer>",
-											"description": "(Required) limit number of newsletter"
+											"key": "pid",
+											"value": "<number>",
+											"description": "(Required) product id"
+										},
+										{
+											"key": "ram",
+											"value": "<number>",
+											"description": "(Required) ram"
+										},
+										{
+											"key": "ssd",
+											"value": "<number>",
+											"description": "(Required) ssd"
+										},
+										{
+											"key": "color",
+											"value": "<string>",
+											"description": "(Required) color"
 										}
 									]
 								}
@@ -618,98 +1129,54 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"data\": [\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"image\": \"<string>\",\n      \"subtitle\": \"<string>\",\n      \"textcolor\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"description\": \"<string>\",\n      \"id\": \"<string>\",\n      \"image\": \"<string>\",\n      \"subtitle\": \"<string>\",\n      \"textcolor\": \"<string>\",\n      \"title\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}"
+							"body": "{\n  \"available\": \"<string>\",\n  \"currency_code\": \"<string>\",\n  \"model\": \"<string>\",\n  \"price\": \"<string>\",\n  \"product_id\": \"<string>\",\n  \"id\": \"<string>\",\n  \"specs\": {\n    \"color\": \"<string>\",\n    \"color_image\": \"<string>\",\n    \"image\": \"<string>\",\n    \"ram\": \"<string>\",\n    \"ssd\": \"<string>\"\n  }\n}"
 						}
 					]
-				}
-			]
-		},
-		{
-			"name": "newsletters",
-			"item": [
+				},
 				{
-					"name": "Create newsletter",
+					"name": "add product to inventories",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "multipart/form-data",
-								"uuid": "7ea8ae67-601e-4d63-bdf7-0b2173180320"
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "235e59d6-207f-4b28-9f98-2f378789ae7f"
+								"value": "application/json"
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "img",
-									"value": "<string>",
-									"description": "(Required) image of newsletter",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "image",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "subtitle",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "textcolor",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "title",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "type",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n  \"available\": \"<string>\",\n  \"currency_code\": \"<string>\",\n  \"model\": \"<string>\",\n  \"price\": \"<string>\",\n  \"product_id\": \"<string>\",\n  \"specs\": {\n    \"color\": \"<string>\",\n    \"color_image\": \"<string>\",\n    \"image\": \"<string>\",\n    \"ram\": \"<string>\",\n    \"ssd\": \"<string>\"\n  }\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
-							"raw": "{{baseUrl}}/newsletters",
+							"raw": "{{baseUrl}}/inventories",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
-								"newsletters"
+								"inventories"
 							]
 						},
-						"description": "Create newsletter"
+						"description": "add product to inventories"
 					},
 					"response": [
 						{
-							"name": "OK",
+							"name": "Created",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "multipart/form-data"
+										"value": "application/json"
 									},
 									{
 										"key": "Accept",
@@ -717,64 +1184,27 @@
 									}
 								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "img",
-											"value": "<string>",
-											"description": "(Required) image of newsletter",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "subtitle",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "textcolor",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "title",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "type",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
+									"mode": "raw",
+									"raw": "{\n  \"available\": \"<string>\",\n  \"currency_code\": \"<string>\",\n  \"model\": \"<string>\",\n  \"price\": \"<string>\",\n  \"product_id\": \"<string>\",\n  \"specs\": {\n    \"color\": \"<string>\",\n    \"color_image\": \"<string>\",\n    \"image\": \"<string>\",\n    \"ram\": \"<string>\",\n    \"ssd\": \"<string>\"\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
-									"raw": "{{baseUrl}}/newsletters",
+									"raw": "{{baseUrl}}/inventories",
 									"host": [
 										"{{baseUrl}}"
 									],
 									"path": [
-										"newsletters"
+										"inventories"
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Created",
+							"code": 201,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -849,19 +1279,17 @@
 					"name": "img",
 					"item": [
 						{
-							"name": "Insert new product image",
+							"name": "insert new product image",
 							"request": {
 								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "multipart/form-data",
-										"uuid": "d211f19d-1d10-4981-b4bf-6e477715ffb3"
+										"value": "multipart/form-data"
 									},
 									{
 										"key": "Accept",
-										"value": "application/json",
-										"uuid": "0be94023-edec-48bd-82ca-4252ec227bed"
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -892,7 +1320,7 @@
 										}
 									]
 								},
-								"description": "Insert new product image"
+								"description": "insert new product image"
 							},
 							"response": [
 								{
@@ -1016,8 +1444,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "3084769b-7f96-4132-bdcd-4a9773d68907"
+								"value": "application/json"
 							}
 						],
 						"url": {
@@ -1076,78 +1503,33 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"data\": [\n    {\n      \"category_id\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"image\": \"<string>\",\n      \"name\": \"<string>\",\n      \"price\": \"<string>\",\n      \"spec\": \"<string>\",\n      \"status\": \"<string>\",\n      \"supplier_id\": \"<string>\"\n    },\n    {\n      \"category_id\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"image\": \"<string>\",\n      \"name\": \"<string>\",\n      \"price\": \"<string>\",\n      \"spec\": \"<string>\",\n      \"status\": \"<string>\",\n      \"supplier_id\": \"<string>\"\n    }\n  ]\n}"
+							"body": "{\n  \"body\": [\n    {\n      \"created\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"image\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"name\": \"<string>\",\n      \"price\": \"<string>\",\n      \"spec\": {\n        \"RAM\": [\n          \"<integer>\",\n          \"<integer>\"\n        ],\n        \"SSD\": [\n          \"<integer>\",\n          \"<integer>\"\n        ],\n        \"display\": \"<string>\",\n        \"screen\": \"<string>\"\n      },\n      \"status\": \"<string>\"\n    },\n    {\n      \"created\": \"<string>\",\n      \"description\": \"<string>\",\n      \"id\": \"<integer>\",\n      \"image\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"name\": \"<string>\",\n      \"price\": \"<string>\",\n      \"spec\": {\n        \"RAM\": [\n          \"<integer>\",\n          \"<integer>\"\n        ],\n        \"SSD\": [\n          \"<integer>\",\n          \"<integer>\"\n        ],\n        \"display\": \"<string>\",\n        \"screen\": \"<string>\"\n      },\n      \"status\": \"<string>\"\n    }\n  ]\n}"
 						}
 					]
 				},
 				{
-					"name": "Create new product",
+					"name": "update product information",
 					"request": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "multipart/form-data",
-								"uuid": "5397a212-c92a-490f-b9dc-f24e9a18333a"
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "8f7569b5-1052-46f8-b09f-3abfbd5c26fe"
+								"value": "application/json"
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "img",
-									"value": "<string>",
-									"description": "(Required) image of product",
-									"type": "text"
-								},
-								{
-									"key": "categoryID",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "name",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "price",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "spec",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "status",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
-								},
-								{
-									"key": "supplierID",
-									"value": "<string>",
-									"description": "(Required) ",
-									"type": "text"
+							"mode": "raw",
+							"raw": "{\n  \"category_id\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"price\": \"<string>\",\n  \"status\": \"<string>\",\n  \"supplier_id\": \"<string>\",\n  \"RAM\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"SSD\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"display\": \"<string>\",\n  \"screen\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
 								}
-							]
+							}
 						},
 						"url": {
 							"raw": "{{baseUrl}}/products",
@@ -1158,17 +1540,17 @@
 								"products"
 							]
 						},
-						"description": "Create new product"
+						"description": "update product information"
 					},
 					"response": [
 						{
 							"name": "OK",
 							"originalRequest": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "multipart/form-data"
+										"value": "application/json"
 									},
 									{
 										"key": "Accept",
@@ -1176,57 +1558,14 @@
 									}
 								],
 								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "img",
-											"value": "<string>",
-											"description": "(Required) image of product",
-											"type": "text"
-										},
-										{
-											"key": "categoryID",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "description",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "name",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "price",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "spec",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "status",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
-										},
-										{
-											"key": "supplierID",
-											"value": "<string>",
-											"description": "(Required) ",
-											"type": "text"
+									"mode": "raw",
+									"raw": "{\n  \"category_id\": \"<string>\",\n  \"description\": \"<string>\",\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"price\": \"<string>\",\n  \"status\": \"<string>\",\n  \"supplier_id\": \"<string>\",\n  \"RAM\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"SSD\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"display\": \"<string>\",\n  \"screen\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
 										}
-									]
+									}
 								},
 								"url": {
 									"raw": "{{baseUrl}}/products",
@@ -1251,6 +1590,410 @@
 							"body": "{\n  \"msg\": \"<string>\"\n}"
 						}
 					]
+				},
+				{
+					"name": "create new product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"category_id\": \"<string>\",\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"price\": \"<string>\",\n  \"status\": \"<string>\",\n  \"supplier_id\": \"<string>\",\n  \"RAM\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"SSD\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"display\": \"<string>\",\n  \"screen\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							]
+						},
+						"description": "create new product"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"category_id\": \"<string>\",\n  \"description\": \"<string>\",\n  \"name\": \"<string>\",\n  \"price\": \"<string>\",\n  \"status\": \"<string>\",\n  \"supplier_id\": \"<string>\",\n  \"RAM\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"SSD\": [\n    \"<integer>\",\n    \"<integer>\"\n  ],\n  \"display\": \"<string>\",\n  \"screen\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/products",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"id\": \"<integer>\",\n  \"msg\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete product by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/products?pid=<integer>",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"products"
+							],
+							"query": [
+								{
+									"key": "pid",
+									"value": "<integer>",
+									"description": "(Required) product id"
+								}
+							]
+						},
+						"description": "delete product by id"
+					},
+					"response": [
+						{
+							"name": "OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/products?pid=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"products"
+									],
+									"query": [
+										{
+											"key": "pid",
+											"value": "<integer>",
+											"description": "(Required) product id"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"msg\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "purchase",
+			"item": [
+				{
+					"name": "carts",
+					"item": [
+						{
+							"name": "get list of items from carts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/purchase/carts?uid=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"purchase",
+										"carts"
+									],
+									"query": [
+										{
+											"key": "uid",
+											"value": "<string>",
+											"description": "(Required) user id"
+										}
+									]
+								},
+								"description": "get list of items from carts"
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/purchase/carts?uid=<string>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"purchase",
+												"carts"
+											],
+											"query": [
+												{
+													"key": "uid",
+													"value": "<string>",
+													"description": "(Required) user id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"products\": [\n    {\n      \"amount\": \"<string>\",\n      \"category\": \"<string>\",\n      \"img\": \"<string>\",\n      \"product_name\": \"<string>\",\n      \"quantity\": \"<integer>\"\n    },\n    {\n      \"amount\": \"<string>\",\n      \"category\": \"<string>\",\n      \"img\": \"<string>\",\n      \"product_name\": \"<string>\",\n      \"quantity\": \"<integer>\"\n    }\n  ],\n  \"user_id\": \"<integer>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "add item to carts.",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"inventory_id\": \"<integer>\",\n  \"quantity\": \"<integer>\",\n  \"user_id\": \"<integer>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/purchase/carts",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"purchase",
+										"carts"
+									]
+								},
+								"description": "add item to carts."
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"inventory_id\": \"<integer>\",\n  \"quantity\": \"<integer>\",\n  \"user_id\": \"<integer>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/purchase/carts",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"purchase",
+												"carts"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "delete item from carts",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/purchase/carts?uid=<integer>&wid=<integer>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"purchase",
+										"carts"
+									],
+									"query": [
+										{
+											"key": "uid",
+											"value": "<integer>",
+											"description": "(Required) user id"
+										},
+										{
+											"key": "wid",
+											"value": "<integer>",
+											"description": "(Required) inventories id"
+										}
+									]
+								},
+								"description": "delete item from carts"
+							},
+							"response": [
+								{
+									"name": "OK",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/purchase/carts?uid=<integer>&wid=<integer>",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"purchase",
+												"carts"
+											],
+											"query": [
+												{
+													"key": "uid",
+													"value": "<integer>",
+													"description": "(Required) user id"
+												},
+												{
+													"key": "wid",
+													"value": "<integer>",
+													"description": "(Required) inventories id"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"msg\": \"<string>\"\n}"
+								}
+							]
+						}
+					]
 				}
 			]
 		},
@@ -1264,8 +2007,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "405cacbf-911f-423a-b130-084a7b41e905"
+								"value": "application/json"
 							}
 						],
 						"url": {
@@ -1324,7 +2066,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n  \"data\": [\n    {\n      \"email\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"phone_number\": \"<string>\"\n    },\n    {\n      \"email\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"phone_number\": \"<string>\"\n    }\n  ]\n}"
+							"body": "{\n  \"body\": [\n    {\n      \"email\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"email\": \"<string>\",\n      \"id\": \"<string>\",\n      \"name\": \"<string>\"\n    }\n  ]\n}"
 						}
 					]
 				},
@@ -1335,18 +2077,16 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"uuid": "093d507d-3b88-40a7-9535-48b06e0535ff"
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "856c3ed2-c0c7-40e6-8c3b-efe407552fd0"
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"city\": \"<string>\",\n  \"district\": \"<string>\",\n  \"street\": \"<string>\",\n  \"ward\": \"<string>\"\n}",
+							"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"city\": \"<string>\",\n  \"district\": \"<string>\",\n  \"street\": \"<string>\",\n  \"ward\": \"<string>\"\n}",
 							"options": {
 								"raw": {
 									"headerFamily": "json",
@@ -1367,7 +2107,7 @@
 					},
 					"response": [
 						{
-							"name": "OK",
+							"name": "Created",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -1382,7 +2122,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"city\": \"<string>\",\n  \"district\": \"<string>\",\n  \"street\": \"<string>\",\n  \"ward\": \"<string>\"\n}",
+									"raw": "{\n  \"email\": \"<string>\",\n  \"name\": \"<string>\",\n  \"city\": \"<string>\",\n  \"district\": \"<string>\",\n  \"street\": \"<string>\",\n  \"ward\": \"<string>\"\n}",
 									"options": {
 										"raw": {
 											"headerFamily": "json",
@@ -1400,8 +2140,8 @@
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
+							"status": "Created",
+							"code": 201,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -1429,8 +2169,7 @@
 								"header": [
 									{
 										"key": "Accept",
-										"value": "application/json",
-										"uuid": "0447ddbf-043e-4a91-a256-0f98724e7ba2"
+										"value": "application/json"
 									}
 								],
 								"url": {
@@ -1490,8 +2229,7 @@
 						"header": [
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "8c3e484b-b20a-43d0-a4a7-ae6c2ec43135"
+								"value": "application/json"
 							}
 						],
 						"url": {
@@ -1547,13 +2285,11 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"uuid": "6071e69e-e130-416b-be7c-26d3cbe77f64"
+								"value": "application/json"
 							},
 							{
 								"key": "Accept",
-								"value": "application/json",
-								"uuid": "9514ff97-aa24-4dbb-a945-0825d47d20a4"
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -1627,102 +2363,6 @@
 					]
 				}
 			]
-		},
-		{
-			"name": "warehouse",
-			"item": [
-				{
-					"name": "Get product availability in warehouse",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"uuid": "b5b81d95-8ad3-40ec-8752-6752e3d2f70e"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/warehouse?pid=<number>&ram=<number>&ssd=<number>",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"warehouse"
-							],
-							"query": [
-								{
-									"key": "pid",
-									"value": "<number>",
-									"description": "(Required) product id"
-								},
-								{
-									"key": "ram",
-									"value": "<number>",
-									"description": "(Required) ram"
-								},
-								{
-									"key": "ssd",
-									"value": "<number>",
-									"description": "(Required) ssd"
-								}
-							]
-						},
-						"description": "Get product availability in warehouse"
-					},
-					"response": [
-						{
-							"name": "OK",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/warehouse?pid=<number>&ram=<number>&ssd=<number>",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"warehouse"
-									],
-									"query": [
-										{
-											"key": "pid",
-											"value": "<number>",
-											"description": "(Required) product id"
-										},
-										{
-											"key": "ram",
-											"value": "<number>",
-											"description": "(Required) ram"
-										},
-										{
-											"key": "ssd",
-											"value": "<number>",
-											"description": "(Required) ssd"
-										}
-									]
-								}
-							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Content-Type",
-									"value": "application/json"
-								}
-							],
-							"cookie": [],
-							"body": "{\n  \"available\": \"<string>\",\n  \"id\": \"<string>\",\n  \"model\": \"<string>\",\n  \"price\": \"<string>\",\n  \"product_id\": \"<string>\",\n  \"ram\": \"<string>\",\n  \"ssd\": \"<string>\"\n}"
-						}
-					]
-				}
-			]
 		}
 	],
 	"event": [
@@ -1750,7 +2390,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "localhost:8000"
+			"value": "http://localhost:8000"
 		}
 	]
 }

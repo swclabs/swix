@@ -1,6 +1,10 @@
 package domain
 
-import "github.com/shopspring/decimal"
+import (
+	"time"
+
+	"github.com/shopspring/decimal"
+)
 
 /*
 CREATE TABLE "orders" (
@@ -24,12 +28,12 @@ CREATE TABLE "product_in_order" (
 
 // Orders table schema
 type Orders struct {
-	Id     int64  `json:"id" db:"id"`
-	Uuid   string `json:"uuid" db:"uuid"`
-	Time   string `json:"time" db:"time"`
-	UserId int64  `json:"user_id" db:"user_id"`
-	InWord int64  `json:"in_word" db:"in_word"`
-	Status string `json:"status" db:"status"`
+	Id     int64     `json:"id" db:"id"`
+	Uuid   string    `json:"uuid" db:"uuid"`
+	UserId int64     `json:"user_id" db:"user_id"`
+	InWord int64     `json:"in_word" db:"in_word"`
+	Status string    `json:"status" db:"status"`
+	Time   time.Time `json:"time" db:"time"`
 }
 
 type ProductInOrder struct {

@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "This is a documentation for the Swipe API",
-        "title": "Swipe API Documentation",
+        "title": "Swipe API documentation",
         "contact": {},
         "version": "1.0.0"
     },

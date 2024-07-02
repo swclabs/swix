@@ -3,6 +3,7 @@ package utils
 import (
 	"math/rand"
 	"net/mail"
+	"time"
 )
 
 func IsEmail(email string) bool {
@@ -19,4 +20,12 @@ func RandomString(length int) string {
 	}
 
 	return string(result)
+}
+
+func HanoiTimezone(t time.Time) string {
+	return HanoiZone(t).Format(time.DateTime)
+}
+
+func HanoiZone(t time.Time) time.Time {
+	return t.In(time.FixedZone("GMT+7", 7*60*60))
 }

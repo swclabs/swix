@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-curl --location 'http://localhost:8000/inventory' \
+curl --location 'http://localhost:8000/inventories' \
 --header 'Content-Type: application/json' \
 --header 'Accept: application/json' \
 --data '{
