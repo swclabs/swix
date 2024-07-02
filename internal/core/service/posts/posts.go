@@ -19,16 +19,16 @@ func New(collection collections.ICollections) IPostsService {
 	}
 }
 
-// SliceOfHeadlineBanner implements domain.IPostsService.
+// SliceOfHeadlineBanner implements IPostsService.
 func (p *Posts) SliceOfHeadlineBanner(
-	ctx context.Context, position string, limit int) (*domain.HeadlineBannerSlice, error) {
+	ctx context.Context, position string, limit int) (*domain.HeadlineBannerSlices, error) {
 
 	_collections, err := p.Collections.SlicesOfCollections(ctx, position, limit)
 	if err != nil {
 		return nil, err
 	}
 
-	var headlineBanners domain.HeadlineBannerSlice
+	var headlineBanners domain.HeadlineBannerSlices
 	headlineBanners.Position = _collections[0].Position
 	for _, collection := range _collections {
 		var body domain.HeadlineBannerBody
@@ -36,7 +36,7 @@ func (p *Posts) SliceOfHeadlineBanner(
 			return nil, err
 		}
 		headlineBanners.Headlines = append(headlineBanners.Headlines,
-			domain.HeadlineBannerSliceBody{
+			domain.HeadlineBannerSlicesBody{
 				HeadlineBannerBody: body,
 				Id:                 collection.Id,
 				Created:            collection.Created,
@@ -45,12 +45,12 @@ func (p *Posts) SliceOfHeadlineBanner(
 	return &headlineBanners, nil
 }
 
-// UploadHeadlineBanner implements domain.IPostsService.
+// UploadHeadlineBanner implements IPostsService.
 func (p *Posts) UploadHeadlineBanner(ctx context.Context, banner domain.HeadlineBannerSchema) error {
 	return p.Collections.AddHeadlineBanner(ctx, banner)
 }
 
-// SlicesOfCollections implements domain.IPostsService.
+// SlicesOfCollections implements IPostsService.
 func (p *Posts) SlicesOfCollections(
 	ctx context.Context, position string, limit int) (*domain.CollectionSliceSchema, error) {
 	collectionSlice, err := p.Collections.SlicesOfCollections(ctx, position, limit)
@@ -77,13 +77,13 @@ func (p *Posts) SlicesOfCollections(
 	return &_collections, nil
 }
 
-// UploadCollections implements domain.IPostsService.
+// UploadCollections implements IPostsService.
 func (p *Posts) UploadCollections(
 	ctx context.Context, banner domain.CollectionSchema) (int64, error) {
 	return p.Collections.AddCollection(ctx, banner)
 }
 
-// UploadCollectionsImage implements domain.IPostsService.
+// UploadCollectionsImage implements IPostsService.
 func (p *Posts) UploadCollectionsImage(
 	ctx context.Context, cardBannerId string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()

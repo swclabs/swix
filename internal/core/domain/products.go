@@ -50,7 +50,6 @@ type ProductSchema struct {
 	Name        string   `json:"name"`
 	Status      string   `json:"status"`
 	Created     string   `json:"created"`
-	IsSpec      bool     `json:"is_spec"`
 	Spec        Specs    `json:"spec"`
 }
 

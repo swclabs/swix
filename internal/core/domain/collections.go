@@ -69,7 +69,7 @@ type HeadlineBannerBody struct {
 	Headline string `json:"headline" validate:"required"`
 }
 
-type HeadlineBannerSliceBody struct {
+type HeadlineBannerSlicesBody struct {
 	HeadlineBannerBody
 	Id      int64  `json:"id"`
 	Created string `json:"created"`
@@ -82,14 +82,8 @@ type HeadlineBannerSchema struct {
 	Body     HeadlineBannerBody `json:"body" validate:"required"`
 }
 
-// HeadlineBannerSchemaSwagger used to generate swagger documents
-type HeadlineBannerSchemaSwagger struct {
-	Position string             `json:"position" validate:"required"`
-	Body     HeadlineBannerBody `json:"body" validate:"required"`
-}
-
-// HeadlineBannerSlice response slices
-type HeadlineBannerSlice struct {
-	Position  string                    `json:"position"`
-	Headlines []HeadlineBannerSliceBody `json:"headlines"`
+// HeadlineBannerSlices response slices
+type HeadlineBannerSlices struct {
+	Position  string                     `json:"position"`
+	Headlines []HeadlineBannerSlicesBody `json:"headlines"`
 }

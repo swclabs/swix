@@ -95,16 +95,10 @@ func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.Prod
 	}
 
 	for _, p := range products {
-		var (
-			spec   domain.Specs
-			isSpec = true
-		)
+		var spec domain.Specs
 		if err := json.Unmarshal([]byte(p.Spec), &spec); err != nil {
 			// don't find anything, just return empty object
 			return nil, errors.Repository("json", err)
-		}
-		if spec.Screen == "" {
-			isSpec = false
 		}
 		images := strings.Split(p.Image, ",")
 		productResponse = append(productResponse,
@@ -116,7 +110,6 @@ func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.Prod
 				Status:      p.Status,
 				Created:     p.Created.In(time.FixedZone("GMT+7", 7*60*60)).Format(time.DateTime),
 				Image:       images[1:],
-				IsSpec:      isSpec,
 				Spec:        spec,
 			})
 	}
