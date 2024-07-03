@@ -57,6 +57,20 @@ dev-db-down: # Stop and remove database containers with docker-compose
 	docker-compose.db.yml \
 	down
 
+
+GENERATED_DIR=internal/core/proto
+PROTO_DIR=internal/core/proto
+proto:
+	@if [ ! -d "$GENERATED_DIR" ]; then \
+		mkdir -p $GENERATED_DIR; \
+	fi
+
+	protoc --proto_path=$(PROTO_DIR) \
+		--go_out=$(GENERATED_DIR) \
+		--go-grpc_out=$(GENERATED_DIR) \
+		--grpc-gateway_out $(GENERATED_DIR) \
+		$(PROTO_DIR)/*.proto
+
 # Help target
 help: ## Show this help message
 	@echo "Usage: make [TARGET]"

@@ -3,16 +3,21 @@
 package http
 
 import (
+	"fmt"
 	"swclabs/swipecore/internal/http/router"
+	"swclabs/swipecore/internal/types"
 )
 
 type _ProductsAdapter struct {
 	server IServer
 }
 
-var _ IAdapter = (*_ProductsAdapter)(nil)
+var _ types.IAdapter = (*_ProductsAdapter)(nil)
 
-func NewProductsAdapter(server IServer, router router.IProducts) IAdapter {
+func NewProductsAdapter(
+	server IServer,
+	router router.IProducts,
+) types.IAdapter {
 	product := &_ProductsAdapter{
 		server: server,
 	}
@@ -26,4 +31,9 @@ func (product *_ProductsAdapter) Run(addr string) error {
 
 func (product *_ProductsAdapter) Routers() []string {
 	return product.server.Routes()
+}
+
+// StartWorker implements types.IAdapter.
+func (product *_ProductsAdapter) StartWorker(concurrency int) error {
+	return fmt.Errorf("services unavailable")
 }

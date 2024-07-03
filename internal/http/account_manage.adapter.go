@@ -3,19 +3,21 @@
 package http
 
 import (
+	"fmt"
 	"swclabs/swipecore/internal/http/router"
+	"swclabs/swipecore/internal/types"
 )
 
 type _AccountManagementAdapter struct {
 	server IServer
 }
 
-var _ IAdapter = (*_AccountManagementAdapter)(nil)
+var _ types.IAdapter = (*_AccountManagementAdapter)(nil)
 
 func NewAccountManagementsAdapter(
 	server IServer,
 	router router.IAccountManagement,
-) IAdapter {
+) types.IAdapter {
 	product := &_AccountManagementAdapter{
 		server: server,
 	}
@@ -29,4 +31,9 @@ func (accountManagement *_AccountManagementAdapter) Run(addr string) error {
 
 func (accountManagement *_AccountManagementAdapter) Routers() []string {
 	return accountManagement.server.Routes()
+}
+
+// StartWorker implements types.IAdapter.
+func (accountManagement *_AccountManagementAdapter) StartWorker(concurrency int) error {
+	return fmt.Errorf("services unavailable")
 }
