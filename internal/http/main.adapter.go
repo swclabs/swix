@@ -1,27 +1,14 @@
-package http
-
-import (
-	"swclabs/swipecore/internal/http/router"
-)
-
-type _Adapter struct {
-	server IServer
-}
-
-var _ IAdapter = (*_Adapter)(nil)
-
-// NewAdapter Example
 /*
-package main
+	package main
 
-import (
+	import (
 
-	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/http"
+		"swclabs/swipecore/boot"
+		"swclabs/swipecore/internal/http"
 
-	"go.uber.org/fx"
+		"go.uber.org/fx"
 
-)
+	)
 
 	func main() {
 		app := fx.New(
@@ -35,12 +22,28 @@ import (
 		app.Run()
 	}
 */
-func NewAdapter(server IServer,
+
+package http
+
+import (
+	"fmt"
+	"swclabs/swipecore/internal/http/router"
+	"swclabs/swipecore/internal/types"
+)
+
+type _Adapter struct {
+	server IServer
+}
+
+var _ types.IAdapter = (*_Adapter)(nil)
+
+func NewAdapter(
+	server IServer,
 	products router.IProducts,
 	accountManagement router.IAccountManagement,
 	posts router.IPosts,
 	purchase router.IPurchase,
-) IAdapter {
+) types.IAdapter {
 	adapter := &_Adapter{
 		server: server,
 	}
@@ -60,4 +63,9 @@ func (adapter *_Adapter) Run(addr string) error {
 
 func (adapter *_Adapter) Routers() []string {
 	return adapter.server.Routes()
+}
+
+// StartWorker implements types.IAdapter.
+func (adapter *_Adapter) StartWorker(concurrency int) error {
+	return fmt.Errorf("services unavailable")
 }

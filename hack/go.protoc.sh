@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-GENERATED_DIR=internal/rpc/models
-PROTO_DIR=internal/rpc/proto
+GENERATED_DIR=internal/core/proto
+PROTO_DIR=internal/core/proto
 
 if [ ! -d "$GENERATED_DIR" ]; then \
     mkdir -p $GENERATED_DIR; \

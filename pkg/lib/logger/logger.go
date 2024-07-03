@@ -51,7 +51,7 @@ func Queue(queue string, priority int) {
 		ReportCaller:    false,
 		ReportTimestamp: false,
 		TimeFormat:      time.DateTime,
-		Prefix:          "[SWIPE-queue]",
+		Prefix:          "[SWIPE--queue]",
 	})
 	gwlogger.SetStyles(styles)
 	gwlogger.Info("-", "name", queue, "priority", priority)

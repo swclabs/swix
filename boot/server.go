@@ -60,16 +60,14 @@ import (
 	"fmt"
 	"log"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/types"
 	"swclabs/swipecore/pkg/db"
 
 	"go.uber.org/fx"
 )
 
 type IServer interface {
-	// Connect to adapter of other module
-	Connect(adapter http.IAdapter) error
-	Routes(adapter http.IAdapter) []string
+	IBase
 }
 
 // struct server in project
@@ -85,10 +83,6 @@ func NewServer(env config.Env) IServer {
 	return &_Server{
 		address: fmt.Sprintf("%s:%s", env.Host, env.Port),
 	}
-}
-
-func (server *_Server) Routes(adapter http.IAdapter) []string {
-	return adapter.Routers()
 }
 
 // Connect to module via adapter
@@ -109,7 +103,7 @@ func (server *_Server) Routes(adapter http.IAdapter) []string {
 //
 //		log.Fatal(server.Connect(adapt))
 //	}
-func (server *_Server) Connect(adapter http.IAdapter) error {
+func (server *_Server) Connect(adapter types.IAdapter) error {
 	return adapter.Run(server.address)
 }
 
@@ -124,7 +118,7 @@ func (server *_Server) Connect(adapter http.IAdapter) error {
 //		fx.Invoke(boot.StartServer), // <-- run here
 //	)
 //	app.Run()
-func StartServer(lc fx.Lifecycle, server IServer, adapter http.IAdapter) {
+func StartServer(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			if err := db.MigrateUp(); err != nil {

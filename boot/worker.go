@@ -25,31 +25,30 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"swclabs/swipecore/internal/workers"
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/internal/types"
 
 	"go.uber.org/fx"
 )
 
-// IWorker interface of type Worker
 type IWorker interface {
-	Run(concurrency int) error
+	IBase
 }
 
 type _Worker struct {
-	// engine of worker, worker consume is writer of database
-	engine *workers.Writer
+	concurrency int
 }
 
 // NewWorker create new worker consume
-func NewWorker(writer *workers.Writer) IWorker {
+func NewWorker(env config.Env) IWorker {
 	return &_Worker{
-		engine: writer,
+		concurrency: 10,
 	}
 }
 
 // Run worker with concurrency is number of worker
-func (w *_Worker) Run(concurrency int) error {
-	return w.engine.Run(concurrency)
+func (w *_Worker) Connect(adapter types.IAdapter) error {
+	return adapter.StartWorker(w.concurrency)
 }
 
 // StartWorker used to start a worker consume server,
@@ -65,11 +64,11 @@ func (w *_Worker) Run(concurrency int) error {
 //
 // )
 // app.Run()
-func StartWorker(lc fx.Lifecycle, worker IWorker) {
+func StartWorker(lc fx.Lifecycle, worker IWorker, adapter types.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			go func() {
-				log.Fatal(worker.Run(10))
+				log.Fatal(worker.Connect(adapter))
 			}()
 			return nil
 		},

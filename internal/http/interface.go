@@ -1,28 +1,24 @@
 package http
 
 import (
-	"github.com/labstack/echo/v4"
 	"os"
 	"swclabs/swipecore/internal/http/router"
-)
+	"swclabs/swipecore/internal/types"
 
-// IAdapter interface, used to connect to server instance
-type IAdapter interface {
-	Run(addr string) error
-	Routers() []string
-}
+	"github.com/labstack/echo/v4"
+)
 
 type IServer interface {
 	backgroundTask(tasks ...func())
 	initMiddleware()
 	loggerWriter(*os.File)
 	middleware(mdws ...func(*echo.Echo))
-	Routes() []string
 	Connect(routers router.IRouter)
+	Routes() []string
 	Run(string) error
 }
 
-func NewBaseAdapter(server IServer) IAdapter {
+func NewBaseAdapter(server IServer) types.IAdapter {
 	adapter := &_Adapter{
 		server: server,
 	}

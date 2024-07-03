@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"swclabs/swipecore/internal/core/service/common"
 
 	"swclabs/swipecore/pkg/lib/worker"
@@ -30,10 +31,12 @@ func (common *Common) HandleHealthCheck() (taskName string, fn worker.HandleFunc
 		if err := json.Unmarshal(task.Payload(), &num); err != nil {
 			return err
 		}
-		if err := common.handler.WorkerCheck(context.Background(), num); err != nil {
+		result, err := common.handler.WorkerCheckResult(context.Background(), num)
+		if err != nil {
 			return err
 		}
-		_, err := task.ResultWriter().Write([]byte("HandleHealthCheck: success"))
+		_, err = task.ResultWriter().Write(
+			[]byte(fmt.Sprintf("HandleHealthCheck with param '%s': success", result)))
 		return err
 	}
 }

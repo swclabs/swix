@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package greeter;
+option go_package = "/common";
+
+message Empty {}
+
+message HealthCheckReply {
+  string message = 1;
+}
+
+message WorkerMessage {
+  int64 num = 1;
+}
+
+message WorkerReply {
+  string message = 1;
+}
+
+service Common {
+  rpc HealthCheck(Empty) returns (HealthCheckReply) {}
+  rpc WorkerCheck(WorkerMessage) returns (Empty) {}
+  rpc WorkerCheckResult(WorkerMessage) returns (WorkerReply) {}
+}
