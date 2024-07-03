@@ -7,9 +7,10 @@
 package main
 
 import (
-	"go.uber.org/fx"
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/internal/http"
+
+	"go.uber.org/fx"
 
 	_ "swclabs/swipecore/boot/init"
 )
@@ -21,7 +22,7 @@ func main() {
 			http.NewAdapter,
 			boot.NewServer,
 		),
-		fx.Invoke(boot.StartServer),
+		fx.Invoke(boot.Main),
 	)
 	app.Run()
 }
