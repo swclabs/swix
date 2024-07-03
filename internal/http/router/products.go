@@ -34,6 +34,8 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.GET("/suppliers", r.controller.GetSupplier)
 	e.POST("/suppliers", r.controller.InsertSupplier)
 	// endpoint for inventories
-	e.GET("/inventories", r.controller.GetProductAvailability)
+	e.GET("/inventories/details", r.controller.GetProductAvailability)
 	e.POST("/inventories", r.controller.AddToInventory)
+	e.GET("/inventories", r.controller.GetStock)
+
 }

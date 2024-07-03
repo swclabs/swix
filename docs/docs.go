@@ -412,6 +412,75 @@ const docTemplate = `{
         },
         "/inventories": {
             "get": {
+                "description": "get all product from inventory",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.InventoryStockSchema"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "add product to inventories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "description": "Inventories Request",
+                        "name": "InventoryStruct",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.InventoryStruct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventories/details": {
+            "get": {
                 "description": "get product availability in inventories",
                 "consumes": [
                     "application/json"
@@ -457,37 +526,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/domain.InventorySchema"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "add product to inventories",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "products"
-                ],
-                "parameters": [
-                    {
-                        "description": "Inventories Request",
-                        "name": "InventoryStruct",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/domain.InventoryStruct"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -1211,7 +1249,56 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "specs": {
-                    "$ref": "#/definitions/domain.SpecsDetail"
+                    "$ref": "#/definitions/domain.InventorySpecsDetail"
+                }
+            }
+        },
+        "domain.InventorySpecsDetail": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "color_image": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.InventoryStockSchema": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "integer"
+                },
+                "all": {
+                    "type": "integer"
+                },
+                "archive": {
+                    "type": "integer"
+                },
+                "draft": {
+                    "type": "integer"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.InventorySchema"
+                    }
                 }
             }
         },
@@ -1241,7 +1328,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "specs": {
-                    "$ref": "#/definitions/domain.SpecsDetail"
+                    "$ref": "#/definitions/domain.InventorySpecsDetail"
                 }
             }
         },
@@ -1462,26 +1549,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "screen": {
-                    "type": "string"
-                }
-            }
-        },
-        "domain.SpecsDetail": {
-            "type": "object",
-            "properties": {
-                "color": {
-                    "type": "string"
-                },
-                "color_image": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "ram": {
-                    "type": "string"
-                },
-                "ssd": {
                     "type": "string"
                 }
             }

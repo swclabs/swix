@@ -192,13 +192,45 @@ definitions:
       product_id:
         type: string
       specs:
-        $ref: '#/definitions/domain.SpecsDetail'
+        $ref: '#/definitions/domain.InventorySpecsDetail'
     required:
     - available
     - currency_code
     - model
     - price
     - product_id
+    type: object
+  domain.InventorySpecsDetail:
+    properties:
+      color:
+        type: string
+      color_image:
+        type: string
+      image:
+        type: string
+      ram:
+        type: string
+      ssd:
+        type: string
+    type: object
+  domain.InventoryStockSchema:
+    properties:
+      active:
+        type: integer
+      all:
+        type: integer
+      archive:
+        type: integer
+      draft:
+        type: integer
+      limit:
+        type: integer
+      page:
+        type: integer
+      stock:
+        items:
+          $ref: '#/definitions/domain.InventorySchema'
+        type: array
     type: object
   domain.InventoryStruct:
     properties:
@@ -213,7 +245,7 @@ definitions:
       product_id:
         type: string
       specs:
-        $ref: '#/definitions/domain.SpecsDetail'
+        $ref: '#/definitions/domain.InventorySpecsDetail'
     required:
     - available
     - currency_code
@@ -367,19 +399,6 @@ definitions:
       display:
         type: string
       screen:
-        type: string
-    type: object
-  domain.SpecsDetail:
-    properties:
-      color:
-        type: string
-      color_image:
-        type: string
-      image:
-        type: string
-      ram:
-        type: string
-      ssd:
         type: string
     type: object
   domain.SupplierSchema:
@@ -761,6 +780,51 @@ paths:
     get:
       consumes:
       - application/json
+      description: get all product from inventory
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.InventoryStockSchema'
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: add product to inventories
+      parameters:
+      - description: Inventories Request
+        in: body
+        name: InventoryStruct
+        required: true
+        schema:
+          $ref: '#/definitions/domain.InventoryStruct'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - products
+  /inventories/details:
+    get:
+      consumes:
+      - application/json
       description: get product availability in inventories
       parameters:
       - description: product id
@@ -790,26 +854,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/domain.InventorySchema'
-      tags:
-      - products
-    post:
-      consumes:
-      - application/json
-      description: add product to inventories
-      parameters:
-      - description: Inventories Request
-        in: body
-        name: InventoryStruct
-        required: true
-        schema:
-          $ref: '#/definitions/domain.InventoryStruct'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/domain.OK'
       tags:
       - products
   /oauth2/login:

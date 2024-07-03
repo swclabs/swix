@@ -127,6 +127,7 @@ CREATE TABLE "inventories" (
   "id" bigserial PRIMARY KEY,
   "product_id" int NOT NULL,
   "price" NUMERIC(19, 4) NOT NULL,
+  "status" varchar NOT NULL,
   "currency_code" varchar(3) NOT NULL,
   "model" varchar,
   "specs" jsonb,

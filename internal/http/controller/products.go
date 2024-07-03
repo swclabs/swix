@@ -22,6 +22,7 @@ type IProducts interface {
 	AddToInventory(c echo.Context) error
 	DeleteProduct(c echo.Context) error
 	UpdateProductInfo(c echo.Context) error
+	GetStock(c echo.Context) error
 }
 
 type Products struct {
@@ -32,6 +33,37 @@ func NewProducts(services products.IProductService) IProducts {
 	return &Products{
 		Services: services,
 	}
+}
+
+// GetStock
+// @Description get all product from inventory
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param page query number true "page"
+// @Param limit query number true "limit"
+// @Success 200 {object} domain.InventoryStockSchema
+// @Router /inventories [GET]
+func (p *Products) GetStock(c echo.Context) error {
+	page, err := strconv.Atoi(c.QueryParam("page"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing 'page' or 'page' is not a number",
+		})
+	}
+	limit, err := strconv.Atoi(c.QueryParam("limit"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing 'limit' or 'limit' is not a number",
+		})
+	}
+	stock, err := p.Services.GetAllStock(c.Request().Context(), page, limit)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, stock)
 }
 
 // UpdateProductInfo
@@ -74,17 +106,19 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 // @Param ssd query number true "ssd"
 // @Param color query string true "color"
 // @Success 200 {object} domain.InventorySchema
-// @Router /inventories [GET]
+// @Router /inventories/details [GET]
 func (p *Products) GetProductAvailability(c echo.Context) error {
-	pid := c.QueryParam("pid")
+	var (
+		pid   = c.QueryParam("pid")
+		ram   = c.QueryParam("ram")
+		ssd   = c.QueryParam("ssd")
+		color = c.QueryParam("color")
+	)
 	if pid == "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "required 'limit' query params",
 		})
 	}
-	ram := c.QueryParam("ram")
-	ssd := c.QueryParam("ssd")
-	color := c.QueryParam("color")
 
 	product, err := p.Services.FindDeviceInInventory(c.Request().Context(), pid, ram, ssd, color)
 	if err != nil {
