@@ -20,6 +20,18 @@ func New(conn db.IDatabase) IInventoryRepository {
 	})
 }
 
+// GetLimit implements IInventoryRepository.
+func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]domain.Inventories, error) {
+	if offset <= 1 {
+		offset = 1
+	}
+	rows, err := w.db.Query(ctx, getProductsLimit, limit, (offset-1)*limit)
+	if err != nil {
+		return nil, err
+	}
+	return db.CollectRows[domain.Inventories](rows)
+}
+
 func (w *Inventory) GetByProductId(ctx context.Context, productId int64) ([]domain.Inventories, error) {
 	rows, err := w.db.Query(ctx, getByProductId, productId)
 	if err != nil {
@@ -66,5 +78,6 @@ func (w *Inventory) InsertProduct(
 	return w.db.SafeWrite(ctx, insertIntoInventory,
 		product.ProductID, product.Model, product.Price,
 		string(specsjson), product.Available, product.CurrencyCode,
+		"active",
 	)
 }

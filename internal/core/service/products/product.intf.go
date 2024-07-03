@@ -68,4 +68,5 @@ type IProductService interface {
 	UpdateProductInfo(ctx context.Context, product domain.UpdateProductInfo) error
 	GetInventory(ctx context.Context, productId int64) ([]domain.Inventories, error)
 	Search(ctx context.Context, keyword string) ([]domain.ProductSchema, error)
+	GetAllStock(ctx context.Context, page int, limit int) (*domain.InventoryStockSchema, error)
 }

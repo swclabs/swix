@@ -2,8 +2,8 @@ package inventories
 
 const (
 	insertIntoInventory string = `
-		INSERT INTO inventories (product_id, model, price, specs, available, currency_code)
-		VALUES ($1, $2, $3, $4, $5, $6);
+		INSERT INTO inventories (product_id, model, price, specs, available, currency_code, status)
+		VALUES ($1, $2, $3, $4, $5, $6, $7);
 	`
 
 	getAvailableProducts string = `
@@ -22,5 +22,9 @@ const (
 
 	getByProductId = `
 		SELECT * FROM inventories WHERE product_id = $1;
+	`
+
+	getProductsLimit = `
+		SELECT * FROM inventories LIMIT $1 OFFSET $2;
 	`
 )

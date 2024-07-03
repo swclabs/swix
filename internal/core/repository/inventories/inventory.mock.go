@@ -13,6 +13,11 @@ type Mock struct {
 
 var _ IInventoryRepository = (*Mock)(nil)
 
+// GetLimit implements IInventoryRepository.
+func (w *Mock) GetLimit(ctx context.Context, limit int, offset int) ([]domain.Inventories, error) {
+	panic("unimplemented")
+}
+
 func (w *Mock) GetByProductId(ctx context.Context, productId int64) ([]domain.Inventories, error) {
 	//TODO implement me
 	panic("implement me")

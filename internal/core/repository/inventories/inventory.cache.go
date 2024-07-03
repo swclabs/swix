@@ -15,6 +15,11 @@ func useCache(repo IInventoryRepository) IInventoryRepository {
 	return &cache{inventory: repo}
 }
 
+// GetLimit implements IInventoryRepository.
+func (c *cache) GetLimit(ctx context.Context, limit int, offset int) ([]domain.Inventories, error) {
+	return c.inventory.GetLimit(ctx, limit, offset)
+}
+
 // GetByProductId implements IInventoryRepository.
 func (c *cache) GetByProductId(ctx context.Context, productId int64) ([]domain.Inventories, error) {
 	//TODO implement me

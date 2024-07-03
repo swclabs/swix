@@ -20,7 +20,7 @@ var e = echo.New()
 
 func TestGetProductAvailability(t *testing.T) {
 	// repository layers
-	specs, _ := json.Marshal(domain.SpecsDetail{
+	specs, _ := json.Marshal(domain.InventorySpecsDetail{
 		Color:      "black",
 		Ram:        "16",
 		Ssd:        "512",

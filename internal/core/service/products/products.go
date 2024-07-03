@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mime/multipart"
+	"strconv"
 	"strings"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/errors"
@@ -39,6 +40,49 @@ func New(
 	}
 }
 
+// GetStock implements IProductService.
+func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (*domain.InventoryStockSchema, error) {
+	inventories, err := s.Inventory.GetLimit(ctx, limit, page)
+	if err != nil {
+		return nil, errors.Service("get stock", err)
+	}
+	var (
+		stock domain.InventoryStockSchema
+		specs domain.InventorySpecsDetail
+	)
+
+	for _, _inventory := range inventories {
+		if err := json.Unmarshal([]byte(_inventory.Specs), &specs); err != nil {
+			return nil, errors.Service("json unmarshal error", err)
+		}
+		switch _inventory.Status {
+		case "active":
+			stock.Active++
+		case "draft":
+			stock.Draft++
+		case "archived":
+			stock.Active++
+		}
+		stock.Stock = append(stock.Stock, domain.InventorySchema{
+			Id: _inventory.Id,
+			InventoryStruct: domain.InventoryStruct{
+				ProductID:    strconv.Itoa(int(_inventory.ProductID)),
+				Price:        _inventory.Price.String(),
+				Model:        _inventory.Model,
+				Available:    _inventory.Available,
+				CurrencyCode: _inventory.CurrencyCode,
+				Specs:        specs,
+			},
+		})
+	}
+
+	stock.Page = page
+	stock.Limit = limit
+	stock.All = len(inventories)
+
+	return &stock, nil
+}
+
 // GetInventory implements IProductService.
 func (s *ProductService) GetInventory(ctx context.Context, productId int64) ([]domain.Inventories, error) {
 	return s.Inventory.GetByProductId(ctx, productId)
@@ -46,7 +90,7 @@ func (s *ProductService) GetInventory(ctx context.Context, productId int64) ([]d
 
 // Search implements IProductService.
 func (s *ProductService) Search(ctx context.Context, keyword string) ([]domain.ProductSchema, error) {
-	products, err := s.Products.Search(ctx, keyword)
+	_products, err := s.Products.Search(ctx, keyword)
 	if err != nil {
 		return nil, errors.Service("keyword error", err)
 	}
@@ -54,7 +98,7 @@ func (s *ProductService) Search(ctx context.Context, keyword string) ([]domain.P
 		productSchema []domain.ProductSchema
 		specs         domain.Specs
 	)
-	for _, p := range products {
+	for _, p := range _products {
 		err := json.Unmarshal([]byte(p.Spec), &specs)
 		if err != nil {
 			return nil, errors.Service("failed to unmarshal", err)
