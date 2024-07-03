@@ -18,7 +18,7 @@ func main() {
 		fx.Provide(
 			boot.NewWorker,
 		),
-		fx.Invoke(boot.StartWorker),
+		fx.Invoke(boot.Main),
 	)
 	app.Run()
 }

@@ -32,7 +32,7 @@ var Command = []*cli.Command{
 				fx.Provide(
 					boot.NewWorker,
 				),
-				fx.Invoke(boot.StartWorker),
+				fx.Invoke(boot.Main),
 			)
 			app.Run()
 			return nil
@@ -49,7 +49,7 @@ var Command = []*cli.Command{
 					http.NewProductsAdapter,
 					boot.NewServer,
 				),
-				fx.Invoke(boot.StartServer),
+				fx.Invoke(boot.Main),
 			)
 			app.Run()
 			return nil
