@@ -10,19 +10,10 @@ import (
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/internal/http"
 
-	"go.uber.org/fx"
-
 	_ "swclabs/swipecore/boot/init"
 )
 
 func main() {
-	app := fx.New(
-		boot.FxRestModule,
-		fx.Provide(
-			http.NewAdapter,
-			boot.NewServer,
-		),
-		fx.Invoke(boot.Main),
-	)
+	app := boot.NewApp(boot.NewServer, http.NewAdapter)
 	app.Run()
 }

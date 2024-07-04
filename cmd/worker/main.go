@@ -8,17 +8,13 @@ package main
 
 import (
 	"swclabs/swipecore/boot"
+	"swclabs/swipecore/internal/workers"
 
-	"go.uber.org/fx"
+	_ "swclabs/swipecore/boot/init"
 )
 
 func main() {
-	app := fx.New(
-		boot.FxWorkerModule,
-		fx.Provide(
-			boot.NewWorker,
-		),
-		fx.Invoke(boot.Main),
-	)
+	boot.PrepareFor(boot.WorkerConsume)
+	app := boot.NewApp(boot.NewServer, workers.NewAdapter)
 	app.Run()
 }

@@ -11,26 +11,30 @@ import (
 	"go.uber.org/fx"
 )
 
-var _FxDataLayer = fx.Options(
-	fx.Provide(
-		config.LoadEnv,
-		db.New,
-	),
-	repository.FxModule,
+const (
+	RestAPI       = 1 << iota // 0001
+	WorkerConsume             // 0010
 )
 
-var _FxBusinessLogic = fx.Options(
-	service.FxModule,
+var (
+	_FxDataLayer      = fx.Options(fx.Provide(config.LoadEnv, db.New), repository.FxModule)
+	_FxBusinessLogic  = fx.Options(service.FxModule)
+	_FxPresenterLayer = http.FxModule
 )
 
-var FxRestModule = fx.Options(
-	_FxDataLayer,     // data layer constructor
-	_FxBusinessLogic, // business logic constructor
-	http.FxModule,    // presenter layer constructor
-)
+func PrepareFor(flag int) {
+	if flag&RestAPI != 0 {
+		_FxPresenterLayer = http.FxModule
+	}
+	if flag&WorkerConsume != 0 {
+		_FxPresenterLayer = workers.FxModule
+	}
+}
 
-var FxWorkerModule = fx.Options(
-	_FxDataLayer,     // data layer constructor
-	_FxBusinessLogic, // business logic constructor
-	workers.FxModule, // presenter layer constructor
-)
+func FxModule() fx.Option {
+	return fx.Options(
+		_FxDataLayer,      // data layer constructor
+		_FxBusinessLogic,  // business logic constructor
+		_FxPresenterLayer, // presenter layer constructor
+	)
+}

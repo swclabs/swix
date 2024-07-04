@@ -14,11 +14,13 @@ import (
 	"os"
 	"sort"
 	"swclabs/swipecore/boot"
-	_ "swclabs/swipecore/docs"
 	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/workers"
 
 	"github.com/urfave/cli/v2"
-	"go.uber.org/fx"
+
+	_ "swclabs/swipecore/boot/init"
+	_ "swclabs/swipecore/docs"
 )
 
 var Command = []*cli.Command{
@@ -27,13 +29,8 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			app := fx.New(
-				boot.FxWorkerModule,
-				fx.Provide(
-					boot.NewWorker,
-				),
-				fx.Invoke(boot.Main),
-			)
+			boot.PrepareFor(boot.WorkerConsume)
+			app := boot.NewApp(boot.NewWorker, workers.NewAdapter)
 			app.Run()
 			return nil
 		},
@@ -43,14 +40,7 @@ var Command = []*cli.Command{
 		Aliases: []string{"s"},
 		Usage:   "run app server",
 		Action: func(_ *cli.Context) error {
-			app := fx.New(
-				boot.FxRestModule,
-				fx.Provide(
-					http.NewProductsAdapter,
-					boot.NewServer,
-				),
-				fx.Invoke(boot.Main),
-			)
+			app := boot.NewApp(boot.NewWorker, http.NewProductsAdapter)
 			app.Run()
 			return nil
 		},

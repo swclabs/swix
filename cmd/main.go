@@ -14,11 +14,11 @@ import (
 	"os"
 	"sort"
 	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/workers"
 
-	"github.com/urfave/cli/v2"
 	"swclabs/swipecore/boot"
 
-	_ "swclabs/swipecore/boot/init"
+	"github.com/urfave/cli/v2"
 )
 
 var Command = []*cli.Command{
@@ -27,17 +27,18 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			app := boot.NewWorkerApp()
+			boot.PrepareFor(boot.WorkerConsume)
+			app := boot.NewApp(boot.NewWorker, workers.NewAdapter)
 			app.Run()
 			return nil
-		},
+		}, 
 	},
 	{
 		Name:    "server",
 		Aliases: []string{"s"},
 		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
-			app := boot.NewRestApp(http.NewAdapter)
+			app := boot.NewApp(boot.NewServer, http.NewAdapter)
 			app.Run()
 			return nil
 		},

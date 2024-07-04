@@ -15,7 +15,6 @@ package main
 import (
 	"log"
 	"swclabs/swipecore/boot"
-	_ "swclabs/swipecore/docs"
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/core/service/common"
 	"swclabs/swipecore/internal/http"
