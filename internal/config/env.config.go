@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 
 	_ "github.com/joho/godotenv/autoload" // load .env file automatically
 )
@@ -30,9 +31,15 @@ type Env struct {
 	Auth0ClientSecret string
 	Auth0CallbackUrl  string
 	CloudinaryUrl     string
+	NumberOfWorker    int
 }
 
 func LoadEnv() Env {
+	numberOfWorker := os.Getenv("NUMBER_OF_WORKER")
+	num, err := strconv.Atoi(numberOfWorker)
+	if err != nil {
+		num = 10 // default
+	}
 	return Env{
 		StageStatus:       os.Getenv("STAGE_STATUS"),
 		Host:              os.Getenv("HOST"),
@@ -57,6 +64,7 @@ func LoadEnv() Env {
 		Auth0ClientSecret: os.Getenv("AUTH0_CLIENT_SECRET"),
 		Auth0CallbackUrl:  os.Getenv("AUTH0_CALLBACK_URL"),
 		CloudinaryUrl:     os.Getenv("CLOUDINARY_URL"),
+		NumberOfWorker:    num,
 	}
 }
 
@@ -113,3 +121,5 @@ var (
 var (
 	CloudinaryUrl = os.Getenv("CLOUDINARY_URL")
 )
+
+var NumberOfWorker = os.Getenv("NUMBER_OF_WORKER")

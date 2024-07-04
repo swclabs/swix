@@ -22,6 +22,5 @@ var FxModule = fx.Options(
 		router.NewAccountManagement,
 
 		NewWriter,
-		NewAdapter,
 	),
 )

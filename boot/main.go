@@ -38,9 +38,9 @@ func StartServer(server boot.IServer, adapter http.IAdapter) {
 
 func main() {
 	app := fx.New(
-		boot.FxRestModule,
+		boot.FxModule(),
 		fx.Provide(
-			adapter.NewAdapter,
+			http.NewAdapter,
 			boot.NewServer,
 		),
 		fx.Invoke(boot.Main),
@@ -55,33 +55,24 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/types"
 	"swclabs/swipecore/pkg/db"
 
 	"go.uber.org/fx"
+
+	_ "swclabs/swipecore/boot/init"
 )
 
 type IServer interface {
 	Connect(adapter types.IAdapter) error
 }
 
-func NewRestApp(adapterConstructors ...interface{}) *fx.App {
+func NewApp(serverContructor func(env config.Env) IServer, adapterConstructors ...interface{}) *fx.App {
 	return fx.New(
-		FxRestModule,
-		fx.Provide(
-			adapterConstructors...,
-		),
-		fx.Provide(NewServer),
-		fx.Invoke(Main),
-	)
-}
-
-func NewWorkerApp() *fx.App {
-	return fx.New(
-		FxWorkerModule,
-		fx.Provide(
-			NewWorker,
-		),
+		FxModule(),
+		fx.Provide(adapterConstructors...),
+		fx.Provide(serverContructor),
 		fx.Invoke(Main),
 	)
 }
@@ -89,9 +80,9 @@ func NewWorkerApp() *fx.App {
 // Main used to start a server, through to fx.Invoke() method
 //
 //	app := fx.New(
-//		boot.FxRestModule,
+//		boot.FxModule(),
 //		fx.Provide(
-//			adapter.NewAdapter,
+//			http.NewAdapter,
 //			boot.NewServer,
 //		),
 //		fx.Invoke(boot.Main), // <-- run here
@@ -100,6 +91,7 @@ func NewWorkerApp() *fx.App {
 func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
+			fmt.Println("[Swipe]   OnStart               server starting")
 			if err := db.MigrateUp(); err != nil {
 				return err
 			}

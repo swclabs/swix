@@ -33,7 +33,7 @@ func NewServer(env config.Env) IServer {
 //				commonRouter,
 //				router.NewDocs(),
 //			})
-//			adapt = adapter.NewBaseAdapter(httpServer)
+//			adapt = http.NewBaseAdapter(httpServer)
 //			server = boot.NewServer(env)
 //		)
 //
