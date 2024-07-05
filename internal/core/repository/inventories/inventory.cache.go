@@ -32,8 +32,8 @@ func (c *cache) GetById(ctx context.Context, inventoryId int64) (*domain.Invento
 }
 
 // FindDevice implements IInventoryRepository.
-func (c *cache) FindDevice(ctx context.Context, productID string, ram string, ssd string, color string) (*domain.Inventories, error) {
-	return c.inventory.FindDevice(ctx, productID, ram, ssd, color)
+func (c *cache) FindDevice(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.Inventories, error) {
+	return c.inventory.FindDevice(ctx, deviceSpecs)
 }
 
 // InsertProduct implements IInventoryRepository.

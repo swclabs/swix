@@ -3,6 +3,7 @@ package oauth2
 import (
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 
 	"swclabs/swipecore/internal/config"
@@ -58,7 +59,11 @@ func (auth *Authenticator) VerifyToken(token *oauth2.Token) (*GoogleOAuth2, erro
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
+	defer func() {
+		if err := response.Body.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
@@ -75,7 +80,11 @@ func (auth *Authenticator) VerifyTokenByte(token *oauth2.Token) ([]byte, error) 
 	if err != nil {
 		return nil, err
 	}
-	defer response.Body.Close()
+	defer func() {
+		if err := response.Body.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
 		return nil, err

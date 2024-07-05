@@ -8,9 +8,8 @@ package main
 
 import (
 	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/http"
-
 	_ "swclabs/swipecore/boot/init"
+	"swclabs/swipecore/internal/http"
 )
 
 func main() {

@@ -2,6 +2,7 @@ package suppliers
 
 import (
 	"context"
+	"log"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/pkg/db"
@@ -30,7 +31,9 @@ func (supplier *Suppliers) Insert(
 	defer func() {
 		if errTx != nil {
 			// Sentry Capture failed
-			tx.Rollback(ctx)
+			if errTxRb := tx.Rollback(ctx); errTxRb != nil {
+				log.Fatal(errTxRb)
+			}
 		}
 	}()
 

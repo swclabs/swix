@@ -3,11 +3,12 @@ package worker
 import (
 	"context"
 	"encoding/json"
-	"github.com/hibiken/asynq"
 	"reflect"
 	"runtime"
 	"strings"
 	"time"
+
+	"github.com/hibiken/asynq"
 )
 
 // getName returns the name of the function

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.24.2
-// source: common.proto
+// source: internal/core/proto/common.proto
 
 package common
 
@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Common_HealthCheck_FullMethodName       = "/greeter.Common/HealthCheck"
-	Common_WorkerCheck_FullMethodName       = "/greeter.Common/WorkerCheck"
-	Common_WorkerCheckResult_FullMethodName = "/greeter.Common/WorkerCheckResult"
+	Common_HealthCheck_FullMethodName       = "/common.Common/HealthCheck"
+	Common_WorkerCheck_FullMethodName       = "/common.Common/WorkerCheck"
+	Common_WorkerCheckResult_FullMethodName = "/common.Common/WorkerCheckResult"
 )
 
 // CommonClient is the client API for Common service.
@@ -162,7 +162,7 @@ func _Common_WorkerCheckResult_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Common_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "greeter.Common",
+	ServiceName: "common.Common",
 	HandlerType: (*CommonServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -179,5 +179,5 @@ var Common_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "common.proto",
+	Metadata: "internal/core/proto/common.proto",
 }

@@ -7,7 +7,7 @@ if [ ! -d "$GENERATED_DIR" ]; then \
     mkdir -p $GENERATED_DIR; \
 fi
 
-protoc --proto_path=$PROTO_DIR \
+protoc --proto_path=./ \
     --go_out=$GENERATED_DIR \
     --go-grpc_out=$GENERATED_DIR \
     --grpc-gateway_out $GENERATED_DIR \
