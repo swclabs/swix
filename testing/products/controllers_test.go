@@ -29,7 +29,13 @@ func TestGetProductAvailability(t *testing.T) {
 	})
 	repos := inventories.Mock{}
 	price, _ := decimal.NewFromString("10000")
-	repos.On("FindDevice", context.Background(), "1", "64", "512", "black").Return(&domain.Inventories{
+	repos.On("FindDevice", context.Background(),
+		domain.InventoryDeviveSpecs{
+			ProductId: "1",
+			Ram:       "64",
+			Ssd:       "512",
+			Color:     "black",
+		}).Return(&domain.Inventories{
 		Id:           "1",
 		ProductID:    1,
 		Model:        "iPhone 15 Pro Max",

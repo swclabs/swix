@@ -60,9 +60,9 @@ type IProductService interface {
 
 	// FindDeviceInInventory retrieves device details from the Inventories.
 	// ctx is the context to manage the request's lifecycle.
-	// productID, ram, ssd, and color specify the product attributes to retrieve.
+	// deviceSpecs specify the product attributes to retrieve.
 	// Returns a pointer to the InventorySchema object and an error if any issues occur during the retrieval process.
-	FindDeviceInInventory(ctx context.Context, productID, ram, ssd, color string) (*domain.InventorySchema, error)
+	FindDeviceInInventory(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.InventorySchema, error)
 
 	DeleteProductById(ctx context.Context, productId int64) error
 	UpdateProductInfo(ctx context.Context, product domain.UpdateProductInfo) error

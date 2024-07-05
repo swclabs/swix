@@ -56,3 +56,10 @@ type InventoryStockSchema struct {
 	Limit   int               `json:"limit"`
 	Stock   []InventorySchema `json:"stock"`
 }
+
+type InventoryDeviveSpecs struct {
+	ProductId string `json:"product_id"`
+	Ram       string `json:"ram"`
+	Ssd       string `json:"sd"`
+	Color     string `json:"color"`
+}

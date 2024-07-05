@@ -29,9 +29,8 @@ func (w *Mock) GetById(ctx context.Context, inventoryId int64) (*domain.Inventor
 }
 
 // FindDevice implements IInventoryRepository.
-func (w *Mock) FindDevice(
-	ctx context.Context, productID, ram, ssd, color string) (*domain.Inventories, error) {
-	args := w.Called(ctx, productID, ram, ssd, color)
+func (w *Mock) FindDevice(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.Inventories, error) {
+	args := w.Called(ctx, deviceSpecs)
 	return args.Get(0).(*domain.Inventories), args.Error(1)
 }
 

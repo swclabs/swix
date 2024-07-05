@@ -120,7 +120,13 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 		})
 	}
 
-	product, err := p.Services.FindDeviceInInventory(c.Request().Context(), pid, ram, ssd, color)
+	product, err := p.Services.FindDeviceInInventory(c.Request().Context(),
+		domain.InventoryDeviveSpecs{
+			ProductId: pid,
+			Ram:       ram,
+			Ssd:       ssd,
+			Color:     color,
+		})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),

@@ -1,21 +1,9 @@
 syntax = "proto3";
 
-package greeter;
+package common;
 option go_package = "/common";
 
-message Empty {}
-
-message HealthCheckReply {
-  string message = 1;
-}
-
-message WorkerMessage {
-  int64 num = 1;
-}
-
-message WorkerReply {
-  string message = 1;
-}
+import "internal/core/proto/common.type.proto";
 
 service Common {
   rpc HealthCheck(Empty) returns (HealthCheckReply) {}

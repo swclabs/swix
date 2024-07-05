@@ -1,0 +1,19 @@
+// common.proto
+syntax = "proto3";
+
+package common;
+option go_package = "/common";
+
+message Empty {}
+
+message HealthCheckReply {
+  string message = 1;
+}
+
+message WorkerMessage {
+  int64 num = 1;
+}
+
+message WorkerReply {
+  string message = 1;
+}

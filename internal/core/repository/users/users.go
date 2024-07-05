@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"swclabs/swipecore/internal/core/repository/accounts"
 	"swclabs/swipecore/pkg/lib/jwt"
 	"swclabs/swipecore/pkg/utils"
@@ -148,13 +149,17 @@ func (usr *Users) TransactionSignUp(
 		return err
 	}
 	if err := New(tx).Insert(ctx, user); err != nil {
-		tx.Rollback(ctx)
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
 		return err
 	}
 
 	userInfo, err := New(tx).GetByEmail(ctx, user.Email)
 	if err != nil {
-		tx.Rollback(ctx)
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
 		return err
 	}
 
@@ -165,7 +170,9 @@ func (usr *Users) TransactionSignUp(
 		Email:    user.Email,
 		Type:     "swc",
 	}); err != nil {
-		tx.Rollback(ctx)
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
 		return err
 	}
 	return tx.Commit(ctx)
@@ -182,12 +189,16 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.Users) 
 		return err
 	}
 	if err := New(tx).OAuth2SaveInfo(ctx, user); err != nil {
-		tx.Rollback(ctx)
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
 		return err
 	}
 	userInfo, err := New(tx).GetByEmail(ctx, user.Email)
 	if err != nil {
-		tx.Rollback(ctx)
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
 		return err
 	}
 	if err := accounts.New(tx).Insert(ctx, domain.Account{
@@ -197,7 +208,9 @@ func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.Users) 
 		Email:    user.Email,
 		Type:     "oauth2-google",
 	}); err != nil {
-		tx.Rollback(ctx)
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
 		return err
 	}
 	return tx.Commit(ctx)

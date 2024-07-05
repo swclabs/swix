@@ -58,9 +58,9 @@ func (w *Inventory) GetById(ctx context.Context, inventoryId int64) (*domain.Inv
 }
 
 // FindDevice implements domain.IInventoryRepository.
-func (w *Inventory) FindDevice(
-	ctx context.Context, productID, ram, ssd, color string) (*domain.Inventories, error) {
-	rows, err := w.db.Query(ctx, getAvailableProducts, productID, ram, ssd, color)
+func (w *Inventory) FindDevice(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.Inventories, error) {
+	rows, err := w.db.Query(ctx, getAvailableProducts,
+		deviceSpecs.ProductId, deviceSpecs.Ram, deviceSpecs.Ssd, deviceSpecs.Color)
 	if err != nil {
 		return nil, err
 	}

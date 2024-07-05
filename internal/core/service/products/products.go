@@ -137,9 +137,8 @@ func (s *ProductService) UpdateProductInfo(ctx context.Context, product domain.U
 }
 
 // FindDeviceInInventory implements IProductService.
-func (s *ProductService) FindDeviceInInventory(
-	ctx context.Context, productID, ram, ssd, color string) (*domain.InventorySchema, error) {
-	_inventory, err := s.Inventory.FindDevice(ctx, productID, ram, ssd, color)
+func (s *ProductService) FindDeviceInInventory(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.InventorySchema, error) {
+	_inventory, err := s.Inventory.FindDevice(ctx, deviceSpecs)
 	if err != nil {
 		return nil, err
 	}
