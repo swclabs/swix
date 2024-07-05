@@ -31,7 +31,7 @@ var Command = []*cli.Command{
 			app := boot.NewApp(boot.NewWorker, workers.NewAdapter)
 			app.Run()
 			return nil
-		},
+		}, 
 	},
 	{
 		Name:    "server",
