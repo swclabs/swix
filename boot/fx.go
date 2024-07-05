@@ -1,7 +1,6 @@
 package boot
 
 import (
-	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/core/repository"
 	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/internal/http"
@@ -14,12 +13,15 @@ import (
 const (
 	RestAPI       = 1 << iota // 0001
 	WorkerConsume             // 0010
+	ProdMode
+	DebugMode
 )
 
 var (
-	_FxDataLayer      = fx.Options(fx.Provide(config.LoadEnv, db.New), repository.FxModule)
+	_FxDataLayer      = fx.Options(fx.Provide(db.New), repository.FxModule)
 	_FxBusinessLogic  = fx.Options(service.FxModule)
-	_FxPresenterLayer = http.FxModule
+	_FxPresenterLayer = fx.Provide()
+	_Logger           = fx.Provide()
 )
 
 func PrepareFor(flag int) {
@@ -29,6 +31,12 @@ func PrepareFor(flag int) {
 	if flag&WorkerConsume != 0 {
 		_FxPresenterLayer = workers.FxModule
 	}
+	if flag&DebugMode != 0 {
+		_Logger = fx.Provide()
+	}
+	if flag&ProdMode != 0 {
+		_Logger = fx.NopLogger
+	}
 }
 
 func FxModule() fx.Option {
@@ -36,5 +44,6 @@ func FxModule() fx.Option {
 		_FxDataLayer,      // data layer constructor
 		_FxBusinessLogic,  // business logic constructor
 		_FxPresenterLayer, // presenter layer constructor
+		_Logger,
 	)
 }

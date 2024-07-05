@@ -15,9 +15,9 @@ type _Server struct {
 
 // NewServer creates a new server instance
 // Use for fx Framework and more
-func NewServer(env config.Env) IServer {
+func NewServer() IServer {
 	return &_Server{
-		address: fmt.Sprintf("%s:%s", env.Host, env.Port),
+		address: fmt.Sprintf("%s:%s", config.Host, config.Port),
 	}
 }
 
@@ -25,7 +25,6 @@ func NewServer(env config.Env) IServer {
 //
 //	func main() {
 //		var (
-//			env              = config.LoadEnv()
 //			commonService    = common.New()
 //			commonController = controller.NewCommon(commonService)
 //			commonRouter     = router.NewCommon(commonController)
@@ -34,7 +33,7 @@ func NewServer(env config.Env) IServer {
 //				router.NewDocs(),
 //			})
 //			adapt = http.NewBaseAdapter(httpServer)
-//			server = boot.NewServer(env)
+//			server = boot.NewServer()
 //		)
 //
 //		log.Fatal(server.Connect(adapt))

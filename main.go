@@ -15,7 +15,6 @@ package main
 import (
 	"log"
 	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/core/service/common"
 	"swclabs/swipecore/internal/http"
 	"swclabs/swipecore/internal/http/controller"
@@ -29,7 +28,6 @@ import (
 // @basePath /
 func main() {
 	var (
-		env              = config.LoadEnv()
 		commonService    = common.New()
 		commonController = controller.NewCommon(commonService)
 		commonRouter     = router.NewCommon(commonController)
@@ -39,7 +37,7 @@ func main() {
 			router.NewDocs(),
 		})
 		adapt  = http.NewBaseAdapter(httpServer)
-		server = boot.NewServer(env)
+		server = boot.NewServer()
 	)
 
 	log.Fatal(server.Connect(adapt))

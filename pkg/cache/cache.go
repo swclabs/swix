@@ -19,9 +19,9 @@ func Connection() *redis.Client {
 	})
 }
 
-func CreateRedisConnection(lc fx.Lifecycle, env config.Env) *redis.Client {
+func CreateRedisConnection(lc fx.Lifecycle) *redis.Client {
 	conn := redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%s", env.RedisHost, env.RedisPort),
+		Addr:     fmt.Sprintf("%s:%s", config.RedisHost, config.RedisPort),
 		Password: config.RedisPassword,
 		DB:       0,
 	})
@@ -34,13 +34,4 @@ func CreateRedisConnection(lc fx.Lifecycle, env config.Env) *redis.Client {
 		},
 	})
 	return conn
-}
-
-func Ping() {
-	conn := Connection()
-	cmd := conn.Ping(context.Background())
-	if cmd.Err() != nil {
-		print(cmd.Err().Error())
-	}
-	print("PONG")
 }

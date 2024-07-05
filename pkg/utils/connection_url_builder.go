@@ -60,7 +60,7 @@ func ConnectionURLBuilder(n string) (string, error) {
 	return url, nil
 }
 
-func ConnectionURLBuilderWithEnv(n string, env config.Env) (string, error) {
+func ConnectionURLBuilderWithEnv(n string) (string, error) {
 	// Define URL to connection.
 	var url string
 
@@ -70,39 +70,39 @@ func ConnectionURLBuilderWithEnv(n string, env config.Env) (string, error) {
 		// URL for PostgreSQL connection.
 		url = fmt.Sprintf(
 			"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-			env.DbHost,
-			env.DbPort,
-			env.DbUser,
-			env.DbPassword,
-			env.DbName,
-			env.DbSSLMode,
+			config.DbHost,
+			config.DbPort,
+			config.DbUser,
+			config.DbPassword,
+			config.DbName,
+			config.DbSSLMode,
 		)
 	case "pg-migrate":
 		url = fmt.Sprintf(
 			"postgres://%s:%s@%s:%s/%s?sslmode=%s",
-			env.DbUser,
-			env.DbPassword,
-			env.DbHost,
-			env.DbPort,
-			env.DbName,
-			env.DbSSLMode,
+			config.DbUser,
+			config.DbPassword,
+			config.DbHost,
+			config.DbPort,
+			config.DbName,
+			config.DbSSLMode,
 		)
 	case "mysql":
 		// URL for Mysql connection.
 		url = fmt.Sprintf(
 			"%s:%s@tcp(%s:%s)/%s",
-			env.DbUser,
-			env.DbPassword,
-			env.DbHost,
-			env.DbPort,
-			env.DbName,
+			config.DbUser,
+			config.DbPassword,
+			config.DbHost,
+			config.DbPort,
+			config.DbName,
 		)
 	case "redis":
 		// URL for Redis connection.
 		url = fmt.Sprintf(
 			"%s:%s",
-			env.RedisHost,
-			env.RedisPort,
+			config.RedisHost,
+			config.RedisPort,
 		)
 	default:
 		// Return error message.

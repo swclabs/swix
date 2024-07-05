@@ -8,13 +8,18 @@ package main
 
 import (
 	"swclabs/swipecore/boot"
+	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/workers"
 
 	_ "swclabs/swipecore/boot/init"
 )
 
 func main() {
-	boot.PrepareFor(boot.WorkerConsume)
+	if config.StageStatus == "prod" {
+		boot.PrepareFor(boot.WorkerConsume | boot.ProdMode)
+	} else {
+		boot.PrepareFor(boot.WorkerConsume | boot.DebugMode)
+	}
 	app := boot.NewApp(boot.NewServer, workers.NewAdapter)
 	app.Run()
 }
