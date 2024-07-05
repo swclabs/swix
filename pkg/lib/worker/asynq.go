@@ -29,15 +29,15 @@ type Engine struct {
 	broker   asynq.RedisClientOpt
 }
 
-func New(priorityQueue Priority, env config.Env) *Engine {
+func New(priorityQueue Priority) *Engine {
 	return &Engine{
 		server:   nil,
 		mux:      asynq.NewServeMux(),
 		queue:    Queue{},
 		priority: priorityQueue,
 		broker: asynq.RedisClientOpt{
-			Addr:     fmt.Sprintf("%s:%s", env.RedisHost, env.RedisPort), // Redis server address
-			Password: env.RedisPassword,                                  // Redis password
+			Addr:     fmt.Sprintf("%s:%s", config.RedisHost, config.RedisPort), // Redis server address
+			Password: config.RedisPassword,                                     // Redis password
 		},
 	}
 }

@@ -17,7 +17,7 @@ type Task struct {
 
 func UseTask(service ICommonService) ICommonService {
 	return &Task{
-		worker:  worker.NewClient(config.LoadEnv()),
+		worker:  worker.NewClient(config.Host, config.Port, config.RedisPassword),
 		service: service,
 	}
 }

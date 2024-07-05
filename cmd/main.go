@@ -13,6 +13,7 @@ import (
 	"log"
 	"os"
 	"sort"
+	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/http"
 	"swclabs/swipecore/internal/workers"
 
@@ -27,17 +28,30 @@ var Command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			boot.PrepareFor(boot.WorkerConsume)
+
+			if config.StageStatus == "prod" {
+				boot.PrepareFor(boot.WorkerConsume | boot.ProdMode)
+			} else {
+				boot.PrepareFor(boot.WorkerConsume | boot.DebugMode)
+			}
+
 			app := boot.NewApp(boot.NewWorker, workers.NewAdapter)
 			app.Run()
 			return nil
-		}, 
+		},
 	},
 	{
 		Name:    "server",
 		Aliases: []string{"s"},
 		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
+
+			if config.StageStatus == "prod" {
+				boot.PrepareFor(boot.RestAPI | boot.ProdMode)
+			} else {
+				boot.PrepareFor(boot.RestAPI | boot.DebugMode)
+			}
+
 			app := boot.NewApp(boot.NewServer, http.NewAdapter)
 			app.Run()
 			return nil

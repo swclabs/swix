@@ -31,9 +31,9 @@ type _Worker struct {
 }
 
 // NewWorker create new worker consume
-func NewWorker(env config.Env) IServer {
+func NewWorker() IServer {
 	return &_Worker{
-		concurrency: env.NumberOfWorker,
+		concurrency: config.NumberOfWorker,
 	}
 }
 

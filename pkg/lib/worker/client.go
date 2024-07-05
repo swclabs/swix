@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"time"
 
-	"swclabs/swipecore/internal/config"
-
 	"github.com/hibiken/asynq"
 )
 
@@ -20,11 +18,11 @@ type Client struct {
 	broker asynq.RedisClientOpt
 }
 
-func NewClient(env config.Env) IWorkerClient {
+func NewClient(host, port, password string) IWorkerClient {
 	return &Client{
 		broker: asynq.RedisClientOpt{
-			Addr:     fmt.Sprintf("%s:%s", env.RedisHost, env.RedisPort), // Redis server address
-			Password: env.RedisPassword,                                  // Redis password
+			Addr:     fmt.Sprintf("%s:%s", host, port), // Redis server address
+			Password: password,                         // Redis password
 		},
 	}
 }

@@ -34,11 +34,11 @@ func GetPool() IDatabase {
 
 var _ IDatabase = (*Database)(nil)
 
-func New(lc fx.Lifecycle, env config.Env) IDatabase {
+func New(lc fx.Lifecycle) IDatabase {
 	var (
 		dsn = fmt.Sprintf(
 			"postgres://%s:%s@%s:%s/%s",
-			env.DbUser, env.DbPassword, env.DbHost, env.DbPort, env.DbName)
+			config.DbUser, config.DbPassword, config.DbHost, config.DbPort, config.DbName)
 		err error = nil
 	)
 	if pgxConnection == nil {
@@ -53,7 +53,7 @@ func New(lc fx.Lifecycle, env config.Env) IDatabase {
 			if err != nil {
 				return err
 			}
-			fmt.Println("[Swipe]   OnStart               connect to PostgreSQL successfully")
+			fmt.Printf("[SWIPE]-v%s ===============> connect to PostgreSQL successfully\n", config.Version)
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {

@@ -68,7 +68,7 @@ type IServer interface {
 	Connect(adapter types.IAdapter) error
 }
 
-func NewApp(serverContructor func(env config.Env) IServer, adapterConstructors ...interface{}) *fx.App {
+func NewApp(serverContructor func() IServer, adapterConstructors ...interface{}) *fx.App {
 	return fx.New(
 		FxModule(),
 		fx.Provide(adapterConstructors...),
@@ -79,6 +79,7 @@ func NewApp(serverContructor func(env config.Env) IServer, adapterConstructors .
 
 // Main used to start a server, through to fx.Invoke() method
 //
+//	boot.PrepareFor(boot.RestAPI | boot.ProdMode)
 //	app := fx.New(
 //		boot.FxModule(),
 //		fx.Provide(
@@ -91,7 +92,7 @@ func NewApp(serverContructor func(env config.Env) IServer, adapterConstructors .
 func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
-			fmt.Println("[Swipe]   OnStart               server starting")
+			fmt.Printf("[SWIPE]-v%s ===============> server starting\n", config.Version)
 			if err := db.MigrateUp(); err != nil {
 				return err
 			}
@@ -101,7 +102,7 @@ func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
-			fmt.Println("[Swipe]   OnStop                server stopping")
+			fmt.Printf("[SWIPE]-v%s ===============> server stopping\n", config.Version)
 			return nil
 		},
 	})

@@ -2,7 +2,13 @@
 # a: Duc Hung Ho
 # m: hunghd.dev@gmail.com
 
-.PHONY: help build lint s w d templ web dev-build dev dev-down compose-build compose compose-down dev-db dev-db-down
+.PHONY: \
+	build lint fmt\
+	s w d \
+	templ web \
+	dev-build dev dev-down \
+	compose-build compose compose-down \
+	dev-db dev-db-down
 
 
 build: # Build swipe binaries
@@ -16,8 +22,8 @@ lint: $(GOLANGCI) ## Runs golangci-lint with predefined configuration
 	golangci-lint version
 	golangci-lint run -c .golangci.yaml ./...
 
-lint-fix:
-	@goimports -w $(find . -type f -name '*.go')
+fmt:
+	@find . -type f -name '*.go' -exec goimports -w {} \;
 
 GENERATED_DIR=internal/core/proto
 PROTO_DIR=internal/core/proto
@@ -69,27 +75,3 @@ dev-db-down: # Stop and remove database containers with docker-compose
 	@docker compose -f \
 	docker-compose.db.yml \
 	down
-
-# Help target
-help: ## Show this help message
-	@echo "Usage: make [TARGET]"
-	@echo ""
-	@echo "Available targets:"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
-	@echo ""
-	@echo "Examples:"
-	@echo "  make build        # Build swipe binaries"
-	@echo "  make lint         # Runs golangci-lint with predefined configuration"
-	@echo "  make s            # Start server"
-	@echo "  make w            # Start workers"
-	@echo "  make d            # Init swagger docs"
-	@echo "  make templ        # Generate templates"
-	@echo "  make web          # Run web"
-	@echo "  make dev-build    # Build and start containers with docker-compose for development"
-	@echo "  make dev          # Start containers with docker-compose for development"
-	@echo "  make dev-down     # Stop and remove containers with docker-compose for development"
-	@echo "  make compose-build # Build and start containers with docker-compose"
-	@echo "  make compose      # Start containers with docker-compose"
-	@echo "  make compose-down # Stop and remove containers with docker-compose"
-	@echo "  make dev-db       # Start database containers with docker-compose"
-	@echo "  make dev-db-down  # Stop and remove database containers with docker-compose"
