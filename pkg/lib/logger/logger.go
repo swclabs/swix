@@ -1,100 +1,68 @@
 package logger
 
 import (
-	"os"
+	"fmt"
+	"log"
+	"runtime"
 	"time"
 
-	"github.com/charmbracelet/lipgloss"
-	"github.com/charmbracelet/log"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
-func Banner(msg string) {
-	styles := NewInfoStyleLogger()
+var (
+	encoderConfig = zapcore.EncoderConfig{
+		TimeKey:        "time",
+		LevelKey:       "level",
+		NameKey:        "logger",
+		CallerKey:      "caller",
+		MessageKey:     "msg",
+		StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    customLevelEncoder,
+		EncodeTime:     syslogTimeEncoder,
+		EncodeDuration: zapcore.StringDurationEncoder,
+		// EncodeCaller:   zapcore.ShortCallerEncoder,
+	}
 
-	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
-		ReportCaller:    false,
-		ReportTimestamp: false,
-		TimeFormat:      time.DateTime,
-		Prefix:          "[SWIPE]",
-	})
-	gwlogger.SetStyles(styles)
-	gwlogger.Info(msg)
+	config = zap.Config{
+		Level:            zap.NewAtomicLevelAt(zapcore.DebugLevel),
+		Development:      false,
+		Encoding:         "console",
+		EncoderConfig:    encoderConfig,
+		OutputPaths:      []string{"stdout"},
+		ErrorOutputPaths: []string{"stderr"},
+	}
+)
+
+func syslogTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+	enc.AppendString(t.Format(time.DateOnly))
 }
 
-func CronLogger(function, schedule string) {
-	styles := NewInfoStyleLogger()
-
-	styles.Keys["function"] = lipgloss.NewStyle().Foreground(lipgloss.Color("86"))
-	styles.Values["function"] = lipgloss.NewStyle().Bold(true)
-	styles.Keys["schedule"] = lipgloss.NewStyle().Foreground(lipgloss.Color("86"))
-	styles.Values["schedule"] = lipgloss.NewStyle().Bold(true)
-
-	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
-		ReportCaller:    false,
-		ReportTimestamp: false,
-		TimeFormat:      time.DateTime,
-		Prefix:          "[SWIPE-cron]",
-	})
-	gwlogger.SetStyles(styles)
-	gwlogger.Info("-", "function", function, "schedule", schedule)
+func customLevelEncoder(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
+	switch level {
+	case zapcore.InfoLevel:
+		enc.AppendString(fmt.Sprintf("[%s] %s", Green.Add("SWIPE"), Blue.Add(level.CapitalString())))
+		return
+	case zapcore.DebugLevel:
+		enc.AppendString(fmt.Sprintf("[%s] %s", Green.Add("SWIPE"), Magenta.Add(level.CapitalString())))
+		return
+	case zapcore.WarnLevel:
+		enc.AppendString(fmt.Sprintf("[%s] %s", Green.Add("SWIPE"), Yellow.Add(level.CapitalString())))
+		return
+	}
+	enc.AppendString(fmt.Sprintf("[%s] %s", Green.Add("SWIPE"), Red.Add(level.CapitalString())))
 }
 
-func Queue(queue string, priority int) {
-	styles := NewInfoStyleLogger()
-
-	styles.Keys["name"] = lipgloss.NewStyle().Foreground(lipgloss.Color("86"))
-	styles.Values["name"] = lipgloss.NewStyle().Bold(true)
-	styles.Keys["priority"] = lipgloss.NewStyle().Foreground(lipgloss.Color("86"))
-	styles.Values["priority"] = lipgloss.NewStyle().Bold(true)
-
-	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
-		ReportCaller:    false,
-		ReportTimestamp: false,
-		TimeFormat:      time.DateTime,
-		Prefix:          "[SWIPE--queue]",
-	})
-	gwlogger.SetStyles(styles)
-	gwlogger.Info("-", "name", queue, "priority", priority)
-}
-
-func Broker(name, host string) {
-	styles := log.DefaultStyles()
-	styles.Levels[log.InfoLevel] = lipgloss.NewStyle().
-		SetString("INFO").
-		Padding(0, 1, 0, 1).
-		Background(lipgloss.AdaptiveColor{
-			Light: "86",
-			Dark:  "86",
-		}).
-		Foreground(lipgloss.Color("0"))
-
-	styles.Keys[name] = lipgloss.NewStyle().Foreground(lipgloss.Color("86"))
-	styles.Values[name] = lipgloss.NewStyle().Bold(true)
-
-	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
-		ReportCaller:    false,
-		ReportTimestamp: false,
-		TimeFormat:      time.DateTime,
-		Prefix:          "[SWIPE-broker]",
-	})
-	gwlogger.SetStyles(styles)
-	gwlogger.Info("-", name, host)
-}
-
-func HandleFunc(typename string, handle string) {
-	styles := NewInfoStyleLogger()
-
-	styles.Keys["typename"] = lipgloss.NewStyle().Foreground(lipgloss.Color("86"))
-	styles.Values["typename"] = lipgloss.NewStyle().Bold(true)
-	styles.Keys["handler"] = lipgloss.NewStyle().Foreground(lipgloss.Color("86"))
-	styles.Values["handler"] = lipgloss.NewStyle().Bold(true)
-
-	var gwlogger = log.NewWithOptions(os.Stderr, log.Options{
-		ReportCaller:    false,
-		ReportTimestamp: false,
-		TimeFormat:      time.DateTime,
-		Prefix:          "[SWIPE-worker]",
-	})
-	gwlogger.SetStyles(styles)
-	gwlogger.Info("-", "typename", typename, "handler", handle)
+func Info(msg string) {
+	logger, err := config.Build()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := logger.Sync(); err != nil && runtime.GOOS != "windows" {
+			log.Fatal(err)
+		}
+	}()
+	logger.Info(msg)
 }
