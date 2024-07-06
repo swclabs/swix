@@ -3,6 +3,7 @@ package worker
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/pkg/lib/logger"
 
@@ -64,14 +65,14 @@ func (w *Engine) Run(concurrency int) error {
 	})
 	w.handleFunctions()
 
-	logger.Banner("Launching a asynchronous worker with the following settings:")
-	logger.Broker("redis", w.broker.Addr)
+	logger.Info("launching a asynchronous worker with the following settings:")
+	logger.Info("redis: " + w.broker.Addr)
 	for q, p := range w.priority {
-		logger.Queue(q, p)
+		logger.Info(fmt.Sprintf(" queue: %s, priority: %s", logger.Magenta.Add(q), logger.Green.Add(strconv.Itoa(p))))
 	}
-	logger.Banner("Handle Function: ")
+	logger.Info("handle function: ")
 	for types, handler := range w.queue {
-		logger.HandleFunc(types, getName(handler))
+		logger.Info(fmt.Sprintf(" task: %s ==> %s", types, getName(handler)))
 	}
 	fmt.Println()
 	return w.server.Run(w.mux)

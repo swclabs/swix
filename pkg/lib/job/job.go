@@ -1,6 +1,7 @@
 package job
 
 import (
+	"fmt"
 	"reflect"
 	"runtime"
 	"strings"
@@ -35,8 +36,8 @@ func (job *Job) Scheduler(fn func(), _time time.Duration) {
 }
 
 func (job *Job) Info() {
-	logger.Banner("Launching a job scheduler with the following settings:")
+	logger.Info("launching a job scheduler with the following settings:")
 	for fn, sche := range job.function {
-		logger.CronLogger(fn, sche)
+		logger.Info(fmt.Sprintf("function: %s ==> sched: %s", fn, sche))
 	}
 }
