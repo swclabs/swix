@@ -27,6 +27,7 @@ import (
 
 // AccountManagement implement domain.AccountManagementService
 type AccountManagement struct {
+	Blob    blob.IBlobStorage
 	User    users.IUserRepository
 	Account accounts.IAccountRepository
 	Address addresses.IAddressRepository
@@ -35,11 +36,13 @@ type AccountManagement struct {
 var _ IAccountManagement = (*AccountManagement)(nil)
 
 func New(
+	blob blob.IBlobStorage,
 	user users.IUserRepository,
 	account accounts.IAccountRepository,
 	address addresses.IAddressRepository,
 ) IAccountManagement {
 	return &AccountManagement{
+		Blob:    blob,
 		User:    user,
 		Account: account,
 		Address: address,
@@ -103,7 +106,7 @@ func (manager *AccountManagement) UploadAvatar(
 		return err
 	}
 	// upload image to image blob storage
-	resp, err := blob.UploadImages(blob.Connection(), file)
+	resp, err := manager.Blob.UploadImages(file)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -11,15 +11,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-func Connection() *redis.Client {
-	return redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%s", config.RedisHost, config.RedisPort),
-		Password: config.RedisPassword,
-		DB:       0,
-	})
-}
-
-func CreateRedisConnection(lc fx.Lifecycle) *redis.Client {
+func New(lc fx.Lifecycle) *redis.Client {
 	conn := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", config.RedisHost, config.RedisPort),
 		Password: config.RedisPassword,

@@ -12,11 +12,16 @@ import (
 )
 
 type Posts struct {
+	Blob        blob.IBlobStorage
 	Collections collections.ICollections
 }
 
-func New(collection collections.ICollections) IPostsService {
+func New(
+	blob blob.IBlobStorage,
+	collection collections.ICollections,
+) IPostsService {
 	return &Posts{
+		Blob:        blob,
 		Collections: collection,
 	}
 }
@@ -92,7 +97,7 @@ func (p *Posts) UploadCollectionsImage(
 	if err != nil {
 		return err
 	}
-	resp, err := blob.UploadImages(blob.Connection(), file)
+	resp, err := p.Blob.UploadImages(file)
 	if err != nil {
 		return err
 	}

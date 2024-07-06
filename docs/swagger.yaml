@@ -1119,6 +1119,12 @@ paths:
       consumes:
       - application/json
       description: update information for users.
+      parameters:
+      - description: image of collections
+        in: formData
+        name: img
+        required: true
+        type: file
       produces:
       - application/json
       responses:

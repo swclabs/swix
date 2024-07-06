@@ -58,6 +58,7 @@ func New(lc fx.Lifecycle) IDatabase {
 		},
 		OnStop: func(ctx context.Context) error {
 			pgxConnection.Close()
+			fmt.Printf("[SWIPE]-v%s ===============> closed PostgreSQL connection\n", config.Version)
 			return nil
 		},
 	})

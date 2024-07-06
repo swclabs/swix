@@ -187,6 +187,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 // @Tags account_management
 // @Accept json
 // @Produce json
+// @Param img formData file true "image of collections"
 // @Success 200 {object} domain.OK
 // @Router /users/image [PUT]
 func (account *AccountManagement) UpdateUserImage(c echo.Context) error {

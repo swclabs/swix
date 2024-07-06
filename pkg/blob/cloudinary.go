@@ -3,7 +3,6 @@ package blob
 import (
 	"context"
 	"fmt"
-	"log"
 	"mime/multipart"
 	"sync"
 
@@ -11,49 +10,68 @@ import (
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
+	"go.uber.org/fx"
 )
 
 var cld *cloudinary.Cloudinary
 var lockCld = &sync.Mutex{}
 
-func Connection() *cloudinary.Cloudinary {
+func Connection() IBlobStorage {
+	return &BlobStorage{
+		Conn: cld,
+	}
+}
+
+type BlobStorage struct {
+	Conn *cloudinary.Cloudinary
+}
+
+func New(lc fx.Lifecycle) IBlobStorage {
+	var err error = nil
 	if cld == nil {
 		lockCld.Lock()
 		defer lockCld.Unlock()
 		if cld == nil {
-			cldLocal, err := cloudinary.NewFromURL(config.CloudinaryUrl)
-			if err != nil {
-				log.Fatal(err)
-			}
-			cld = cldLocal
-			fmt.Println("Cloudinary connected !!")
-			return cld
-		} else {
-			return cld
+			cld, err = cloudinary.NewFromURL(config.CloudinaryUrl)
 		}
 	}
-	return cld
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			if err != nil {
+				return err
+			}
+			fmt.Printf("[SWIPE]-v%s ===============> connect to cloudinary successfully\n", config.Version)
+			return nil
+		},
+		OnStop: func(ctx context.Context) error {
+			fmt.Printf("[SWIPE]-v%s ===============> closed cloudinary connection\n", config.Version)
+			return nil
+		},
+	})
+	return &BlobStorage{
+		Conn: cld,
+	}
 }
 
-func UploadImages(cld *cloudinary.Cloudinary, file interface{}) (*uploader.UploadResult, error) {
+func (blob *BlobStorage) UploadImages(file interface{}) (UploadResult, error) {
 	var ctx = context.Background()
-	return UploadImagesWithContext(ctx, cld, file)
+	return blob.UploadImagesWithContext(ctx, file)
 }
 
-func UploadImagesWithContext(ctx context.Context, cld *cloudinary.Cloudinary, file interface{}) (*uploader.UploadResult, error) {
-	updateResult, err := cld.Upload.Upload(ctx, file, uploader.UploadParams{
+func (blob *BlobStorage) UploadImagesWithContext(ctx context.Context, file interface{}) (UploadResult, error) {
+	updateResult, err := blob.Conn.Upload.Upload(ctx, file, uploader.UploadParams{
 		ResourceType: "auto",
 		Folder:       "swc-storage",
 	})
 	return updateResult, err
 }
 
-func UploadFile(ctx context.Context, cld *cloudinary.Cloudinary, fileHeader *multipart.FileHeader) (url string, err error) {
+func (blob *BlobStorage) UploadFile(ctx context.Context, fileHeader *multipart.FileHeader) (url string, err error) {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return "", err
 	}
-	resp, err := UploadImagesWithContext(ctx, cld, file)
+	resp, err := blob.UploadImagesWithContext(ctx, file)
 	if err != nil {
 		return "", err
 	}

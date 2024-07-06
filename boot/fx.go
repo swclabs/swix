@@ -5,6 +5,7 @@ import (
 	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/internal/http"
 	"swclabs/swipecore/internal/workers"
+	"swclabs/swipecore/pkg/blob"
 	"swclabs/swipecore/pkg/db"
 
 	"go.uber.org/fx"
@@ -18,7 +19,8 @@ const (
 )
 
 var (
-	_FxDataLayer      = fx.Options(fx.Provide(db.New), repository.FxModule)
+	_FxInfrastructure = fx.Provide(blob.New, db.New)
+	_FxDataLayer      = fx.Options(repository.FxModule)
 	_FxBusinessLogic  = fx.Options(service.FxModule)
 	_FxPresenterLayer = fx.Provide()
 	_Logger           = fx.Provide()
@@ -41,6 +43,7 @@ func PrepareFor(flag int) {
 
 func FxModule() fx.Option {
 	return fx.Options(
+		_FxInfrastructure,
 		_FxDataLayer,      // data layer constructor
 		_FxBusinessLogic,  // business logic constructor
 		_FxPresenterLayer, // presenter layer constructor

@@ -25,7 +25,7 @@ func (account *AccountManagement) Routers(e *echo.Echo) {
 	user := e.Group("/users") // endpoint for users
 	user.GET("", account.controller.GetMe, middleware.SessionProtected)
 	user.PUT("", account.controller.UpdateUserInfo)
-	user.POST("/image", account.controller.UpdateUserImage, middleware.SessionProtected)
+	user.PUT("/image", account.controller.UpdateUserImage, middleware.SessionProtected)
 	auth := e.Group("/auth") // endpoint for authentication
 	auth.GET("", account.controller.CheckLoginEmail)
 	auth.POST("/signup", account.controller.SignUp)
