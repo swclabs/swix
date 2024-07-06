@@ -6,11 +6,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+type ICommon interface {
+	IRouter
+}
+
 type Common struct {
 	controllers controller.ICommon
 }
 
-func NewCommon(controllers controller.ICommon) IRouter {
+func NewCommon(controllers controller.ICommon) ICommon {
 	return &Common{
 		controllers: controllers,
 	}

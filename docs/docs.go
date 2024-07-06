@@ -941,6 +941,15 @@ const docTemplate = `{
                 "tags": [
                     "account_management"
                 ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "image of collections",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",

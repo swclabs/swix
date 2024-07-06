@@ -8,6 +8,7 @@ import (
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/users"
 	"swclabs/swipecore/internal/core/service/accountmanagement"
+	"swclabs/swipecore/pkg/blob"
 	"swclabs/swipecore/pkg/db"
 	"swclabs/swipecore/pkg/lib/jwt"
 
@@ -52,8 +53,12 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
-	dbpool := db.GetPool()
+	var (
+		dbpool = db.GetPool()
+		blob   = blob.Connection()
+	)
 	account := accountmanagement.New(
+		blob,
 		users.New(dbpool),
 		accounts.New(dbpool),
 		addresses.New(dbpool),

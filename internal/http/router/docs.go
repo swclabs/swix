@@ -10,7 +10,11 @@ import (
 
 type Docs struct{}
 
-func NewDocs() IRouter {
+type IDocs interface {
+	IRouter
+}
+
+func NewDocs() IDocs {
 	return &Docs{}
 }
 

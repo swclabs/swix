@@ -19,15 +19,14 @@ type _Server struct {
 
 var _ IServer = &_Server{}
 
-func NewServer(routers []router.IRouter) IServer {
+func NewServer(docs router.IDocs, common router.ICommon) IServer {
 	sentry.Init()
 	server := &_Server{
 		engine: echo.New(),
 	}
 	server.initMiddleware()
-	for _, _router := range routers {
-		server.Connect(_router)
-	}
+	server.Connect(docs)
+	server.Connect(common)
 	return server
 }
 

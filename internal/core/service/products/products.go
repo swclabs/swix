@@ -18,6 +18,7 @@ import (
 )
 
 type ProductService struct {
+	Blob       blob.IBlobStorage
 	Categories categories.ICategoriesRepository
 	Products   products.IProductRepository
 	Suppliers  suppliers.ISuppliersRepository
@@ -27,12 +28,14 @@ type ProductService struct {
 var _ IProductService = (*ProductService)(nil)
 
 func New(
+	blob blob.IBlobStorage,
 	categories categories.ICategoriesRepository,
 	products products.IProductRepository,
 	suppliers suppliers.ISuppliersRepository,
 	inventory inventories.IInventoryRepository,
 ) IProductService {
 	return &ProductService{
+		Blob:       blob,
 		Categories: categories,
 		Products:   products,
 		Suppliers:  suppliers,
@@ -172,7 +175,7 @@ func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHea
 		if err != nil {
 			return err
 		}
-		resp, err := blob.UploadImages(blob.Connection(), file)
+		resp, err := s.Blob.UploadImages(file)
 		if err != nil {
 			return err
 		}
