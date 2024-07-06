@@ -32,9 +32,9 @@ func main() {
 		commonController = controller.NewCommon(commonService)
 		commonRouter     = router.NewCommon(commonController)
 
-		httpServer = http.NewServer(router.NewDocs(),commonRouter)
-		adapt  = http.NewBaseAdapter(httpServer)
-		server = boot.NewServer()
+		httpServer = http.NewServer(router.NewDocs(), commonRouter)
+		adapt      = http.NewBaseAdapter(httpServer)
+		server     = boot.NewServer()
 	)
 
 	log.Fatal(server.Connect(adapt))
