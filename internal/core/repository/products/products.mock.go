@@ -41,9 +41,9 @@ func (p *Mock) GetById(ctx context.Context, productId int64) (*domain.Products, 
 }
 
 // GetLimit implements IProductRepository.
-func (p *Mock) GetLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
+func (p *Mock) GetLimit(ctx context.Context, limit int) ([]domain.Products, error) {
 	args := p.Called(ctx, limit)
-	return args.Get(0).([]domain.ProductSchema), args.Error(1)
+	return args.Get(0).([]domain.Products), args.Error(1)
 }
 
 // Insert implements IProductRepository.

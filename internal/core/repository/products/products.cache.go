@@ -36,7 +36,7 @@ func (c *cache) GetById(ctx context.Context, productId int64) (*domain.Products,
 }
 
 // GetLimit implements IProductRepository.
-func (c *cache) GetLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
+func (c *cache) GetLimit(ctx context.Context, limit int) ([]domain.Products, error) {
 	return c.products.GetLimit(ctx, limit)
 }
 
