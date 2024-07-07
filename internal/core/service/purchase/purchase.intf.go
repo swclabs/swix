@@ -26,11 +26,6 @@ type IPurchaseService interface {
 	// Returns a slice of Orders objects and an error if any issues occur during the retrieval process.
 	GetOrders(ctx context.Context, limit int) ([]domain.Orders, error)
 
-	// InsertOrders adds a new order to the database.
-	// ctx is the context to manage the request's lifecycle.
-	// order contains the order details to be added.
-	// Returns an error if any issues occur during the insertion process.
-	InsertOrders(ctx context.Context, order domain.Orders) error
-
+	InsertOrders(ctx context.Context, userId int64, inventoryId ...int64) (string, error)
 	DeleteItemFromCart(ctx context.Context, userId int64, inventoryId int64) error
 }

@@ -140,7 +140,8 @@ func (s *ProductService) UpdateProductInfo(ctx context.Context, product domain.U
 }
 
 // FindDeviceInInventory implements IProductService.
-func (s *ProductService) FindDeviceInInventory(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.InventorySchema, error) {
+func (s *ProductService) FindDeviceInInventory(
+	ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.InventorySchema, error) {
 	_inventory, err := s.Inventory.FindDevice(ctx, deviceSpecs)
 	if err != nil {
 		return nil, err
@@ -240,7 +241,31 @@ func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) (
 }
 
 func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
-	return s.Products.GetLimit(ctx, limit)
+	products, err := s.Products.GetLimit(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
+	var productResponse []domain.ProductSchema
+	for _, p := range products {
+		var spec domain.Specs
+		if err := json.Unmarshal([]byte(p.Spec), &spec); err != nil {
+			// don't find anything, just return empty object
+			return nil, errors.Repository("json", err)
+		}
+		images := strings.Split(p.Image, ",")
+		productResponse = append(productResponse,
+			domain.ProductSchema{
+				ID:          p.ID,
+				Price:       p.Price,
+				Description: p.Description,
+				Name:        p.Name,
+				Status:      p.Status,
+				Created:     utils.HanoiTimezone(p.Created),
+				Image:       images[1:],
+				Spec:        spec,
+			})
+	}
+	return productResponse, nil
 }
 
 func (s *ProductService) CreateCategory(ctx context.Context, ctg domain.Categories) error {

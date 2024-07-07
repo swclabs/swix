@@ -2,6 +2,7 @@ package orders
 
 import (
 	"context"
+	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
 )
 
@@ -17,7 +18,17 @@ func New(conn db.IDatabase) IOrdersRepository {
 
 var _ IOrdersRepository = (*Orders)(nil)
 
-func (order *Orders) Create(ctx context.Context, userId string, cartId ...int64) error {
-	//TODO implement me
-	panic("implement me")
+// InsertProduct implements IOrdersRepository.
+func (orders *Orders) InsertProduct(ctx context.Context, product domain.ProductInOrder) error {
+	return orders.db.SafeWrite(ctx, insertProductToOrder,
+		product.OrderId, product.InventoryId, product.Quantity, "VND",
+		product.TotalAmount.String(),
+	)
+}
+
+// Create implements IOrdersRepository.
+func (orders *Orders) Create(ctx context.Context, order domain.Orders) (int64, error) {
+	return orders.db.SafeWriteReturn(ctx, insertOrder,
+		order.Uuid, order.UserId, "active", order.TotalAmount.String(),
+	)
 }

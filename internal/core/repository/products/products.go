@@ -4,12 +4,9 @@ package products
 
 import (
 	"context"
-	"encoding/json"
-	"strings"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/errors"
 	"swclabs/swipecore/pkg/db"
-	"swclabs/swipecore/pkg/utils"
 )
 
 type Products struct {
@@ -80,10 +77,7 @@ func (product *Products) Insert(ctx context.Context, prd domain.Products) (int64
 }
 
 // GetLimit implements IProductRepository.
-func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
-
-	var productResponse []domain.ProductSchema
-
+func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.Products, error) {
 	rows, err := product.db.Query(ctx, selectLimit, limit)
 	if err != nil {
 		return nil, errors.Repository("query", err)
@@ -94,26 +88,7 @@ func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.Prod
 		return nil, errors.Repository("collect rows", err)
 	}
 
-	for _, p := range products {
-		var spec domain.Specs
-		if err := json.Unmarshal([]byte(p.Spec), &spec); err != nil {
-			// don't find anything, just return empty object
-			return nil, errors.Repository("json", err)
-		}
-		images := strings.Split(p.Image, ",")
-		productResponse = append(productResponse,
-			domain.ProductSchema{
-				ID:          p.ID,
-				Price:       p.Price,
-				Description: p.Description,
-				Name:        p.Name,
-				Status:      p.Status,
-				Created:     utils.HanoiTimezone(p.Created),
-				Image:       images[1:],
-				Spec:        spec,
-			})
-	}
-	return productResponse, nil
+	return products, nil
 }
 
 // UploadNewImage implements IProductRepository.

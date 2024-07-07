@@ -79,7 +79,7 @@ CREATE TABLE "orders" (
   "uuid" varchar NOT NULL,
   "time" timestamp default (now() at time zone 'utc'),
   "user_id" bigint NOT NULL,
-  "in_word" bigint NOT NULL,
+  "total_amount" NUMERIC(19, 4) NOT NULL,
   "status" varchar NOT NULL
 );
 
