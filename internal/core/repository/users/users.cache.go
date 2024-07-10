@@ -45,16 +45,6 @@ func (c *cache) SaveInfo(ctx context.Context, user domain.Users) error {
 	return c.user.SaveInfo(ctx, user)
 }
 
-// TransactionSaveOAuth2 implements IUserRepository.
-func (c *cache) TransactionSaveOAuth2(ctx context.Context, data domain.Users) error {
-	return c.user.TransactionSaveOAuth2(ctx, data)
-}
-
-// TransactionSignUp implements IUserRepository.
-func (c *cache) TransactionSignUp(ctx context.Context, user domain.Users, password string) error {
-	return c.user.TransactionSignUp(ctx, user, password)
-}
-
 // UpdateProperties implements IUserRepository.
 func (c *cache) UpdateProperties(ctx context.Context, query string, user domain.Users) error {
 	return c.user.UpdateProperties(ctx, query, user)

@@ -6,11 +6,6 @@ package users
 import (
 	"context"
 	"errors"
-	"fmt"
-	"log"
-	"swclabs/swipecore/internal/core/repository/accounts"
-	"swclabs/swipecore/pkg/lib/jwt"
-	"swclabs/swipecore/pkg/utils"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/db"
@@ -135,85 +130,6 @@ func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.Users) error {
 		ctx, insertUsersConflict, user.Email, user.PhoneNumber,
 		user.FirstName, user.LastName, user.Image,
 	)
-}
-
-// TransactionSignUp implements IUserRepository.
-func (usr *Users) TransactionSignUp(
-	ctx context.Context, user domain.Users, password string) error {
-	hash, err := jwt.GenPassword(password)
-	if err != nil {
-		return err
-	}
-	tx, err := db.BeginTransaction(ctx)
-	if err != nil {
-		return err
-	}
-	if err := New(tx).Insert(ctx, user); err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-
-	userInfo, err := New(tx).GetByEmail(ctx, user.Email)
-	if err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-
-	if err := accounts.New(tx).Insert(ctx, domain.Account{
-		Username: fmt.Sprintf("user#%d", userInfo.Id),
-		Password: hash,
-		Role:     "Customer",
-		Email:    user.Email,
-		Type:     "swc",
-	}); err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-	return tx.Commit(ctx)
-}
-
-// TransactionSaveOAuth2 implements IUserRepository.
-func (usr *Users) TransactionSaveOAuth2(ctx context.Context, user domain.Users) error {
-	hash, err := jwt.GenPassword(utils.RandomString(18))
-	if err != nil {
-		return err
-	}
-	tx, err := db.BeginTransaction(ctx)
-	if err != nil {
-		return err
-	}
-	if err := New(tx).OAuth2SaveInfo(ctx, user); err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-	userInfo, err := New(tx).GetByEmail(ctx, user.Email)
-	if err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-	if err := accounts.New(tx).Insert(ctx, domain.Account{
-		Username: fmt.Sprintf("user#%d", userInfo.Id),
-		Password: hash,
-		Role:     "Customer",
-		Email:    user.Email,
-		Type:     "oauth2-google",
-	}); err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-	return tx.Commit(ctx)
 }
 
 // GetByPhone implements IUserRepository.

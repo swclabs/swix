@@ -4,17 +4,22 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"mime/multipart"
 	"strconv"
 	"strings"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/errors"
+	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/categories"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/internal/core/repository/suppliers"
 	"swclabs/swipecore/pkg/blob"
+	"swclabs/swipecore/pkg/db"
 	"swclabs/swipecore/pkg/utils"
+
+	"github.com/google/uuid"
 )
 
 type ProductService struct {
@@ -213,17 +218,54 @@ func (s *ProductService) CreateProduct(ctx context.Context, products domain.Prod
 }
 
 func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain.SupplierSchema) error {
-	supplier := domain.Suppliers{
-		Name:  supplierReq.Name,
-		Email: supplierReq.Email,
+	tx, err := db.BeginTransaction(ctx)
+	if err != nil {
+		return err
 	}
-	addr := domain.Addresses{
-		City:     supplierReq.City,
-		Ward:     supplierReq.Ward,
-		District: supplierReq.District,
-		Street:   supplierReq.Street,
+	var (
+		supplier = domain.Suppliers{
+			Name:  supplierReq.Name,
+			Email: supplierReq.Email,
+		}
+		addr = domain.Addresses{
+			City:     supplierReq.City,
+			Ward:     supplierReq.Ward,
+			District: supplierReq.District,
+			Street:   supplierReq.Street,
+		}
+		supplierRepo = suppliers.New(tx)
+		addressRepo  = addresses.New(tx)
+	)
+	if err := supplierRepo.Insert(ctx, supplier, addr); err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
 	}
-	return s.Suppliers.Insert(ctx, supplier, addr)
+	supp, err := supplierRepo.GetByPhone(ctx, supplierReq.Email)
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+	addr.Uuid = uuid.New().String()
+	if err = addressRepo.Insert(ctx, addr); err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+	if err := supplierRepo.InsertAddress(ctx, domain.SuppliersAddress{
+		SuppliersID: supp.Id,
+		AddressUuiD: addr.Uuid,
+	}); err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+	return tx.Commit(ctx)
 }
 
 // DeleteProductById implements IProductService.

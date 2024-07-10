@@ -2,12 +2,8 @@ package suppliers
 
 import (
 	"context"
-	"log"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/pkg/db"
-
-	"github.com/google/uuid"
 )
 
 type Suppliers struct {
@@ -21,43 +17,8 @@ func New(conn db.IDatabase) ISuppliersRepository {
 // Insert implements domain.ISuppliersRepository.
 func (supplier *Suppliers) Insert(
 	ctx context.Context, supp domain.Suppliers, addr domain.Addresses) error {
-
-	tx, err := db.BeginTransaction(ctx)
-	if err != nil {
-		return err
-	}
-
-	var errTx error = nil
-	defer func() {
-		if errTx != nil {
-			// Sentry Capture failed
-			if errTxRb := tx.Rollback(ctx); errTxRb != nil {
-				log.Fatal(errTxRb)
-			}
-		}
-	}()
-
-	if errTx = tx.SafeWrite(
-		ctx, insertIntoSuppliers, supp.Name, supp.Email); errTx != nil {
-		return errTx
-	}
-
-	_supplier, errTx := New(tx).GetByPhone(ctx, supp.Email)
-	if errTx != nil {
-		return errTx
-	}
-
-	addr.Uuid = uuid.New().String()
-	if errTx = addresses.New(tx).Insert(ctx, addr); errTx != nil {
-		return errTx
-	}
-
-	errTx = New(tx).InsertAddress(ctx, domain.SuppliersAddress{
-		SuppliersID: _supplier.Id,
-		AddressUuiD: addr.Uuid,
-	})
-
-	return tx.Commit(ctx)
+	return supplier.db.SafeWrite(
+		ctx, insertIntoSuppliers, supp.Name, supp.Email)
 }
 
 // InsertAddress implements domain.ISuppliersRepository.

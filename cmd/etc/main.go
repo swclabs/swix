@@ -59,13 +59,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer logger.Sync()
 
-	// Sử dụng logger
-	logger.Info("Thông điệp thông tin")
-
-	// Ghi log các mức khác nhau
-	logger.Debug("Thông điệp debug")
-	logger.Warn("Thông điệp cảnh báo")
-	// logger.Error("Thông điệp lỗi")
+	logger.Info("Test")
+	logger.Debug("Test")
+	logger.Warn("Test")
 }
