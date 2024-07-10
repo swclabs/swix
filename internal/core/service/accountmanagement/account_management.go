@@ -14,12 +14,15 @@ package accountmanagement
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"mime/multipart"
 	"swclabs/swipecore/internal/core/repository/accounts"
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/users"
+	"swclabs/swipecore/pkg/db"
 	"swclabs/swipecore/pkg/lib/jwt"
+	"swclabs/swipecore/pkg/utils"
 
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/blob"
@@ -50,17 +53,57 @@ func New(
 }
 
 // SignUp user to access system, return error if exist
-func (manager *AccountManagement) SignUp(
-	ctx context.Context, req domain.SignUpSchema) error {
-	// call repository layer
-	return manager.User.TransactionSignUp(ctx, domain.Users{
-		Email:       req.Email,
-		PhoneNumber: req.PhoneNumber,
-		FirstName:   req.FirstName,
-		LastName:    req.LastName,
-		Image:       "",
-	}, req.Password)
+func (manager *AccountManagement) SignUp(ctx context.Context, req domain.SignUpSchema) error {
+	tx, err := db.BeginTransaction(ctx)
+	if err != nil {
+		return err
+	}
+	var (
+		userRepo    = users.New(tx)
+		accountRepo = accounts.New(tx)
+	)
+	if err := userRepo.Insert(ctx,
+		domain.Users{
+			Email:       req.Email,
+			PhoneNumber: req.PhoneNumber,
+			FirstName:   req.FirstName,
+			LastName:    req.LastName,
+			Image:       "",
+		}); err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+	hashPassword, err := jwt.GenPassword(req.Password)
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
 
+	userInfo, err := userRepo.GetByEmail(ctx, req.Email)
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+
+	if err := accountRepo.Insert(ctx, domain.Account{
+		Username: fmt.Sprintf("user#%d", userInfo.Id),
+		Password: hashPassword,
+		Role:     "Customer",
+		Email:    req.Email,
+		Type:     "swc",
+	}); err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+	return tx.Commit(ctx)
 }
 
 // Login to system, return token if error not exist
@@ -120,14 +163,50 @@ func (manager *AccountManagement) UploadAvatar(
 // OAuth2SaveUser save user use oauth2 protocol
 func (manager *AccountManagement) OAuth2SaveUser(
 	ctx context.Context, req domain.OAuth2SaveUser) error {
-	return manager.User.TransactionSaveOAuth2(ctx,
-		domain.Users{
-			Email:       req.Email,
-			PhoneNumber: req.PhoneNumber,
-			FirstName:   req.FirstName,
-			LastName:    req.LastName,
-			Image:       req.Image,
-		})
+	hash, err := jwt.GenPassword(utils.RandomString(18))
+	if err != nil {
+		return err
+	}
+	tx, err := db.BeginTransaction(ctx)
+	if err != nil {
+		return err
+	}
+	var (
+		userRepo    = users.New(tx)
+		accountRepo = accounts.New(tx)
+	)
+	if err := userRepo.OAuth2SaveInfo(ctx, domain.Users{
+		Email:       req.Email,
+		PhoneNumber: req.PhoneNumber,
+		FirstName:   req.FirstName,
+		LastName:    req.LastName,
+		Image:       req.Image,
+	}); err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+	userInfo, err := userRepo.GetByEmail(ctx, req.Email)
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+	if err := accountRepo.Insert(ctx, domain.Account{
+		Username: fmt.Sprintf("user#%d", userInfo.Id),
+		Password: hash,
+		Role:     "Customer",
+		Email:    req.Email,
+		Type:     "oauth2-google",
+	}); err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return err
+	}
+	return tx.Commit(ctx)
 }
 
 // CheckLoginEmail check email already exist in database

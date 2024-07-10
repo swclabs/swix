@@ -27,12 +27,6 @@ type IUserRepository interface {
 	// OAuth2SaveInfo saves Users information from OAuth2 login.
 	OAuth2SaveInfo(ctx context.Context, user domain.Users) error
 
-	// TransactionSignUp signs up a Users within a transaction.
-	TransactionSignUp(ctx context.Context, user domain.Users, password string) error
-
-	// TransactionSaveOAuth2 saves Users information from OAuth2 login within a transaction.
-	TransactionSaveOAuth2(ctx context.Context, data domain.Users) error
-
 	// UpdateProperties updates Users properties.
 	UpdateProperties(ctx context.Context, query string, user domain.Users) error
 }

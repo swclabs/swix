@@ -64,3 +64,11 @@ type OrderSchema struct {
 	UserEmail string               `json:"user_email"`
 	Products  []ProductOrderSchema `json:"products"`
 }
+
+type CreateOrderSchema struct {
+	UserId   int64 `json:"user_id"`
+	Products []struct {
+		InventoryId int64 `json:"inventory_id"`
+		Quantity    int64 `json:"quantity"`
+	} `json:"product"`
+}

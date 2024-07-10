@@ -53,18 +53,6 @@ func (u *Mock) SaveInfo(ctx context.Context, user domain.Users) error {
 	return args.Error(0)
 }
 
-// TransactionSaveOAuth2 implements domain.IUserRepository.
-func (u *Mock) TransactionSaveOAuth2(ctx context.Context, data domain.Users) error {
-	args := u.Called(ctx, data)
-	return args.Error(0)
-}
-
-// TransactionSignUp implements domain.IUserRepository.
-func (u *Mock) TransactionSignUp(ctx context.Context, user domain.Users, password string) error {
-	args := u.Called(ctx, user, password)
-	return args.Error(0)
-}
-
 // UpdateProperties implements domain.IUserRepository.
 func (u *Mock) UpdateProperties(ctx context.Context, query string, user domain.Users) error {
 	args := u.Called(ctx, query, user)

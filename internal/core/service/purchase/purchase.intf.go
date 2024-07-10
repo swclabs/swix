@@ -26,6 +26,6 @@ type IPurchaseService interface {
 	// Returns a slice of Orders objects and an error if any issues occur during the retrieval process.
 	GetOrders(ctx context.Context, limit int) ([]domain.Orders, error)
 
-	InsertOrders(ctx context.Context, userId int64, inventoryId ...int64) (string, error)
+	InsertOrders(ctx context.Context, createOrder domain.CreateOrderSchema) (string, error)
 	DeleteItemFromCart(ctx context.Context, userId int64, inventoryId int64) error
 }
