@@ -76,4 +76,4 @@ db-down: # Stop and remove database containers with docker-compose
 	docker-compose.db.yml \
 	down
 db-clean:
-	@rm -rf ./pkg/db/sys
+	@rm -rf ./boot/.swipe

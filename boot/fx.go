@@ -5,8 +5,8 @@ import (
 	"swclabs/swipecore/internal/core/service"
 	"swclabs/swipecore/internal/http"
 	"swclabs/swipecore/internal/workers"
-	"swclabs/swipecore/pkg/blob"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/blob"
+	"swclabs/swipecore/pkg/infra/db"
 
 	"go.uber.org/fx"
 )

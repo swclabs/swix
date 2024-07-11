@@ -8,7 +8,7 @@ import (
 	"swclabs/swipecore/internal/core/repository/carts"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/orders"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/db"
 
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"

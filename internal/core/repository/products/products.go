@@ -6,7 +6,7 @@ import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/errors"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/db"
 )
 
 type Products struct {

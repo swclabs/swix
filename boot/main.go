@@ -57,7 +57,7 @@ import (
 	"log"
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/types"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/db"
 
 	"go.uber.org/fx"
 

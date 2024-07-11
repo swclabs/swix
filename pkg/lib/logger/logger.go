@@ -3,7 +3,6 @@ package logger
 import (
 	"fmt"
 	"log"
-	"runtime"
 	"time"
 
 	"go.uber.org/zap"
@@ -60,8 +59,8 @@ func Info(msg string) {
 		log.Fatal(err)
 	}
 	defer func() {
-		if err := logger.Sync(); err != nil && runtime.GOOS != "windows" {
-			log.Fatal(err)
+		if err := logger.Sync(); err != nil {
+			return // ignore error
 		}
 	}()
 	logger.Info(msg)
