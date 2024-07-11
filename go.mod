@@ -24,11 +24,11 @@ require (
 	github.com/swaggo/swag v1.16.2
 	github.com/urfave/cli/v2 v2.27.1
 	go.uber.org/fx v1.21.1
-	go.uber.org/zap v1.26.0
+	go.uber.org/zap v1.27.0
 	golang.org/x/crypto v0.25.0
 	golang.org/x/oauth2 v0.21.0
 	google.golang.org/grpc v1.55.0
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.34.2
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
