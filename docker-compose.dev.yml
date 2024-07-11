@@ -66,7 +66,7 @@ services:
     image: postgres:latest
     environment:
       POSTGRES_DB: swipe
-      POSTGRES_PASSWORD: admin
+      POSTGRES_PASSWORD: swip3@admin
       POSTGRES_USER: admin
     ports:
       - 5432:5432
