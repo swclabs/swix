@@ -8,8 +8,8 @@ import (
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/users"
 	"swclabs/swipecore/internal/core/service/accountmanagement"
-	"swclabs/swipecore/pkg/blob"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/blob"
+	"swclabs/swipecore/pkg/infra/db"
 	"swclabs/swipecore/pkg/lib/jwt"
 
 	"swclabs/swipecore/internal/core/domain"

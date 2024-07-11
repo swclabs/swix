@@ -8,7 +8,7 @@ import (
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/http/middleware"
 	"swclabs/swipecore/internal/http/router"
-	"swclabs/swipecore/pkg/sentry"
+	"swclabs/swipecore/pkg/infra/sentry"
 
 	"github.com/labstack/echo/v4"
 )

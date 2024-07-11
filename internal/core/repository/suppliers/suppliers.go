@@ -3,7 +3,7 @@ package suppliers
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/db"
 )
 
 type Suppliers struct {

@@ -7,7 +7,7 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/errors"
 	"swclabs/swipecore/internal/core/repository/collections"
-	"swclabs/swipecore/pkg/blob"
+	"swclabs/swipecore/pkg/infra/blob"
 	"swclabs/swipecore/pkg/utils"
 )
 

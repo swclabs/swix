@@ -20,12 +20,12 @@ import (
 	"swclabs/swipecore/internal/core/repository/accounts"
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/users"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/blob"
+	"swclabs/swipecore/pkg/infra/db"
 	"swclabs/swipecore/pkg/lib/jwt"
 	"swclabs/swipecore/pkg/utils"
 
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/pkg/blob"
 )
 
 // AccountManagement implement domain.AccountManagementService

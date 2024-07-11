@@ -15,8 +15,8 @@ import (
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/internal/core/repository/suppliers"
-	"swclabs/swipecore/pkg/blob"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/blob"
+	"swclabs/swipecore/pkg/infra/db"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/google/uuid"

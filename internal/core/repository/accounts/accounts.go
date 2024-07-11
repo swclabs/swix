@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/pkg/db"
+	"swclabs/swipecore/pkg/infra/db"
 )
 
 type Accounts struct {

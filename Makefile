@@ -67,11 +67,13 @@ compose: # Start containers with docker-compose
 compose-down: # Stop and remove containers with docker-compose
 	@docker compose down
 
-dev-db: # Start database containers with docker-compose
+db: # Start database containers with docker-compose
 	@docker compose -f \
 	docker-compose.db.yml \
 	up -d
-dev-db-down: # Stop and remove database containers with docker-compose
+db-down: # Stop and remove database containers with docker-compose
 	@docker compose -f \
 	docker-compose.db.yml \
 	down
+db-clean:
+	@rm -rf ./boot/.swipe

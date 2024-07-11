@@ -8,7 +8,7 @@ import (
 )
 
 func MigrateUp() error {
-	const migrateUrl = "file://pkg/db/migration/"
+	const migrateUrl = "file://pkg/migration/"
 	databaseUrl, err := utils.ConnectionURLBuilder("pg-migrate")
 	if err != nil {
 		return err
