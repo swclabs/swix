@@ -21,7 +21,7 @@ require (
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.8.4
 	github.com/swaggo/echo-swagger v1.4.1
-	github.com/swaggo/swag v1.16.2
+	github.com/swaggo/swag v1.16.3
 	github.com/urfave/cli/v2 v2.27.1
 	go.uber.org/fx v1.21.1
 	go.uber.org/zap v1.26.0
