@@ -40,7 +40,7 @@ func New(lc fx.Lifecycle) IBlobStorage {
 			if err != nil {
 				return err
 			}
-			fmt.Printf("[SWIPE]-v%s ===============> connect to cloudinary successfully\n", config.Version)
+			fmt.Printf("[SWIPE]-v%s ===============> connect to cloudinary\n", config.Version)
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {

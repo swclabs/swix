@@ -53,7 +53,7 @@ func New(lc fx.Lifecycle) IDatabase {
 			if err != nil {
 				return err
 			}
-			fmt.Printf("[SWIPE]-v%s ===============> connect to PostgreSQL successfully\n", config.Version)
+			fmt.Printf("[SWIPE]-v%s ===============> connect to PostgreSQL\n", config.Version)
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
