@@ -10,6 +10,7 @@ import (
 	"go.uber.org/fx"
 )
 
+// FxModule module of package workers
 var FxModule = fx.Options(
 	fx.Provide(
 		queue.New,

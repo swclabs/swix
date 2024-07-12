@@ -5,6 +5,7 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 )
 
+// IInventoryRepository represents the interface for Inventory repository.
 type IInventoryRepository interface {
 	InsertProduct(ctx context.Context, product domain.InventoryStruct) error
 	FindDevice(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.Inventories, error)

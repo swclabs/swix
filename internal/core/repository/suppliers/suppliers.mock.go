@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+// Mock is a mock for ISuppliersRepository.
 type Mock struct {
 	mock.Mock
 }

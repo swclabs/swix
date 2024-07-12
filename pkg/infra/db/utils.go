@@ -8,6 +8,7 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 )
 
+// MigrateUp migrates the database up
 func MigrateUp() error {
 	const migrateURL = "file://pkg/migration/"
 	databaseURL, err := utils.ConnectionURLBuilder("pg-migrate")
@@ -24,8 +25,9 @@ func MigrateUp() error {
 	return nil
 }
 
+// MigrateDown migrates the database down
 func MigrateDown() error {
-	const migrateURL = "file://pkg/db/migration/"
+	const migrateURL = "file://pkg/migration/"
 	databaseURL, err := utils.ConnectionURLBuilder("pg-migrate")
 	if err != nil {
 		return err

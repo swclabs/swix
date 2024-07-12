@@ -8,9 +8,11 @@ import (
 )
 
 type (
+	// UploadResult struct for upload result
 	UploadResult *uploader.UploadResult
 )
 
+// IBlobStorage interface for blob storage
 type IBlobStorage interface {
 	UploadImages(file interface{}) (UploadResult, error)
 	UploadImagesWithContext(ctx context.Context, file interface{}) (UploadResult, error)

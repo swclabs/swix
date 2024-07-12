@@ -8,12 +8,14 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Products struct for product repository
 type Products struct {
 	db db.IDatabase
 }
 
 var _ IProductRepository = (*Products)(nil)
 
+// New creates a new Products object
 func New(conn db.IDatabase) IProductRepository {
 	return useCache(&Products{
 		db: conn,
@@ -43,13 +45,13 @@ func (product *Products) Update(ctx context.Context, prod domain.Products) error
 	)
 }
 
-// DeleteById implements IProductRepository.
+// DeleteByID implements IProductRepository.
 func (product *Products) DeleteByID(ctx context.Context, ID int64) error {
 	return errors.Repository(
 		"safely write data", product.db.SafeWrite(ctx, deleteByID, ID))
 }
 
-// GetById implements IProductRepository.
+// GetByID implements IProductRepository.
 func (product *Products) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
 	rows, err := product.db.Query(ctx, selectByID, productID)
 	if err != nil {

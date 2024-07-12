@@ -14,6 +14,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+// CORS middleware
 func CORS() echo.MiddlewareFunc {
 	DefaultCORSConfig := middleware.CORSConfig{
 		Skipper:      middleware.DefaultSkipper,
@@ -23,6 +24,7 @@ func CORS() echo.MiddlewareFunc {
 	return middleware.CORSWithConfig(DefaultCORSConfig)
 }
 
+// Sentry middleware
 func Sentry(e *echo.Echo) {
 	if config.StageStatus != "dev" {
 		e.Use(sentryecho.New(sentryecho.Options{
@@ -32,6 +34,7 @@ func Sentry(e *echo.Echo) {
 	}
 }
 
+// Logger middleware
 func Logger(file *os.File, e *echo.Echo) {
 
 	conf := middleware.DefaultLoggerConfig
@@ -40,11 +43,13 @@ func Logger(file *os.File, e *echo.Echo) {
 	e.Use(middleware.LoggerWithConfig(conf))
 }
 
+// CookieSetting middleware
 func CookieSetting(e *echo.Echo) {
 	store := utils.NewSession()
 	e.Use(session.Middleware(store))
 }
 
+// BaseSetting middleware
 func BaseSetting(e *echo.Echo) {
 	// accept any domain
 	e.Use(CORS())

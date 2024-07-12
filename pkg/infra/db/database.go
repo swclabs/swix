@@ -19,12 +19,14 @@ var (
 	writeLock     = &sync.Mutex{}
 )
 
+// Database struct to hold the connection pool
 type Database struct {
 	pool      *pgxpool.Pool
 	lock      *sync.Mutex
 	writeLock *sync.Mutex
 }
 
+// GetPool returns the database connection pool.
 func GetPool() IDatabase {
 	return &Database{
 		pool:      pgxConnection,
@@ -35,6 +37,7 @@ func GetPool() IDatabase {
 
 var _ IDatabase = (*Database)(nil)
 
+// New creates a new database connection.
 func New(lc fx.Lifecycle) IDatabase {
 	var (
 		dsn = fmt.Sprintf(

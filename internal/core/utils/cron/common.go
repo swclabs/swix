@@ -2,5 +2,4 @@
 package cron
 
 // func Ping() {
-
 // }

@@ -12,6 +12,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+// New creates a new redis connection.
 func New(lc fx.Lifecycle) *redis.Client {
 	conn := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", config.RedisHost, config.RedisPort),

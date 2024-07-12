@@ -9,6 +9,7 @@ type Categories struct {
 
 /*****************************************************************************/
 
+// CategoriesSwagger schema request, response
 type CategoriesSwagger struct {
 	Name        string `json:"name" validate:"required"`
 	Description string `json:"description" validate:"required"`

@@ -7,18 +7,21 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Collections struct for collections
 type Collections struct {
 	db db.IDatabase
 }
 
 var _ ICollections = (*Collections)(nil)
 
+// New creates a new Collections object
 func New(conn db.IDatabase) ICollections {
 	return useCache(&Collections{
 		db: conn,
 	})
 }
 
+// UploadCollectionImage implements domain.ICollections.
 func (collection *Collections) UploadCollectionImage(
 	ctx context.Context, collectionID string, url string) error {
 	return collection.db.SafeWrite(
@@ -27,6 +30,7 @@ func (collection *Collections) UploadCollectionImage(
 	)
 }
 
+// AddCollection implements domain.ICollections.
 func (collection *Collections) AddCollection(
 	ctx context.Context, collectionType domain.CollectionSchema) (int64, error) {
 	_collection, err := json.Marshal(collectionType.Body)
@@ -39,6 +43,7 @@ func (collection *Collections) AddCollection(
 	)
 }
 
+// SlicesOfCollections implements domain.ICollections.
 func (collection *Collections) SlicesOfCollections(
 	ctx context.Context, position string, limit int) ([]domain.Collection, error) {
 	rows, err := collection.db.Query(ctx, selectCollectionByPosition, position, limit)

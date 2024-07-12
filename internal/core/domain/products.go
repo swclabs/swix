@@ -25,6 +25,7 @@ type FavoriteProduct struct {
 
 /*****************************************************************************/
 
+// Specs request, response
 type Specs struct {
 	Screen  string `json:"screen"`
 	Display string `json:"display"`
@@ -32,6 +33,7 @@ type Specs struct {
 	RAM     []int  `json:"RAM"`
 }
 
+// Product request, response
 type Product struct {
 	Specs
 	Price       string `json:"price" validate:"required"`
@@ -42,6 +44,7 @@ type Product struct {
 	Status      string `json:"status" validate:"required"`
 }
 
+// ProductSchema request, response
 type ProductSchema struct {
 	ID          int64    `json:"id"`
 	Image       []string `json:"image"`
@@ -53,11 +56,13 @@ type ProductSchema struct {
 	Spec        Specs    `json:"spec"`
 }
 
+// UpdateProductInfo request, response
 type UpdateProductInfo struct {
 	Product
 	ID int64 `json:"id" validate:"required"`
 }
 
+// CreateProductSchema response, request
 type CreateProductSchema struct {
 	Msg string `json:"msg"`
 	ID  int64  `json:"id"`

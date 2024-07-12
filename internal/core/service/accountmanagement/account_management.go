@@ -35,6 +35,7 @@ type AccountManagement struct {
 
 var _ IAccountManagement = (*AccountManagement)(nil)
 
+// New create new AccountManagement object
 func New(
 	blob blob.IBlobStorage,
 	user users.IUserRepository,

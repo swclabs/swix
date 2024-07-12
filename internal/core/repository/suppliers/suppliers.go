@@ -6,10 +6,12 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Suppliers struct for suppliers repository
 type Suppliers struct {
 	db db.IDatabase
 }
 
+// New creates a new Suppliers object.
 func New(conn db.IDatabase) ISuppliersRepository {
 	return useCache(&Suppliers{db: conn})
 }

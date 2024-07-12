@@ -36,6 +36,7 @@ type Orders struct {
 	Time        time.Time       `json:"time" db:"time"`
 }
 
+// ProductInOrder table schema
 type ProductInOrder struct {
 	ID           int64           `json:"id" db:"id"`
 	OrderID      int64           `json:"order_id" db:"order_id"`
@@ -45,6 +46,7 @@ type ProductInOrder struct {
 	TotalAmount  decimal.Decimal `json:"total_amount" db:"total_amount"`
 }
 
+// ProductOrderSchema is the schema for product in order
 type ProductOrderSchema struct {
 	ID           int64  `json:"id"`
 	OrderID      int64  `json:"order_id"`
@@ -53,6 +55,8 @@ type ProductOrderSchema struct {
 	CurrencyCode string `json:"currency_code"`
 	TotalAmount  string `json:"total_amount"`
 }
+
+// OrderSchema is the schema response
 type OrderSchema struct {
 	ID        int64                `json:"id"`
 	UUID      string               `json:"uuid"`
@@ -65,6 +69,7 @@ type OrderSchema struct {
 	Products  []ProductOrderSchema `json:"products"`
 }
 
+// CreateOrderSchema is the schema for creating an order request
 type CreateOrderSchema struct {
 	UserID   int64 `json:"user_id"`
 	Products []struct {

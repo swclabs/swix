@@ -8,12 +8,14 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+// Mock struct for carts repository
 type Mock struct {
 	mock.Mock
 }
 
 var _ ICartRepository = (*Mock)(nil)
 
+// NewCartsMock returns a new Mock object
 func NewCartsMock() *Mock {
 	return &Mock{}
 }

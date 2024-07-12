@@ -11,10 +11,12 @@ import (
 	"swclabs/swipecore/pkg/lib/logger"
 )
 
+// Job struct
 type Job struct {
 	function map[string]string
 }
 
+// NewJob creates a new job
 func NewJob() *Job {
 	return &Job{
 		function: make(map[string]string),
@@ -26,6 +28,7 @@ func getName(input string) string {
 	return paths[len(paths)-1]
 }
 
+// Scheduler schedules a job
 func (job *Job) Scheduler(fn func(), _time time.Duration) {
 	job.function[getName(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name())] = _time.String()
 	ticker := time.NewTicker(_time)
@@ -36,6 +39,7 @@ func (job *Job) Scheduler(fn func(), _time time.Duration) {
 	}()
 }
 
+// Info prints the job scheduler settings
 func (job *Job) Info() {
 	logger.Info("launching a job scheduler with the following settings:")
 	for fn, sche := range job.function {

@@ -17,9 +17,14 @@ func init() {
 }
 
 var (
+	// StageStatus Dev or Prod stage status
 	StageStatus = os.Getenv("STAGE_STATUS")
-	Host        = os.Getenv("HOST")
-	Port        = os.Getenv("PORT")
+
+	// Host server host
+	Host = os.Getenv("HOST")
+
+	// Port server port
+	Port = os.Getenv("PORT")
 )
 
 // authentication environment variables
@@ -70,4 +75,5 @@ var (
 	CloudinaryURL = os.Getenv("CLOUDINARY_URL")
 )
 
+// NumberOfWorker Number of worker
 var NumberOfWorker = 10

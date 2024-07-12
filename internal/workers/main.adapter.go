@@ -6,10 +6,12 @@ import (
 	"swclabs/swipecore/internal/types"
 )
 
+// Adapter struct define the Adapter object
 type Adapter struct {
 	engine *Writer
 }
 
+// NewAdapter creates a new Adapter object
 func NewAdapter(writer *Writer) types.IAdapter {
 	return &Adapter{
 		engine: writer,

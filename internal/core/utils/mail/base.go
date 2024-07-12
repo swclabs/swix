@@ -11,16 +11,19 @@ import (
 	"github.com/a-h/templ"
 )
 
+// Mailer struct to send email
 type Mailer struct {
 	*mailer.Mailer
 }
 
+// New returns a new Mailer object
 func New() *Mailer {
 	return &Mailer{
 		mailer.NewMailer(config.Email, config.EmailAppPassword),
 	}
 }
 
+// SendPurchaseOrder sends a purchase order email
 func (m *Mailer) SendPurchaseOrder(to string) error {
 	html := components.PurchaseOrderIndex()
 	t, err := templ.ToGoHTML(context.Background(), html)

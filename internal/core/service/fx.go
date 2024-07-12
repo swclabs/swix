@@ -11,6 +11,7 @@ import (
 	"go.uber.org/fx"
 )
 
+// FxModule module of package service
 var FxModule = fx.Options(
 	fx.Provide(
 		common.New,

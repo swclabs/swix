@@ -7,10 +7,12 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Categories struct for category repository
 type Categories struct {
 	db db.IDatabase
 }
 
+// New creates a new Categories object
 func New(conn db.IDatabase) ICategoriesRepository {
 	return useCache(&Categories{db: conn})
 }

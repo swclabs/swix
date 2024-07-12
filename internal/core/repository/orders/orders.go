@@ -6,10 +6,12 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Orders represents the repository for orders
 type Orders struct {
 	db db.IDatabase
 }
 
+// New creates a new Orders object
 func New(conn db.IDatabase) IOrdersRepository {
 	return &Orders{
 		db: conn,

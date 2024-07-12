@@ -31,6 +31,7 @@ type Engine struct {
 	broker   asynq.RedisClientOpt
 }
 
+// New creates a new instance of the Engine
 func New(priorityQueue Priority) *Engine {
 	return &Engine{
 		server:   nil,
@@ -51,11 +52,13 @@ func (w *Engine) handleFunctions() {
 	}
 }
 
+// RegisterQueue register the queue
 func (w *Engine) RegisterQueue(hfn func() (taskName string, fn HandleFunc)) {
 	taskName, fn := hfn()
 	w.queue[taskName] = fn
 }
 
+// Run start the asynq server
 func (w *Engine) Run(concurrency int) error {
 	// Create a new Asynq server
 	w.server = asynq.NewServer(w.broker, asynq.Config{

@@ -45,6 +45,7 @@ type CollectionSliceSchema struct {
 	CardBanner []CollectionSliceBody `json:"card_banner"`
 }
 
+// CollectionUploadSchema request, response
 type CollectionUploadSchema struct {
 	Msg string `json:"msg"`
 	ID  int64  `json:"id"`
@@ -52,12 +53,14 @@ type CollectionUploadSchema struct {
 
 /*** Swagger ***/
 
+// CollectionSchemaSwagger used to bind from json mapping to structure
 type CollectionSchemaSwagger struct {
 	Position string                `json:"position" validate:"required"`
 	Headline string                `json:"headline" validate:"required"`
 	Body     CollectionBodySwagger `json:"body" validate:"required"`
 }
 
+// CollectionBodySwagger used to bind from json mapping to structure
 type CollectionBodySwagger struct {
 	Title       string `json:"title" validate:"required"`
 	SubTitle    string `json:"subtitle" validate:"required"`
@@ -67,10 +70,12 @@ type CollectionBodySwagger struct {
 
 /***********************************************************************************************/
 
+// HeadlineBannerBody request, response
 type HeadlineBannerBody struct {
 	Headline string `json:"headline" validate:"required"`
 }
 
+// HeadlineBannerSlicesBody request, response
 type HeadlineBannerSlicesBody struct {
 	HeadlineBannerBody
 	ID      int64  `json:"id"`

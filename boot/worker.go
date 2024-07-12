@@ -1,4 +1,11 @@
 // Package boot implement worker consume for swipe application
+package boot
+
+import (
+	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/internal/types"
+)
+
 /*
  * Example:
  *	package main
@@ -13,12 +20,6 @@
  *		}
  *	}
  */
-package boot
-
-import (
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/types"
-)
 
 type _Worker struct {
 	concurrency int

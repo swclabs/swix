@@ -8,12 +8,14 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Inventory represents the Inventory object.
 type Inventory struct {
 	db db.IDatabase
 }
 
 var _ IInventoryRepository = (*Inventory)(nil)
 
+// New creates a new Inventory object.
 func New(conn db.IDatabase) IInventoryRepository {
 	return useCache(&Inventory{
 		db: conn,
@@ -32,6 +34,7 @@ func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]doma
 	return db.CollectRows[domain.Inventories](rows)
 }
 
+// GetByProductID implements IInventoryRepository.
 func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]domain.Inventories, error) {
 	rows, err := w.db.Query(ctx, getByProductID, productID)
 	if err != nil {
@@ -44,7 +47,7 @@ func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]doma
 	return inventories, nil
 }
 
-// GetById implements IInventoryRepository.
+// GetByID implements IInventoryRepository.
 func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*domain.Inventories, error) {
 	rows, err := w.db.Query(ctx, getByID, inventoryID)
 	if err != nil {

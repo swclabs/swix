@@ -20,7 +20,7 @@ type IServer interface {
 	Run(string) error
 }
 
-// NewBaseAdaper returns a new adapter wrapping around the given server
+// NewBaseAdapter returns a new adapter wrapping around the given server
 func NewBaseAdapter(server IServer) types.IAdapter {
 	adapter := &_Adapter{
 		server: server,

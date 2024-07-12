@@ -7,12 +7,14 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+// Mock represents a mock for IUserRepository.
 type Mock struct {
 	mock.Mock
 }
 
 var _ IUserRepository = (*Mock)(nil)
 
+// NewUsersMock creates a new mock for IUserRepository.
 func NewUsersMock() *Mock {
 	return &Mock{}
 }

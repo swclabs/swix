@@ -17,16 +17,19 @@ import (
 var cld *cloudinary.Cloudinary
 var lockCld = &sync.Mutex{}
 
+// Connection creates a new cloudinary connection.
 func Connection() IBlobStorage {
-	return &BlobStorage{
+	return &Storage{
 		Conn: cld,
 	}
 }
 
-type BlobStorage struct {
+// Storage struct implements IBlobStorage interface
+type Storage struct {
 	Conn *cloudinary.Cloudinary
 }
 
+// New creates a new cloudinary connection.
 func New(lc fx.Lifecycle) IBlobStorage {
 	var err error
 	if cld == nil {
@@ -49,17 +52,19 @@ func New(lc fx.Lifecycle) IBlobStorage {
 			return nil
 		},
 	})
-	return &BlobStorage{
+	return &Storage{
 		Conn: cld,
 	}
 }
 
-func (blob *BlobStorage) UploadImages(file interface{}) (UploadResult, error) {
+// UploadImages upload images to cloudinary
+func (blob *Storage) UploadImages(file interface{}) (UploadResult, error) {
 	var ctx = context.Background()
 	return blob.UploadImagesWithContext(ctx, file)
 }
 
-func (blob *BlobStorage) UploadImagesWithContext(ctx context.Context, file interface{}) (UploadResult, error) {
+// UploadImagesWithContext upload images to cloudinary with context
+func (blob *Storage) UploadImagesWithContext(ctx context.Context, file interface{}) (UploadResult, error) {
 	updateResult, err := blob.Conn.Upload.Upload(ctx, file, uploader.UploadParams{
 		ResourceType: "auto",
 		Folder:       "swc-storage",
@@ -67,7 +72,8 @@ func (blob *BlobStorage) UploadImagesWithContext(ctx context.Context, file inter
 	return updateResult, err
 }
 
-func (blob *BlobStorage) UploadFile(ctx context.Context, fileHeader *multipart.FileHeader) (url string, err error) {
+// UploadFile upload file to cloudinary
+func (blob *Storage) UploadFile(ctx context.Context, fileHeader *multipart.FileHeader) (url string, err error) {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return "", err

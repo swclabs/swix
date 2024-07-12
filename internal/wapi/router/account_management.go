@@ -8,20 +8,24 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// IAccountManagement interface for account management
 type IAccountManagement interface {
 	IRouter
 }
 
+// AccountManagement struct	implementation of IAccountManagement
 type AccountManagement struct {
 	controller controller.IAccountManagement
 }
 
+// NewAccountManagement creates a new AccountManagement router object
 func NewAccountManagement(controllers controller.IAccountManagement) IAccountManagement {
 	return &AccountManagement{
 		controller: controllers,
 	}
 }
 
+// Routers define route endpoint
 func (account *AccountManagement) Routers(e *echo.Echo) {
 	user := e.Group("/users") // endpoint for users
 	user.GET("", account.controller.GetMe, middleware.SessionProtected)

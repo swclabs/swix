@@ -22,6 +22,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// ProductService struct for product service
 type ProductService struct {
 	Blob       blob.IBlobStorage
 	Categories categories.ICategoriesRepository
@@ -32,6 +33,7 @@ type ProductService struct {
 
 var _ IProductService = (*ProductService)(nil)
 
+// New creates a new ProductService object
 func New(
 	blob blob.IBlobStorage,
 	categories categories.ICategoriesRepository,
@@ -48,7 +50,7 @@ func New(
 	}
 }
 
-// GetStock implements IProductService.
+// GetAllStock implements IProductService.
 func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (*domain.InventoryStockSchema, error) {
 	inventories, err := s.Inventory.GetLimit(ctx, limit, page)
 	if err != nil {
@@ -171,6 +173,7 @@ func (s *ProductService) FindDeviceInInventory(
 	return &inventoryRes, nil
 }
 
+// UploadProductImage implements IProductService.
 func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 
 	if fileHeader == nil {
@@ -195,6 +198,7 @@ func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHea
 	return nil
 }
 
+// CreateProduct implements IProductService.
 func (s *ProductService) CreateProduct(ctx context.Context, products domain.Product) (int64, error) {
 	specs, err := json.Marshal(domain.Specs{
 		Screen:  products.Screen,
@@ -217,6 +221,7 @@ func (s *ProductService) CreateProduct(ctx context.Context, products domain.Prod
 	return s.Products.Insert(ctx, prd)
 }
 
+// CreateSuppliers implements IProductService.
 func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain.SupplierSchema) error {
 	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
@@ -278,10 +283,12 @@ func (s *ProductService) InsertIntoInventory(ctx context.Context, product domain
 	return s.Inventory.InsertProduct(ctx, product)
 }
 
+// GetCategoriesLimit implements IProductService.
 func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
 	return s.Categories.GetLimit(ctx, limit)
 }
 
+// GetProductsLimit implements IProductService.
 func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
 	products, err := s.Products.GetLimit(ctx, limit)
 	if err != nil {
@@ -310,10 +317,12 @@ func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]dom
 	return productResponse, nil
 }
 
+// CreateCategory implements IProductService.
 func (s *ProductService) CreateCategory(ctx context.Context, ctg domain.Categories) error {
 	return s.Categories.Insert(ctx, ctg)
 }
 
+// GetSuppliersLimit implements IProductService.
 func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
 	return s.Suppliers.GetLimit(ctx, limit)
 }

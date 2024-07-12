@@ -15,11 +15,13 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// Purchase struct for purchase service
 type Purchase struct {
 	Order orders.IOrdersRepository
 	Cart  carts.ICartRepository
 }
 
+// New creates a new Purchase object
 func New(
 	order orders.IOrdersRepository,
 	cart carts.ICartRepository,

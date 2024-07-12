@@ -12,16 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type AccountManagement struct {
-	Service accountmanagement.IAccountManagement
-}
-
-func NewAccountManagement(services accountmanagement.IAccountManagement) IAccountManagement {
-	return &AccountManagement{
-		Service: services,
-	}
-}
-
+// IAccountManagement interface for account management
 type IAccountManagement interface {
 	Login(c echo.Context) error
 	SignUp(c echo.Context) error
@@ -32,7 +23,19 @@ type IAccountManagement interface {
 	UpdateUserInfo(c echo.Context) error
 }
 
-// Login
+// AccountManagement struct implementation of IAccountManagement
+type AccountManagement struct {
+	Service accountmanagement.IAccountManagement
+}
+
+// NewAccountManagement creates a new AccountManagement object
+func NewAccountManagement(services accountmanagement.IAccountManagement) IAccountManagement {
+	return &AccountManagement{
+		Service: services,
+	}
+}
+
+// Login .
 // @Description Login account.
 // @Tags account_management
 // @Accept json
@@ -78,7 +81,7 @@ func (account *AccountManagement) Login(c echo.Context) error {
 	})
 }
 
-// SignUp
+// SignUp .
 // @Description Register account for admin.
 // @Tags account_management
 // @Accept json
@@ -109,7 +112,7 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 	})
 }
 
-// Logout
+// Logout .
 // @Description logout user from the service
 // @Tags account_management
 // @Accept json
@@ -132,7 +135,7 @@ func (account *AccountManagement) Logout(c echo.Context) error {
 	})
 }
 
-// GetMe
+// GetMe .
 // @Description get information for users.
 // @Tags account_management
 // @Accept json
@@ -152,7 +155,7 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-// UpdateUserInfo
+// UpdateUserInfo .
 // @Description update information for users.
 // @Tags account_management
 // @Accept json
@@ -183,7 +186,7 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 
 }
 
-// UpdateUserImage
+// UpdateUserImage .
 // @Description update information for users.
 // @Tags account_management
 // @Accept json
@@ -211,7 +214,7 @@ func (account *AccountManagement) UpdateUserImage(c echo.Context) error {
 	})
 }
 
-// CheckLoginEmail
+// CheckLoginEmail .
 // @Description check email address before login
 // @Tags account_management
 // @Accept json

@@ -12,11 +12,13 @@ import (
 	"swclabs/swipecore/pkg/utils"
 )
 
+// Posts struct for posts service
 type Posts struct {
 	Blob        blob.IBlobStorage
 	Collections collections.ICollections
 }
 
+// New creates a new Posts object
 func New(
 	blob blob.IBlobStorage,
 	collection collections.ICollections,

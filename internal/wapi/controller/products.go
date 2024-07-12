@@ -1,3 +1,4 @@
+// Package controller This file includes all the product controller functions.
 package controller
 
 import (
@@ -10,6 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// IProducts interface for products controller
 type IProducts interface {
 	GetCategories(c echo.Context) error
 	GetProductLimit(c echo.Context) error
@@ -25,17 +27,19 @@ type IProducts interface {
 	GetStock(c echo.Context) error
 }
 
+// Products struct implementation of IProducts
 type Products struct {
 	Services products.IProductService
 }
 
+// NewProducts creates a new Products object
 func NewProducts(services products.IProductService) IProducts {
 	return &Products{
 		Services: services,
 	}
 }
 
-// GetStock
+// GetStock .
 // @Description get all product from inventory
 // @Tags products
 // @Accept json
@@ -66,7 +70,7 @@ func (p *Products) GetStock(c echo.Context) error {
 	return c.JSON(http.StatusOK, stock)
 }
 
-// UpdateProductInfo
+// UpdateProductInfo .
 // @Description update product information
 // @Tags products
 // @Accept json
@@ -96,7 +100,7 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 	})
 }
 
-// GetProductAvailability
+// GetProductAvailability .
 // @Description get product availability in inventories
 // @Tags products
 // @Accept json
@@ -135,7 +139,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 	return c.JSON(http.StatusOK, product)
 }
 
-// GetCategories
+// GetCategories .
 // @Description get categories
 // @Tags products
 // @Accept json
@@ -163,7 +167,7 @@ func (p *Products) GetCategories(c echo.Context) error {
 	})
 }
 
-// GetProductLimit
+// GetProductLimit .
 // @Description get product information
 // @Tags products
 // @Accept json
@@ -189,7 +193,7 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 	})
 }
 
-// DeleteProduct
+// DeleteProduct .
 // @Description delete product by id
 // @Tags products
 // @Accept json
@@ -220,7 +224,7 @@ func (p *Products) DeleteProduct(c echo.Context) error {
 	})
 }
 
-// InsertCategory
+// InsertCategory .
 // @Description insert new category
 // @Tags products
 // @Accept json
@@ -250,7 +254,7 @@ func (p *Products) InsertCategory(c echo.Context) error {
 	})
 }
 
-// UploadProductImage
+// UploadProductImage .
 // @Description insert new product image
 // @Tags products
 // @Accept multipart/form-data
@@ -286,7 +290,7 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 	})
 }
 
-// CreateProduct
+// CreateProduct .
 // @Description create new product
 // @Tags products
 // @Accept json
@@ -321,7 +325,7 @@ func (p *Products) CreateProduct(c echo.Context) error {
 	})
 }
 
-// GetSupplier
+// GetSupplier .
 // @Description get suppliers information
 // @Tags products
 // @Accept json
@@ -347,7 +351,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 	})
 }
 
-// InsertSupplier
+// InsertSupplier .
 // @Description insert new suppliers information
 // @Tags products
 // @Accept json
@@ -377,7 +381,7 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 	})
 }
 
-// AddToInventory
+// AddToInventory .
 // @Description add product to inventories
 // @Tags products
 // @Accept json

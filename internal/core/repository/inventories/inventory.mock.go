@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+// Mock represents a mock for IInventoryRepository.
 type Mock struct {
 	mock.Mock
 }
@@ -18,12 +19,13 @@ func (w *Mock) GetLimit(_ context.Context, _ int, _ int) ([]domain.Inventories, 
 	panic("unimplemented")
 }
 
+// GetByProductID implements IInventoryRepository.
 func (w *Mock) GetByProductID(_ context.Context, _ int64) ([]domain.Inventories, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-// GetById implements IInventoryRepository.
+// GetByID implements IInventoryRepository.
 func (w *Mock) GetByID(_ context.Context, _ int64) (*domain.Inventories, error) {
 	panic("unimplemented")
 }

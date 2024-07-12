@@ -7,10 +7,12 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Addresses struct for address repository
 type Addresses struct {
 	db db.IDatabase
 }
 
+// New creates a new Addresses object
 func New(conn db.IDatabase) IAddressRepository {
 	return useCache(&Addresses{
 		db: conn,

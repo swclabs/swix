@@ -13,6 +13,7 @@ var (
 	validate = validator.New()
 )
 
+// ErrorResponse holds the error response
 type ErrorResponse struct {
 	Error       bool
 	FailedField string
@@ -20,6 +21,7 @@ type ErrorResponse struct {
 	Value       interface{}
 }
 
+// _Validate validates the struct fields
 func _Validate(data interface{}) []ErrorResponse {
 	var validationErrors []ErrorResponse
 
@@ -41,6 +43,7 @@ func _Validate(data interface{}) []ErrorResponse {
 	return validationErrors
 }
 
+// Validate validates the struct fields
 func Validate(data interface{}) error {
 	if errs := _Validate(data); len(errs) > 0 && errs[0].Error {
 		errMsg := make([]string, 0)

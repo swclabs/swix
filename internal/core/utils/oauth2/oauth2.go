@@ -15,12 +15,14 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
+// I0Auth2 interface for oauth2 objects
 type I0Auth2 interface {
 	VerifyToken(*oauth2.Token) (*GoogleOAuth2, error)
 	VerifyTokenByte(token *oauth2.Token) ([]byte, error)
 	OAuth2CallBack(ctx echo.Context)
 }
 
+// GoogleOAuth2 represents the google oauth2 object
 type GoogleOAuth2 struct {
 	ID            string `json:"id"`
 	Name          string `json:"name"`
@@ -54,6 +56,7 @@ func New() *Authenticator {
 	}
 }
 
+// VerifyToken verifies the token
 func (auth *Authenticator) VerifyToken(token *oauth2.Token) (*GoogleOAuth2, error) {
 	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
 	if err != nil {
@@ -75,6 +78,7 @@ func (auth *Authenticator) VerifyToken(token *oauth2.Token) (*GoogleOAuth2, erro
 	return &profile, nil
 }
 
+// VerifyTokenByte verifies the token
 func (auth *Authenticator) VerifyTokenByte(token *oauth2.Token) ([]byte, error) {
 	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)
 	if err != nil {

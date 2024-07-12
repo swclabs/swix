@@ -8,12 +8,14 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+// Mock is a mock for IProductRepository.
 type Mock struct {
 	mock.Mock
 }
 
 var _ IProductRepository = (*Mock)(nil)
 
+// NewProductsMock creates a new Mock.
 func NewProductsMock() *Mock {
 	return &Mock{}
 }
@@ -29,13 +31,13 @@ func (p *Mock) Update(ctx context.Context, product domain.Products) error {
 	return args.Error(0)
 }
 
-// DeleteById implements IProductRepository.
+// DeleteByID implements IProductRepository.
 func (p *Mock) DeleteByID(ctx context.Context, ID int64) error {
 	args := p.Called(ctx, ID)
 	return args.Error(0)
 }
 
-// GetById implements IProductRepository.
+// GetByID implements IProductRepository.
 func (p *Mock) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
 	args := p.Called(ctx, productID)
 	return args.Get(0).(*domain.Products), args.Error(1)

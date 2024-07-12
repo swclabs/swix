@@ -7,12 +7,14 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Carts struct for cart repository
 type Carts struct {
 	db db.IDatabase
 }
 
 var _ ICartRepository = (*Carts)(nil)
 
+// New creates a new Carts object
 func New(connection db.IDatabase) ICartRepository {
 	return useCache(&Carts{
 		db: connection,

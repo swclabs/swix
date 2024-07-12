@@ -1,3 +1,4 @@
+// Package controller purchase controller for handling purchase request.
 package controller
 
 import (
@@ -11,23 +12,26 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// IPurchase interface for purchase controller
 type IPurchase interface {
 	AddToCarts(c echo.Context) error
 	GetCarts(c echo.Context) error
 	DeleteItem(c echo.Context) error
 }
 
+// Purchase struct implementation of IPurchase
 type Purchase struct {
 	services purchase.IPurchaseService
 }
 
 var _ IPurchase = (*Purchase)(nil)
 
+// NewPurchase creates a new Purchase object
 func NewPurchase(services purchase.IPurchaseService) IPurchase {
 	return &Purchase{services: services}
 }
 
-// AddToCarts
+// AddToCarts .
 // @Description add item to carts.
 // @Tags purchase
 // @Accept json
@@ -57,7 +61,7 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 	})
 }
 
-// GetCarts
+// GetCarts .
 // @Description get list of items from carts
 // @Tags purchase
 // @Accept json
@@ -87,7 +91,7 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 	return c.JSON(http.StatusOK, *items)
 }
 
-// DeleteItem
+// DeleteItem .
 // @Description delete item from carts
 // @Tags purchase
 // @Accept json

@@ -1,3 +1,4 @@
+// Package router implements the router interface
 package router
 
 import (
@@ -8,17 +9,20 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-type Docs struct{}
-
+// IDocs extend the IRouter interface
 type IDocs interface {
 	IRouter
 }
 
+// Docs implement IDocs interface
+type Docs struct{}
+
+// NewDocs creates a new Docs router object
 func NewDocs() IDocs {
 	return &Docs{}
 }
 
-// Routers
+// Routers .
 // API documentation
 // Register documentation
 // Base on: http://${HOST}:${PORT}/docs/index.html#/

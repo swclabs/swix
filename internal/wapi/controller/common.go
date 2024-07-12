@@ -1,4 +1,4 @@
-// Package controller implementation
+// Package controller implements the controller interface
 package controller
 
 import (
@@ -11,15 +11,18 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// ICommon interface for common controller
 type ICommon interface {
 	HealthCheck(c echo.Context) error
 	WorkerCheck(c echo.Context) error
 }
 
+// Common struct implementation of ICommon
 type Common struct {
 	service common.ICommonService
 }
 
+// NewCommon creates a new Common object
 func NewCommon(services common.ICommonService) ICommon {
 	return &Common{
 		service: services,
@@ -74,11 +77,13 @@ func Auth0Login(c echo.Context) error {
 	return c.Redirect(http.StatusTemporaryRedirect, url)
 }
 
+// Auth0Callback .
 func Auth0Callback(c echo.Context) error {
 	auth := oauth2.New()
 	return auth.OAuth2CallBack(c)
 }
 
+// Foo .
 func Foo(_ echo.Context) error {
 	// sentrygin handler will catch it just fine. Also, because we attached "someRandomTag"
 	// in the middleware before, it will be sent through as well

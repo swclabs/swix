@@ -2,6 +2,7 @@ package domain
 
 import "github.com/shopspring/decimal"
 
+// Inventories table
 type Inventories struct {
 	ID           string          `json:"id" db:"id"`
 	ProductID    int64           `json:"product_id" db:"product_id"`
@@ -15,6 +16,7 @@ type Inventories struct {
 
 /*****************************************************************************/
 
+// Inventory table request, response
 type Inventory struct {
 	ID           string `json:"id" db:"id"`
 	ProductID    string `json:"product_id" db:"product_id"`
@@ -25,6 +27,7 @@ type Inventory struct {
 	CurrencyCode string `json:"currency_code" db:"currency_code"`
 }
 
+// InventorySpecsDetail request, response
 type InventorySpecsDetail struct {
 	Color      string `json:"color"`
 	RAM        string `json:"ram"`
@@ -33,6 +36,7 @@ type InventorySpecsDetail struct {
 	Image      string `json:"image"`
 }
 
+// InventoryStruct request, response
 type InventoryStruct struct {
 	ProductID    string               `json:"product_id" validate:"required"`
 	Price        string               `json:"price" validate:"number,required"`
@@ -42,11 +46,13 @@ type InventoryStruct struct {
 	Specs        InventorySpecsDetail `json:"specs"`
 }
 
+// InventorySchema response, request
 type InventorySchema struct {
 	ID string `json:"id"`
 	InventoryStruct
 }
 
+// InventoryStockSchema response, request
 type InventoryStockSchema struct {
 	All     int               `json:"all"`
 	Active  int               `json:"active"`
@@ -57,6 +63,7 @@ type InventoryStockSchema struct {
 	Stock   []InventorySchema `json:"stock"`
 }
 
+// InventoryDeviveSpecs request, response
 type InventoryDeviveSpecs struct {
 	ProductID string `json:"product_id"`
 	RAM       string `json:"ram"`

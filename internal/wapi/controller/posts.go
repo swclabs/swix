@@ -1,3 +1,4 @@
+// Package controller implements the controller interface
 package controller
 
 import (
@@ -10,6 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// IPosts interface for posts controller
 type IPosts interface {
 	UploadCollections(c echo.Context) error
 	UpdateCollectionsImage(c echo.Context) error
@@ -19,17 +21,19 @@ type IPosts interface {
 	GetSlicesOfHeadlineBanner(c echo.Context) error
 }
 
+// Posts struct implementation of IPosts
 type Posts struct {
 	Services posts.IPostsService
 }
 
+// NewPosts creates a new Posts object
 func NewPosts(service posts.IPostsService) IPosts {
 	return &Posts{
 		Services: service,
 	}
 }
 
-// GetSlicesOfHeadlineBanner
+// GetSlicesOfHeadlineBanner .
 // @Description get list of headline banner
 // @Tags posts
 // @Accept json
@@ -58,7 +62,7 @@ func (p *Posts) GetSlicesOfHeadlineBanner(c echo.Context) error {
 	return c.JSON(http.StatusOK, headlines)
 }
 
-// UploadHeadlineBanner
+// UploadHeadlineBanner .
 // @Description create headline banner into collections
 // @Tags posts
 // @Accept json
@@ -88,7 +92,7 @@ func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
 	})
 }
 
-// UploadCollections
+// UploadCollections .
 // @Description create collections
 // @Tags posts
 // @Accept json
@@ -120,7 +124,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 	})
 }
 
-// UpdateCollectionsImage
+// UpdateCollectionsImage .
 // @Description create collections
 // @Tags posts
 // @Accept json
@@ -154,7 +158,7 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 	})
 }
 
-// GetSlicesOfCollections
+// GetSlicesOfCollections .
 // @Description create collections
 // @Tags posts
 // @Accept json
