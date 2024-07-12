@@ -24,6 +24,8 @@ func (r *Products) Routers(e *echo.Echo) {
 	// endpoint for category
 	e.GET("/categories", r.controller.GetCategories)
 	e.POST("/categories", r.controller.InsertCategory)
+	// TODO: implement delete categories here
+	// e.DELETE("/categories")
 
 	// endpoint for products
 	e.GET("/products", r.controller.GetProductLimit)
@@ -36,8 +38,6 @@ func (r *Products) Routers(e *echo.Echo) {
 	// endpoint for suppliers
 	e.GET("/suppliers", r.controller.GetSupplier)
 	e.POST("/suppliers", r.controller.InsertSupplier)
-	// TODO: implement delete supplier here
-	// e.DELETE("/suppliers")
 
 	// endpoint for inventories
 	e.GET("/inventories/details", r.controller.GetProductAvailability)
