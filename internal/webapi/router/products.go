@@ -47,6 +47,8 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.POST("/suppliers", r.controller.InsertSupplier)
 	// TODO: implement edit supplier here
 	// e.PUT("/suppliers")
+	// TODO: implement delete supplier here
+	// e.DELETE("/suppliers")
 
 	// endpoint for inventories
 	e.PUT("/inventories/image", r.controller.UploadInventoryImage)
