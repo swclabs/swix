@@ -1,3 +1,4 @@
+// Package db connect to database
 package db
 
 import (
@@ -13,9 +14,9 @@ import (
 )
 
 var (
-	pgxConnection *pgxpool.Pool = nil
-	lock          *sync.Mutex   = &sync.Mutex{}
-	writeLock     *sync.Mutex   = &sync.Mutex{}
+	pgxConnection *pgxpool.Pool
+	lock          = &sync.Mutex{}
+	writeLock     = &sync.Mutex{}
 )
 
 type Database struct {
@@ -39,7 +40,7 @@ func New(lc fx.Lifecycle) IDatabase {
 		dsn = fmt.Sprintf(
 			"postgres://%s:%s@%s:%s/%s",
 			config.DbUser, config.DbPassword, config.DbHost, config.DbPort, config.DbName)
-		err error = nil
+		err error
 	)
 	if pgxConnection == nil {
 		lock.Lock()
@@ -49,14 +50,14 @@ func New(lc fx.Lifecycle) IDatabase {
 		}
 	}
 	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
+		OnStart: func(_ context.Context) error {
 			if err != nil {
 				return err
 			}
 			fmt.Printf("[SWIPE]-v%s ===============> connect to PostgreSQL\n", config.Version)
 			return nil
 		},
-		OnStop: func(ctx context.Context) error {
+		OnStop: func(_ context.Context) error {
 			pgxConnection.Close()
 			fmt.Printf("[SWIPE]-v%s ===============> closed PostgreSQL connection\n", config.Version)
 			return nil

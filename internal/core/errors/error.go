@@ -1,3 +1,4 @@
+// Package errors are returned error messages layer
 package errors
 
 import (

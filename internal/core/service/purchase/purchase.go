@@ -1,3 +1,4 @@
+// Package purchase implements the purchase interface
 package purchase
 
 import (
@@ -30,22 +31,22 @@ func New(
 }
 
 // DeleteItemFromCart implements domain.IPurchaseService.
-func (p *Purchase) DeleteItemFromCart(ctx context.Context, userId int64, inventoryId int64) error {
-	return p.Cart.RemoveItem(ctx, userId, inventoryId)
+func (p *Purchase) DeleteItemFromCart(ctx context.Context, userID int64, inventoryID int64) error {
+	return p.Cart.RemoveItem(ctx, userID, inventoryID)
 }
 
 // AddToCart implements domain.IPurchaseService.
 func (p *Purchase) AddToCart(ctx context.Context, cart domain.CartInsert) error {
-	return p.Cart.Insert(ctx, cart.UserId, cart.InventoryId, cart.Quantity)
+	return p.Cart.Insert(ctx, cart.UserID, cart.InventoryID, cart.Quantity)
 }
 
 // GetCart implements domain.IPurchaseService.
-func (p *Purchase) GetCart(ctx context.Context, userId int64, limit int) (*domain.CartSlices, error) {
-	return p.Cart.GetCartByUserID(ctx, userId, limit)
+func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*domain.CartSlices, error) {
+	return p.Cart.GetCartByUserID(ctx, userID, limit)
 }
 
 // GetOrders implements domain.IPurchaseService.
-func (p *Purchase) GetOrders(ctx context.Context, limit int) ([]domain.Orders, error) {
+func (p *Purchase) GetOrders(_ context.Context, _ int) ([]domain.Orders, error) {
 	panic("unimplemented")
 }
 
@@ -64,7 +65,7 @@ func (p *Purchase) InsertOrders(ctx context.Context, createOrder domain.CreateOr
 	)
 
 	for _, product := range createOrder.Products {
-		inven, err := inventoryRepo.GetById(ctx, product.InventoryId)
+		inven, err := inventoryRepo.GetByID(ctx, product.InventoryID)
 		if err != nil {
 			if errTx := tx.Rollback(ctx); errTx != nil {
 				log.Fatal(errTx)
@@ -76,9 +77,9 @@ func (p *Purchase) InsertOrders(ctx context.Context, createOrder domain.CreateOr
 			productTotalAmount,
 			inven.Price.Mul(decimal.NewFromInt32(int32(product.Quantity))))
 	}
-	orderId, err := orderRepo.Create(ctx, domain.Orders{
-		Uuid:        _uuid,
-		UserId:      createOrder.UserId,
+	orderID, err := orderRepo.Create(ctx, domain.Orders{
+		UUID:        _uuid,
+		UserID:      createOrder.UserID,
 		Status:      "pending",
 		TotalAmount: totalAmount,
 	})
@@ -90,8 +91,8 @@ func (p *Purchase) InsertOrders(ctx context.Context, createOrder domain.CreateOr
 	}
 	for idx, product := range createOrder.Products {
 		if err := orderRepo.InsertProduct(ctx, domain.ProductInOrder{
-			OrderId:     orderId,
-			InventoryId: product.InventoryId,
+			OrderID:     orderID,
+			InventoryID: product.InventoryID,
 			Quantity:    product.Quantity,
 			TotalAmount: productTotalAmount[idx],
 		}); err != nil {

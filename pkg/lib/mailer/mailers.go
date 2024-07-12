@@ -1,3 +1,4 @@
+// Package mailer implements mailer
 package mailer
 
 import (

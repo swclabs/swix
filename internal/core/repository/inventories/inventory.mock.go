@@ -14,17 +14,17 @@ type Mock struct {
 var _ IInventoryRepository = (*Mock)(nil)
 
 // GetLimit implements IInventoryRepository.
-func (w *Mock) GetLimit(ctx context.Context, limit int, offset int) ([]domain.Inventories, error) {
+func (w *Mock) GetLimit(_ context.Context, _ int, _ int) ([]domain.Inventories, error) {
 	panic("unimplemented")
 }
 
-func (w *Mock) GetByProductId(ctx context.Context, productId int64) ([]domain.Inventories, error) {
+func (w *Mock) GetByProductID(_ context.Context, _ int64) ([]domain.Inventories, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
 // GetById implements IInventoryRepository.
-func (w *Mock) GetById(ctx context.Context, inventoryId int64) (*domain.Inventories, error) {
+func (w *Mock) GetByID(_ context.Context, _ int64) (*domain.Inventories, error) {
 	panic("unimplemented")
 }
 

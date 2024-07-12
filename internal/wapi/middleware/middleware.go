@@ -1,3 +1,4 @@
+// Package middleware define middleware
 package middleware
 
 import (
@@ -49,5 +50,5 @@ func BaseSetting(e *echo.Echo) {
 	e.Use(CORS())
 	// use logger to write logs to api.log file
 	e.Use(middleware.Logger())
-	// e.Use(middleware.Recover())
+	e.Use(middleware.Recover())
 }

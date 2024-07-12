@@ -22,13 +22,13 @@ func UseTask(service ICommonService) ICommonService {
 	}
 }
 
-func (t *Task) HealthCheck(ctx context.Context) domain.HealthCheck {
+func (t *Task) HealthCheck(_ context.Context) domain.HealthCheck {
 	return domain.HealthCheck{
 		Status: "Ok",
 	}
 }
 
-func (t *Task) WorkerCheck(ctx context.Context, num int64) error {
+func (t *Task) WorkerCheck(_ context.Context, _ int64) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.WorkerCheck),
 		1,

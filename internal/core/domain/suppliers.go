@@ -2,7 +2,7 @@ package domain
 
 // Suppliers table
 type Suppliers struct {
-	Id    string `json:"id" db:"id"`
+	ID    string `json:"id" db:"id"`
 	Name  string `json:"name" db:"name"`
 	Email string `json:"email" db:"email"`
 }

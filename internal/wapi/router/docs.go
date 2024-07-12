@@ -1,7 +1,7 @@
 package router
 
 import (
-	_ "swclabs/swipecore/docs"
+	_ "swclabs/swipecore/docs" // init swagger docs
 
 	"github.com/labstack/echo/v4"
 

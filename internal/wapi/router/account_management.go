@@ -1,3 +1,4 @@
+// Package router account management implementation
 package router
 
 import (

@@ -32,8 +32,8 @@ func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]doma
 	return db.CollectRows[domain.Inventories](rows)
 }
 
-func (w *Inventory) GetByProductId(ctx context.Context, productId int64) ([]domain.Inventories, error) {
-	rows, err := w.db.Query(ctx, getByProductId, productId)
+func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]domain.Inventories, error) {
+	rows, err := w.db.Query(ctx, getByProductID, productID)
 	if err != nil {
 		return nil, errors.Repository("500", err)
 	}
@@ -45,8 +45,8 @@ func (w *Inventory) GetByProductId(ctx context.Context, productId int64) ([]doma
 }
 
 // GetById implements IInventoryRepository.
-func (w *Inventory) GetById(ctx context.Context, inventoryId int64) (*domain.Inventories, error) {
-	rows, err := w.db.Query(ctx, getById, inventoryId)
+func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*domain.Inventories, error) {
+	rows, err := w.db.Query(ctx, getByID, inventoryID)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +60,7 @@ func (w *Inventory) GetById(ctx context.Context, inventoryId int64) (*domain.Inv
 // FindDevice implements domain.IInventoryRepository.
 func (w *Inventory) FindDevice(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.Inventories, error) {
 	rows, err := w.db.Query(ctx, getAvailableProducts,
-		deviceSpecs.ProductId, deviceSpecs.Ram, deviceSpecs.Ssd, deviceSpecs.Color)
+		deviceSpecs.ProductID, deviceSpecs.RAM, deviceSpecs.Ssd, deviceSpecs.Color)
 	if err != nil {
 		return nil, err
 	}

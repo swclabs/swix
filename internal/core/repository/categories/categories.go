@@ -1,5 +1,4 @@
-// Package categories
-// Author: Duc Hung Ho @kyeranyo
+// Package categories categories repository implementation
 package categories
 
 import (

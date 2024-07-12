@@ -15,8 +15,7 @@ func New(conn db.IDatabase) ISuppliersRepository {
 }
 
 // Insert implements domain.ISuppliersRepository.
-func (supplier *Suppliers) Insert(
-	ctx context.Context, supp domain.Suppliers, addr domain.Addresses) error {
+func (supplier *Suppliers) Insert(ctx context.Context, supp domain.Suppliers) error {
 	return supplier.db.SafeWrite(
 		ctx, insertIntoSuppliers, supp.Name, supp.Email)
 }

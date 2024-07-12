@@ -1,5 +1,4 @@
-// Package products
-// Author: Duc Hung Ho @kyeranyo
+// Package products implements product
 package products
 
 import (
@@ -37,7 +36,7 @@ func (product *Products) Search(ctx context.Context, keyword string) ([]domain.P
 // Update implements IProductRepository.
 func (product *Products) Update(ctx context.Context, prod domain.Products) error {
 	return errors.Repository("safely write data",
-		product.db.SafeWrite(ctx, updateById,
+		product.db.SafeWrite(ctx, updateByID,
 			prod.Name, prod.Price, prod.Description, prod.SupplierID,
 			prod.CategoryID, prod.Spec, prod.Status, prod.ID,
 		),
@@ -45,14 +44,14 @@ func (product *Products) Update(ctx context.Context, prod domain.Products) error
 }
 
 // DeleteById implements IProductRepository.
-func (product *Products) DeleteById(ctx context.Context, Id int64) error {
+func (product *Products) DeleteByID(ctx context.Context, ID int64) error {
 	return errors.Repository(
-		"safely write data", product.db.SafeWrite(ctx, deleteById, Id))
+		"safely write data", product.db.SafeWrite(ctx, deleteByID, ID))
 }
 
 // GetById implements IProductRepository.
-func (product *Products) GetById(ctx context.Context, productId int64) (*domain.Products, error) {
-	rows, err := product.db.Query(ctx, selectById, productId)
+func (product *Products) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
+	rows, err := product.db.Query(ctx, selectByID, productID)
 	if err != nil {
 		return nil, errors.Repository("query", err)
 	}

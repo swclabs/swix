@@ -1,3 +1,4 @@
+// Package worker define worker writer engine
 package worker
 
 import (
@@ -70,7 +71,7 @@ func (cli *Client) ExecGetResult(ctx context.Context, queue string, task *asynq.
 	}
 
 	inspector := asynq.NewInspector(cli.broker)
-	defer func(client *asynq.Inspector) {
+	defer func(_ *asynq.Inspector) {
 		err := inspector.Close()
 		if err != nil {
 			panic(err.Error())

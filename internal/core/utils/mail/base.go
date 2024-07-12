@@ -1,3 +1,4 @@
+// Package mail connect to mail server
 package mail
 
 import (

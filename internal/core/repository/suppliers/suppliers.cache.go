@@ -1,3 +1,4 @@
+// Package suppliers suppliers repository implementation
 package suppliers
 
 import (
@@ -26,8 +27,8 @@ func (c *cache) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, er
 }
 
 // Insert implements ISuppliersRepository.
-func (c *cache) Insert(ctx context.Context, sup domain.Suppliers, addr domain.Addresses) error {
-	return c.supplier.Insert(ctx, sup, addr)
+func (c *cache) Insert(ctx context.Context, sup domain.Suppliers) error {
+	return c.supplier.Insert(ctx, sup)
 }
 
 // InsertAddress implements ISuppliersRepository.

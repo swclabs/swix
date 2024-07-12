@@ -26,8 +26,8 @@ func (s *Mock) GetLimit(ctx context.Context, limit int) ([]domain.Suppliers, err
 }
 
 // Insert implements domain.ISuppliersRepository.
-func (s *Mock) Insert(ctx context.Context, sup domain.Suppliers, addr domain.Addresses) error {
-	args := s.Called(ctx, sup, addr)
+func (s *Mock) Insert(ctx context.Context, sup domain.Suppliers) error {
+	args := s.Called(ctx, sup)
 	return args.Error(0)
 }
 

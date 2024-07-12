@@ -1,3 +1,4 @@
+// Package common implements common services
 package common
 
 import (
@@ -19,13 +20,13 @@ func (common *Service) WorkerCheckResult(ctx context.Context, num int64) (string
 	return strconv.Itoa(int(num)), common.WorkerCheck(ctx, num)
 }
 
-func (common *Service) HealthCheck(ctx context.Context) domain.HealthCheck {
+func (common *Service) HealthCheck(_ context.Context) domain.HealthCheck {
 	return domain.HealthCheck{
 		Status: "ok",
 	}
 }
 
-func (common *Service) WorkerCheck(ctx context.Context, num int64) error {
+func (common *Service) WorkerCheck(_ context.Context, num int64) error {
 	fmt.Printf("HealthCheck Number: %d\n", int(num))
 	return nil
 }

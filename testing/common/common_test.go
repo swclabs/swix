@@ -16,7 +16,7 @@ func TestHash(t *testing.T) {
 	}
 }
 
-func TestWorkerPath(t *testing.T) {
+func TestWorkerPath(_ *testing.T) {
 	map1 := map[string]int{
 		"1": 1,
 		"2": 2,
@@ -52,7 +52,7 @@ func TestValidEmail(t *testing.T) {
 	}
 }
 
-func TestStmt(t *testing.T) {
+func TestStmt(_ *testing.T) {
 	queryHandler := func(sql string, args ...interface{}) {
 		fmt.Print(sql)
 		fmt.Println(args...)

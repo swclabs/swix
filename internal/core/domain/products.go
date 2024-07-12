@@ -55,10 +55,10 @@ type ProductSchema struct {
 
 type UpdateProductInfo struct {
 	Product
-	Id int64 `json:"id" validate:"required"`
+	ID int64 `json:"id" validate:"required"`
 }
 
 type CreateProductSchema struct {
 	Msg string `json:"msg"`
-	Id  int64  `json:"id"`
+	ID  int64  `json:"id"`
 }

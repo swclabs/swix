@@ -28,47 +28,47 @@ CREATE TABLE "product_in_order" (
 
 // Orders table schema
 type Orders struct {
-	Id          int64           `json:"id" db:"id"`
-	Uuid        string          `json:"uuid" db:"uuid"`
-	UserId      int64           `json:"user_id" db:"user_id"`
+	ID          int64           `json:"id" db:"id"`
+	UUID        string          `json:"uuid" db:"uuid"`
+	UserID      int64           `json:"user_id" db:"user_id"`
 	Status      string          `json:"status" db:"status"`
 	TotalAmount decimal.Decimal `json:"total_amount" db:"total_amount"`
 	Time        time.Time       `json:"time" db:"time"`
 }
 
 type ProductInOrder struct {
-	Id           int64           `json:"id" db:"id"`
-	OrderId      int64           `json:"order_id" db:"order_id"`
-	InventoryId  int64           `json:"inventory_id" db:"inventory_id"`
+	ID           int64           `json:"id" db:"id"`
+	OrderID      int64           `json:"order_id" db:"order_id"`
+	InventoryID  int64           `json:"inventory_id" db:"inventory_id"`
 	Quantity     int64           `json:"quantity" db:"quantity"`
 	CurrencyCode string          `json:"currency_code" db:"currency_code"`
 	TotalAmount  decimal.Decimal `json:"total_amount" db:"total_amount"`
 }
 
 type ProductOrderSchema struct {
-	Id           int64  `json:"id"`
-	OrderId      int64  `json:"order_id"`
-	InventoryId  int64  `json:"inventory_id" db:"inventory_id"`
+	ID           int64  `json:"id"`
+	OrderID      int64  `json:"order_id"`
+	InventoryID  int64  `json:"inventory_id" db:"inventory_id"`
 	Quantity     int64  `json:"quantity"`
 	CurrencyCode string `json:"currency_code"`
 	TotalAmount  string `json:"total_amount"`
 }
 type OrderSchema struct {
-	Id        int64                `json:"id"`
-	Uuid      string               `json:"uuid"`
+	ID        int64                `json:"id"`
+	UUID      string               `json:"uuid"`
 	Time      string               `json:"time"`
 	InWord    int64                `json:"in_word"`
 	Status    string               `json:"status"`
-	UserId    int64                `json:"user_id"`
+	UserID    int64                `json:"user_id"`
 	Username  string               `json:"user_name"`
 	UserEmail string               `json:"user_email"`
 	Products  []ProductOrderSchema `json:"products"`
 }
 
 type CreateOrderSchema struct {
-	UserId   int64 `json:"user_id"`
+	UserID   int64 `json:"user_id"`
 	Products []struct {
-		InventoryId int64 `json:"inventory_id"`
+		InventoryID int64 `json:"inventory_id"`
 		Quantity    int64 `json:"quantity"`
 	} `json:"product"`
 }

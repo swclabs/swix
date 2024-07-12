@@ -30,7 +30,7 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.POST("/products", r.controller.CreateProduct)
 	e.PUT("/products", r.controller.UpdateProductInfo)
 	e.DELETE("/products", r.controller.DeleteProduct)
-	
+
 	e.POST("/products/img", r.controller.UploadProductImage)
 
 	// endpoint for suppliers

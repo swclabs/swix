@@ -1,3 +1,4 @@
+// Package handler implements handler of worker
 package handler
 
 import (

@@ -22,7 +22,7 @@ type I0Auth2 interface {
 }
 
 type GoogleOAuth2 struct {
-	Id            string `json:"id"`
+	ID            string `json:"id"`
 	Name          string `json:"name"`
 	GivenName     string `json:"given_name"`
 	FamilyName    string `json:"family_name"`
@@ -43,7 +43,7 @@ func New() *Authenticator {
 	conf := oauth2.Config{
 		ClientID:     config.Auth0ClientID,
 		ClientSecret: config.Auth0ClientSecret,
-		RedirectURL:  config.Auth0CallbackUrl,
+		RedirectURL:  config.Auth0CallbackURL,
 		Endpoint:     google.Endpoint,
 		Scopes:       []string{oidc.ScopeOpenID, "profile", "email"},
 	}

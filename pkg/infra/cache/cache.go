@@ -1,3 +1,4 @@
+// Package cache connect to redis
 package cache
 
 import (
@@ -18,10 +19,10 @@ func New(lc fx.Lifecycle) *redis.Client {
 		DB:       0,
 	})
 	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
+		OnStart: func(_ context.Context) error {
 			return nil
 		},
-		OnStop: func(ctx context.Context) error {
+		OnStop: func(_ context.Context) error {
 			return conn.Close()
 		},
 	})

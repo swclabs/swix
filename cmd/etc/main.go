@@ -1,3 +1,4 @@
+// Package main test
 package main
 
 import (

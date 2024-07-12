@@ -1,3 +1,4 @@
+// Package utils provides utils functionality
 package utils
 
 import (
@@ -12,7 +13,7 @@ import (
 const BaseSessions = "session"
 
 var store *sessions.CookieStore
-var lock *sync.Mutex = &sync.Mutex{}
+var lock = &sync.Mutex{}
 
 func NewSession() *sessions.CookieStore {
 	if store == nil {

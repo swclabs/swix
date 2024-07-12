@@ -1,3 +1,4 @@
+// Package queue define queue name
 package queue
 
 import (

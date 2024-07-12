@@ -1,3 +1,4 @@
+// Package service implements usecase layer
 package service
 
 import (

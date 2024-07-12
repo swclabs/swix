@@ -1,3 +1,4 @@
+// Package db connect to database
 package db
 
 import "github.com/jackc/pgx/v5"

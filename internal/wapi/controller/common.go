@@ -1,3 +1,4 @@
+// Package controller implementation
 package controller
 
 import (
@@ -78,7 +79,7 @@ func Auth0Callback(c echo.Context) error {
 	return auth.OAuth2CallBack(c)
 }
 
-func Foo(ctx echo.Context) error {
+func Foo(_ echo.Context) error {
 	// sentrygin handler will catch it just fine. Also, because we attached "someRandomTag"
 	// in the middleware before, it will be sent through as well
 	panic("y tho")

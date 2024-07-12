@@ -72,7 +72,7 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 			stock.Active++
 		}
 		stock.Stock = append(stock.Stock, domain.InventorySchema{
-			Id: _inventory.Id,
+			ID: _inventory.ID,
 			InventoryStruct: domain.InventoryStruct{
 				ProductID:    strconv.Itoa(int(_inventory.ProductID)),
 				Price:        _inventory.Price.String(),
@@ -92,8 +92,8 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 }
 
 // GetInventory implements IProductService.
-func (s *ProductService) GetInventory(ctx context.Context, productId int64) ([]domain.Inventories, error) {
-	return s.Inventory.GetByProductId(ctx, productId)
+func (s *ProductService) GetInventory(ctx context.Context, productID int64) ([]domain.Inventories, error) {
+	return s.Inventory.GetByProductID(ctx, productID)
 }
 
 // Search implements IProductService.
@@ -133,7 +133,7 @@ func (s *ProductService) UpdateProductInfo(ctx context.Context, product domain.U
 	}
 	return s.Products.Update(ctx,
 		domain.Products{
-			ID:          product.Id,
+			ID:          product.ID,
 			Name:        product.Name,
 			Price:       product.Price,
 			Description: product.Description,
@@ -152,9 +152,9 @@ func (s *ProductService) FindDeviceInInventory(
 		return nil, err
 	}
 	var inventoryRes = domain.InventorySchema{
-		Id: _inventory.Id,
+		ID: _inventory.ID,
 		InventoryStruct: domain.InventoryStruct{
-			ProductID:    _inventory.Id,
+			ProductID:    _inventory.ID,
 			Price:        _inventory.Price.String(),
 			Model:        _inventory.Model,
 			Available:    _inventory.Available,
@@ -171,7 +171,7 @@ func (s *ProductService) FindDeviceInInventory(
 	return &inventoryRes, nil
 }
 
-func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHeader []*multipart.FileHeader) error {
+func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 
 	if fileHeader == nil {
 		return fmt.Errorf("missing image file")
@@ -185,7 +185,7 @@ func (s *ProductService) UploadProductImage(ctx context.Context, Id int, fileHea
 		if err != nil {
 			return err
 		}
-		if err := s.Products.UploadNewImage(ctx, resp.SecureURL, Id); err != nil {
+		if err := s.Products.UploadNewImage(ctx, resp.SecureURL, ID); err != nil {
 			return err
 		}
 		if err := file.Close(); err != nil {
@@ -236,7 +236,7 @@ func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain
 		supplierRepo = suppliers.New(tx)
 		addressRepo  = addresses.New(tx)
 	)
-	if err := supplierRepo.Insert(ctx, supplier, addr); err != nil {
+	if err := supplierRepo.Insert(ctx, supplier); err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}
@@ -249,7 +249,7 @@ func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain
 		}
 		return err
 	}
-	addr.Uuid = uuid.New().String()
+	addr.UUID = uuid.New().String()
 	if err = addressRepo.Insert(ctx, addr); err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
@@ -257,8 +257,8 @@ func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain
 		return err
 	}
 	if err := supplierRepo.InsertAddress(ctx, domain.SuppliersAddress{
-		SuppliersID: supp.Id,
-		AddressUuiD: addr.Uuid,
+		SuppliersID: supp.ID,
+		AddressUuiD: addr.UUID,
 	}); err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
@@ -268,9 +268,9 @@ func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain
 	return tx.Commit(ctx)
 }
 
-// DeleteProductById implements IProductService.
-func (s *ProductService) DeleteProductById(ctx context.Context, productId int64) error {
-	return s.Products.DeleteById(ctx, productId)
+// DeleteProductByID implements IProductService.
+func (s *ProductService) DeleteProductByID(ctx context.Context, productID int64) error {
+	return s.Products.DeleteByID(ctx, productID)
 }
 
 // InsertIntoInventory implements IProductService.

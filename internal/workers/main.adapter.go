@@ -1,3 +1,4 @@
+// Package workers define worker consume
 package workers
 
 import (
@@ -16,7 +17,7 @@ func NewAdapter(writer *Writer) types.IAdapter {
 }
 
 // Run implements types.IAdapter.
-func (a *Adapter) Run(addr string) error {
+func (a *Adapter) Run(_ string) error {
 	return fmt.Errorf("service unavailable")
 }
 

@@ -1,3 +1,4 @@
+// Package controller account management implementation
 package controller
 
 import (

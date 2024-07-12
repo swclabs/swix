@@ -1,3 +1,4 @@
+// Package types define internal types
 package types
 
 type IAdapter interface {

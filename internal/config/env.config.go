@@ -1,3 +1,4 @@
+// Package config contains all environment variables
 package config
 
 import (
@@ -61,12 +62,12 @@ var (
 	FeHomepage        = os.Getenv("FE_HOMEPAGE")
 	Auth0ClientID     = os.Getenv("AUTH0_CLIENT_ID")
 	Auth0ClientSecret = os.Getenv("AUTH0_CLIENT_SECRET")
-	Auth0CallbackUrl  = os.Getenv("AUTH0_CALLBACK_URL")
+	Auth0CallbackURL  = os.Getenv("AUTH0_CALLBACK_URL")
 )
 
 // Cloudinary
 var (
-	CloudinaryUrl = os.Getenv("CLOUDINARY_URL")
+	CloudinaryURL = os.Getenv("CLOUDINARY_URL")
 )
 
 var NumberOfWorker = 10

@@ -1,6 +1,4 @@
-// Package accounts
-// Author: Duc Hung Ho @kyeranyo
-// Description: account repository implementation
+// Package accounts account repository implementation
 package accounts
 
 import (

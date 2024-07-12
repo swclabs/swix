@@ -3,7 +3,7 @@ package domain
 // Addresses Table
 type Addresses struct {
 	ID       int64  `json:"id" db:"id"`
-	Uuid     string `json:"uuid" db:"uuid"`
+	UUID     string `json:"uuid" db:"uuid"`
 	City     string `json:"city" db:"city"`
 	Ward     string `json:"ward" db:"ward"`
 	District string `json:"district" db:"district"`

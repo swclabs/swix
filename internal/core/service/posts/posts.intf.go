@@ -17,14 +17,14 @@ type IPostsService interface {
 
 	// UploadCollectionsImage uploads a new image of collection.
 	// ctx is the context to manage the request's lifecycle.
-	// cardBannerId contains the id of collection to be uploaded.
+	// cardBannerID contains the id of collection to be uploaded.
 	// fileHeader is  the header of the file to be uploaded
 	// Returns an error if any issues occur during the upload process.
-	UploadCollectionsImage(ctx context.Context, cardBannerId string, fileHeader *multipart.FileHeader) error
+	UploadCollectionsImage(ctx context.Context, cardBannerID string, fileHeader *multipart.FileHeader) error
 
 	// SlicesOfCollections return a slices of collection.
 	// ctx is the context to manage the request's lifecycle.
-	// cardBannerId contains the id of collection to be returns.
+	// cardBannerID contains the id of collection to be returns.
 	// limit is the maximum number of Collection to retrieve.
 	// Returns an error if any issues occur during the upload process.
 	SlicesOfCollections(ctx context.Context, position string, limit int) (*domain.CollectionSliceSchema, error)

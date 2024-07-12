@@ -6,7 +6,6 @@
  * * RUN APPLICATION CLI, IF YOU DON'T WANT TO RUN CLI APP
  * * SEE: server/main.go and worker/main.go
  */
-
 package main
 
 import (
@@ -22,19 +21,17 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var Command = []*cli.Command{
+var command = []*cli.Command{
 	{
 		Name:    "worker",
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-
 			if config.StageStatus == "prod" {
 				boot.PrepareFor(boot.WorkerConsume | boot.ProdMode)
 			} else {
 				boot.PrepareFor(boot.WorkerConsume | boot.DebugMode)
 			}
-
 			app := boot.NewApp(boot.NewWorker, workers.NewAdapter)
 			app.Run()
 			return nil
@@ -45,13 +42,11 @@ var Command = []*cli.Command{
 		Aliases: []string{"s"},
 		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
-
 			if config.StageStatus == "prod" {
 				boot.PrepareFor(boot.RestAPI | boot.ProdMode)
 			} else {
 				boot.PrepareFor(boot.RestAPI | boot.DebugMode)
 			}
-
 			app := boot.NewApp(boot.NewServer, wapi.NewAdapter)
 			app.Run()
 			return nil
@@ -59,13 +54,13 @@ var Command = []*cli.Command{
 	},
 }
 
-func NewClient() *cli.App {
+func newClient() *cli.App {
 	newApp := &cli.App{
 		Name:        "swipe",
 		Usage:       "swipe",
 		Version:     "0.0.1",
 		Description: "Swipe API server cli",
-		Commands:    Command,
+		Commands:    command,
 	}
 
 	sort.Sort(cli.FlagsByName(newApp.Flags))
@@ -75,7 +70,7 @@ func NewClient() *cli.App {
 }
 
 func main() {
-	client := NewClient()
+	client := newClient()
 
 	if err := client.Run(os.Args); err != nil {
 		log.Fatal(err)

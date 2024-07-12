@@ -1,3 +1,4 @@
+// Package worker define worker writer engine
 package worker
 
 import (

@@ -21,7 +21,7 @@ var _ IOrdersRepository = (*Orders)(nil)
 // InsertProduct implements IOrdersRepository.
 func (orders *Orders) InsertProduct(ctx context.Context, product domain.ProductInOrder) error {
 	return orders.db.SafeWrite(ctx, insertProductToOrder,
-		product.OrderId, product.InventoryId, product.Quantity, "VND",
+		product.OrderID, product.InventoryID, product.Quantity, "VND",
 		product.TotalAmount.String(),
 	)
 }
@@ -29,6 +29,6 @@ func (orders *Orders) InsertProduct(ctx context.Context, product domain.ProductI
 // Create implements IOrdersRepository.
 func (orders *Orders) Create(ctx context.Context, order domain.Orders) (int64, error) {
 	return orders.db.SafeWriteReturn(ctx, insertOrder,
-		order.Uuid, order.UserId, "active", order.TotalAmount.String(),
+		order.UUID, order.UserID, "active", order.TotalAmount.String(),
 	)
 }

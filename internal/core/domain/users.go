@@ -2,7 +2,7 @@ package domain
 
 // Users :Table users
 type Users struct {
-	Id          int64  `json:"id" db:"id"`
+	ID          int64  `json:"id" db:"id"`
 	Email       string `json:"email" db:"email"`
 	PhoneNumber string `json:"phone_number" db:"phone_number"`
 	FirstName   string `json:"first_name" db:"first_name"`
@@ -48,7 +48,7 @@ type LoginMessage struct {
 
 // UserSchema schema
 type UserSchema struct {
-	Id          int64  `json:"id" validate:"required" db:"id"`
+	ID          int64  `json:"id" validate:"required" db:"id"`
 	Email       string `json:"email" validate:"email,required" db:"email"`
 	PhoneNumber string `json:"phone_number" validate:"number,required" db:"phone_number"`
 	FirstName   string `json:"first_name" validate:"required" db:"first_name"`
@@ -60,7 +60,7 @@ type UserSchema struct {
 
 // UserUpdate schema
 type UserUpdate struct {
-	Id          int64  `json:"id" validate:"required"`
+	ID          int64  `json:"id" validate:"required"`
 	Email       string `json:"email" validate:"email,required"`
 	PhoneNumber string `json:"phone_number" validate:"number,required"`
 	FirstName   string `json:"first_name" validate:"required"`

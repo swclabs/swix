@@ -1,5 +1,4 @@
-// account management adapter
-
+// Package wapi account management
 package wapi
 
 import (
@@ -14,6 +13,7 @@ type _AccountManagementAdapter struct {
 
 var _ types.IAdapter = (*_AccountManagementAdapter)(nil)
 
+// NewAccountManagementsAdapter returns a new adapter wrapping around the given server
 func NewAccountManagementsAdapter(
 	server IServer,
 	router router.IAccountManagement,
@@ -34,6 +34,6 @@ func (accountManagement *_AccountManagementAdapter) Routers() []string {
 }
 
 // StartWorker implements types.IAdapter.
-func (accountManagement *_AccountManagementAdapter) StartWorker(concurrency int) error {
+func (accountManagement *_AccountManagementAdapter) StartWorker(_ int) error {
 	return fmt.Errorf("services unavailable")
 }

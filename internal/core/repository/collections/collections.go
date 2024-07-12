@@ -20,10 +20,10 @@ func New(conn db.IDatabase) ICollections {
 }
 
 func (collection *Collections) UploadCollectionImage(
-	ctx context.Context, collectionId string, url string) error {
+	ctx context.Context, collectionID string, url string) error {
 	return collection.db.SafeWrite(
 		ctx, updateCollectionImage,
-		url, collectionId,
+		url, collectionID,
 	)
 }
 

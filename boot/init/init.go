@@ -1,8 +1,9 @@
+// Package init start all deps packages
 package init
 
 import (
-	_ "swclabs/swipecore/docs"
+	_ "swclabs/swipecore/docs" // start swagger
 
-	_ "github.com/golang-migrate/migrate/v4/database/postgres"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres" // prepare migration
+	_ "github.com/golang-migrate/migrate/v4/source/file"       // prepare migration
 )

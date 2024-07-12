@@ -1,24 +1,18 @@
+// Package boot implement worker consume for swipe application
 /*
-Package boot implement worker consume for swipe application
-
-Example:
-
-	package main
-
-	import (
-		"log"
-
-		"swclabs/swipecore/boot"
-	)
-
-	func main() {
-		w := boot.NewWorker()
-		if err := w.Run(10); err != nil {
-			log.Fatal(err)
-		}
-	}
-*/
-
+ * Example:
+ *	package main
+ *	import (
+ *		"log"
+ *		"swclabs/swipecore/boot"
+ *  )
+ * 	func main() {
+ *		w := boot.NewWorker()
+ *		if err := w.Run(10); err != nil {
+ *			log.Fatal(err)
+ *		}
+ *	}
+ */
 package boot
 
 import (

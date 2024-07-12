@@ -1,3 +1,4 @@
+// Package collections implements collections
 package collections
 
 import (
@@ -31,6 +32,6 @@ func (c *cache) SlicesOfCollections(ctx context.Context, position string, limit 
 }
 
 // UploadCollectionImage implements ICollections.
-func (c *cache) UploadCollectionImage(ctx context.Context, collectionId string, url string) error {
-	return c.collection.UploadCollectionImage(ctx, collectionId, url)
+func (c *cache) UploadCollectionImage(ctx context.Context, collectionID string, url string) error {
+	return c.collection.UploadCollectionImage(ctx, collectionID, url)
 }

@@ -24,10 +24,10 @@ type IProductRepository interface {
 	// urlImg is the new image URL to be uploaded.
 	// id is the ID of the product to be updated.
 	// Returns an error if any issues occur during the update process.
-	UploadNewImage(ctx context.Context, urlImg string, id int) error
+	UploadNewImage(ctx context.Context, urlImg string, ID int) error
 
-	GetById(ctx context.Context, productId int64) (*domain.Products, error)
-	DeleteById(ctx context.Context, Id int64) error
+	GetByID(ctx context.Context, productID int64) (*domain.Products, error)
+	DeleteByID(ctx context.Context, ID int64) error
 	Update(ctx context.Context, product domain.Products) error
 	Search(ctx context.Context, keyword string) ([]domain.Products, error)
 }

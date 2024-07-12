@@ -116,7 +116,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, domain.CollectionUploadSchema{
 		Msg: "collection uploaded successfully",
-		Id:  id,
+		ID:  id,
 	})
 }
 

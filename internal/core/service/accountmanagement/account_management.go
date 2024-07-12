@@ -1,14 +1,11 @@
-// Package service
-// Author: Duc Hung Ho @kyeranyo
-// Description: account management service implementation
-//
+// Package accountmanagement account management service implementation
 // Three layer
+//
 //		Controller_____
 //		|			   |
 //		Service _______|___ Domain
 //	 	|			   |
 //	 	Repository ____|
-
 package accountmanagement
 
 import (
@@ -92,7 +89,7 @@ func (manager *AccountManagement) SignUp(ctx context.Context, req domain.SignUpS
 	}
 
 	if err := accountRepo.Insert(ctx, domain.Account{
-		Username: fmt.Sprintf("user#%d", userInfo.Id),
+		Username: fmt.Sprintf("user#%d", userInfo.ID),
 		Password: hashPassword,
 		Role:     "Customer",
 		Email:    req.Email,
@@ -133,7 +130,7 @@ func (manager *AccountManagement) UpdateUserInfo(
 	ctx context.Context, req domain.UserUpdate) error {
 	// call repository layer
 	return manager.User.SaveInfo(ctx, domain.Users{
-		Id:          req.Id,
+		ID:          req.ID,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,
@@ -195,7 +192,7 @@ func (manager *AccountManagement) OAuth2SaveUser(
 		return err
 	}
 	if err := accountRepo.Insert(ctx, domain.Account{
-		Username: fmt.Sprintf("user#%d", userInfo.Id),
+		Username: fmt.Sprintf("user#%d", userInfo.ID),
 		Password: hash,
 		Role:     "Customer",
 		Email:    req.Email,

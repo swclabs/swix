@@ -1,6 +1,4 @@
-// Package users
-// Author: Duc Hung Ho @kyeranyo
-// Description: users repository implementation
+// Package users users repository implementation
 package users
 
 import (

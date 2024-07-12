@@ -19,18 +19,18 @@ const (
 		LIMIT $1;
 	`
 
-	selectById string = `
+	selectByID string = `
 		SELECT *
 		FROM products
 		WHERE id = $1;
 	`
 
-	deleteById = `
+	deleteByID = `
 		DELETE FROM products
 		WHERE id = $1;
 	`
 
-	updateById = `
+	updateByID = `
 		UPDATE products
 		SET 
 			name = $1,

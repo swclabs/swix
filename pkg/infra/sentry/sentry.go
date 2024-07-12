@@ -1,3 +1,4 @@
+// Package sentry connect to sentry server
 package sentry
 
 import (
@@ -29,7 +30,7 @@ func Init() {
 func CaptureMessage(c echo.Context, message string) {
 	if config.StageStatus != "dev" {
 		if hub := sentryecho.GetHubFromContext(c); hub != nil {
-			hub.WithScope(func(scope *sentry.Scope) {
+			hub.WithScope(func(_ *sentry.Scope) {
 				// scope.SetExtra("unwantedQuery", "someQueryDataMaybe")
 				hub.CaptureMessage(message)
 			})

@@ -1,3 +1,4 @@
+// Package valid are valid struct fields
 package valid
 
 import (

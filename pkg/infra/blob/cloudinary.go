@@ -1,3 +1,4 @@
+// Package blob connect to blob storage service
 package blob
 
 import (
@@ -27,23 +28,23 @@ type BlobStorage struct {
 }
 
 func New(lc fx.Lifecycle) IBlobStorage {
-	var err error = nil
+	var err error
 	if cld == nil {
 		lockCld.Lock()
 		defer lockCld.Unlock()
 		if cld == nil {
-			cld, err = cloudinary.NewFromURL(config.CloudinaryUrl)
+			cld, err = cloudinary.NewFromURL(config.CloudinaryURL)
 		}
 	}
 	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
+		OnStart: func(_ context.Context) error {
 			if err != nil {
 				return err
 			}
 			fmt.Printf("[SWIPE]-v%s ===============> connect to cloudinary\n", config.Version)
 			return nil
 		},
-		OnStop: func(ctx context.Context) error {
+		OnStop: func(_ context.Context) error {
 			fmt.Printf("[SWIPE]-v%s ===============> closed cloudinary connection\n", config.Version)
 			return nil
 		},

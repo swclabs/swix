@@ -122,8 +122,8 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 
 	product, err := p.Services.FindDeviceInInventory(c.Request().Context(),
 		domain.InventoryDeviveSpecs{
-			ProductId: pid,
-			Ram:       ram,
+			ProductID: pid,
+			RAM:       ram,
 			Ssd:       ssd,
 			Color:     color,
 		})
@@ -198,19 +198,19 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 // @Success 200 {object} domain.OK
 // @Router /products [DELETE]
 func (p *Products) DeleteProduct(c echo.Context) error {
-	sId := c.QueryParam("pid")
-	if sId == "" {
+	sID := c.QueryParam("pid")
+	if sID == "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "missing param 'pid' required",
 		})
 	}
-	id, err := strconv.ParseInt(sId, 10, 64)
+	id, err := strconv.ParseInt(sID, 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "param 'pid' must be integer",
 		})
 	}
-	if err := p.Services.DeleteProductById(c.Request().Context(), id); err != nil {
+	if err := p.Services.DeleteProductByID(c.Request().Context(), id); err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})
@@ -317,7 +317,7 @@ func (p *Products) CreateProduct(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, domain.CreateProductSchema{
 		Msg: "upload product successfully",
-		Id:  id,
+		ID:  id,
 	})
 }
 

@@ -1,3 +1,4 @@
+// Package products implements products repository
 package products
 
 import (
@@ -18,7 +19,7 @@ func NewProductsMock() *Mock {
 }
 
 // Search implements IProductRepository.
-func (p *Mock) Search(ctx context.Context, keyword string) ([]domain.Products, error) {
+func (p *Mock) Search(_ context.Context, _ string) ([]domain.Products, error) {
 	panic("unimplemented")
 }
 
@@ -29,14 +30,14 @@ func (p *Mock) Update(ctx context.Context, product domain.Products) error {
 }
 
 // DeleteById implements IProductRepository.
-func (p *Mock) DeleteById(ctx context.Context, Id int64) error {
-	args := p.Called(ctx, Id)
+func (p *Mock) DeleteByID(ctx context.Context, ID int64) error {
+	args := p.Called(ctx, ID)
 	return args.Error(0)
 }
 
 // GetById implements IProductRepository.
-func (p *Mock) GetById(ctx context.Context, productId int64) (*domain.Products, error) {
-	args := p.Called(ctx, productId)
+func (p *Mock) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
+	args := p.Called(ctx, productID)
 	return args.Get(0).(*domain.Products), args.Error(1)
 }
 

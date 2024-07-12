@@ -1,3 +1,4 @@
+// Package jwt implements the json web token
 package jwt
 
 import (

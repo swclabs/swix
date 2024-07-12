@@ -1,5 +1,4 @@
-// Package repository
-// Author: Duc Hung Ho @kyeranyo
+// Package addresses  Duc Hung Ho @kyeranyo
 package addresses
 
 import (
@@ -22,6 +21,6 @@ func New(conn db.IDatabase) IAddressRepository {
 func (addr *Addresses) Insert(ctx context.Context, data domain.Addresses) error {
 	return addr.db.SafeWrite(
 		ctx, insertIntoAddresses,
-		data.Street, data.Ward, data.District, data.City, data.Uuid,
+		data.Street, data.Ward, data.District, data.City, data.UUID,
 	)
 }

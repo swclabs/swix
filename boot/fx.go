@@ -1,3 +1,4 @@
+// Package boot define all specific function to start
 package boot
 
 import (
@@ -12,9 +13,13 @@ import (
 )
 
 const (
-	RestAPI       = 1 << iota // 0001
-	WorkerConsume             // 0010
+	// RestAPI flag build web api
+	RestAPI = 1 << iota
+	// WorkerConsume flag build worker
+	WorkerConsume
+	// ProdMode build with production mode
 	ProdMode
+	// DebugMode build with developer mode
 	DebugMode
 )
 
@@ -26,6 +31,7 @@ var (
 	_Logger           = fx.Provide()
 )
 
+// PrepareFor enable build web api or worker consume
 func PrepareFor(flag int) {
 	if flag&RestAPI != 0 {
 		_FxPresenterLayer = wapi.FxModule
@@ -41,7 +47,7 @@ func PrepareFor(flag int) {
 	}
 }
 
-func FxModule() fx.Option {
+func fxModule() fx.Option {
 	return fx.Options(
 		_FxInfrastructure,
 		_FxDataLayer,      // data layer constructor
