@@ -29,6 +29,8 @@ func (r *Products) Routers(e *echo.Echo) {
 	// endpoint for category
 	e.GET("/categories", r.controller.GetCategories)
 	e.POST("/categories", r.controller.InsertCategory)
+	// TODO: implement edit categories here
+	// e.PUT("/categories")
 
 	// endpoint for products
 	e.GET("/products", r.controller.GetProductLimit)
