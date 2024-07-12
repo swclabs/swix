@@ -1,3 +1,4 @@
+// Package router implements the router interface
 package router
 
 import (
@@ -6,20 +7,24 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// IProducts router objects
 type IProducts interface {
 	IRouter
 }
 
+// Products router objects
 type Products struct {
 	controller controller.IProducts
 }
 
+// NewProducts returns a new Products router object
 func NewProducts(controllers controller.IProducts) IProducts {
 	return &Products{
 		controller: controllers,
 	}
 }
 
+// Routers define route endpoint
 func (r *Products) Routers(e *echo.Echo) {
 	// endpoint for category
 	e.GET("/categories", r.controller.GetCategories)

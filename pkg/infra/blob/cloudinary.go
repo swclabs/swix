@@ -1,3 +1,4 @@
+// Package blob connect to blob storage service
 package blob
 
 import (
@@ -16,49 +17,54 @@ import (
 var cld *cloudinary.Cloudinary
 var lockCld = &sync.Mutex{}
 
+// Connection creates a new cloudinary connection.
 func Connection() IBlobStorage {
-	return &BlobStorage{
+	return &Storage{
 		Conn: cld,
 	}
 }
 
-type BlobStorage struct {
+// Storage struct implements IBlobStorage interface
+type Storage struct {
 	Conn *cloudinary.Cloudinary
 }
 
+// New creates a new cloudinary connection.
 func New(lc fx.Lifecycle) IBlobStorage {
-	var err error = nil
+	var err error
 	if cld == nil {
 		lockCld.Lock()
 		defer lockCld.Unlock()
 		if cld == nil {
-			cld, err = cloudinary.NewFromURL(config.CloudinaryUrl)
+			cld, err = cloudinary.NewFromURL(config.CloudinaryURL)
 		}
 	}
 	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
+		OnStart: func(_ context.Context) error {
 			if err != nil {
 				return err
 			}
 			fmt.Printf("[SWIPE]-v%s ===============> connect to cloudinary\n", config.Version)
 			return nil
 		},
-		OnStop: func(ctx context.Context) error {
+		OnStop: func(_ context.Context) error {
 			fmt.Printf("[SWIPE]-v%s ===============> closed cloudinary connection\n", config.Version)
 			return nil
 		},
 	})
-	return &BlobStorage{
+	return &Storage{
 		Conn: cld,
 	}
 }
 
-func (blob *BlobStorage) UploadImages(file interface{}) (UploadResult, error) {
+// UploadImages upload images to cloudinary
+func (blob *Storage) UploadImages(file interface{}) (UploadResult, error) {
 	var ctx = context.Background()
 	return blob.UploadImagesWithContext(ctx, file)
 }
 
-func (blob *BlobStorage) UploadImagesWithContext(ctx context.Context, file interface{}) (UploadResult, error) {
+// UploadImagesWithContext upload images to cloudinary with context
+func (blob *Storage) UploadImagesWithContext(ctx context.Context, file interface{}) (UploadResult, error) {
 	updateResult, err := blob.Conn.Upload.Upload(ctx, file, uploader.UploadParams{
 		ResourceType: "auto",
 		Folder:       "swc-storage",
@@ -66,7 +72,8 @@ func (blob *BlobStorage) UploadImagesWithContext(ctx context.Context, file inter
 	return updateResult, err
 }
 
-func (blob *BlobStorage) UploadFile(ctx context.Context, fileHeader *multipart.FileHeader) (url string, err error) {
+// UploadFile upload file to cloudinary
+func (blob *Storage) UploadFile(ctx context.Context, fileHeader *multipart.FileHeader) (url string, err error) {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return "", err

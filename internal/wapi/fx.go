@@ -1,3 +1,4 @@
+// Package wapi fx define
 package wapi
 
 import (
@@ -7,6 +8,7 @@ import (
 	"go.uber.org/fx"
 )
 
+// FxModule represents constructer of controller, router and server
 var FxModule = fx.Options(
 	controller.FxModule,
 	router.FxModule,

@@ -18,16 +18,16 @@ func useCache(repo ICartRepository) ICartRepository {
 var _ ICartRepository = (*cache)(nil)
 
 // GetCartByUserID implements ICartRepository.
-func (c *cache) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSlices, error) {
-	return c.cart.GetCartByUserID(ctx, userId, limit)
+func (c *cache) GetCartByUserID(ctx context.Context, userID int64, limit int) (*domain.CartSlices, error) {
+	return c.cart.GetCartByUserID(ctx, userID, limit)
 }
 
 // Insert implements ICartRepository.
-func (c *cache) Insert(ctx context.Context, userId int64, inventoryId int64, quantity int64) error {
-	return c.cart.Insert(ctx, userId, inventoryId, quantity)
+func (c *cache) Insert(ctx context.Context, userID int64, inventoryID int64, quantity int64) error {
+	return c.cart.Insert(ctx, userID, inventoryID, quantity)
 }
 
 // RemoveItem implements ICartRepository.
-func (c *cache) RemoveItem(ctx context.Context, inventoryId int64, userId int64) error {
-	return c.cart.RemoveItem(ctx, inventoryId, userId)
+func (c *cache) RemoveItem(ctx context.Context, inventoryID int64, userID int64) error {
+	return c.cart.RemoveItem(ctx, inventoryID, userID)
 }

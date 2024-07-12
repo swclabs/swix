@@ -1,6 +1,4 @@
-// Package users
-// Author: Duc Hung Ho @kyeranyo
-// Description: users repository implementation
+// Package users users repository implementation
 package users
 
 import (
@@ -11,10 +9,12 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Users repository implementation
 type Users struct {
 	db db.IDatabase
 }
 
+// New creates a new instance of IUserRepository.
 func New(conn db.IDatabase) IUserRepository {
 	return useCache(&Users{conn})
 }

@@ -6,7 +6,7 @@ const (
 		VALUES ($1, $2, $3);
 	`
 
-	selectByUserId = `
+	selectByUserID = `
 		SELECT * FROM carts 
 		WHERE user_id = $1
 		LIMIT $2;

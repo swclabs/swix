@@ -1,3 +1,4 @@
+// Package workers define worker consume
 package workers
 
 import (
@@ -9,6 +10,7 @@ import (
 	"go.uber.org/fx"
 )
 
+// FxModule module of package workers
 var FxModule = fx.Options(
 	fx.Provide(
 		queue.New,

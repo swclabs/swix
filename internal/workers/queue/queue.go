@@ -1,3 +1,4 @@
+// Package queue define queue name
 package queue
 
 import (
@@ -6,14 +7,22 @@ import (
 )
 
 var (
+	// CriticalQueue define critical queue
 	CriticalQueue = "critical"
-	DefaultQueue  = "default"
-	LowQueue      = "low"
+
+	// DefaultQueue define default queue
+	DefaultQueue = "default"
+
+	// LowQueue define low queue
+	LowQueue = "low"
 )
 
 var (
+	// OrderQueue define order queue
 	OrderQueue = "order"
-	Purchase   = "purchase"
+
+	// Purchase define purchase queue
+	Purchase = "purchase"
 )
 
 var _ = initQueue()
@@ -35,6 +44,8 @@ func initQueue() error {
 	}
 	return nil
 }
+
+// New return worker priority
 func New() worker.Priority {
 	return worker.Priority{
 		CriticalQueue: 6, // processed 60% of the time

@@ -19,6 +19,7 @@ type _Server struct {
 
 var _ IServer = &_Server{}
 
+// NewServer creates a new instance of the Server
 func NewServer(docs router.IDocs, common router.ICommon) IServer {
 	sentry.Init()
 	server := &_Server{
@@ -55,7 +56,7 @@ func (server *_Server) initMiddleware() {
 }
 
 func (server *_Server) Routes() []string {
-	var path []string = make([]string, 0)
+	var path = make([]string, 0)
 	for _, route := range server.engine.Routes() {
 		if route != nil {
 			path = append(path,

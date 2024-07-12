@@ -1,3 +1,4 @@
+// Package handler implements handler of worker
 package handler
 
 import (
@@ -11,17 +12,20 @@ import (
 	"github.com/hibiken/asynq"
 )
 
+// Common struct define the Common object
 type Common struct {
 	common.Task                       // embedded delay function here
 	handler     common.ICommonService // create handler for services
 }
 
+// NewCommonConsume creates a new Common object
 func NewCommonConsume(_common common.ICommonService) *Common {
 	return &Common{
 		handler: _common,
 	}
 }
 
+// HandleHealthCheck handle health check
 func (common *Common) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
 	// get task name from delay function
 	taskName = worker.GetTaskName(common.WorkerCheckResult)

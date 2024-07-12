@@ -1,3 +1,4 @@
+// Package cache connect to redis
 package cache
 
 import (
@@ -11,6 +12,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
+// New creates a new redis connection.
 func New(lc fx.Lifecycle) *redis.Client {
 	conn := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", config.RedisHost, config.RedisPort),
@@ -18,10 +20,10 @@ func New(lc fx.Lifecycle) *redis.Client {
 		DB:       0,
 	})
 	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
+		OnStart: func(_ context.Context) error {
 			return nil
 		},
-		OnStop: func(ctx context.Context) error {
+		OnStop: func(_ context.Context) error {
 			return conn.Close()
 		},
 	})

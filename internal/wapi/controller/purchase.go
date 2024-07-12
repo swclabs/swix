@@ -1,3 +1,4 @@
+// Package controller purchase controller for handling purchase request.
 package controller
 
 import (
@@ -11,23 +12,26 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// IPurchase interface for purchase controller
 type IPurchase interface {
 	AddToCarts(c echo.Context) error
 	GetCarts(c echo.Context) error
 	DeleteItem(c echo.Context) error
 }
 
+// Purchase struct implementation of IPurchase
 type Purchase struct {
 	services purchase.IPurchaseService
 }
 
 var _ IPurchase = (*Purchase)(nil)
 
+// NewPurchase creates a new Purchase object
 func NewPurchase(services purchase.IPurchaseService) IPurchase {
 	return &Purchase{services: services}
 }
 
-// AddToCarts
+// AddToCarts .
 // @Description add item to carts.
 // @Tags purchase
 // @Accept json
@@ -57,7 +61,7 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 	})
 }
 
-// GetCarts
+// GetCarts .
 // @Description get list of items from carts
 // @Tags purchase
 // @Accept json
@@ -66,19 +70,19 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 // @Success 200 {object} domain.CartSlices
 // @Router /purchase/carts [GET]
 func (purchase *Purchase) GetCarts(c echo.Context) error {
-	sUserId := c.QueryParam("uid")
-	if sUserId == "" {
+	sUserID := c.QueryParam("uid")
+	if sUserID == "" {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "missing 'uid' required",
 		})
 	}
-	userId, err := strconv.ParseInt(sUserId, 10, 64)
+	userID, err := strconv.ParseInt(sUserID, 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, domain.Error{
 			Msg: "'uid' must be a positive integer",
 		})
 	}
-	items, err := purchase.services.GetCart(c.Request().Context(), userId, 10)
+	items, err := purchase.services.GetCart(c.Request().Context(), userID, 10)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
@@ -87,7 +91,7 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 	return c.JSON(http.StatusOK, *items)
 }
 
-// DeleteItem
+// DeleteItem .
 // @Description delete item from carts
 // @Tags purchase
 // @Accept json
@@ -99,7 +103,7 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 func (purchase *Purchase) DeleteItem(c echo.Context) error {
 	var (
 		ids  = make(map[string]string)
-		iIds = make(map[string]int64)
+		iIDs = make(map[string]int64)
 	)
 	const (
 		uid = "uid"
@@ -120,11 +124,11 @@ func (purchase *Purchase) DeleteItem(c echo.Context) error {
 				Msg: fmt.Sprintf(" param '%s' must be integer", key),
 			})
 		}
-		iIds[key] = id
+		iIDs[key] = id
 	}
 
 	if err := purchase.services.
-		DeleteItemFromCart(c.Request().Context(), iIds[uid], iIds[wid]); err != nil {
+		DeleteItemFromCart(c.Request().Context(), iIDs[uid], iIDs[wid]); err != nil {
 		return c.JSON(http.StatusInternalServerError, domain.Error{
 			Msg: err.Error(),
 		})

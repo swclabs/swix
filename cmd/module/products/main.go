@@ -1,4 +1,5 @@
 /**
+ * package main
  * A: Ho Duc Hung <hunghd.dev@gmail.com> @kyeranyo
  * This is Graduation project in computer science
  * 2023 - Ho Chi Minh City University of Technology, VNUHCM
@@ -6,7 +7,6 @@
  * * RUN APPLICATION CLI, IF YOU DON'T WANT TO RUN CLI APP
  * * SEE: server/main.go and worker/main.go
  */
-
 package main
 
 import (
@@ -24,7 +24,7 @@ import (
 	_ "swclabs/swipecore/docs"
 )
 
-var Command = []*cli.Command{
+var command = []*cli.Command{
 	{
 		Name:    "worker",
 		Aliases: []string{"w"},
@@ -57,13 +57,13 @@ var Command = []*cli.Command{
 	},
 }
 
-func NewClient() *cli.App {
+func newClient() *cli.App {
 	newApp := &cli.App{
 		Name:        "swipe",
 		Usage:       "Swipe Project",
 		Version:     "0.0.1",
 		Description: "Swipe Products API server",
-		Commands:    Command,
+		Commands:    command,
 	}
 
 	sort.Sort(cli.FlagsByName(newApp.Flags))
@@ -73,7 +73,7 @@ func NewClient() *cli.App {
 }
 
 func main() {
-	client := NewClient()
+	client := newClient()
 
 	if err := client.Run(os.Args); err != nil {
 		log.Fatal(err)

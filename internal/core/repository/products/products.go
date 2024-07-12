@@ -1,5 +1,4 @@
-// Package products
-// Author: Duc Hung Ho @kyeranyo
+// Package products implements product
 package products
 
 import (
@@ -9,12 +8,14 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Products struct for product repository
 type Products struct {
 	db db.IDatabase
 }
 
 var _ IProductRepository = (*Products)(nil)
 
+// New creates a new Products object
 func New(conn db.IDatabase) IProductRepository {
 	return useCache(&Products{
 		db: conn,
@@ -37,22 +38,22 @@ func (product *Products) Search(ctx context.Context, keyword string) ([]domain.P
 // Update implements IProductRepository.
 func (product *Products) Update(ctx context.Context, prod domain.Products) error {
 	return errors.Repository("safely write data",
-		product.db.SafeWrite(ctx, updateById,
+		product.db.SafeWrite(ctx, updateByID,
 			prod.Name, prod.Price, prod.Description, prod.SupplierID,
 			prod.CategoryID, prod.Spec, prod.Status, prod.ID,
 		),
 	)
 }
 
-// DeleteById implements IProductRepository.
-func (product *Products) DeleteById(ctx context.Context, Id int64) error {
+// DeleteByID implements IProductRepository.
+func (product *Products) DeleteByID(ctx context.Context, ID int64) error {
 	return errors.Repository(
-		"safely write data", product.db.SafeWrite(ctx, deleteById, Id))
+		"safely write data", product.db.SafeWrite(ctx, deleteByID, ID))
 }
 
-// GetById implements IProductRepository.
-func (product *Products) GetById(ctx context.Context, productId int64) (*domain.Products, error) {
-	rows, err := product.db.Query(ctx, selectById, productId)
+// GetByID implements IProductRepository.
+func (product *Products) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
+	rows, err := product.db.Query(ctx, selectByID, productID)
 	if err != nil {
 		return nil, errors.Repository("query", err)
 	}

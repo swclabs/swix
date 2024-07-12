@@ -1,9 +1,11 @@
+// Package errors are returned error messages layer
 package errors
 
 import (
 	"fmt"
 )
 
+// Repository function return error message
 func Repository(msg string, err error) error {
 	if err == nil {
 		return nil
@@ -12,6 +14,7 @@ func Repository(msg string, err error) error {
 	return fmt.Errorf("[repository '%s'] %v ", msg, err)
 }
 
+// Service function return error message
 func Service(msg string, err error) error {
 	if err == nil {
 		return nil

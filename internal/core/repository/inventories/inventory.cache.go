@@ -1,3 +1,4 @@
+// Package inventories implement inventories
 package inventories
 
 import (
@@ -21,14 +22,14 @@ func (c *cache) GetLimit(ctx context.Context, limit int, offset int) ([]domain.I
 }
 
 // GetByProductId implements IInventoryRepository.
-func (c *cache) GetByProductId(ctx context.Context, productId int64) ([]domain.Inventories, error) {
+func (c *cache) GetByProductID(_ context.Context, _ int64) ([]domain.Inventories, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
 // GetById implements IInventoryRepository.
-func (c *cache) GetById(ctx context.Context, inventoryId int64) (*domain.Inventories, error) {
-	return c.inventory.GetById(ctx, inventoryId)
+func (c *cache) GetByID(ctx context.Context, inventoryID int64) (*domain.Inventories, error) {
+	return c.inventory.GetByID(ctx, inventoryID)
 }
 
 // FindDevice implements IInventoryRepository.

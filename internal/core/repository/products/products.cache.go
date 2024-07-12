@@ -26,13 +26,13 @@ func (c *cache) Update(ctx context.Context, product domain.Products) error {
 }
 
 // DeleteById implements IProductRepository.
-func (c *cache) DeleteById(ctx context.Context, Id int64) error {
-	return c.products.DeleteById(ctx, Id)
+func (c *cache) DeleteByID(ctx context.Context, ID int64) error {
+	return c.products.DeleteByID(ctx, ID)
 }
 
 // GetById implements IProductRepository.
-func (c *cache) GetById(ctx context.Context, productId int64) (*domain.Products, error) {
-	return c.products.GetById(ctx, productId)
+func (c *cache) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
+	return c.products.GetByID(ctx, productID)
 }
 
 // GetLimit implements IProductRepository.

@@ -53,6 +53,7 @@ func customLevelEncoder(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) 
 	enc.AppendString(fmt.Sprintf("[%s] %s", Green.Add("SWIPE"), Red.Add(level.CapitalString())))
 }
 
+// Info logs an info message
 func Info(msg string) {
 	logger, err := config.Build()
 	if err != nil {

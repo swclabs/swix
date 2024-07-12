@@ -2,11 +2,12 @@ package domain
 
 // Suppliers table
 type Suppliers struct {
-	Id    string `json:"id" db:"id"`
+	ID    string `json:"id" db:"id"`
 	Name  string `json:"name" db:"name"`
 	Email string `json:"email" db:"email"`
 }
 
+// SuppliersAddress table
 type SuppliersAddress struct {
 	SuppliersID string `json:"suppliers_id" db:"suppliers_id"`
 	AddressUuiD string `json:"address_uuid" db:"address_uuid"`
@@ -14,6 +15,7 @@ type SuppliersAddress struct {
 
 /*****************************************************************************/
 
+// SupplierSchema request, response
 type SupplierSchema struct {
 	Name     string `json:"name" validate:"required"`
 	Email    string `json:"email" validate:"email,required"`

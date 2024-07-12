@@ -1,3 +1,4 @@
+// Package db connect to database
 package db
 
 import (
@@ -13,17 +14,19 @@ import (
 )
 
 var (
-	pgxConnection *pgxpool.Pool = nil
-	lock          *sync.Mutex   = &sync.Mutex{}
-	writeLock     *sync.Mutex   = &sync.Mutex{}
+	pgxConnection *pgxpool.Pool
+	lock          = &sync.Mutex{}
+	writeLock     = &sync.Mutex{}
 )
 
+// Database struct to hold the connection pool
 type Database struct {
 	pool      *pgxpool.Pool
 	lock      *sync.Mutex
 	writeLock *sync.Mutex
 }
 
+// GetPool returns the database connection pool.
 func GetPool() IDatabase {
 	return &Database{
 		pool:      pgxConnection,
@@ -34,12 +37,13 @@ func GetPool() IDatabase {
 
 var _ IDatabase = (*Database)(nil)
 
+// New creates a new database connection.
 func New(lc fx.Lifecycle) IDatabase {
 	var (
 		dsn = fmt.Sprintf(
 			"postgres://%s:%s@%s:%s/%s",
 			config.DbUser, config.DbPassword, config.DbHost, config.DbPort, config.DbName)
-		err error = nil
+		err error
 	)
 	if pgxConnection == nil {
 		lock.Lock()
@@ -49,14 +53,14 @@ func New(lc fx.Lifecycle) IDatabase {
 		}
 	}
 	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
+		OnStart: func(_ context.Context) error {
 			if err != nil {
 				return err
 			}
 			fmt.Printf("[SWIPE]-v%s ===============> connect to PostgreSQL\n", config.Version)
 			return nil
 		},
-		OnStop: func(ctx context.Context) error {
+		OnStop: func(_ context.Context) error {
 			pgxConnection.Close()
 			fmt.Printf("[SWIPE]-v%s ===============> closed PostgreSQL connection\n", config.Version)
 			return nil

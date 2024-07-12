@@ -1,3 +1,4 @@
+// Package workers define worker consume
 package workers
 
 import (
@@ -5,10 +6,12 @@ import (
 	"swclabs/swipecore/internal/types"
 )
 
+// Adapter struct define the Adapter object
 type Adapter struct {
 	engine *Writer
 }
 
+// NewAdapter creates a new Adapter object
 func NewAdapter(writer *Writer) types.IAdapter {
 	return &Adapter{
 		engine: writer,
@@ -16,7 +19,7 @@ func NewAdapter(writer *Writer) types.IAdapter {
 }
 
 // Run implements types.IAdapter.
-func (a *Adapter) Run(addr string) error {
+func (a *Adapter) Run(_ string) error {
 	return fmt.Errorf("service unavailable")
 }
 

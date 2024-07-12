@@ -1,3 +1,4 @@
+// Package middleware This file contains the middleware for protected routes.
 package middleware
 
 import (
@@ -10,6 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Protected middleware
 func Protected(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// authHeader := c.Request().Header["Authorization"]
@@ -31,6 +33,7 @@ func Protected(next echo.HandlerFunc) echo.HandlerFunc {
 	}
 }
 
+// SessionProtected middleware
 func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		// session := sessions.Default(c)

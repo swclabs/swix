@@ -2,8 +2,9 @@ package domain
 
 import "github.com/shopspring/decimal"
 
+// Inventories table
 type Inventories struct {
-	Id           string          `json:"id" db:"id"`
+	ID           string          `json:"id" db:"id"`
 	ProductID    int64           `json:"product_id" db:"product_id"`
 	Model        string          `json:"model" db:"model"`
 	Specs        string          `json:"specs" db:"specs"`
@@ -15,8 +16,9 @@ type Inventories struct {
 
 /*****************************************************************************/
 
+// Inventory table request, response
 type Inventory struct {
-	Id           string `json:"id" db:"id"`
+	ID           string `json:"id" db:"id"`
 	ProductID    string `json:"product_id" db:"product_id"`
 	Price        string `json:"price" db:"price"`
 	Model        string `json:"model" db:"model"`
@@ -25,14 +27,16 @@ type Inventory struct {
 	CurrencyCode string `json:"currency_code" db:"currency_code"`
 }
 
+// InventorySpecsDetail request, response
 type InventorySpecsDetail struct {
 	Color      string `json:"color"`
-	Ram        string `json:"ram"`
+	RAM        string `json:"ram"`
 	Ssd        string `json:"ssd"`
 	ColorImage string `json:"color_image"`
 	Image      string `json:"image"`
 }
 
+// InventoryStruct request, response
 type InventoryStruct struct {
 	ProductID    string               `json:"product_id" validate:"required"`
 	Price        string               `json:"price" validate:"number,required"`
@@ -42,11 +46,13 @@ type InventoryStruct struct {
 	Specs        InventorySpecsDetail `json:"specs"`
 }
 
+// InventorySchema response, request
 type InventorySchema struct {
-	Id string `json:"id"`
+	ID string `json:"id"`
 	InventoryStruct
 }
 
+// InventoryStockSchema response, request
 type InventoryStockSchema struct {
 	All     int               `json:"all"`
 	Active  int               `json:"active"`
@@ -57,9 +63,10 @@ type InventoryStockSchema struct {
 	Stock   []InventorySchema `json:"stock"`
 }
 
+// InventoryDeviveSpecs request, response
 type InventoryDeviveSpecs struct {
-	ProductId string `json:"product_id"`
-	Ram       string `json:"ram"`
+	ProductID string `json:"product_id"`
+	RAM       string `json:"ram"`
 	Ssd       string `json:"sd"`
 	Color     string `json:"color"`
 }

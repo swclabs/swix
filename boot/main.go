@@ -62,18 +62,20 @@ import (
 
 	"go.uber.org/fx"
 
-	_ "swclabs/swipecore/boot/init"
+	_ "swclabs/swipecore/boot/init" // init package deps, like docs, migration
 )
 
+// IServer connect and run via adapter (webapi, worker, rpc)
 type IServer interface {
 	Connect(adapter types.IAdapter) error
 }
 
-func NewApp(serverContructor func() IServer, adapterConstructors ...interface{}) *fx.App {
+// NewApp used to create Fx Application
+func NewApp(serverConstructor func() IServer, adapterConstructors ...interface{}) *fx.App {
 	return fx.New(
-		FxModule(),
+		fxModule(),
 		fx.Provide(adapterConstructors...),
-		fx.Provide(serverContructor),
+		fx.Provide(serverConstructor),
 		fx.Invoke(Main),
 	)
 }
@@ -92,7 +94,7 @@ func NewApp(serverContructor func() IServer, adapterConstructors ...interface{})
 //	app.Run()
 func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
+		OnStart: func(_ context.Context) error {
 			fmt.Printf("[SWIPE]-v%s ===============> server starting\n", config.Version)
 			if err := db.MigrateUp(); err != nil {
 				return err
@@ -102,7 +104,7 @@ func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 			}()
 			return nil
 		},
-		OnStop: func(ctx context.Context) error {
+		OnStop: func(_ context.Context) error {
 			fmt.Printf("[SWIPE]-v%s ===============> server stopping\n", config.Version)
 			return nil
 		},

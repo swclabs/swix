@@ -1,3 +1,4 @@
+// Package logger colors
 package logger
 
 import "fmt"

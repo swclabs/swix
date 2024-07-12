@@ -1,3 +1,4 @@
+// Package carts carts repository implementation
 package carts
 
 import (
@@ -7,27 +8,29 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+// Mock struct for carts repository
 type Mock struct {
 	mock.Mock
 }
 
 var _ ICartRepository = (*Mock)(nil)
 
+// NewCartsMock returns a new Mock object
 func NewCartsMock() *Mock {
 	return &Mock{}
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Mock) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSlices, error) {
+func (c *Mock) GetCartByUserID(_ context.Context, _ int64, _ int) (*domain.CartSlices, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.ICartRepository.
-func (c *Mock) Insert(ctx context.Context, userId int64, inventoryId int64, quantity int64) error {
+func (c *Mock) Insert(_ context.Context, _ int64, _ int64, _ int64) error {
 	panic("unimplemented")
 }
 
 // RemoveItem implements domain.ICartRepository.
-func (c *Mock) RemoveItem(ctx context.Context, inventoryId int64, userId int64) error {
+func (c *Mock) RemoveItem(_ context.Context, _ int64, _ int64) error {
 	panic("unimplemented")
 }

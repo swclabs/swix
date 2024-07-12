@@ -1,3 +1,4 @@
+// Package wapi interface
 package wapi
 
 import (
@@ -8,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// IServer interface represents all server method
 type IServer interface {
 	backgroundTask(tasks ...func())
 	initMiddleware()
@@ -18,6 +20,7 @@ type IServer interface {
 	Run(string) error
 }
 
+// NewBaseAdapter returns a new adapter wrapping around the given server
 func NewBaseAdapter(server IServer) types.IAdapter {
 	adapter := &_Adapter{
 		server: server,

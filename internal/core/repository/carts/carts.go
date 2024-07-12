@@ -1,6 +1,4 @@
-// Package carts
-// Author: Duc Hung Ho @kyeranyo
-// Description: cart repository implementation
+// Package carts cart repository implementation
 package carts
 
 import (
@@ -9,12 +7,14 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Carts struct for cart repository
 type Carts struct {
 	db db.IDatabase
 }
 
 var _ ICartRepository = (*Carts)(nil)
 
+// New creates a new Carts object
 func New(connection db.IDatabase) ICartRepository {
 	return useCache(&Carts{
 		db: connection,
@@ -22,13 +22,13 @@ func New(connection db.IDatabase) ICartRepository {
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Carts) GetCartByUserID(ctx context.Context, userId int64, limit int) (*domain.CartSlices, error) {
-	rows, err := c.db.Query(ctx, selectByUserId, userId, limit)
+func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) (*domain.CartSlices, error) {
+	rows, err := c.db.Query(ctx, selectByUserID, userID, limit)
 	if err != nil {
 		return nil, err
 	}
 	var cartSchema domain.CartSlices
-	cartSchema.UserId = userId
+	cartSchema.UserID = userID
 
 	cartItems, err := db.CollectRows[domain.Carts](rows)
 	if err != nil {
@@ -45,15 +45,15 @@ func (c *Carts) GetCartByUserID(ctx context.Context, userId int64, limit int) (*
 }
 
 // Insert implements domain.ICartRepository.
-func (c *Carts) Insert(ctx context.Context, userId int64, inventoryId int64, quantity int64) error {
+func (c *Carts) Insert(ctx context.Context, userID int64, inventoryID int64, quantity int64) error {
 	return c.db.SafeWrite(ctx, insertItemToCart,
-		userId, inventoryId, quantity,
+		userID, inventoryID, quantity,
 	)
 }
 
 // RemoveItem implements domain.ICartRepository.
-func (c *Carts) RemoveItem(ctx context.Context, inventoryId int64, userId int64) error {
+func (c *Carts) RemoveItem(ctx context.Context, inventoryID int64, userID int64) error {
 	return c.db.SafeWrite(ctx, deleteItem,
-		userId, inventoryId,
+		userID, inventoryID,
 	)
 }

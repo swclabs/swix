@@ -5,11 +5,38 @@ run:
   timeout: 5m
   modules-download-mode: readonly
 
+linters-settings:
+  revive:
+    rules:
+      - name: exported
+      - name: var-naming
+      - name: blank-imports
+      - name: context-as-argument
+      - name: dot-imports
+      - name: error-return
+      - name: error-naming
+      - name: error-strings
+      - name: increment-decrement
+      - name: var-declaration
+      - name: package-comments
+      - name: range
+      - name: receiver-naming
+      - name: time-naming
+      - name: unexported-return
+      - name: indent-error-flow
+      - name: errorf
+      - name: empty-block
+      - name: superfluous-else
+      - name: unused-parameter
+      - name: unreachable-code
+      - name: redefines-builtin-id
+
 linters:
+  disable-all: true
   enable:
     - errcheck
     - goimports
-    - golint
+    - revive
     - govet
     - staticcheck
 

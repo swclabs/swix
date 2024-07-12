@@ -1,6 +1,4 @@
-// Package accounts
-// Author: Duc Hung Ho @kyeranyo
-// Description: account repository implementation
+// Package accounts account repository implementation
 package accounts
 
 import (
@@ -12,10 +10,12 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
+// Accounts struct for account repository
 type Accounts struct {
 	db db.IDatabase
 }
 
+// New creates a new Accounts object
 func New(conn db.IDatabase) IAccountRepository {
 	return useCache(&Accounts{conn})
 }

@@ -1,30 +1,25 @@
-/*
-Package boot implement worker consume for swipe application
-
-Example:
-
-	package main
-
-	import (
-		"log"
-
-		"swclabs/swipecore/boot"
-	)
-
-	func main() {
-		w := boot.NewWorker()
-		if err := w.Run(10); err != nil {
-			log.Fatal(err)
-		}
-	}
-*/
-
+// Package boot implement worker consume for swipe application
 package boot
 
 import (
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/types"
 )
+
+/*
+ * Example:
+ *	package main
+ *	import (
+ *		"log"
+ *		"swclabs/swipecore/boot"
+ *  )
+ * 	func main() {
+ *		w := boot.NewWorker()
+ *		if err := w.Run(10); err != nil {
+ *			log.Fatal(err)
+ *		}
+ *	}
+ */
 
 type _Worker struct {
 	concurrency int
