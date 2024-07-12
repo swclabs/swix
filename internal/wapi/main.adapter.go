@@ -12,6 +12,7 @@ type _Adapter struct {
 
 var _ types.IAdapter = (*_Adapter)(nil)
 
+// NewAdapter returns a new adapter wrapping around the given server
 func NewAdapter(
 	server IServer,
 	products router.IProducts,
@@ -41,6 +42,6 @@ func (adapter *_Adapter) Routers() []string {
 }
 
 // StartWorker implements types.IAdapter.
-func (adapter *_Adapter) StartWorker(concurrency int) error {
+func (adapter *_Adapter) StartWorker(_ int) error {
 	return fmt.Errorf("services unavailable")
 }

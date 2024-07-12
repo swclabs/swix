@@ -16,11 +16,11 @@ const (
 			specs->>'color' = $4;
 	`
 
-	getById string = `
+	getByID string = `
 		SELECT * FROM inventories WHERE id = $1;
 	`
 
-	getByProductId = `
+	getByProductID = `
 		SELECT * FROM inventories WHERE product_id = $1;
 	`
 

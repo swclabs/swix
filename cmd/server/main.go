@@ -3,7 +3,6 @@
  * This is Graduation project in computer science
  * 2023 - Ho Chi Minh City University of Technology, VNUHCM
  */
-
 package main
 
 import (

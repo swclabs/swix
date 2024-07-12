@@ -4,7 +4,7 @@ import "time"
 
 // Collection use to query data from database, define in database, used to save a CollectionBody
 type Collection struct {
-	Id       int64     `json:"id" db:"id"`
+	ID       int64     `json:"id" db:"id"`
 	Position string    `json:"position" db:"position"` // Example: mac#1, mac#2
 	Headline string    `json:"headline" db:"headline"` // Ex: Get to know Mac
 	Body     string    `json:"body" db:"body"`
@@ -25,13 +25,13 @@ type CollectionBody struct {
 // CollectionSliceBody is a body of CardBannerSlice
 type CollectionSliceBody struct {
 	CollectionBody
-	Id      int64  `json:"id"`
+	ID      int64  `json:"id"`
 	Created string `json:"created"`
 }
 
 // CollectionSchema is a type use to accept request and response
 type CollectionSchema struct {
-	Id       int64          `json:"id"`
+	ID       int64          `json:"id"`
 	Created  string         `json:"created"`
 	Position string         `json:"position" validate:"required"`
 	Headline string         `json:"headline" validate:"required"`
@@ -45,19 +45,22 @@ type CollectionSliceSchema struct {
 	CardBanner []CollectionSliceBody `json:"card_banner"`
 }
 
+// CollectionUploadSchema request, response
 type CollectionUploadSchema struct {
 	Msg string `json:"msg"`
-	Id  int64  `json:"id"`
+	ID  int64  `json:"id"`
 }
 
 /*** Swagger ***/
 
+// CollectionSchemaSwagger used to bind from json mapping to structure
 type CollectionSchemaSwagger struct {
 	Position string                `json:"position" validate:"required"`
 	Headline string                `json:"headline" validate:"required"`
 	Body     CollectionBodySwagger `json:"body" validate:"required"`
 }
 
+// CollectionBodySwagger used to bind from json mapping to structure
 type CollectionBodySwagger struct {
 	Title       string `json:"title" validate:"required"`
 	SubTitle    string `json:"subtitle" validate:"required"`
@@ -67,13 +70,15 @@ type CollectionBodySwagger struct {
 
 /***********************************************************************************************/
 
+// HeadlineBannerBody request, response
 type HeadlineBannerBody struct {
 	Headline string `json:"headline" validate:"required"`
 }
 
+// HeadlineBannerSlicesBody request, response
 type HeadlineBannerSlicesBody struct {
 	HeadlineBannerBody
-	Id      int64  `json:"id"`
+	ID      int64  `json:"id"`
 	Created string `json:"created"`
 }
 

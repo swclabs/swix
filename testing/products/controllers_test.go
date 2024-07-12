@@ -22,7 +22,7 @@ func TestGetProductAvailability(t *testing.T) {
 	// repository layers
 	specs, _ := json.Marshal(domain.InventorySpecsDetail{
 		Color:      "black",
-		Ram:        "16",
+		RAM:        "16",
 		Ssd:        "512",
 		ColorImage: "",
 		Image:      "",
@@ -31,12 +31,12 @@ func TestGetProductAvailability(t *testing.T) {
 	price, _ := decimal.NewFromString("10000")
 	repos.On("FindDevice", context.Background(),
 		domain.InventoryDeviveSpecs{
-			ProductId: "1",
-			Ram:       "64",
+			ProductID: "1",
+			RAM:       "64",
 			Ssd:       "512",
 			Color:     "black",
 		}).Return(&domain.Inventories{
-		Id:           "1",
+		ID:           "1",
 		ProductID:    1,
 		Model:        "iPhone 15 Pro Max",
 		Available:    "100",

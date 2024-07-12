@@ -1,3 +1,4 @@
+// Package domain Account entities
 package domain
 
 import "time"

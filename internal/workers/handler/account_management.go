@@ -1,3 +1,4 @@
+// Package handler implements handler of worker
 package handler
 
 import (
@@ -11,17 +12,20 @@ import (
 	"github.com/hibiken/asynq"
 )
 
+// AccountManagement struct define the AccountManagement object
 type AccountManagement struct {
 	accountmanagement.Task
 	handler accountmanagement.IAccountManagement
 }
 
+// NewAccountManagementConsume creates a new AccountManagement object
 func NewAccountManagementConsume(handler accountmanagement.IAccountManagement) *AccountManagement {
 	return &AccountManagement{
 		handler: handler,
 	}
 }
 
+// HandleSignUp handle sign up
 func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 	return worker.GetTaskName(account.SignUp),
 		func(_ context.Context, task *asynq.Task) error {
@@ -33,6 +37,7 @@ func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 		}
 }
 
+// HandleOAuth2SaveUser handle save user information from oauth2
 func (account *AccountManagement) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
 	return worker.GetTaskName(account.OAuth2SaveUser),
 		func(_ context.Context, task *asynq.Task) error {
@@ -44,6 +49,7 @@ func (account *AccountManagement) HandleOAuth2SaveUser() (string, worker.HandleF
 		}
 }
 
+// HandleUpdateUserInfo handle update user information
 func (account *AccountManagement) HandleUpdateUserInfo() (string, worker.HandleFunc) {
 	return worker.GetTaskName(account.UpdateUserInfo),
 		func(_ context.Context, task *asynq.Task) error {

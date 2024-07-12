@@ -12,7 +12,7 @@ type ISuppliersRepository interface {
 	// sup is the Suppliers object to be added.
 	// addr is the Addresses object associated with the supplier.
 	// Returns an error if any issues occur during the insertion process.
-	Insert(ctx context.Context, sup domain.Suppliers, addr domain.Addresses) error
+	Insert(ctx context.Context, sup domain.Suppliers) error
 
 	// InsertAddress adds a new address for a supplier to the database.
 	// ctx is the context to manage the request's lifecycle.

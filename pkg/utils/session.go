@@ -1,3 +1,4 @@
+// Package utils provides utils functionality
 package utils
 
 import (
@@ -9,11 +10,13 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// BaseSessions is the base session name
 const BaseSessions = "session"
 
 var store *sessions.CookieStore
-var lock *sync.Mutex = &sync.Mutex{}
+var lock = &sync.Mutex{}
 
+// NewSession creates a new session
 func NewSession() *sessions.CookieStore {
 	if store == nil {
 		lock.Lock()
@@ -25,6 +28,7 @@ func NewSession() *sessions.CookieStore {
 	return store
 }
 
+// SaveSession saves session
 func SaveSession(c echo.Context, sessionName string, key string, value string) error {
 	sess, _ := store.Get(c.Request(), sessionName)
 	// sess.Options = &sessions.Options{
@@ -35,6 +39,7 @@ func SaveSession(c echo.Context, sessionName string, key string, value string) e
 	return sess.Save(c.Request(), c.Response())
 }
 
+// Session gets session
 func Session(c echo.Context, sessionName, key string) interface{} {
 	sess, _ := store.Get(c.Request(), sessionName)
 	value := sess.Values[key]

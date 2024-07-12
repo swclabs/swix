@@ -21,7 +21,7 @@ func TestGetSuppliers(t *testing.T) {
 	repos := suppliers.Mock{}
 	repos.On("GetLimit", context.Background(), 10).Return([]domain.Suppliers{
 		{
-			Id:    "1",
+			ID:    "1",
 			Name:  "apple",
 			Email: "apple@example.com",
 		},

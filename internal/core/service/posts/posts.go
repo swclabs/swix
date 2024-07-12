@@ -1,3 +1,4 @@
+// Package posts implements posts
 package posts
 
 import (
@@ -11,11 +12,13 @@ import (
 	"swclabs/swipecore/pkg/utils"
 )
 
+// Posts struct for posts service
 type Posts struct {
 	Blob        blob.IBlobStorage
 	Collections collections.ICollections
 }
 
+// New creates a new Posts object
 func New(
 	blob blob.IBlobStorage,
 	collection collections.ICollections,
@@ -45,7 +48,7 @@ func (p *Posts) SliceOfHeadlineBanner(
 		headlineBanners.Headlines = append(headlineBanners.Headlines,
 			domain.HeadlineBannerSlicesBody{
 				HeadlineBannerBody: body,
-				Id:                 collection.Id,
+				ID:                 collection.ID,
 				Created:            utils.HanoiTimezone(collection.Created),
 			})
 	}
@@ -77,7 +80,7 @@ func (p *Posts) SlicesOfCollections(
 		_collections.CardBanner = append(_collections.CardBanner,
 			domain.CollectionSliceBody{
 				CollectionBody: body,
-				Id:             _collection.Id,
+				ID:             _collection.ID,
 				Created:        utils.HanoiTimezone(_collection.Created),
 			})
 	}
@@ -92,7 +95,7 @@ func (p *Posts) UploadCollections(
 
 // UploadCollectionsImage implements IPostsService.
 func (p *Posts) UploadCollectionsImage(
-	ctx context.Context, cardBannerId string, fileHeader *multipart.FileHeader) error {
+	ctx context.Context, cardBannerID string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return err
@@ -102,5 +105,5 @@ func (p *Posts) UploadCollectionsImage(
 		return err
 	}
 	return p.Collections.UploadCollectionImage(
-		ctx, cardBannerId, resp.SecureURL)
+		ctx, cardBannerID, resp.SecureURL)
 }

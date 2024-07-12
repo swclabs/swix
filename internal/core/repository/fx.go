@@ -1,3 +1,4 @@
+// Package repository implement the repository layer
 package repository
 
 import (
@@ -15,6 +16,7 @@ import (
 	"go.uber.org/fx"
 )
 
+// FxModule module of package repository
 var FxModule = fx.Options(
 	fx.Provide(
 		users.New,

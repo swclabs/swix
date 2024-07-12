@@ -1,3 +1,4 @@
+// Package worker define worker writer engine
 package worker
 
 import (
@@ -8,16 +9,19 @@ import (
 	"github.com/hibiken/asynq"
 )
 
+// IWorkerClient interface for worker client
 type IWorkerClient interface {
 	Exec(queue string, task *asynq.Task) error
 	ExecGetResult(ctx context.Context, queue string, task *asynq.Task) ([]byte, error)
 	Delay(delay *time.Duration, queue string, task *asynq.Task) error
 }
 
+// Client struct for worker client
 type Client struct {
 	broker asynq.RedisClientOpt
 }
 
+// NewClient creates a new worker client
 func NewClient(host, port, password string) IWorkerClient {
 	return &Client{
 		broker: asynq.RedisClientOpt{
@@ -70,7 +74,7 @@ func (cli *Client) ExecGetResult(ctx context.Context, queue string, task *asynq.
 	}
 
 	inspector := asynq.NewInspector(cli.broker)
-	defer func(client *asynq.Inspector) {
+	defer func(_ *asynq.Inspector) {
 		err := inspector.Close()
 		if err != nil {
 			panic(err.Error())

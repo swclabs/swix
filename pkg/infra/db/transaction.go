@@ -1,3 +1,4 @@
+// Package db connect to database
 package db
 
 import (
@@ -7,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
+// Transaction is a wrapper for pgx.Tx
 type Transaction struct {
 	tx        pgx.Tx
 	lock      *sync.Mutex

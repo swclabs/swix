@@ -1,3 +1,4 @@
+// Package common implements common services
 package common
 
 import (
@@ -9,23 +10,28 @@ import (
 
 var _ ICommonService = (*Service)(nil)
 
+// Service struct for common service
 type Service struct{}
 
+// New creates a new Service object
 func New() ICommonService {
 	return &Service{}
 }
 
+// WorkerCheckResult implements ICommonService.
 func (common *Service) WorkerCheckResult(ctx context.Context, num int64) (string, error) {
 	return strconv.Itoa(int(num)), common.WorkerCheck(ctx, num)
 }
 
-func (common *Service) HealthCheck(ctx context.Context) domain.HealthCheck {
+// HealthCheck implements ICommonService.
+func (common *Service) HealthCheck(_ context.Context) domain.HealthCheck {
 	return domain.HealthCheck{
 		Status: "ok",
 	}
 }
 
-func (common *Service) WorkerCheck(ctx context.Context, num int64) error {
+// WorkerCheck implements ICommonService.
+func (common *Service) WorkerCheck(_ context.Context, num int64) error {
 	fmt.Printf("HealthCheck Number: %d\n", int(num))
 	return nil
 }

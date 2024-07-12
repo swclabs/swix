@@ -1,3 +1,4 @@
+// Package sentry connect to sentry server
 package sentry
 
 import (
@@ -10,6 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Init sentry
 func Init() {
 	if config.StageStatus != "dev" {
 		if err := sentry.Init(sentry.ClientOptions{
@@ -26,10 +28,11 @@ func Init() {
 	}
 }
 
+// CaptureMessage capture message
 func CaptureMessage(c echo.Context, message string) {
 	if config.StageStatus != "dev" {
 		if hub := sentryecho.GetHubFromContext(c); hub != nil {
-			hub.WithScope(func(scope *sentry.Scope) {
+			hub.WithScope(func(_ *sentry.Scope) {
 				// scope.SetExtra("unwantedQuery", "someQueryDataMaybe")
 				hub.CaptureMessage(message)
 			})

@@ -1,3 +1,4 @@
+// Package utils provides utils functionality
 package utils
 
 import (
@@ -60,6 +61,7 @@ func ConnectionURLBuilder(n string) (string, error) {
 	return url, nil
 }
 
+// ConnectionURLBuilderWithEnv func for building URL connection with environment.
 func ConnectionURLBuilderWithEnv(n string) (string, error) {
 	// Define URL to connection.
 	var url string

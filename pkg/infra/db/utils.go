@@ -1,3 +1,4 @@
+// Package db connect to database
 package db
 
 import (
@@ -7,13 +8,14 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 )
 
+// MigrateUp migrates the database up
 func MigrateUp() error {
-	const migrateUrl = "file://pkg/migration/"
-	databaseUrl, err := utils.ConnectionURLBuilder("pg-migrate")
+	const migrateURL = "file://pkg/migration/"
+	databaseURL, err := utils.ConnectionURLBuilder("pg-migrate")
 	if err != nil {
 		return err
 	}
-	_migrate, err := migrate.New(migrateUrl, databaseUrl)
+	_migrate, err := migrate.New(migrateURL, databaseURL)
 	if err != nil {
 		return err
 	}
@@ -23,13 +25,14 @@ func MigrateUp() error {
 	return nil
 }
 
+// MigrateDown migrates the database down
 func MigrateDown() error {
-	const migrateUrl = "file://pkg/db/migration/"
-	databaseUrl, err := utils.ConnectionURLBuilder("pg-migrate")
+	const migrateURL = "file://pkg/migration/"
+	databaseURL, err := utils.ConnectionURLBuilder("pg-migrate")
 	if err != nil {
 		return err
 	}
-	_migrate, err := migrate.New(migrateUrl, databaseUrl)
+	_migrate, err := migrate.New(migrateURL, databaseURL)
 	if err != nil {
 		return err
 	}

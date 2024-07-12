@@ -1,3 +1,4 @@
+// Package config contains all environment variables
 package config
 
 import (
@@ -16,9 +17,14 @@ func init() {
 }
 
 var (
+	// StageStatus Dev or Prod stage status
 	StageStatus = os.Getenv("STAGE_STATUS")
-	Host        = os.Getenv("HOST")
-	Port        = os.Getenv("PORT")
+
+	// Host server host
+	Host = os.Getenv("HOST")
+
+	// Port server port
+	Port = os.Getenv("PORT")
 )
 
 // authentication environment variables
@@ -61,12 +67,13 @@ var (
 	FeHomepage        = os.Getenv("FE_HOMEPAGE")
 	Auth0ClientID     = os.Getenv("AUTH0_CLIENT_ID")
 	Auth0ClientSecret = os.Getenv("AUTH0_CLIENT_SECRET")
-	Auth0CallbackUrl  = os.Getenv("AUTH0_CALLBACK_URL")
+	Auth0CallbackURL  = os.Getenv("AUTH0_CALLBACK_URL")
 )
 
 // Cloudinary
 var (
-	CloudinaryUrl = os.Getenv("CLOUDINARY_URL")
+	CloudinaryURL = os.Getenv("CLOUDINARY_URL")
 )
 
+// NumberOfWorker Number of worker
 var NumberOfWorker = 10

@@ -1,3 +1,4 @@
+// Package jwt implements the json web token
 package jwt
 
 import (
@@ -15,6 +16,7 @@ func removeBearerPrefix(token string) string {
 	return strings.TrimPrefix(token, "Bearer ")
 }
 
+// GenerateToken Generate JWT token
 func GenerateToken(email string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": email,

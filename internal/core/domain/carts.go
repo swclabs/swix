@@ -11,11 +11,13 @@ CREATE TABLE "carts" (
 
 // Carts table
 type Carts struct {
-	Id          int64 `json:"id" db:"id"`
-	UserId      int64 `json:"user_id" db:"user_id"`
-	InventoryId int64 `json:"inventory_id" db:"inventory_id"`
+	ID          int64 `json:"id" db:"id"`
+	UserID      int64 `json:"user_id" db:"user_id"`
+	InventoryID int64 `json:"inventory_id" db:"inventory_id"`
 	Quantity    int64 `json:"quantity" db:"quantity"`
 }
+
+// CartSchema schema request, response
 type CartSchema struct {
 	Img         string `json:"img"`
 	ProductName string `json:"product_name"`
@@ -26,12 +28,13 @@ type CartSchema struct {
 
 // CartSlices schema
 type CartSlices struct {
-	UserId   int64        `json:"user_id"`
+	UserID   int64        `json:"user_id"`
 	Products []CartSchema `json:"products"`
 }
 
+// CartInsert request, response
 type CartInsert struct {
-	UserId      int64 `json:"user_id" validate:"required"`
-	InventoryId int64 `json:"inventory_id" validate:"required"`
+	UserID      int64 `json:"user_id" validate:"required"`
+	InventoryID int64 `json:"inventory_id" validate:"required"`
 	Quantity    int64 `json:"quantity" validate:"required"`
 }

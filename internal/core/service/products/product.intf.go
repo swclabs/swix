@@ -1,3 +1,4 @@
+// Package products implements products
 package products
 
 import (
@@ -32,7 +33,7 @@ type IProductService interface {
 	// Id is the ID of the product.
 	// fileHeader contains the file headers of the images to be uploaded.
 	// Returns an error if any issues occur during the upload process.
-	UploadProductImage(ctx context.Context, Id int, fileHeader []*multipart.FileHeader) error
+	UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
 
 	// CreateProduct adds a new product to the database.
 	// ctx is the context to manage the request's lifecycle.
@@ -64,9 +65,9 @@ type IProductService interface {
 	// Returns a pointer to the InventorySchema object and an error if any issues occur during the retrieval process.
 	FindDeviceInInventory(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.InventorySchema, error)
 
-	DeleteProductById(ctx context.Context, productId int64) error
+	DeleteProductByID(ctx context.Context, productID int64) error
 	UpdateProductInfo(ctx context.Context, product domain.UpdateProductInfo) error
-	GetInventory(ctx context.Context, productId int64) ([]domain.Inventories, error)
+	GetInventory(ctx context.Context, productID int64) ([]domain.Inventories, error)
 	Search(ctx context.Context, keyword string) ([]domain.ProductSchema, error)
 	GetAllStock(ctx context.Context, page int, limit int) (*domain.InventoryStockSchema, error)
 }

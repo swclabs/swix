@@ -1,3 +1,4 @@
+// Package main test
 package main
 
 import (
@@ -9,10 +10,12 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+// SyslogTimeEncoder is a custom time encoder
 func SyslogTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format(time.DateOnly))
 }
 
+// CustomLevelEncoder is a custom level encoder
 func CustomLevelEncoder(level zapcore.Level, enc zapcore.PrimitiveArrayEncoder) {
 	switch level {
 	case zapcore.InfoLevel:

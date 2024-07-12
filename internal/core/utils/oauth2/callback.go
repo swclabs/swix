@@ -1,3 +1,4 @@
+// Package oauth2 implements the OAuth2
 package oauth2
 
 import (
@@ -18,6 +19,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// OAuth2CallBack handles the OAuth2 callback
 func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 	// session := sessions.Default(ctx)
 	// if ctx.Query("state") != session.Get("state").(string) {
