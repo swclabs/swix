@@ -25,12 +25,13 @@ package main
 import (
 	"log"
 	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/wapi"
+	"swclabs/swipecore/internal/types"
 
 	"go.uber.org/fx"
 )
 
-func StartServer(server boot.IServer, adapter http.IAdapter) {
+func StartServer(server boot.IServer, adapter types.IAdapter) {
 	go func() {
 		log.Fatal(server.Connect(adapter))
 	}()
@@ -40,7 +41,7 @@ func main() {
 	app := fx.New(
 		boot.FxModule(),
 		fx.Provide(
-			http.NewAdapter,
+			wapi.NewAdapter,
 			boot.NewServer,
 		),
 		fx.Invoke(boot.Main),
@@ -83,7 +84,7 @@ func NewApp(serverContructor func() IServer, adapterConstructors ...interface{})
 //	app := fx.New(
 //		boot.FxModule(),
 //		fx.Provide(
-//			http.NewAdapter,
+//			wapi.NewAdapter,
 //			boot.NewServer,
 //		),
 //		fx.Invoke(boot.Main), // <-- run here

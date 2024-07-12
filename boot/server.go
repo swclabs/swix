@@ -29,8 +29,8 @@ func NewServer() IServer {
 //			commonController = controller.NewCommon(commonService)
 //			commonRouter     = router.NewCommon(commonController)
 //
-//			httpServer = http.NewServer(router.NewDocs(),commonRouter)
-//			adapt  = http.NewBaseAdapter(httpServer)
+//			httpServer = wapi.NewServer(router.NewDocs(),commonRouter)
+//			adapt  = wapi.NewBaseAdapter(httpServer)
 //			server = boot.NewServer()
 //		)
 //

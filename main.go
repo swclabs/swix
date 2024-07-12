@@ -16,9 +16,9 @@ import (
 	"log"
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/internal/core/service/common"
-	"swclabs/swipecore/internal/http"
-	"swclabs/swipecore/internal/http/controller"
-	"swclabs/swipecore/internal/http/router"
+	"swclabs/swipecore/internal/wapi"
+	"swclabs/swipecore/internal/wapi/controller"
+	"swclabs/swipecore/internal/wapi/router"
 )
 
 // @title Swipe API documentation
@@ -32,8 +32,8 @@ func main() {
 		commonController = controller.NewCommon(commonService)
 		commonRouter     = router.NewCommon(commonController)
 
-		httpServer = http.NewServer(router.NewDocs(), commonRouter)
-		adapt      = http.NewBaseAdapter(httpServer)
+		httpServer = wapi.NewServer(router.NewDocs(), commonRouter)
+		adapt      = wapi.NewBaseAdapter(httpServer)
 		server     = boot.NewServer()
 	)
 

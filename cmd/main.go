@@ -14,7 +14,7 @@ import (
 	"os"
 	"sort"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/wapi"
 	"swclabs/swipecore/internal/workers"
 
 	"swclabs/swipecore/boot"
@@ -52,7 +52,7 @@ var Command = []*cli.Command{
 				boot.PrepareFor(boot.RestAPI | boot.DebugMode)
 			}
 
-			app := boot.NewApp(boot.NewServer, http.NewAdapter)
+			app := boot.NewApp(boot.NewServer, wapi.NewAdapter)
 			app.Run()
 			return nil
 		},

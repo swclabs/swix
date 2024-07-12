@@ -1,11 +1,11 @@
 // account management adapter
 
-package http
+package wapi
 
 import (
 	"fmt"
-	"swclabs/swipecore/internal/http/router"
 	"swclabs/swipecore/internal/types"
+	"swclabs/swipecore/internal/wapi/router"
 )
 
 type _AccountManagementAdapter struct {
