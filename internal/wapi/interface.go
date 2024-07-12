@@ -1,9 +1,9 @@
-package http
+package wapi
 
 import (
 	"os"
-	"swclabs/swipecore/internal/http/router"
 	"swclabs/swipecore/internal/types"
+	"swclabs/swipecore/internal/wapi/router"
 
 	"github.com/labstack/echo/v4"
 )

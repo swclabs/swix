@@ -1,8 +1,8 @@
-package http
+package wapi
 
 import (
-	"swclabs/swipecore/internal/http/controller"
-	"swclabs/swipecore/internal/http/router"
+	"swclabs/swipecore/internal/wapi/controller"
+	"swclabs/swipecore/internal/wapi/router"
 
 	"go.uber.org/fx"
 )

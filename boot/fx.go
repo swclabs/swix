@@ -3,7 +3,7 @@ package boot
 import (
 	"swclabs/swipecore/internal/core/repository"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/internal/http"
+	"swclabs/swipecore/internal/wapi"
 	"swclabs/swipecore/internal/workers"
 	"swclabs/swipecore/pkg/infra/blob"
 	"swclabs/swipecore/pkg/infra/db"
@@ -28,7 +28,7 @@ var (
 
 func PrepareFor(flag int) {
 	if flag&RestAPI != 0 {
-		_FxPresenterLayer = http.FxModule
+		_FxPresenterLayer = wapi.FxModule
 	}
 	if flag&WorkerConsume != 0 {
 		_FxPresenterLayer = workers.FxModule
