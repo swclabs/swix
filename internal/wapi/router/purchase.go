@@ -28,4 +28,6 @@ func NewPurchase(controllers controller.IPurchase) IPurchase {
 func (p *Purchase) Routers(e *echo.Echo) {
 	e.POST("/purchase/carts", p.controllers.AddToCarts)
 	e.GET("/purchase/carts", p.controllers.GetCarts)
+
+	e.POST("/purchase/orders", p.controllers.CreateOrder)
 }

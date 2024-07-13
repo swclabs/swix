@@ -126,6 +126,20 @@ definitions:
       msg:
         type: string
     type: object
+  domain.CreateOrderSchema:
+    properties:
+      product:
+        items:
+          properties:
+            inventory_id:
+              type: integer
+            quantity:
+              type: integer
+          type: object
+        type: array
+      user_id:
+        type: integer
+    type: object
   domain.CreateProductSchema:
     properties:
       id:
@@ -1031,6 +1045,27 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/domain.CartInsert'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - purchase
+  /purchase/orders:
+    post:
+      consumes:
+      - application/json
+      description: create order.
+      parameters:
+      - description: order insert request
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateOrderSchema'
       produces:
       - application/json
       responses:

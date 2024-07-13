@@ -17,6 +17,7 @@ type IPurchase interface {
 	AddToCarts(c echo.Context) error
 	GetCarts(c echo.Context) error
 	DeleteItem(c echo.Context) error
+	CreateOrder(c echo.Context) error
 }
 
 // Purchase struct implementation of IPurchase
@@ -29,6 +30,37 @@ var _ IPurchase = (*Purchase)(nil)
 // NewPurchase creates a new Purchase object
 func NewPurchase(services purchase.IPurchaseService) IPurchase {
 	return &Purchase{services: services}
+}
+
+// CreateOrder .
+// @Description create order.
+// @Tags purchase
+// @Accept json
+// @Produce json
+// @Param login body domain.CreateOrderSchema true "order insert request"
+// @Success 200 {object} domain.OK
+// @Router /purchase/orders [POST]
+func (purchase *Purchase) CreateOrder(c echo.Context) error {
+	var orderReq domain.CreateOrderSchema
+	if err := c.Bind(&orderReq); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := valid.Validate(&orderReq); err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	msg, err := purchase.services.CreateOrders(c.Request().Context(), orderReq)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, domain.OK{
+		Msg: fmt.Sprintf("your order %s has been created successfully", msg),
+	})
 }
 
 // AddToCarts .
