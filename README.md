@@ -6,7 +6,7 @@ Swipe (code: `swipe-api`) is a api server for [Swipe App](https://github.com/swc
 
 Before installing, you must install make (Makefile) if you use windows operating system
 
-- Go v1.21.3 or higher
+- Go v1.22.5 or higher
 - PostgreSQL
 - Redis
 

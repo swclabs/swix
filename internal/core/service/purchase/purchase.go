@@ -52,8 +52,8 @@ func (p *Purchase) GetOrders(_ context.Context, _ int) ([]domain.Orders, error) 
 	panic("unimplemented")
 }
 
-// InsertOrders implements domain.IPurchaseService.
-func (p *Purchase) InsertOrders(ctx context.Context, createOrder domain.CreateOrderSchema) (string, error) {
+// CreateOrders implements domain.IPurchaseService.
+func (p *Purchase) CreateOrders(ctx context.Context, createOrder domain.CreateOrderSchema) (string, error) {
 	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
 		return "", err

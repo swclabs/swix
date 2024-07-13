@@ -25,6 +25,8 @@ go.work
 .env.prod
 .env.p
 .idea
+
+# Database local
 .swipe
 
 # Binary files
