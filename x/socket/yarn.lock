@@ -736,13 +736,13 @@
     multer "1.4.4-lts.1"
     tslib "2.6.2"
 
-"@nestjs/platform-ws@10.3.2":
-  version "10.3.2"
-  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-10.3.2.tgz#8dfbd1cc5f6d06dce5c2adeed912146274b742c2"
-  integrity sha512-AwpmSlYx+ZoyzpdW1snafEKF97MVC9Wrh1vouhRJg/IM6rpIx/xurkvQ24lkZde5bMLVhw01REVOJSTqWUIfdQ==
+"@nestjs/platform-ws@10.3.9":
+  version "10.3.9"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-ws/-/platform-ws-10.3.9.tgz#6ef3f0e87c213b64b58223213b52dc1e5358c13b"
+  integrity sha512-IPoMPbHhJBwDLgsHLO6XJ20OofDiebQoATrDL0WbZxYRyeC0tKRJE5Am7KqM1HgsyeLn/f8dtzAEGhKZPyMgJw==
   dependencies:
     tslib "2.6.2"
-    ws "8.16.0"
+    ws "8.17.0"
 
 "@nestjs/schematics@10.1.1", "@nestjs/schematics@^10.0.1":
   version "10.1.1"
@@ -5578,10 +5578,10 @@ ws@8.13.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
 
-ws@8.16.0:
-  version "8.16.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.16.0.tgz#d1cd774f36fbc07165066a60e40323eab6446fd4"
-  integrity sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==
+ws@8.17.0:
+  version "8.17.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.17.0.tgz#d145d18eca2ed25aaf791a183903f7be5e295fea"
+  integrity sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==
 
 xtend@^4.0.0:
   version "4.0.2"
