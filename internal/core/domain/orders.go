@@ -61,7 +61,6 @@ type OrderSchema struct {
 	ID        int64                `json:"id"`
 	UUID      string               `json:"uuid"`
 	Time      string               `json:"time"`
-	InWord    int64                `json:"in_word"`
 	Status    string               `json:"status"`
 	UserID    int64                `json:"user_id"`
 	Username  string               `json:"user_name"`

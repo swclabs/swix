@@ -815,6 +815,38 @@ const docTemplate = `{
             }
         },
         "/purchase/orders": {
+            "get": {
+                "description": "get list of orders.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "uid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.OrderSchema"
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create order.",
                 "consumes": [
@@ -1438,6 +1470,38 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.OrderSchema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/domain.ProductOrderSchema"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "user_email": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "user_name": {
+                    "type": "string"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.Product": {
             "type": "object",
             "required": [
@@ -1483,6 +1547,29 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "supplier_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ProductOrderSchema": {
+            "type": "object",
+            "properties": {
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "inventory_id": {
+                    "type": "integer"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "total_amount": {
                     "type": "string"
                 }
             }

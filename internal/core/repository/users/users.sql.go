@@ -53,6 +53,11 @@ const (
 		WHERE email = $1;
 	
 	`
+	selectByID string = `
+		SELECT *
+		FROM users
+		WHERE id = $1;
+	`
 
 	selectByPhone string = `
 		SELECT *
