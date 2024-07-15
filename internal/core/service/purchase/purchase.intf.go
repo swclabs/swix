@@ -21,12 +21,23 @@ type IPurchaseService interface {
 	// Returns a slice of Carts objects and an error if any issues occur during the retrieval process.
 	GetCart(ctx context.Context, userID int64, limit int) (*domain.CartSlices, error)
 
-	// GetOrders retrieves orders with a specified limit.
+	// CreateOrders creates a new order.
 	// ctx is the context to manage the request's lifecycle.
-	// limit is the maximum number of orders to retrieve.
-	// Returns a slice of Orders objects and an error if any issues occur during the retrieval process.
-	GetOrders(ctx context.Context, limit int) ([]domain.Orders, error)
-
+	// createOrder contains the order information to be created.
+	// Returns the UUID of the newly created order and an error if any issues occur during the creation process.
 	CreateOrders(ctx context.Context, createOrder domain.CreateOrderSchema) (string, error)
+
+	// DeleteItemFromCart deletes an item from the shopping cart.
+	// ctx is the context to manage the request's lifecycle.
+	// userID is the user ID of the cart item to delete.
+	// inventoryID is the inventory ID of the cart item to delete.
+	// Returns an error if any issues occur during the deletion process.
 	DeleteItemFromCart(ctx context.Context, userID int64, inventoryID int64) error
+
+	// GetOrdersByUserID retrieves orders by user ID with a specified limit.
+	// ctx is the context to manage the request's lifecycle.
+	// userID is the user ID of the orders to retrieve.
+	// limit is the maximum number of orders to retrieve.
+	// Returns a slice of OrderSchema objects and an error if any issues occur during the retrieval process.
+	GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]domain.OrderSchema, error)
 }

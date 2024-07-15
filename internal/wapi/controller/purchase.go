@@ -18,6 +18,7 @@ type IPurchase interface {
 	GetCarts(c echo.Context) error
 	DeleteItem(c echo.Context) error
 	CreateOrder(c echo.Context) error
+	GetOrders(c echo.Context) error
 }
 
 // Purchase struct implementation of IPurchase
@@ -30,6 +31,51 @@ var _ IPurchase = (*Purchase)(nil)
 // NewPurchase creates a new Purchase object
 func NewPurchase(services purchase.IPurchaseService) IPurchase {
 	return &Purchase{services: services}
+}
+
+// GetOrders .
+// @Description get list of orders.
+// @Tags purchase
+// @Accept json
+// @Produce json
+// @Param uid query string true "user id"
+// @Success 200 {object} []domain.OrderSchema
+// @Router /purchase/orders [GET]
+func (purchase *Purchase) GetOrders(c echo.Context) error {
+	sUserID := c.QueryParam("uid")
+	if sUserID == "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing 'uid' required",
+		})
+	}
+	sLimit := c.QueryParam("limit")
+	if sLimit == "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing 'limit' required",
+		})
+	}
+
+	userID, err := strconv.ParseInt(sUserID, 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "'uid' must be a positive integer",
+		})
+	}
+
+	limit, err := strconv.ParseInt(sLimit, 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "'limit' must be a positive integer",
+		})
+	}
+
+	orders, err := purchase.services.GetOrdersByUserID(c.Request().Context(), userID, int(limit))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, orders)
 }
 
 // CreateOrder .

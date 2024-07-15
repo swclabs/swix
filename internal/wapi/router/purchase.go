@@ -1,4 +1,6 @@
 // Package router implements the router interface
+// File purchase.go defines routes for APIs related to purchasing, adding to cart,
+// accessing invoices, order, and creating invoices, order, etc.
 package router
 
 import (
@@ -7,12 +9,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// IPurchase extend the IRouter interface
+// IPurchase extends the IRouter interface
 type IPurchase interface {
 	IRouter
 }
 
-// Purchase router implementation IPurchase
+// Purchase is the router implementation for IPurchase
 type Purchase struct {
 	controllers controller.IPurchase
 }
@@ -29,5 +31,6 @@ func (p *Purchase) Routers(e *echo.Echo) {
 	e.POST("/purchase/carts", p.controllers.AddToCarts)
 	e.GET("/purchase/carts", p.controllers.GetCarts)
 
+	e.GET("/purchase/orders", p.controllers.GetOrders)
 	e.POST("/purchase/orders", p.controllers.CreateOrder)
 }

@@ -3,12 +3,14 @@ package purchase
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"strings"
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository/carts"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/orders"
+	"swclabs/swipecore/internal/core/repository/users"
 	"swclabs/swipecore/pkg/infra/db"
 
 	"github.com/google/uuid"
@@ -19,17 +21,65 @@ import (
 type Purchase struct {
 	Order orders.IOrdersRepository
 	Cart  carts.ICartRepository
+	User  users.IUserRepository
 }
 
 // New creates a new Purchase object
 func New(
 	order orders.IOrdersRepository,
 	cart carts.ICartRepository,
+	user users.IUserRepository,
 ) IPurchaseService {
 	return &Purchase{
 		Cart:  cart,
 		Order: order,
+		User:  user,
 	}
+}
+
+// GetOrdersByUserID implements IPurchaseService.
+func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]domain.OrderSchema, error) {
+	// Get orders by user ID
+	orders, err := p.Order.Get(ctx, userID, limit)
+	if err != nil {
+		return nil, err
+	}
+	// Get user by user ID
+	user, err := p.User.GetByID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	var orderSchema []domain.OrderSchema
+
+	for _, order := range orders {
+		// Get products by order ID
+		products, err := p.Order.GetProductByOrderID(ctx, order.ID)
+		if err != nil {
+			return nil, err
+		}
+		var productSchema []domain.ProductOrderSchema
+		for _, product := range products {
+			productSchema = append(productSchema, domain.ProductOrderSchema{
+				ID:           product.ID,
+				OrderID:      product.OrderID,
+				CurrencyCode: product.CurrencyCode,
+				InventoryID:  product.InventoryID,
+				Quantity:     product.Quantity,
+				TotalAmount:  product.TotalAmount.String(),
+			})
+		}
+		// Merge product and order schema
+		orderSchema = append(orderSchema, domain.OrderSchema{
+			ID:        order.ID,
+			UUID:      order.UUID,
+			Status:    order.Status,
+			Products:  productSchema,
+			UserEmail: user.Email,
+			UserID:    user.ID,
+			Username:  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
+		})
+	}
+	return orderSchema, nil
 }
 
 // DeleteItemFromCart implements domain.IPurchaseService.
@@ -45,11 +95,6 @@ func (p *Purchase) AddToCart(ctx context.Context, cart domain.CartInsert) error 
 // GetCart implements domain.IPurchaseService.
 func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*domain.CartSlices, error) {
 	return p.Cart.GetCartByUserID(ctx, userID, limit)
-}
-
-// GetOrders implements domain.IPurchaseService.
-func (p *Purchase) GetOrders(_ context.Context, _ int) ([]domain.Orders, error) {
-	panic("unimplemented")
 }
 
 // CreateOrders implements domain.IPurchaseService.

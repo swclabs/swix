@@ -49,3 +49,8 @@ func (c *cache) SaveInfo(ctx context.Context, user domain.Users) error {
 func (c *cache) UpdateProperties(ctx context.Context, query string, user domain.Users) error {
 	return c.user.UpdateProperties(ctx, query, user)
 }
+
+// GetByID implements IUserRepository.
+func (c *cache) GetByID(ctx context.Context, id int64) (*domain.Users, error) {
+	return c.user.GetByID(ctx, id)
+}
