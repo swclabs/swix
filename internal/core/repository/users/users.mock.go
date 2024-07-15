@@ -62,6 +62,6 @@ func (u *Mock) UpdateProperties(ctx context.Context, query string, user domain.U
 }
 
 // GetByID implements IUserRepository.
-func (u *Mock) GetByID(ctx context.Context, id int64) (*domain.Users, error) {
+func (u *Mock) GetByID(_ context.Context, _ int64) (*domain.Users, error) {
 	panic("unimplemented")
 }
