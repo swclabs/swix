@@ -21,6 +21,19 @@ func New(conn db.IDatabase) IUserRepository {
 
 var _ IUserRepository = (*Users)(nil)
 
+// GetByID implements IUserRepository.
+func (usr *Users) GetByID(ctx context.Context, id int64) (*domain.Users, error) {
+	rows, err := usr.db.Query(ctx, selectByID, id)
+	if err != nil {
+		return nil, err
+	}
+	user, err := db.CollectOneRow[domain.Users](rows)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+
 // GetByEmail implements IUserRepository.
 func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.Users, error) {
 	rows, err := usr.db.Query(ctx, selectByEmail, email)

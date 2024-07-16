@@ -14,10 +14,14 @@ COPY . .
 
 # Set necessary environment variables needed for our image and build the binary app.
 ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+# Copy migration files to /tmp
 RUN cp -r pkg/migration /tmp
+# Build the application
 RUN go build -ldflags="-s -w" -o /bin/swipe ./cmd/${APP_MODULE}
 
 # Remove all source code files
 RUN rm -r *
+# Copy migration files back to /app
 RUN mkdir -p pkg && cp -r /tmp/migration/ pkg
+# Clean up
 RUN go clean -modcache
