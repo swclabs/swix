@@ -37,3 +37,9 @@ func (s *Mock) InsertAddress(ctx context.Context, addr domain.SuppliersAddress) 
 	args := s.Called(ctx, addr)
 	return args.Error(0)
 }
+
+// Edit implements domain.ISuppliersRepository.
+func (s *Mock) Edit(ctx context.Context, sup domain.Suppliers) error {
+	args := s.Called(ctx, sup)
+	return args.Error(0)
+}
