@@ -1,10 +1,10 @@
-// Package wapi interface
-package wapi
+// Package webapi interface
+package webapi
 
 import (
 	"os"
 	"swclabs/swipecore/internal/types"
-	"swclabs/swipecore/internal/wapi/router"
+	"swclabs/swipecore/internal/webapi/router"
 
 	"github.com/labstack/echo/v4"
 )

@@ -1,8 +1,8 @@
-// Package router This file contains the common router for the wapi service.
+// Package router This file contains the common router for the webapi service.
 package router
 
 import (
-	"swclabs/swipecore/internal/wapi/controller"
+	"swclabs/swipecore/internal/webapi/controller"
 
 	"github.com/labstack/echo/v4"
 )

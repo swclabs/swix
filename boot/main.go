@@ -25,7 +25,7 @@ package main
 import (
 	"log"
 	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/wapi"
+	"swclabs/swipecore/internal/webapipipipi"
 	"swclabs/swipecore/internal/types"
 
 	"go.uber.org/fx"
@@ -41,7 +41,7 @@ func main() {
 	app := fx.New(
 		boot.FxModule(),
 		fx.Provide(
-			wapi.NewAdapter,
+			webapi.NewAdapter,
 			boot.NewServer,
 		),
 		fx.Invoke(boot.Main),
@@ -86,7 +86,7 @@ func NewApp(serverConstructor func() IServer, adapterConstructors ...interface{}
 //	app := fx.New(
 //		boot.FxModule(),
 //		fx.Provide(
-//			wapi.NewAdapter,
+//			webapi.NewAdapter,
 //			boot.NewServer,
 //		),
 //		fx.Invoke(boot.Main), // <-- run here

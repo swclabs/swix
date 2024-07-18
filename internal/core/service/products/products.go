@@ -65,6 +65,10 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 		if err := json.Unmarshal([]byte(_inventory.Specs), &specs); err != nil {
 			return nil, errors.Service("json unmarshal error", err)
 		}
+		product, err := s.Products.GetByID(ctx, _inventory.ProductID)
+		if err != nil {
+			return nil, err
+		}
 		switch _inventory.Status {
 		case "active":
 			stock.Active++
@@ -74,7 +78,8 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 			stock.Active++
 		}
 		stock.Stock = append(stock.Stock, domain.InventorySchema{
-			ID: _inventory.ID,
+			ID:          _inventory.ID,
+			ProductName: product.Name,
 			InventoryStruct: domain.InventoryStruct{
 				ProductID:    strconv.Itoa(int(_inventory.ProductID)),
 				Price:        _inventory.Price.String(),

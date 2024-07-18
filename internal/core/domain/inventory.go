@@ -48,7 +48,8 @@ type InventoryStruct struct {
 
 // InventorySchema response, request
 type InventorySchema struct {
-	ID string `json:"id"`
+	ID          string `json:"id"`
+	ProductName string `json:"product_name"`
 	InventoryStruct
 }
 

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-go build -ldflags="-s -w" -o ./bin/swipe ./cmd/module/purchasing
+go build -ldflags="-s -w" -o ./bin/swipe ./cmd/mod/purchasing

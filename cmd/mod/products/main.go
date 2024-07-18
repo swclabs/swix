@@ -15,7 +15,7 @@ import (
 	"sort"
 	"swclabs/swipecore/boot"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/wapi"
+	"swclabs/swipecore/internal/webapi"
 	"swclabs/swipecore/internal/workers"
 
 	"github.com/urfave/cli/v2"
@@ -50,7 +50,7 @@ var command = []*cli.Command{
 			} else {
 				boot.PrepareFor(boot.RestAPI | boot.DebugMode)
 			}
-			app := boot.NewApp(boot.NewServer, wapi.NewProductsAdapter)
+			app := boot.NewApp(boot.NewServer, webapi.NewProductsAdapter)
 			app.Run()
 			return nil
 		},
