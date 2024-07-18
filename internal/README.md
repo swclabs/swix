@@ -45,7 +45,7 @@ flowchart BT
     0Auth2
   end
 
-  subgraph wapi
+  subgraph webapi
     0Auth2 --> Controller
   end
 
@@ -70,6 +70,6 @@ flowchart BT
 
 [`workers`](./workers/): This directory implements worker functions linked to the [`boot`](./boot/) directory, utilizing message passing via Redis protocol. The worker server will run continuously and execute upon receiving requests from the central server.
 
-[`wapi`](./wapi/): This directory implements the functionalities of the central server with the primary protocol being HTTP through APIs.
+[`webapi`](./webapi/): This directory implements the functionalities of the central server with the primary protocol being HTTP through APIs.
 
 [`utils`](core/utils/): This directory stores auxiliary functions for the application.

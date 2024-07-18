@@ -1,9 +1,9 @@
-package wapi
+package webapi
 
 import (
 	"fmt"
 	"swclabs/swipecore/internal/types"
-	"swclabs/swipecore/internal/wapi/router"
+	"swclabs/swipecore/internal/webapi/router"
 )
 
 type _Adapter struct {

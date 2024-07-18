@@ -8,8 +8,8 @@ services:
   #     - "443:443"
   #     - "80:80"
   #   volumes:
-  #     - ./misc/nginx/conf.d:/etc/nginx/conf.d:ro
-  #     - ./misc/nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./x/misc/nginx/conf.d:/etc/nginx/conf.d:ro
+  #     - ./x/misc/nginx/nginx.conf:/etc/nginx/nginx.conf
   #   networks:
   #     - swipe_bridge
 

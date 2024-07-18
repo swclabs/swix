@@ -1,9 +1,9 @@
-// Package wapi fx define
-package wapi
+// Package webapi fx define
+package webapi
 
 import (
-	"swclabs/swipecore/internal/wapi/controller"
-	"swclabs/swipecore/internal/wapi/router"
+	"swclabs/swipecore/internal/webapi/controller"
+	"swclabs/swipecore/internal/webapi/router"
 
 	"go.uber.org/fx"
 )
