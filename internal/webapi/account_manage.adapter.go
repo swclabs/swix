@@ -1,10 +1,10 @@
-// Package wapi account management
-package wapi
+// Package webapi account management
+package webapi
 
 import (
 	"fmt"
 	"swclabs/swipecore/internal/types"
-	"swclabs/swipecore/internal/wapi/router"
+	"swclabs/swipecore/internal/webapi/router"
 )
 
 type _AccountManagementAdapter struct {

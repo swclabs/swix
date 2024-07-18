@@ -9,7 +9,7 @@ import (
 	"swclabs/swipecore/boot"
 	_ "swclabs/swipecore/boot/init"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/wapi"
+	"swclabs/swipecore/internal/webapi"
 )
 
 func main() {
@@ -18,6 +18,6 @@ func main() {
 	} else {
 		boot.PrepareFor(boot.RestAPI | boot.DebugMode)
 	}
-	app := boot.NewApp(boot.NewServer, wapi.NewAdapter)
+	app := boot.NewApp(boot.NewServer, webapi.NewAdapter)
 	app.Run()
 }

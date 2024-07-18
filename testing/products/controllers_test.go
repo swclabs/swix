@@ -8,12 +8,14 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/service/products"
-	"swclabs/swipecore/internal/wapi/controller"
+	"swclabs/swipecore/internal/webapi/controller"
 	"testing"
 
 	"github.com/labstack/echo/v4"
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
+
+	productRepo "swclabs/swipecore/internal/core/repository/products"
 )
 
 var e = echo.New()
@@ -27,9 +29,9 @@ func TestGetProductAvailability(t *testing.T) {
 		ColorImage: "",
 		Image:      "",
 	})
-	repos := inventories.Mock{}
+	inventoryRepos := inventories.Mock{}
 	price, _ := decimal.NewFromString("10000")
-	repos.On("FindDevice", context.Background(),
+	inventoryRepos.On("FindDevice", context.Background(),
 		domain.InventoryDeviveSpecs{
 			ProductID: "1",
 			RAM:       "64",
@@ -38,16 +40,20 @@ func TestGetProductAvailability(t *testing.T) {
 		}).Return(&domain.Inventories{
 		ID:           "1",
 		ProductID:    1,
-		Model:        "iPhone 15 Pro Max",
 		Available:    "100",
 		Price:        price,
 		Specs:        string(specs),
 		CurrencyCode: "USD",
 	}, nil)
+	productRepos := productRepo.Mock{}
+	productRepos.On("GetByID", context.Background(), int64(1)).Return(&domain.Products{
+		Name: "iPhone 15 Pro Max",
+	}, nil)
 
 	// business logic layers
 	services := products.ProductService{
-		Inventory: &repos,
+		Inventory: &inventoryRepos,
+		Products:  &productRepos,
 	}
 
 	// presenter layers
@@ -62,6 +68,6 @@ func TestGetProductAvailability(t *testing.T) {
 
 	e.ServeHTTP(rr, req)
 
-	expected := "{\"id\":\"1\",\"product_id\":\"1\",\"price\":\"10000\",\"model\":\"iPhone 15 Pro Max\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
+	expected := "{\"id\":\"1\",\"product_name\":\"iPhone 15 Pro Max\",\"product_id\":\"1\",\"price\":\"10000\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
 }

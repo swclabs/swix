@@ -35,3 +35,7 @@ func (c *cache) Insert(ctx context.Context, sup domain.Suppliers) error {
 func (c *cache) InsertAddress(ctx context.Context, addr domain.SuppliersAddress) error {
 	return c.supplier.InsertAddress(ctx, addr)
 }
+
+func (c *cache) Edit(ctx context.Context, sup domain.Suppliers) error {
+	return c.supplier.Edit(ctx, sup)
+}

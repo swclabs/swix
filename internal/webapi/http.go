@@ -1,4 +1,4 @@
-package wapi
+package webapi
 
 import (
 	"errors"
@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/wapi/middleware"
-	"swclabs/swipecore/internal/wapi/router"
+	"swclabs/swipecore/internal/webapi/middleware"
+	"swclabs/swipecore/internal/webapi/router"
 	"swclabs/swipecore/pkg/infra/sentry"
 
 	"github.com/labstack/echo/v4"

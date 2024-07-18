@@ -65,9 +65,34 @@ type IProductService interface {
 	// Returns a pointer to the InventorySchema object and an error if any issues occur during the retrieval process.
 	FindDeviceInInventory(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.InventorySchema, error)
 
+	// DeleteProductByID deletes a product from the database.
+	// ctx is the context to manage the request's lifecycle.
+	// productID is the ID of the product to be deleted.
+	// Returns an error if any issues occur during the deletion process.
 	DeleteProductByID(ctx context.Context, productID int64) error
+
+	// UpdateProductInfo updates a product's information in the database.
+	// ctx is the context to manage the request's lifecycle.
+	// product contains the updated product details.
+	// Returns an error if any issues occur during the update process.
 	UpdateProductInfo(ctx context.Context, product domain.UpdateProductInfo) error
+
+	// GetInventory retrieves a list of inventories for a product.
+	// ctx is the context to manage the request's lifecycle.
+	// productID is the ID of the product to retrieve inventories for.
+	// Returns a slice of Inventories objects and an error if any issues occur during the retrieval process.
 	GetInventory(ctx context.Context, productID int64) ([]domain.Inventories, error)
+
+	// Search retrieves a list of products based on a search keyword.
+	// ctx is the context to manage the request's lifecycle.
+	// keyword is the search keyword.
+	// Returns a slice of ProductSchema objects and an error if any issues occur during the retrieval process.
 	Search(ctx context.Context, keyword string) ([]domain.ProductSchema, error)
+
+	// GetAllStock retrieves a list of all stock.
+	// ctx is the context to manage the request's lifecycle.
+	// page is the page number.
+	// limit is the maximum number of stock to retrieve.
+	// Returns a pointer to the InventoryStockSchema object and an error if any issues occur during the retrieval process.
 	GetAllStock(ctx context.Context, page int, limit int) (*domain.InventoryStockSchema, error)
 }

@@ -1,8 +1,12 @@
 // Package router implements the router interface
+// File products.go defines APIs for functions related to products
+// such as getting a list of products, adding a product, updating product information,
+// deleting a product, adding product images.
+// It also includes APIs related to product categories, suppliers, and inventory.
 package router
 
 import (
-	"swclabs/swipecore/internal/wapi/controller"
+	"swclabs/swipecore/internal/webapi/controller"
 
 	"github.com/labstack/echo/v4"
 )
@@ -24,9 +28,9 @@ func NewProducts(controllers controller.IProducts) IProducts {
 	}
 }
 
-// Routers define route endpoint
+// Routers define route endpoints
 func (r *Products) Routers(e *echo.Echo) {
-	// endpoint for category
+	// endpoint for categories
 	e.GET("/categories", r.controller.GetCategories)
 	e.POST("/categories", r.controller.InsertCategory)
 	// TODO: implement delete categories here
@@ -43,10 +47,11 @@ func (r *Products) Routers(e *echo.Echo) {
 	// endpoint for suppliers
 	e.GET("/suppliers", r.controller.GetSupplier)
 	e.POST("/suppliers", r.controller.InsertSupplier)
+	// TODO: implement edit supplier here
+	// e.PUT("/suppliers")
 
 	// endpoint for inventories
 	e.GET("/inventories/details", r.controller.GetProductAvailability)
 	e.GET("/inventories", r.controller.GetStock)
 	e.POST("/inventories", r.controller.AddToInventory)
-
 }

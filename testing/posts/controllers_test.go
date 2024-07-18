@@ -7,7 +7,7 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/internal/core/repository/suppliers"
 	"swclabs/swipecore/internal/core/service/products"
-	"swclabs/swipecore/internal/wapi/controller"
+	"swclabs/swipecore/internal/webapi/controller"
 	"testing"
 
 	"github.com/labstack/echo/v4"
