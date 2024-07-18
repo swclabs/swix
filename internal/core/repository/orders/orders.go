@@ -34,3 +34,29 @@ func (orders *Orders) Create(ctx context.Context, order domain.Orders) (int64, e
 		order.UUID, order.UserID, "active", order.TotalAmount.String(),
 	)
 }
+
+// Get implements IOrdersRepository.
+func (orders *Orders) Get(ctx context.Context, userID int64, limit int) ([]domain.Orders, error) {
+	rows, err := orders.db.Query(ctx, getOrder, userID, limit)
+	if err != nil {
+		return nil, err
+	}
+	_orders, err := db.CollectRows[domain.Orders](rows)
+	if err != nil {
+		return nil, err
+	}
+	return _orders, nil
+}
+
+// GetProductByOrderID implements IOrdersRepository.
+func (orders *Orders) GetProductByOrderID(ctx context.Context, orderID int64) ([]domain.ProductInOrder, error) {
+	rows, err := orders.db.Query(ctx, getProductByOrderID, orderID)
+	if err != nil {
+		return nil, err
+	}
+	_products, err := db.CollectRows[domain.ProductInOrder](rows)
+	if err != nil {
+		return nil, err
+	}
+	return _products, nil
+}

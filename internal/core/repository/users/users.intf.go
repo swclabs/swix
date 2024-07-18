@@ -15,6 +15,9 @@ type IUserRepository interface {
 	// GetByPhone retrieves a Users based on phone number.
 	GetByPhone(ctx context.Context, nPhone string) (*domain.Users, error)
 
+	// GetByID retrieves a Users based on ID.
+	GetByID(ctx context.Context, id int64) (*domain.Users, error)
+
 	// Insert inserts a new Users into the database.
 	Insert(ctx context.Context, usr domain.Users) error
 

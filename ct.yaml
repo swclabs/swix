@@ -2,3 +2,4 @@
 remote: origin
 chart-dirs:
   - misc/k8s
+  

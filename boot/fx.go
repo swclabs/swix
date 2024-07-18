@@ -4,7 +4,7 @@ package boot
 import (
 	"swclabs/swipecore/internal/core/repository"
 	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/internal/wapi"
+	"swclabs/swipecore/internal/webapi"
 	"swclabs/swipecore/internal/workers"
 	"swclabs/swipecore/pkg/infra/blob"
 	"swclabs/swipecore/pkg/infra/db"
@@ -34,7 +34,7 @@ var (
 // PrepareFor enable build web api or worker consume
 func PrepareFor(flag int) {
 	if flag&RestAPI != 0 {
-		_FxPresenterLayer = wapi.FxModule
+		_FxPresenterLayer = webapi.FxModule
 	}
 	if flag&WorkerConsume != 0 {
 		_FxPresenterLayer = workers.FxModule

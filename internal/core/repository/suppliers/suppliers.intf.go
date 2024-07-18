@@ -31,4 +31,10 @@ type ISuppliersRepository interface {
 	// phone is the phone number to search for.
 	// Returns a pointer to the Suppliers object and an error if any issues occur during the retrieval process.
 	GetByPhone(ctx context.Context, phone string) (*domain.Suppliers, error)
+
+	// Edit updates an existing supplier's information in the database.
+	// ctx is the context to manage the request's lifecycle.
+	// sup is the Suppliers object to be updated.
+	// Returns an error if any issues occur during the update process.
+	Edit(ctx context.Context, sup domain.Suppliers) error
 }

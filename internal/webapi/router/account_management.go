@@ -1,9 +1,11 @@
 // Package router account management implementation
+// File account_management.go defines routes for APIs related to account management,
+// such as login, signup, logout, and user information.
 package router
 
 import (
-	"swclabs/swipecore/internal/wapi/controller"
-	"swclabs/swipecore/internal/wapi/middleware"
+	"swclabs/swipecore/internal/webapi/controller"
+	"swclabs/swipecore/internal/webapi/middleware"
 
 	"github.com/labstack/echo/v4"
 )
