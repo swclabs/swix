@@ -83,7 +83,6 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 			InventoryStruct: domain.InventoryStruct{
 				ProductID:    strconv.Itoa(int(_inventory.ProductID)),
 				Price:        _inventory.Price.String(),
-				Model:        _inventory.Model,
 				Available:    _inventory.Available,
 				CurrencyCode: _inventory.CurrencyCode,
 				Specs:        specs,
@@ -158,12 +157,16 @@ func (s *ProductService) FindDeviceInInventory(
 	if err != nil {
 		return nil, err
 	}
+	product, err := s.Products.GetByID(ctx, _inventory.ProductID)
+	if err != nil {
+		return nil, err
+	}
 	var inventoryRes = domain.InventorySchema{
-		ID: _inventory.ID,
+		ID:          _inventory.ID,
+		ProductName: product.Name,
 		InventoryStruct: domain.InventoryStruct{
 			ProductID:    _inventory.ID,
 			Price:        _inventory.Price.String(),
-			Model:        _inventory.Model,
 			Available:    _inventory.Available,
 			CurrencyCode: _inventory.CurrencyCode,
 		},

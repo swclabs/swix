@@ -79,7 +79,7 @@ func (w *Inventory) InsertProduct(
 	ctx context.Context, product domain.InventoryStruct) error {
 	specsjson, _ := json.Marshal(product.Specs)
 	return w.db.SafeWrite(ctx, insertIntoInventory,
-		product.ProductID, product.Model, product.Price,
+		product.ProductID, product.Price,
 		string(specsjson), product.Available, product.CurrencyCode,
 		"active",
 	)
