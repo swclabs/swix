@@ -23,4 +23,10 @@ const (
 		WHERE email = $1
 		LIMIT 1;
 	`
+
+	// Test
+	updateSuppliers string = `
+		UPDATE suppliers (name, email)
+		VALUES ($1, $2);
+	`
 )
