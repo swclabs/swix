@@ -71,11 +71,11 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 		}
 		switch _inventory.Status {
 		case "active":
-			stock.Active++
+			stock.Header.Active++
 		case "draft":
-			stock.Draft++
+			stock.Header.Draft++
 		case "archived":
-			stock.Active++
+			stock.Header.Active++
 		}
 		stock.Stock = append(stock.Stock, domain.InventorySchema{
 			ID:          _inventory.ID,
@@ -92,7 +92,7 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 
 	stock.Page = page
 	stock.Limit = limit
-	stock.All = len(inventories)
+	stock.Header.All = len(inventories)
 
 	return &stock, nil
 }

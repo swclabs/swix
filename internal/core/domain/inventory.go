@@ -50,15 +50,20 @@ type InventorySchema struct {
 	InventoryStruct
 }
 
+// InventoryStockHeader response, request
+type InventoryStockHeader struct {
+	All     int `json:"all"`
+	Active  int `json:"active"`
+	Draft   int `json:"draft"`
+	Archive int `json:"archive"`
+}
+
 // InventoryStockSchema response, request
 type InventoryStockSchema struct {
-	All     int               `json:"all"`
-	Active  int               `json:"active"`
-	Draft   int               `json:"draft"`
-	Archive int               `json:"archive"`
-	Page    int               `json:"page"`
-	Limit   int               `json:"limit"`
-	Stock   []InventorySchema `json:"stock"`
+	Page   int                  `json:"page"`
+	Limit  int                  `json:"limit"`
+	Header InventoryStockHeader `json:"header"`
+	Stock  []InventorySchema    `json:"stock"`
 }
 
 // InventoryDeviveSpecs request, response
