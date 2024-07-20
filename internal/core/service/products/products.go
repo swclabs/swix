@@ -79,6 +79,7 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 		}
 		stock.Stock = append(stock.Stock, domain.InventorySchema{
 			ID:          _inventory.ID,
+			Status:      _inventory.Status,
 			ProductName: product.Name,
 			InventoryStruct: domain.InventoryStruct{
 				ProductID:    strconv.Itoa(int(_inventory.ProductID)),
@@ -163,6 +164,7 @@ func (s *ProductService) FindDeviceInInventory(
 	}
 	var inventoryRes = domain.InventorySchema{
 		ID:          _inventory.ID,
+		Status:      _inventory.Status,
 		ProductName: product.Name,
 		InventoryStruct: domain.InventoryStruct{
 			ProductID:    _inventory.ID,

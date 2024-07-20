@@ -13,4 +13,4 @@ COMMIT_TAG="$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$COMMIT_ID"
 LATEST_TAG="$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest"
 
 echo "build: $COMMIT_TAG"
-docker build  -t $COMMIT_TAG -f ./Dockerfile.dev .
+docker build  -t $COMMIT_TAG -f ./Dockerfile .

@@ -46,25 +46,11 @@ templ: # Generate templates
 web: pkg/web/web.go
 	@go run pkg/web/web.go
 
-dev.build: docker-compose.dev.yml Dockerfile.dev
-	@docker compose -f \
-	docker-compose.dev.yml \
-	up --build -d
-dev: docker-compose.dev.yml Dockerfile.dev
-	@docker compose -f \
-	docker-compose.dev.yml \
-	up -d
-dev.down: docker-compose.dev.yml Dockerfile.dev
-	@docker compose -f \
-	docker-compose.dev.yml \
-	down
-
-compose.build: docker-compose.yml Dockerfile
-	@docker compose up \
-	--build -d
-compose: docker-compose.yml Dockerfile
-	@docker compose up -d
-compose.down: docker-compose.yml Dockerfile
+dev.build: docker-compose.yml Dockerfile
+	@docker compose up --build -d
+dev: docker-compose.yml Dockerfile
+	@docker compose -f up -d
+dev.down: docker-compose.yml Dockerfile
 	@docker compose down
 
 db: docker-compose.db.yml

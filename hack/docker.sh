@@ -23,4 +23,4 @@ COMMIT_TAG="$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$COMMIT_ID"
 LATEST_TAG="$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:latest"
 
 echo "build: $COMMIT_TAG"
-docker build --build-arg APP_MODULE=$MODULE_NAME -t $COMMIT_TAG .
+docker build --build-arg APP_MODULE=$MODULE_NAME -t $COMMIT_TAG Dockerfile.prod
