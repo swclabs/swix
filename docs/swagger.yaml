@@ -199,18 +199,17 @@ definitions:
         type: string
       id:
         type: string
-      model:
-        type: string
       price:
         type: string
       product_id:
+        type: string
+      product_name:
         type: string
       specs:
         $ref: '#/definitions/domain.InventorySpecsDetail'
     required:
     - available
     - currency_code
-    - model
     - price
     - product_id
     type: object
@@ -227,7 +226,7 @@ definitions:
       ssd:
         type: string
     type: object
-  domain.InventoryStockSchema:
+  domain.InventoryStockHeader:
     properties:
       active:
         type: integer
@@ -237,6 +236,11 @@ definitions:
         type: integer
       draft:
         type: integer
+    type: object
+  domain.InventoryStockSchema:
+    properties:
+      header:
+        $ref: '#/definitions/domain.InventoryStockHeader'
       limit:
         type: integer
       page:
@@ -252,8 +256,6 @@ definitions:
         type: string
       currency_code:
         type: string
-      model:
-        type: string
       price:
         type: string
       product_id:
@@ -263,7 +265,6 @@ definitions:
     required:
     - available
     - currency_code
-    - model
     - price
     - product_id
     type: object

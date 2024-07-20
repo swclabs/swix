@@ -1321,7 +1321,6 @@ const docTemplate = `{
             "required": [
                 "available",
                 "currency_code",
-                "model",
                 "price",
                 "product_id"
             ],
@@ -1335,13 +1334,13 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "model": {
-                    "type": "string"
-                },
                 "price": {
                     "type": "string"
                 },
                 "product_id": {
+                    "type": "string"
+                },
+                "product_name": {
                     "type": "string"
                 },
                 "specs": {
@@ -1369,7 +1368,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.InventoryStockSchema": {
+        "domain.InventoryStockHeader": {
             "type": "object",
             "properties": {
                 "active": {
@@ -1383,6 +1382,14 @@ const docTemplate = `{
                 },
                 "draft": {
                     "type": "integer"
+                }
+            }
+        },
+        "domain.InventoryStockSchema": {
+            "type": "object",
+            "properties": {
+                "header": {
+                    "$ref": "#/definitions/domain.InventoryStockHeader"
                 },
                 "limit": {
                     "type": "integer"
@@ -1403,7 +1410,6 @@ const docTemplate = `{
             "required": [
                 "available",
                 "currency_code",
-                "model",
                 "price",
                 "product_id"
             ],
@@ -1412,9 +1418,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "currency_code": {
-                    "type": "string"
-                },
-                "model": {
                     "type": "string"
                 },
                 "price": {

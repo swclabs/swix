@@ -1,0 +1,3 @@
+[submodule "cloudinfra"]
+	path = cloudinfra
+	url = https://github.com/swclabs/cloudinfra.git

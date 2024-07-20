@@ -59,7 +59,7 @@ func newClient() *cli.App {
 		Name:        "swipe",
 		Usage:       "swipe",
 		Version:     "0.0.1",
-		Description: "Swipe API server cli",
+		Description: "Swipe server cli",
 		Commands:    command,
 	}
 
