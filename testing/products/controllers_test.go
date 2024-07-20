@@ -38,8 +38,9 @@ func TestGetProductAvailability(t *testing.T) {
 			Ssd:       "512",
 			Color:     "black",
 		}).Return(&domain.Inventories{
-		ID:           "1",
 		ProductID:    1,
+		ID:           "1",
+		Status:       "active",
 		Available:    "100",
 		Price:        price,
 		Specs:        string(specs),
@@ -55,7 +56,6 @@ func TestGetProductAvailability(t *testing.T) {
 		Inventory: &inventoryRepos,
 		Products:  &productRepos,
 	}
-
 	// presenter layers
 	controllers := controller.Products{
 		Services: &services,
@@ -68,6 +68,6 @@ func TestGetProductAvailability(t *testing.T) {
 
 	e.ServeHTTP(rr, req)
 
-	expected := "{\"id\":\"1\",\"product_name\":\"iPhone 15 Pro Max\",\"product_id\":\"1\",\"price\":\"10000\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
+	expected := "{\"id\":\"1\",\"product_name\":\"iPhone 15 Pro Max\",\"status\":\"active\",\"product_id\":\"1\",\"price\":\"10000\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
 }

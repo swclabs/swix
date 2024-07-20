@@ -164,6 +164,7 @@ func (s *ProductService) FindDeviceInInventory(
 	}
 	var inventoryRes = domain.InventorySchema{
 		ID:          _inventory.ID,
+		Status:      _inventory.Status,
 		ProductName: product.Name,
 		InventoryStruct: domain.InventoryStruct{
 			ProductID:    _inventory.ID,
