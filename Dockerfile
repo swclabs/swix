@@ -1,3 +1,4 @@
+# Stage build
 FROM golang:1.22-alpine AS builder
 
 ARG APP_MODULE=""
@@ -25,3 +26,16 @@ RUN rm -r *
 RUN mkdir -p pkg && cp -r /tmp/migration/ pkg
 # Clean up
 RUN go clean -modcache
+
+# Stage run
+FROM alpine:edge as runner
+WORKDIR /app
+
+ENV HOST 0.0.0.0
+ENV PORT 8000
+
+COPY --from=builder /bin/swipe /bin/swipe
+COPY --from=builder /app/pkg/migration /app/pkg/migration
+
+# Set the timezone and install CA certificates
+RUN apk --no-cache add ca-certificates tzdata
