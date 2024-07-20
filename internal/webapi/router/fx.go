@@ -11,8 +11,8 @@ var FxModule = fx.Options(
 		NewDocs,
 		NewCommon,
 		NewProducts,
-		NewAccountManagement,
 		NewPosts,
 		NewPurchase,
+		NewAccountManagement,
 	),
 )

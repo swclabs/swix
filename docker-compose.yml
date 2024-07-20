@@ -1,39 +1,68 @@
 version: "3.1"
 services:
-  nginx-proxy:
-    image: nginx
-    container_name: nginx-proxy
-    restart: always
-    ports:
-      - "443:443"
-      - "80:80"
-    volumes:
-      - ./x/misc/nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./x/misc/nginx/nginx.conf:/etc/nginx/nginx.conf
-    networks:
-      - swipe_bridge
-      
-  swipe-server:
-    image: duchungho/swipe-api:latest
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
-      - .env.prod
+      - .env
     restart: always
     command: "swipe s"
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+      - HOST=0.0.0.0
     networks:
       - swipe_bridge
     ports:
       - 8000:8000
+    depends_on:
+      - redis
+      - postgres
 
-  swipe-worker:
-    image: duchungho/swipe-api:latest
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
-      - .env.prod
+      - .env
     restart: always
     networks:
       - swipe_bridge
     command: "swipe w"
-    
+    environment:
+      - DB_HOST=postgres
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+      - postgres
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - swipe_bridge
+    command: /bin/sh -c "redis-server --requirepass password"
+    environment:
+      - REDIS_HOST_PASSWORD=password
+    volumes:
+      - ./boot/.swipe/redis:/data
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: swipe
+      POSTGRES_PASSWORD: swip3@admin
+      POSTGRES_USER: admin
+    ports:
+      - 5432:5432
+    restart: on-failure:3
+    networks:
+      - swipe_bridge
+    volumes:
+      - ./boot/.swipe/postgres:/var/lib/postgresql/data
 networks:
   swipe_bridge:
 volumes:
-  pkg:
+  boot:
