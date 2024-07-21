@@ -50,6 +50,32 @@ type ProductService struct {
 	Inventory  inventories.IInventoryRepository
 }
 
+// UploadStockImage implements IProductService.
+func (s *ProductService) UploadStockImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
+	if fileHeader == nil {
+		return fmt.Errorf("missing image file")
+	}
+	for _, fileheader := range fileHeader {
+		file, err := fileheader.Open()
+		if err != nil {
+			return err
+		}
+		resp, err := s.Blob.UploadImages(file)
+		if err == nil {
+			if err = s.Inventory.UploadImage(ctx, ID, resp.SecureURL); err == nil {
+				if err = file.Close(); err != nil {
+					return err
+				}
+			}
+		}
+
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // DeleteInventoryByID implements IProductService.
 func (s *ProductService) DeleteInventoryByID(ctx context.Context, inventoryID int64) error {
 	return s.Inventory.DeleteByID(ctx, inventoryID)

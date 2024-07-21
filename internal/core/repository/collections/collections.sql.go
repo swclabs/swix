@@ -16,7 +16,7 @@ const (
 
 	updateCollectionImage = `
 		UPDATE collections
-		SET body = jsonb_set(body, '{image}', to_jsonb(?::text), true)
-		WHERE id = $1;
+		SET body = jsonb_set(body, '{image}', to_jsonb($1::text), true)
+		WHERE id = $2;
     `
 )

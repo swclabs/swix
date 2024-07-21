@@ -101,4 +101,10 @@ type IProductService interface {
 	// inventoryID is the ID of the inventory to be deleted.
 	// Returns an error if any issues occur during the deletion process.
 	DeleteInventoryByID(ctx context.Context, inventoryID int64) error
+
+	// UploadStockImage uploads images for an inventory.
+	// ctx is the context to manage the request's lifecycle.
+	// ID is the ID of the inventory.
+	// fileHeader contains the file headers of the images to be uploaded.
+	UploadStockImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
 }

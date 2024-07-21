@@ -27,7 +27,7 @@ func TestGetProductAvailability(t *testing.T) {
 		RAM:        "16",
 		Ssd:        "512",
 		ColorImage: "",
-		Image:      "",
+		Image:      []string{},
 	})
 	inventoryRepos := inventories.Mock{}
 	price, _ := decimal.NewFromString("10000")
@@ -68,6 +68,6 @@ func TestGetProductAvailability(t *testing.T) {
 
 	e.ServeHTTP(rr, req)
 
-	expected := "{\"id\":\"1\",\"product_name\":\"iPhone 15 Pro Max\",\"status\":\"active\",\"product_id\":\"1\",\"price\":\"10000\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
+	expected := "{\"id\":\"1\",\"product_name\":\"iPhone 15 Pro Max\",\"status\":\"active\",\"product_id\":\"1\",\"price\":\"10000\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":[]}}\n"
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
 }

@@ -22,6 +22,11 @@ type Inventory struct {
 	db db.IDatabase
 }
 
+// UploadImage implements IInventoryRepository.
+func (w *Inventory) UploadImage(ctx context.Context, ID int, url string) error {
+	return w.db.SafeWrite(ctx, uploadInventoryImage, url, ID)
+}
+
 // DeleteByID implements IInventoryRepository.
 func (w *Inventory) DeleteByID(ctx context.Context, inventoryID int64) error {
 	return w.db.SafeWrite(ctx, deleteInventorybyID, inventoryID)
@@ -29,7 +34,7 @@ func (w *Inventory) DeleteByID(ctx context.Context, inventoryID int64) error {
 
 // GetLimit implements IInventoryRepository.
 func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]domain.Inventories, error) {
-	if offset <= 1 {
+	if offset < 1 {
 		offset = 1
 	}
 	rows, err := w.db.Query(ctx, getProductsLimit, limit, (offset-1)*limit)
