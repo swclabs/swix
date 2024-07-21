@@ -27,4 +27,8 @@ const (
 	getProductsLimit = `
 		SELECT * FROM inventories LIMIT $1 OFFSET $2;
 	`
+
+	deleteInventorybyID = `
+		DELETE FROM inventories WHERE id = $1;
+	`
 )

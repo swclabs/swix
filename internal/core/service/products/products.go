@@ -22,15 +22,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// ProductService struct for product service
-type ProductService struct {
-	Blob       blob.IBlobStorage
-	Categories categories.ICategoriesRepository
-	Products   products.IProductRepository
-	Suppliers  suppliers.ISuppliersRepository
-	Inventory  inventories.IInventoryRepository
-}
-
 var _ IProductService = (*ProductService)(nil)
 
 // New creates a new ProductService object
@@ -48,6 +39,20 @@ func New(
 		Suppliers:  suppliers,
 		Inventory:  inventory,
 	}
+}
+
+// ProductService struct for product service
+type ProductService struct {
+	Blob       blob.IBlobStorage
+	Categories categories.ICategoriesRepository
+	Products   products.IProductRepository
+	Suppliers  suppliers.ISuppliersRepository
+	Inventory  inventories.IInventoryRepository
+}
+
+// DeleteInventoryByID implements IProductService.
+func (s *ProductService) DeleteInventoryByID(ctx context.Context, inventoryID int64) error {
+	return s.Inventory.DeleteByID(ctx, inventoryID)
 }
 
 // GetAllStock implements IProductService.
