@@ -7,17 +7,22 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+var _ IInventoryRepository = (*Mock)(nil)
+
 // Mock represents a mock for IInventoryRepository.
 type Mock struct {
 	mock.Mock
+}
+
+// UploadImage implements IInventoryRepository.
+func (w *Mock) UploadImage(_ context.Context, _ int, _ string) error {
+	panic("unimplemented")
 }
 
 // DeleteByID implements IInventoryRepository.
 func (w *Mock) DeleteByID(_ context.Context, _ int64) error {
 	panic("unimplemented")
 }
-
-var _ IInventoryRepository = (*Mock)(nil)
 
 // GetLimit implements IInventoryRepository.
 func (w *Mock) GetLimit(_ context.Context, _ int, _ int) ([]domain.Inventories, error) {

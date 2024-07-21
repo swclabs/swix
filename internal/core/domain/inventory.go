@@ -27,11 +27,11 @@ type Inventory struct {
 
 // InventorySpecsDetail request, response
 type InventorySpecsDetail struct {
-	Color      string `json:"color"`
-	RAM        string `json:"ram"`
-	Ssd        string `json:"ssd"`
-	ColorImage string `json:"color_image"`
-	Image      string `json:"image"`
+	Color      string   `json:"color"`
+	RAM        string   `json:"ram"`
+	Ssd        string   `json:"ssd"`
+	ColorImage string   `json:"color_image"`
+	Image      []string `json:"image"`
 }
 
 // InventoryStruct request, response

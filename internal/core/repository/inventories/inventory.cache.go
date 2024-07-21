@@ -16,6 +16,11 @@ type cache struct {
 	inventory IInventoryRepository
 }
 
+// UploadImage implements IInventoryRepository.
+func (c *cache) UploadImage(ctx context.Context, ID int, url string) error {
+	return c.inventory.UploadImage(ctx, ID, url)
+}
+
 // DeleteByID implements IInventoryRepository.
 func (c *cache) DeleteByID(ctx context.Context, inventoryID int64) error {
 	return c.inventory.DeleteByID(ctx, inventoryID)

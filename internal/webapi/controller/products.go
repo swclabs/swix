@@ -26,6 +26,7 @@ type IProducts interface {
 	UpdateProductInfo(c echo.Context) error
 	GetStock(c echo.Context) error
 	DeleteInventory(c echo.Context) error
+	UploadInventoryImage(c echo.Context) error
 }
 
 // NewProducts creates a new Products object
@@ -38,6 +39,39 @@ func NewProducts(services products.IProductService) IProducts {
 // Products struct implementation of IProducts
 type Products struct {
 	Services products.IProductService
+}
+
+// UploadInventoryImage .
+// @Description update inventory image
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param image formData file true "stock image"
+// @Success 200 {object} domain.OK
+// @Router /inventory/image [PUT]
+func (p *Products) UploadInventoryImage(c echo.Context) error {
+	form, err := c.MultipartForm()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	files := form.File["image"]
+	// get id params
+	id, err := strconv.Atoi(c.QueryParam("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "Invalid 'limit' query parameter",
+		})
+	}
+	if err := p.Services.UploadStockImage(c.Request().Context(), id, files); err != nil {
+		return c.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, domain.Error{
+		Msg: "your inventory image has been uploaded successfully",
+	})
 }
 
 // DeleteInventory .

@@ -477,6 +477,35 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "delete inventory by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
+                        }
+                    }
+                }
             }
         },
         "/inventories/details": {
@@ -526,6 +555,37 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/domain.InventorySchema"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventory/image": {
+            "put": {
+                "description": "update inventory image",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "stock image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.OK"
                         }
                     }
                 }
@@ -1345,6 +1405,9 @@ const docTemplate = `{
                 },
                 "specs": {
                     "$ref": "#/definitions/domain.InventorySpecsDetail"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         },
@@ -1358,7 +1421,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "image": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "ram": {
                     "type": "string"

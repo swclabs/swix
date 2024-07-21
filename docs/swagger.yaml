@@ -207,6 +207,8 @@ definitions:
         type: string
       specs:
         $ref: '#/definitions/domain.InventorySpecsDetail'
+      status:
+        type: string
     required:
     - available
     - currency_code
@@ -220,7 +222,9 @@ definitions:
       color_image:
         type: string
       image:
-        type: string
+        items:
+          type: string
+        type: array
       ram:
         type: string
       ssd:
@@ -828,6 +832,25 @@ paths:
       tags:
       - common
   /inventories:
+    delete:
+      consumes:
+      - application/json
+      description: delete inventory by id
+      parameters:
+      - description: inventory id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
+      tags:
+      - products
     get:
       consumes:
       - application/json
@@ -905,6 +928,26 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/domain.InventorySchema'
+      tags:
+      - products
+  /inventory/image:
+    put:
+      consumes:
+      - application/json
+      description: update inventory image
+      parameters:
+      - description: stock image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.OK'
       tags:
       - products
   /oauth2/login:

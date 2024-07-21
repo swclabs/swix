@@ -31,4 +31,20 @@ const (
 	deleteInventorybyID = `
 		DELETE FROM inventories WHERE id = $1;
 	`
+
+	uploadInventoryImage = `
+		UPDATE inventories
+		SET specs = jsonb_set(
+			specs,
+			'{image}',
+			CASE
+				WHEN specs->>'image' IS NULL OR specs->>'image' = 'null' THEN
+					to_jsonb(array[$1]::text[])
+				ELSE
+					(specs->'image')::jsonb || to_jsonb($1::text)
+			END,
+			true
+		)
+		WHERE id = $2;
+	`
 )

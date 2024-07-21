@@ -49,6 +49,7 @@ func (r *Products) Routers(e *echo.Echo) {
 	// e.PUT("/suppliers")
 
 	// endpoint for inventories
+	e.PUT("/inventories/image", r.controller.UploadInventoryImage)
 	e.GET("/inventories/details", r.controller.GetProductAvailability)
 	e.GET("/inventories", r.controller.GetStock)
 	e.POST("/inventories", r.controller.AddToInventory)

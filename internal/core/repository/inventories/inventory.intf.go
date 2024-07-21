@@ -24,4 +24,7 @@ type IInventoryRepository interface {
 
 	// DeleteByID deletes an inventory by its ID.
 	DeleteByID(ctx context.Context, inventoryID int64) error
+
+	// UploadImage uploads an image to the inventory.
+	UploadImage(ctx context.Context, ID int, url string) error
 }
