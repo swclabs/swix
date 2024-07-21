@@ -52,4 +52,5 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.GET("/inventories/details", r.controller.GetProductAvailability)
 	e.GET("/inventories", r.controller.GetStock)
 	e.POST("/inventories", r.controller.AddToInventory)
+	e.DELETE("/inventories", r.controller.DeleteInventory)
 }

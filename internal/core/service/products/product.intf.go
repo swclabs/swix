@@ -95,4 +95,10 @@ type IProductService interface {
 	// limit is the maximum number of stock to retrieve.
 	// Returns a pointer to the InventoryStockSchema object and an error if any issues occur during the retrieval process.
 	GetAllStock(ctx context.Context, page int, limit int) (*domain.InventoryStockSchema, error)
+
+	// DeleteInventoryByID deletes an inventory by its ID.
+	// ctx is the context to manage the request's lifecycle.
+	// inventoryID is the ID of the inventory to be deleted.
+	// Returns an error if any issues occur during the deletion process.
+	DeleteInventoryByID(ctx context.Context, inventoryID int64) error
 }

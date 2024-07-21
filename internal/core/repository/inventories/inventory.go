@@ -8,11 +8,6 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
-// Inventory represents the Inventory object.
-type Inventory struct {
-	db db.IDatabase
-}
-
 var _ IInventoryRepository = (*Inventory)(nil)
 
 // New creates a new Inventory object.
@@ -20,6 +15,16 @@ func New(conn db.IDatabase) IInventoryRepository {
 	return useCache(&Inventory{
 		db: conn,
 	})
+}
+
+// Inventory represents the Inventory object.
+type Inventory struct {
+	db db.IDatabase
+}
+
+// DeleteByID implements IInventoryRepository.
+func (w *Inventory) DeleteByID(ctx context.Context, inventoryID int64) error {
+	return w.db.SafeWrite(ctx, deleteInventorybyID, inventoryID)
 }
 
 // GetLimit implements IInventoryRepository.

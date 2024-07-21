@@ -6,14 +6,19 @@ import (
 	"swclabs/swipecore/internal/core/domain"
 )
 
-type cache struct {
-	inventory IInventoryRepository
-}
-
 var _ IInventoryRepository = (*cache)(nil)
 
 func useCache(repo IInventoryRepository) IInventoryRepository {
 	return &cache{inventory: repo}
+}
+
+type cache struct {
+	inventory IInventoryRepository
+}
+
+// DeleteByID implements IInventoryRepository.
+func (c *cache) DeleteByID(ctx context.Context, inventoryID int64) error {
+	return c.inventory.DeleteByID(ctx, inventoryID)
 }
 
 // GetLimit implements IInventoryRepository.
@@ -22,9 +27,8 @@ func (c *cache) GetLimit(ctx context.Context, limit int, offset int) ([]domain.I
 }
 
 // GetByProductId implements IInventoryRepository.
-func (c *cache) GetByProductID(_ context.Context, _ int64) ([]domain.Inventories, error) {
-	//TODO implement me
-	panic("implement me")
+func (c *cache) GetByProductID(ctx context.Context, ID int64) ([]domain.Inventories, error) {
+	return c.inventory.GetByProductID(ctx, ID)
 }
 
 // GetById implements IInventoryRepository.

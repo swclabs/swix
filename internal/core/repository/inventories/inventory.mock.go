@@ -12,6 +12,11 @@ type Mock struct {
 	mock.Mock
 }
 
+// DeleteByID implements IInventoryRepository.
+func (w *Mock) DeleteByID(_ context.Context, _ int64) error {
+	panic("unimplemented")
+}
+
 var _ IInventoryRepository = (*Mock)(nil)
 
 // GetLimit implements IInventoryRepository.

@@ -25,11 +25,7 @@ type IProducts interface {
 	DeleteProduct(c echo.Context) error
 	UpdateProductInfo(c echo.Context) error
 	GetStock(c echo.Context) error
-}
-
-// Products struct implementation of IProducts
-type Products struct {
-	Services products.IProductService
+	DeleteInventory(c echo.Context) error
 }
 
 // NewProducts creates a new Products object
@@ -37,6 +33,42 @@ func NewProducts(services products.IProductService) IProducts {
 	return &Products{
 		Services: services,
 	}
+}
+
+// Products struct implementation of IProducts
+type Products struct {
+	Services products.IProductService
+}
+
+// DeleteInventory .
+// @Description delete inventory by id
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param id query int true "inventory id"
+// @Success 200 {object} domain.OK
+// @Router /inventories [DELETE]
+func (p *Products) DeleteInventory(c echo.Context) error {
+	iID := c.QueryParam("id")
+	if iID == "" {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "missing param 'id' required",
+		})
+	}
+	id, err := strconv.ParseInt(iID, 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, domain.Error{
+			Msg: "param 'id' must be integer",
+		})
+	}
+	if err := p.Services.DeleteInventoryByID(c.Request().Context(), id); err != nil {
+		return c.JSON(http.StatusInternalServerError, domain.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, domain.Error{
+		Msg: "your inventory has been deleted successfully",
+	})
 }
 
 // GetStock .

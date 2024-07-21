@@ -29,16 +29,21 @@ func NewAccountManagement(controllers controller.IAccountManagement) IAccountMan
 
 // Routers define route endpoint
 func (account *AccountManagement) Routers(e *echo.Echo) {
-	user := e.Group("/users") // endpoint for users
+	// endpoint for users
+	user := e.Group("/users")
 	user.GET("", account.controller.GetMe, middleware.SessionProtected)
 	user.PUT("", account.controller.UpdateUserInfo)
 	user.PUT("/image", account.controller.UpdateUserImage, middleware.SessionProtected)
-	auth := e.Group("/auth") // endpoint for authentication
+
+	// endpoint for authentication
+	auth := e.Group("/auth")
 	auth.GET("", account.controller.CheckLoginEmail)
 	auth.POST("/signup", account.controller.SignUp)
 	auth.POST("/login", account.controller.Login)
 	auth.GET("/logout", account.controller.Logout)
-	auth0 := e.Group("/oauth2") // endpoint for oauth2 service
+
+	// endpoint for oauth2 service
+	auth0 := e.Group("/oauth2")
 	auth0.GET("/login", controller.Auth0Login)
 	e.GET("/callback", controller.Auth0Callback)
 }
