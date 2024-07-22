@@ -1,0 +1,192 @@
+#!/usr/bin/env bash
+
+ISFLAG=false
+
+# Function to display help
+show_help() {
+    echo "Usage: $(basename $0) [command] [options]"
+    echo "Usage: $(basename $0) [options]"
+    echo
+    echo "Options:"
+    echo "  -h, --help          Show this help message and exit"
+    echo "Command:"
+    echo "  run                 Run swipe with options"
+    echo "  docker              Interact with swipe docker image"
+    echo
+}
+
+function docker_command() {
+    docker_show_help() {
+        echo "Usage: $(basename $0) docker [options]"
+        echo
+        echo "Options:"
+        echo "  -h, --help              Show this help message and exit"
+        echo "  -b, --build NAME        Display a greeting message to NAME"
+        echo
+    }
+
+    build_docker(){
+        COMMIT_ID=$(git rev-parse --short HEAD)
+
+        COMMIT_TAG="$IMAGE_NAME:$COMMIT_ID"
+        #LATEST_TAG="$IMAGE_NAME:latest"
+
+        echo "[SWIPE] docker build: $COMMIT_TAG"
+        docker build  -t $COMMIT_TAG -f ./Dockerfile .
+        exit 0
+    }
+    
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            -b|--build)
+                IMAGE_NAME="$2"
+                build_docker
+                shift
+                ;;
+            -h|--help)
+                docker_show_help
+                exit 0
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
+                docker_show_help
+                exit 1
+                ;;
+        esac
+        shift
+    done
+    
+    exit 0
+}
+
+function run_command() {
+    run_show_help(){
+        echo "Usage: $(basename $0) docker [options]"
+        echo
+        echo "Options:"
+        echo "  -h, --help                              Show this help message and exit"
+        echo "  -g, --greet NAME                        Display a greeting message to NAME"
+        echo "  -t, --test  NAME                        Run unit test the module"
+        echo "  -d, --dash  REDIS:URI REDIS:PASSWORD    Connect to task worker dashboard"
+        echo
+    }
+
+    greet() {
+        if [[ -n "$NAME" ]]; then
+            echo "Hello, $NAME!"
+        fi
+        exit 0
+    }
+
+    test(){
+        white_list=("common" "posts" "products")
+        input_value="$TEST_MODULE"
+
+        FOUND=0
+        for value in "${white_list[@]}"; do
+            if [ "$input_value" = "$value" ]; then
+                FOUND=1
+                break
+            fi
+        done
+
+        if [ $FOUND -eq 0 ]; then
+            echo "Modules not found, modules below are available:"
+            echo "  common"
+            echo "  posts"
+            echo "  products"
+            exit 1
+        fi
+
+        go test -v ./testing/$TEST_MODULE
+    }
+
+    dash(){
+        function get_host {
+            read -p "HOST: " REDIS_URI
+        }
+        function get_password {
+            stty -echo
+            read -p "PASSWORD: " REDIS_PASSWORD
+            stty echo
+            echo
+        }
+        get_host
+        get_password
+        if [ -n "$REDIS_PASSWORD" ]; then
+            asynq dash --uri $REDIS_URI --password $REDIS_PASSWORD
+        else
+            asynq dash --uri $REDIS_URI
+        fi
+    }
+
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            -h|--help)
+                run_show_help
+                exit 0
+                ;;
+            -g|--greet)
+                if [[ -n "$2" ]]; then
+                    NAME="$2"
+                    greet
+                    shift
+                else
+                    echo "Error: --greet requires a NAME argument" >&2
+                    exit 1
+                fi
+                ;;
+            -t|--test)
+                if [[ -n "$2" ]]; then
+                    TEST_MODULE="$2"
+                    test
+                    shift
+                else
+                    echo "Error: --test requires a NAME argument (module name)" >&2
+                    exit 1
+                fi
+                ;;
+            -d|--dash)
+                dash
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
+                docker_show_help
+                exit 1
+                ;;
+        esac
+        shift
+    done
+    
+    exit 0
+}
+
+command=$1
+case $command in 
+    docker)
+        shift
+        docker_command "$@"
+    ;;
+    run)
+        shift
+        run_command "$@"
+    ;;
+    *)
+esac
+
+
+# Parse command line arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        *)
+            echo "Unknown command: $1" >&2
+            show_help
+            exit 1
+            ;;
+    esac
+    shift
+done
