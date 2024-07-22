@@ -46,7 +46,7 @@ jobs:
         run: go mod download
 
       - name: Unit test - common
-        run: bash hack/cmd_test.sh common
+        run: bash hack/swipe run -t common
 
   test-posts:
     needs: [build]
@@ -66,7 +66,7 @@ jobs:
         run: go mod download
 
       - name: Unit test - posts
-        run: bash hack/cmd_test.sh posts
+        run: bash hack/swipe run -t posts
 
   test-products:
     needs: [build]
@@ -84,9 +84,9 @@ jobs:
 
       - name: Download package dependencies
         run: go mod download
-        
+
       - name: Unit test - products
-        run: bash hack/cmd_test.sh products
+        run: bash hack/swipe run -t products
 
   build-docker:
     needs: [test-common, test-posts, test-products]
