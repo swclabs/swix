@@ -6,7 +6,7 @@ import (
 	"swclabs/swipecore/pkg/lib/mailer"
 
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/web/components"
+	"swclabs/swipecore/pkg/components"
 
 	"github.com/a-h/templ"
 )

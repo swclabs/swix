@@ -102,3 +102,13 @@ type Supplier struct {
 	District string `json:"district" db:"district"`
 	Street   string `json:"street" db:"street"`
 }
+
+type UpdateInventory struct {
+	ID           string               `json:"id" validate:"number"`
+	ProductID    string               `json:"product_id" validate:"number"`
+	Price        string               `json:"price" validate:"number"`
+	Available    string               `json:"available" validate:"number"`
+	CurrencyCode string               `json:"currency_code"`
+	Status       string               `json:"status"`
+	Specs        InventorySpecsDetail `json:"specs"`
+}

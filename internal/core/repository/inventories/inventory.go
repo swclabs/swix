@@ -24,7 +24,15 @@ type Inventory struct {
 
 // Update implements IInventoryRepository.
 func (w *Inventory) Update(ctx context.Context, inventory entity.Inventories) error {
-	panic("unimplemented")
+	return w.db.SafeWrite(ctx, update,
+		inventory.ID,
+		inventory.ProductID,
+		inventory.Status,
+		inventory.Price,
+		inventory.CurrencyCode,
+		inventory.Specs,
+		inventory.Available,
+	)
 }
 
 // UploadImage implements IInventoryRepository.

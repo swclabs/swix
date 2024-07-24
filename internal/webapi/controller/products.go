@@ -28,6 +28,7 @@ type IProducts interface {
 	GetStock(c echo.Context) error
 	DeleteInventory(c echo.Context) error
 	UploadInventoryImage(c echo.Context) error
+	UpdateInventory(c echo.Context) error
 }
 
 // NewProducts creates a new Products object
@@ -40,6 +41,36 @@ func NewProducts(services products.IProductService) IProducts {
 // Products struct implementation of IProducts
 type Products struct {
 	Services products.IProductService
+}
+
+// UpdateInventory .
+// @Description update inventory
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param inventory body dto.UpdateInventory true "Inventory Request"
+// @Success 200 {object} dto.OK
+// @Router /inventories [PUT]
+func (p *Products) UpdateInventory(c echo.Context) error {
+	var inventory dto.UpdateInventory
+	if err := c.Bind(&inventory); err != nil {
+		return c.JSON(http.StatusBadRequest, dto.Error{
+			Msg: err.Error(),
+		})
+	}
+	if _valid := valid.Validate(&inventory); _valid != nil {
+		return c.JSON(http.StatusBadRequest, dto.Error{
+			Msg: _valid.Error(),
+		})
+	}
+	if err := p.Services.UpdateInventory(c.Request().Context(), inventory); err != nil {
+		return c.JSON(http.StatusInternalServerError, dto.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dto.OK{
+		Msg: "your inventory has been updated successfully",
+	})
 }
 
 // UploadInventoryImage .
