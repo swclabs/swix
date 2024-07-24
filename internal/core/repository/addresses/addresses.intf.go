@@ -2,7 +2,7 @@ package addresses
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 )
 
 // IAddressRepository implements all methods to access the Addresses data in the database.
@@ -11,5 +11,5 @@ type IAddressRepository interface {
 	// ctx is the context to manage the request's lifecycle.
 	// data is a pointer to the Addresses object to be added.
 	// Returns an error if any issues occur during the insertion process.
-	Insert(ctx context.Context, data domain.Addresses) error
+	Insert(ctx context.Context, data entity.Addresses) error
 }

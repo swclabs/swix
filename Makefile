@@ -49,7 +49,7 @@ web: pkg/web/web.go
 dev.build: docker-compose.yml Dockerfile
 	@docker compose up --build -d
 dev: docker-compose.yml Dockerfile
-	@docker compose -f up -d
+	@docker compose up -d
 dev.down: docker-compose.yml Dockerfile
 	@docker compose down
 

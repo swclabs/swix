@@ -2,7 +2,7 @@ package categories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 )
 
 type cache struct {
@@ -18,11 +18,11 @@ func useCache(repo ICategoriesRepository) ICategoriesRepository {
 }
 
 // GetLimit implements ICategoriesRepository.
-func (c *cache) GetLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+func (c *cache) GetLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
 	return c.category.GetLimit(ctx, limit)
 }
 
 // Insert implements ICategoriesRepository.
-func (c *cache) Insert(ctx context.Context, ctg domain.Categories) error {
+func (c *cache) Insert(ctx context.Context, ctg entity.Categories) error {
 	return c.category.Insert(ctx, ctg)
 }

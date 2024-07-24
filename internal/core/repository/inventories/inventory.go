@@ -2,10 +2,10 @@ package inventories
 
 import (
 	"context"
-	"encoding/json"
-	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/errors"
+	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/pkg/infra/db"
+	"swclabs/swipecore/pkg/lib/errors"
 )
 
 var _ IInventoryRepository = (*Inventory)(nil)
@@ -22,6 +22,11 @@ type Inventory struct {
 	db db.IDatabase
 }
 
+// Update implements IInventoryRepository.
+func (w *Inventory) Update(ctx context.Context, inventory entity.Inventories) error {
+	panic("unimplemented")
+}
+
 // UploadImage implements IInventoryRepository.
 func (w *Inventory) UploadImage(ctx context.Context, ID int, url string) error {
 	return w.db.SafeWrite(ctx, uploadInventoryImage, url, ID)
@@ -33,7 +38,7 @@ func (w *Inventory) DeleteByID(ctx context.Context, inventoryID int64) error {
 }
 
 // GetLimit implements IInventoryRepository.
-func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]domain.Inventories, error) {
+func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]entity.Inventories, error) {
 	if offset < 1 {
 		offset = 1
 	}
@@ -41,16 +46,16 @@ func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]doma
 	if err != nil {
 		return nil, err
 	}
-	return db.CollectRows[domain.Inventories](rows)
+	return db.CollectRows[entity.Inventories](rows)
 }
 
 // GetByProductID implements IInventoryRepository.
-func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]domain.Inventories, error) {
+func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]entity.Inventories, error) {
 	rows, err := w.db.Query(ctx, getByProductID, productID)
 	if err != nil {
 		return nil, errors.Repository("500", err)
 	}
-	inventories, err := db.CollectRows[domain.Inventories](rows)
+	inventories, err := db.CollectRows[entity.Inventories](rows)
 	if err != nil {
 		return nil, errors.Repository("500", err)
 	}
@@ -58,39 +63,37 @@ func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]doma
 }
 
 // GetByID implements IInventoryRepository.
-func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*domain.Inventories, error) {
+func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*entity.Inventories, error) {
 	rows, err := w.db.Query(ctx, getByID, inventoryID)
 	if err != nil {
 		return nil, err
 	}
-	inventory, err := db.CollectOneRow[domain.Inventories](rows)
+	inventory, err := db.CollectOneRow[entity.Inventories](rows)
 	if err != nil {
 		return nil, err
 	}
 	return &inventory, nil
 }
 
-// FindDevice implements domain.IInventoryRepository.
-func (w *Inventory) FindDevice(ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.Inventories, error) {
+// FindDevice implements IInventoryRepository.
+func (w *Inventory) FindDevice(ctx context.Context, device dto.InventoryDeviceSpecs) (*entity.Inventories, error) {
 	rows, err := w.db.Query(ctx, getAvailableProducts,
-		deviceSpecs.ProductID, deviceSpecs.RAM, deviceSpecs.Ssd, deviceSpecs.Color)
+		device.ProductID, device.RAM, device.Ssd, device.Color)
 	if err != nil {
 		return nil, err
 	}
-	inventory, err := db.CollectOneRow[domain.Inventories](rows)
+	inventory, err := db.CollectOneRow[entity.Inventories](rows)
 	if err != nil {
 		return nil, err
 	}
 	return &inventory, nil
 }
 
-// InsertProduct implements domain.IInventoryRepository.
-func (w *Inventory) InsertProduct(
-	ctx context.Context, product domain.InventoryStruct) error {
-	specsjson, _ := json.Marshal(product.Specs)
+// InsertProduct implements IInventoryRepository.
+func (w *Inventory) InsertProduct(ctx context.Context, product entity.Inventories) error {
 	return w.db.SafeWrite(ctx, insertIntoInventory,
 		product.ProductID, product.Price,
-		string(specsjson), product.Available, product.CurrencyCode,
-		"active",
+		product.Specs, product.Available, product.CurrencyCode,
+		product.Status,
 	)
 }

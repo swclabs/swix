@@ -1,4 +1,5 @@
-package domain
+// Package domain Addresses entities
+package entity
 
 // Addresses Table
 type Addresses struct {

@@ -3,7 +3,9 @@ package accountmanagement
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/model"
 )
 
 // IAccountManagement : Module for Account Management with use-cases.
@@ -13,13 +15,13 @@ type IAccountManagement interface {
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the sign-up request details.
 	// Returns an error if any issues occur during the sign-up process.
-	SignUp(ctx context.Context, req domain.SignUpSchema) error
+	SignUp(ctx context.Context, req dto.SignUpRequest) error
 
 	// Login authenticates a user and returns a token.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the login request details.
 	// Returns a token string and an error if any issues occur during the login process.
-	Login(ctx context.Context, req domain.LoginSchema) (string, error)
+	Login(ctx context.Context, req dto.LoginRequest) (string, error)
 
 	// CheckLoginEmail checks if the email is already registered.
 	// ctx is the context to manage the request's lifecycle.
@@ -31,13 +33,13 @@ type IAccountManagement interface {
 	// ctx is the context to manage the request's lifecycle.
 	// email is the email address to retrieve user information for.
 	// Returns a pointer to the UserInfo object and an error if any issues occur during the retrieval process.
-	UserInfo(ctx context.Context, email string) (*domain.UserSchema, error)
+	UserInfo(ctx context.Context, email string) (*model.Users, error)
 
 	// UpdateUserInfo updates the user information.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the updated user information details.
 	// Returns an error if any issues occur during the update process.
-	UpdateUserInfo(ctx context.Context, req domain.UserUpdate) error
+	UpdateUserInfo(ctx context.Context, req dto.User) error
 
 	// UploadAvatar uploads a user's avatar.
 	// email is the email address of the user.
@@ -49,11 +51,11 @@ type IAccountManagement interface {
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the OAuth2 user information details.
 	// Returns an error if any issues occur during the save process.
-	OAuth2SaveUser(ctx context.Context, req domain.OAuth2SaveUser) error
+	OAuth2SaveUser(ctx context.Context, req dto.OAuth2SaveUser) error
 
 	// UploadAddress uploads a user's address.
 	// ctx is the context to manage the request's lifecycle.
 	// data contains the address details to be uploaded.
 	// Returns an error if any issues occur during the upload process.
-	UploadAddress(ctx context.Context, data domain.Addresses) error
+	UploadAddress(ctx context.Context, data entity.Addresses) error
 }

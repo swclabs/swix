@@ -3,7 +3,7 @@ package carts
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -21,7 +21,7 @@ func NewCartsMock() *Mock {
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Mock) GetCartByUserID(_ context.Context, _ int64, _ int) (*domain.CartSlices, error) {
+func (c *Mock) GetCartByUserID(_ context.Context, _ int64, _ int) ([]entity.Carts, error) {
 	panic("unimplemented")
 }
 

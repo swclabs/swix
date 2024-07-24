@@ -2,7 +2,7 @@ package accounts
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -19,20 +19,20 @@ func NewAccountsMock() *Mock {
 	return &Mock{}
 }
 
-// GetByEmail implements domain.IAccountRepository.
-func (a *Mock) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
+// GetByEmail implements IAccountRepository.
+func (a *Mock) GetByEmail(ctx context.Context, email string) (*entity.Account, error) {
 	args := a.Called(ctx, email)
-	return args.Get(0).(*domain.Account), args.Error(0)
+	return args.Get(0).(*entity.Account), args.Error(0)
 }
 
-// Insert implements domain.IAccountRepository.
-func (a *Mock) Insert(ctx context.Context, acc domain.Account) error {
+// Insert implements IAccountRepository.
+func (a *Mock) Insert(ctx context.Context, acc entity.Account) error {
 	args := a.Called(ctx, acc)
 	return args.Error(0)
 }
 
-// SaveInfo implements domain.IAccountRepository.
-func (a *Mock) SaveInfo(ctx context.Context, acc domain.Account) error {
+// SaveInfo implements IAccountRepository.
+func (a *Mock) SaveInfo(ctx context.Context, acc entity.Account) error {
 	args := a.Called(ctx, acc)
 	return args.Error(0)
 }

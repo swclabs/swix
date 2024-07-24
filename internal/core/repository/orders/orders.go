@@ -2,7 +2,7 @@ package orders
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -21,7 +21,7 @@ func New(conn db.IDatabase) IOrdersRepository {
 var _ IOrdersRepository = (*Orders)(nil)
 
 // InsertProduct implements IOrdersRepository.
-func (orders *Orders) InsertProduct(ctx context.Context, product domain.ProductInOrder) error {
+func (orders *Orders) InsertProduct(ctx context.Context, product entity.ProductInOrder) error {
 	return orders.db.SafeWrite(ctx, insertProductToOrder,
 		product.OrderID, product.InventoryID, product.Quantity, "VND",
 		product.TotalAmount.String(),
@@ -29,19 +29,19 @@ func (orders *Orders) InsertProduct(ctx context.Context, product domain.ProductI
 }
 
 // Create implements IOrdersRepository.
-func (orders *Orders) Create(ctx context.Context, order domain.Orders) (int64, error) {
+func (orders *Orders) Create(ctx context.Context, order entity.Orders) (int64, error) {
 	return orders.db.SafeWriteReturn(ctx, insertOrder,
 		order.UUID, order.UserID, "active", order.TotalAmount.String(),
 	)
 }
 
 // Get implements IOrdersRepository.
-func (orders *Orders) Get(ctx context.Context, userID int64, limit int) ([]domain.Orders, error) {
+func (orders *Orders) Get(ctx context.Context, userID int64, limit int) ([]entity.Orders, error) {
 	rows, err := orders.db.Query(ctx, getOrder, userID, limit)
 	if err != nil {
 		return nil, err
 	}
-	_orders, err := db.CollectRows[domain.Orders](rows)
+	_orders, err := db.CollectRows[entity.Orders](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -49,12 +49,12 @@ func (orders *Orders) Get(ctx context.Context, userID int64, limit int) ([]domai
 }
 
 // GetProductByOrderID implements IOrdersRepository.
-func (orders *Orders) GetProductByOrderID(ctx context.Context, orderID int64) ([]domain.ProductInOrder, error) {
+func (orders *Orders) GetProductByOrderID(ctx context.Context, orderID int64) ([]entity.ProductInOrder, error) {
 	rows, err := orders.db.Query(ctx, getProductByOrderID, orderID)
 	if err != nil {
 		return nil, err
 	}
-	_products, err := db.CollectRows[domain.ProductInOrder](rows)
+	_products, err := db.CollectRows[entity.ProductInOrder](rows)
 	if err != nil {
 		return nil, err
 	}

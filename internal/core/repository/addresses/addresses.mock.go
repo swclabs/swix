@@ -2,7 +2,7 @@ package addresses
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -19,8 +19,8 @@ func NewAddressesMock() *Mock {
 	return &Mock{}
 }
 
-// Insert implements domain.IAddressRepository.
-func (a *Mock) Insert(ctx context.Context, data domain.Addresses) error {
+// Insert implements entity.IAddressRepository.
+func (a *Mock) Insert(ctx context.Context, data entity.Addresses) error {
 	args := a.Called(ctx, data)
 	return args.Error(0)
 }

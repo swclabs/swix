@@ -5,7 +5,8 @@ import (
 	"context"
 	"errors"
 
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/model"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -22,12 +23,12 @@ func New(conn db.IDatabase) IUserRepository {
 var _ IUserRepository = (*Users)(nil)
 
 // GetByID implements IUserRepository.
-func (usr *Users) GetByID(ctx context.Context, id int64) (*domain.Users, error) {
+func (usr *Users) GetByID(ctx context.Context, id int64) (*entity.Users, error) {
 	rows, err := usr.db.Query(ctx, selectByID, id)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[domain.Users](rows)
+	user, err := db.CollectOneRow[entity.Users](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -35,12 +36,12 @@ func (usr *Users) GetByID(ctx context.Context, id int64) (*domain.Users, error) 
 }
 
 // GetByEmail implements IUserRepository.
-func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.Users, error) {
+func (usr *Users) GetByEmail(ctx context.Context, email string) (*entity.Users, error) {
 	rows, err := usr.db.Query(ctx, selectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[domain.Users](rows)
+	user, err := db.CollectOneRow[entity.Users](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +49,7 @@ func (usr *Users) GetByEmail(ctx context.Context, email string) (*domain.Users, 
 }
 
 // Insert implements IUserRepository.
-func (usr *Users) Insert(ctx context.Context, _usr domain.Users) error {
+func (usr *Users) Insert(ctx context.Context, _usr entity.Users) error {
 	return usr.db.SafeWrite(
 		ctx,
 		insertIntoUsers,
@@ -57,12 +58,12 @@ func (usr *Users) Insert(ctx context.Context, _usr domain.Users) error {
 }
 
 // Info implements IUserRepository.
-func (usr *Users) Info(ctx context.Context, email string) (*domain.UserSchema, error) {
+func (usr *Users) Info(ctx context.Context, email string) (*model.Users, error) {
 	rows, err := usr.db.Query(ctx, selectUserInfo, email)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[domain.UserSchema](rows)
+	user, err := db.CollectOneRow[model.Users](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +71,7 @@ func (usr *Users) Info(ctx context.Context, email string) (*domain.UserSchema, e
 }
 
 // SaveInfo implements IUserRepository.
-func (usr *Users) SaveInfo(ctx context.Context, user domain.Users) error {
+func (usr *Users) SaveInfo(ctx context.Context, user entity.Users) error {
 	if user.Email == "" {
 		return errors.New("missing key: email ")
 	}
@@ -107,7 +108,7 @@ func (usr *Users) SaveInfo(ctx context.Context, user domain.Users) error {
 
 // UpdateProperties implements IUserRepository.
 func (usr *Users) UpdateProperties(
-	ctx context.Context, query string, user domain.Users) error {
+	ctx context.Context, query string, user entity.Users) error {
 	switch query {
 	case updateUsersLastname:
 		if err := usr.db.SafeWrite(ctx,
@@ -138,7 +139,7 @@ func (usr *Users) UpdateProperties(
 }
 
 // OAuth2SaveInfo implements IUserRepository.
-func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.Users) error {
+func (usr *Users) OAuth2SaveInfo(ctx context.Context, user entity.Users) error {
 	return usr.db.SafeWrite(
 		ctx, insertUsersConflict, user.Email, user.PhoneNumber,
 		user.FirstName, user.LastName, user.Image,
@@ -146,12 +147,12 @@ func (usr *Users) OAuth2SaveInfo(ctx context.Context, user domain.Users) error {
 }
 
 // GetByPhone implements IUserRepository.
-func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*domain.Users, error) {
+func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*entity.Users, error) {
 	rows, err := usr.db.Query(ctx, selectByPhone, nPhone)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[domain.Users](rows)
+	user, err := db.CollectOneRow[entity.Users](rows)
 	if err != nil {
 		return nil, err
 	}

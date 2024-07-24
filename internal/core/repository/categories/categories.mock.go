@@ -2,7 +2,7 @@ package categories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -20,13 +20,13 @@ func NewCategoriesMock() *Mock {
 }
 
 // GetLimit implements ICategoriesRepository.
-func (c *Mock) GetLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+func (c *Mock) GetLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
 	args := c.Called(ctx, limit)
-	return args.Get(0).([]domain.Categories), args.Error(1)
+	return args.Get(0).([]entity.Categories), args.Error(1)
 }
 
 // Insert implements ICategoriesRepository.
-func (c *Mock) Insert(ctx context.Context, ctg domain.Categories) error {
+func (c *Mock) Insert(ctx context.Context, ctg entity.Categories) error {
 	args := c.Called(ctx, ctg)
 	return args.Error(0)
 }

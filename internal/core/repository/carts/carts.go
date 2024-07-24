@@ -3,7 +3,7 @@ package carts
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -22,26 +22,18 @@ func New(connection db.IDatabase) ICartRepository {
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) (*domain.CartSlices, error) {
+func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) ([]entity.Carts, error) {
 	rows, err := c.db.Query(ctx, selectByUserID, userID, limit)
 	if err != nil {
 		return nil, err
 	}
-	var cartSchema domain.CartSlices
-	cartSchema.UserID = userID
 
-	cartItems, err := db.CollectRows[domain.Carts](rows)
+	cartItems, err := db.CollectRows[entity.Carts](rows)
 	if err != nil {
 		return nil, err
 	}
-	for _, item := range cartItems {
 
-		cartSchema.Products = append(cartSchema.Products, domain.CartSchema{
-			Quantity: item.Quantity,
-		})
-	}
-
-	return &cartSchema, nil
+	return cartItems, nil
 }
 
 // Insert implements domain.ICartRepository.
