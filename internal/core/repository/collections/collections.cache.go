@@ -3,7 +3,7 @@ package collections
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 )
 
 type cache struct {
@@ -17,17 +17,17 @@ func useCache(collection ICollections) ICollections {
 }
 
 // AddCollection implements ICollections.
-func (c *cache) AddCollection(ctx context.Context, banner domain.CollectionSchema) (int64, error) {
+func (c *cache) AddCollection(ctx context.Context, banner entity.Collection) (int64, error) {
 	return c.collection.AddCollection(ctx, banner)
 }
 
 // AddHeadlineBanner implements ICollections.
-func (c *cache) AddHeadlineBanner(ctx context.Context, headline domain.HeadlineBannerSchema) error {
+func (c *cache) AddHeadlineBanner(ctx context.Context, headline entity.Collection) error {
 	return c.collection.AddHeadlineBanner(ctx, headline)
 }
 
 // SlicesOfCollections implements ICollections.
-func (c *cache) SlicesOfCollections(ctx context.Context, position string, limit int) ([]domain.Collection, error) {
+func (c *cache) SlicesOfCollections(ctx context.Context, position string, limit int) ([]entity.Collection, error) {
 	return c.collection.SlicesOfCollections(ctx, position, limit)
 }
 

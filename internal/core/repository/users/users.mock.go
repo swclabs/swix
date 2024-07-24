@@ -2,7 +2,8 @@ package users
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -19,49 +20,49 @@ func NewUsersMock() *Mock {
 	return &Mock{}
 }
 
-// GetByEmail implements domain.IUserRepository.
-func (u *Mock) GetByEmail(ctx context.Context, email string) (*domain.Users, error) {
+// GetByEmail implements IUserRepository.
+func (u *Mock) GetByEmail(ctx context.Context, email string) (*entity.Users, error) {
 	args := u.Called(ctx, email)
-	return args.Get(0).(*domain.Users), args.Error(1)
+	return args.Get(0).(*entity.Users), args.Error(1)
 }
 
-// GetByPhone implements domain.IUserRepository.
-func (u *Mock) GetByPhone(ctx context.Context, nPhone string) (*domain.Users, error) {
+// GetByPhone implements IUserRepository.
+func (u *Mock) GetByPhone(ctx context.Context, nPhone string) (*entity.Users, error) {
 	args := u.Called(ctx, nPhone)
-	return args.Get(0).(*domain.Users), args.Error(1)
+	return args.Get(0).(*entity.Users), args.Error(1)
 }
 
-// Info implements domain.IUserRepository.
-func (u *Mock) Info(ctx context.Context, email string) (*domain.UserSchema, error) {
+// Info implements IUserRepository.
+func (u *Mock) Info(ctx context.Context, email string) (*model.Users, error) {
 	args := u.Called(ctx, email)
-	return args.Get(0).(*domain.UserSchema), args.Error(1)
+	return args.Get(0).(*model.Users), args.Error(1)
 }
 
-// Insert implements domain.IUserRepository.
-func (u *Mock) Insert(ctx context.Context, usr domain.Users) error {
+// Insert implements IUserRepository.
+func (u *Mock) Insert(ctx context.Context, usr entity.Users) error {
 	args := u.Called(ctx, usr)
 	return args.Error(0)
 }
 
-// OAuth2SaveInfo implements domain.IUserRepository.
-func (u *Mock) OAuth2SaveInfo(ctx context.Context, user domain.Users) error {
+// OAuth2SaveInfo implements IUserRepository.
+func (u *Mock) OAuth2SaveInfo(ctx context.Context, user entity.Users) error {
 	args := u.Called(ctx, user)
 	return args.Error(0)
 }
 
-// SaveInfo implements domain.IUserRepository.
-func (u *Mock) SaveInfo(ctx context.Context, user domain.Users) error {
+// SaveInfo implements IUserRepository.
+func (u *Mock) SaveInfo(ctx context.Context, user entity.Users) error {
 	args := u.Called(ctx, user)
 	return args.Error(0)
 }
 
-// UpdateProperties implements domain.IUserRepository.
-func (u *Mock) UpdateProperties(ctx context.Context, query string, user domain.Users) error {
+// UpdateProperties implements IUserRepository.
+func (u *Mock) UpdateProperties(ctx context.Context, query string, user entity.Users) error {
 	args := u.Called(ctx, query, user)
 	return args.Error(0)
 }
 
 // GetByID implements IUserRepository.
-func (u *Mock) GetByID(_ context.Context, _ int64) (*domain.Users, error) {
+func (u *Mock) GetByID(_ context.Context, _ int64) (*entity.Users, error) {
 	panic("unimplemented")
 }

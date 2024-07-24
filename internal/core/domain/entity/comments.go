@@ -1,4 +1,4 @@
-package domain
+package entity
 
 // Comment Table
 type Comment struct {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/suppliers"
 	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/internal/webapi/controller"
@@ -19,7 +19,7 @@ var e = echo.New()
 func TestGetSuppliers(t *testing.T) {
 	// repository layers
 	repos := suppliers.Mock{}
-	repos.On("GetLimit", context.Background(), 10).Return([]domain.Suppliers{
+	repos.On("GetLimit", context.Background(), 10).Return([]entity.Suppliers{
 		{
 			ID:    "1",
 			Name:  "apple",

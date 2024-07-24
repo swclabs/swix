@@ -2,7 +2,7 @@ package products
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 )
 
 type cache struct {
@@ -16,12 +16,12 @@ func useCache(product IProductRepository) IProductRepository {
 }
 
 // Search implements IProductRepository.
-func (c *cache) Search(ctx context.Context, keyword string) ([]domain.Products, error) {
+func (c *cache) Search(ctx context.Context, keyword string) ([]entity.Products, error) {
 	return c.products.Search(ctx, keyword)
 }
 
 // Update implements IProductRepository.
-func (c *cache) Update(ctx context.Context, product domain.Products) error {
+func (c *cache) Update(ctx context.Context, product entity.Products) error {
 	return c.products.Update(ctx, product)
 }
 
@@ -31,17 +31,17 @@ func (c *cache) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // GetById implements IProductRepository.
-func (c *cache) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
+func (c *cache) GetByID(ctx context.Context, productID int64) (*entity.Products, error) {
 	return c.products.GetByID(ctx, productID)
 }
 
 // GetLimit implements IProductRepository.
-func (c *cache) GetLimit(ctx context.Context, limit int) ([]domain.Products, error) {
+func (c *cache) GetLimit(ctx context.Context, limit int) ([]entity.Products, error) {
 	return c.products.GetLimit(ctx, limit)
 }
 
 // Insert implements IProductRepository.
-func (c *cache) Insert(ctx context.Context, prd domain.Products) (int64, error) {
+func (c *cache) Insert(ctx context.Context, prd entity.Products) (int64, error) {
 	return c.products.Insert(ctx, prd)
 }
 

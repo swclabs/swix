@@ -1,5 +1,5 @@
-// Package jwt implements the json web token
-package jwt
+// Package crypto implements the json web token
+package crypto
 
 import (
 	"errors"

@@ -5,11 +5,13 @@ import (
 	"context"
 	"encoding/json"
 	"mime/multipart"
-	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/errors"
+	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/collections"
 	"swclabs/swipecore/pkg/infra/blob"
+	"swclabs/swipecore/pkg/lib/errors"
 	"swclabs/swipecore/pkg/utils"
+	"time"
 )
 
 // Posts struct for posts service
@@ -31,22 +33,22 @@ func New(
 
 // SliceOfHeadlineBanner implements IPostsService.
 func (p *Posts) SliceOfHeadlineBanner(
-	ctx context.Context, position string, limit int) (*domain.HeadlineBannerSlices, error) {
+	ctx context.Context, position string, limit int) (*dto.HeadlineBanners, error) {
 
 	_collections, err := p.Collections.SlicesOfCollections(ctx, position, limit)
 	if err != nil {
 		return nil, errors.Service("get collections", err)
 	}
 
-	var headlineBanners domain.HeadlineBannerSlices
+	var headlineBanners dto.HeadlineBanners
 	headlineBanners.Position = position
 	for _, collection := range _collections {
-		var body domain.HeadlineBannerBody
+		var body dto.HeadlineBannerBody
 		if err := json.Unmarshal([]byte(collection.Body), &body); err != nil {
 			return nil, err
 		}
 		headlineBanners.Headlines = append(headlineBanners.Headlines,
-			domain.HeadlineBannerSlicesBody{
+			dto.HeadlineBannerSlicesBody{
 				HeadlineBannerBody: body,
 				ID:                 collection.ID,
 				Created:            utils.HanoiTimezone(collection.Created),
@@ -56,29 +58,38 @@ func (p *Posts) SliceOfHeadlineBanner(
 }
 
 // UploadHeadlineBanner implements IPostsService.
-func (p *Posts) UploadHeadlineBanner(ctx context.Context, banner domain.HeadlineBannerSchema) error {
-	return p.Collections.AddHeadlineBanner(ctx, banner)
+func (p *Posts) UploadHeadlineBanner(ctx context.Context, banner dto.HeadlineBanner) error {
+	body, err := json.Marshal(banner.Body)
+	if err != nil {
+		return err
+	}
+
+	return p.Collections.AddHeadlineBanner(ctx, entity.Collection{
+		Position: banner.Position,
+		Created:  time.Now().UTC(),
+		Body:     string(body),
+	})
 }
 
 // SlicesOfCollections implements IPostsService.
 func (p *Posts) SlicesOfCollections(
-	ctx context.Context, position string, limit int) (*domain.CollectionSliceSchema, error) {
+	ctx context.Context, position string, limit int) (*dto.Collections, error) {
 	collectionSlice, err := p.Collections.SlicesOfCollections(ctx, position, limit)
 	if err != nil {
 		return nil, err
 	}
 
-	var _collections domain.CollectionSliceSchema
+	var _collections dto.Collections
 	_collections.Position = collectionSlice[0].Position
 	_collections.Headline = collectionSlice[0].Headline
 
 	for _, _collection := range collectionSlice {
-		var body domain.CollectionBody
+		var body dto.CollectionBody
 		if err := json.Unmarshal([]byte(_collection.Body), &body); err != nil {
 			return nil, err
 		}
 		_collections.CardBanner = append(_collections.CardBanner,
-			domain.CollectionSliceBody{
+			dto.CollectionSliceBody{
 				CollectionBody: body,
 				ID:             _collection.ID,
 				Created:        utils.HanoiTimezone(_collection.Created),
@@ -88,9 +99,18 @@ func (p *Posts) SlicesOfCollections(
 }
 
 // UploadCollections implements IPostsService.
-func (p *Posts) UploadCollections(
-	ctx context.Context, banner domain.CollectionSchema) (int64, error) {
-	return p.Collections.AddCollection(ctx, banner)
+func (p *Posts) UploadCollections(ctx context.Context, banner dto.Collection) (int64, error) {
+	body, err := json.Marshal(banner.Body)
+	if err != nil {
+		return -1, err
+	}
+	return p.Collections.AddCollection(ctx, entity.Collection{
+		ID:       banner.ID,
+		Position: banner.Position,
+		Headline: banner.Headline,
+		Body:     string(body),
+		Created:  time.Now().UTC(),
+	})
 }
 
 // UploadCollectionsImage implements IPostsService.

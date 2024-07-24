@@ -2,7 +2,7 @@ package addresses
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 )
 
 type cache struct {
@@ -16,6 +16,6 @@ func useCache(repo IAddressRepository) IAddressRepository {
 }
 
 // Insert implements IAddressRepository.
-func (c *cache) Insert(ctx context.Context, data domain.Addresses) error {
+func (c *cache) Insert(ctx context.Context, data entity.Addresses) error {
 	return c.address.Insert(ctx, data)
 }

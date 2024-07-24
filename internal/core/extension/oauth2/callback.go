@@ -5,15 +5,15 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"swclabs/swipecore/internal/core/domain/dto"
 	"swclabs/swipecore/internal/core/repository/accounts"
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/users"
 	"swclabs/swipecore/internal/core/service/accountmanagement"
 	"swclabs/swipecore/pkg/infra/blob"
 	"swclabs/swipecore/pkg/infra/db"
-	"swclabs/swipecore/pkg/lib/jwt"
+	"swclabs/swipecore/pkg/lib/crypto"
 
-	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
@@ -34,7 +34,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 	var query Query
 
 	if err := ctx.Bind(&query); err != nil {
-		return ctx.JSON(http.StatusBadRequest, domain.Error{
+		return ctx.JSON(http.StatusBadRequest, dto.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -67,7 +67,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 	)
 	if err := account.OAuth2SaveUser(
 		context.TODO(),
-		domain.OAuth2SaveUser{
+		dto.OAuth2SaveUser{
 			Email:     profile.Email,
 			FirstName: profile.GivenName,
 			LastName:  profile.FamilyName,
@@ -76,15 +76,15 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
-	accessToken, err := jwt.GenerateToken(profile.Email)
+	accessToken, err := crypto.GenerateToken(profile.Email)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, domain.Error{
+		return ctx.JSON(http.StatusInternalServerError, dto.Error{
 			Msg: err.Error(),
 		})
 	}
 
 	if err := utils.SaveSession(ctx, utils.BaseSessions, "access_token", accessToken); err != nil {
-		return ctx.JSON(http.StatusInternalServerError, domain.Error{
+		return ctx.JSON(http.StatusInternalServerError, dto.Error{
 			Msg: err.Error(),
 		})
 	}

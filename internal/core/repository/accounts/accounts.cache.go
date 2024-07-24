@@ -2,7 +2,7 @@ package accounts
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 )
 
 type cache struct {
@@ -16,16 +16,16 @@ func useCache(repo IAccountRepository) IAccountRepository {
 }
 
 // GetByEmail implements IAccountRepository.
-func (c *cache) GetByEmail(ctx context.Context, email string) (*domain.Account, error) {
+func (c *cache) GetByEmail(ctx context.Context, email string) (*entity.Account, error) {
 	return c.account.GetByEmail(ctx, email)
 }
 
 // Insert implements IAccountRepository.
-func (c *cache) Insert(ctx context.Context, acc domain.Account) error {
+func (c *cache) Insert(ctx context.Context, acc entity.Account) error {
 	return c.account.Insert(ctx, acc)
 }
 
 // SaveInfo implements IAccountRepository.
-func (c *cache) SaveInfo(ctx context.Context, acc domain.Account) error {
+func (c *cache) SaveInfo(ctx context.Context, acc entity.Account) error {
 	return c.account.SaveInfo(ctx, acc)
 }

@@ -2,8 +2,7 @@ package collections
 
 import (
 	"context"
-	"encoding/json"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -32,25 +31,21 @@ func (collection *Collections) UploadCollectionImage(
 
 // AddCollection implements domain.ICollections.
 func (collection *Collections) AddCollection(
-	ctx context.Context, collectionType domain.CollectionSchema) (int64, error) {
-	_collection, err := json.Marshal(collectionType.Body)
-	if err != nil {
-		return -1, err
-	}
+	ctx context.Context, collectionType entity.Collection) (int64, error) {
 	return collection.db.SafeWriteReturn(
 		ctx, insertIntoCollections,
-		collectionType.Position, collectionType.Headline, string(_collection),
+		collectionType.Position, collectionType.Headline, collectionType.Body,
 	)
 }
 
 // SlicesOfCollections implements domain.ICollections.
 func (collection *Collections) SlicesOfCollections(
-	ctx context.Context, position string, limit int) ([]domain.Collection, error) {
+	ctx context.Context, position string, limit int) ([]entity.Collection, error) {
 	rows, err := collection.db.Query(ctx, selectCollectionByPosition, position, limit)
 	if err != nil {
 		return nil, err
 	}
-	collections, err := db.CollectRows[domain.Collection](rows)
+	collections, err := db.CollectRows[entity.Collection](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -59,11 +54,7 @@ func (collection *Collections) SlicesOfCollections(
 
 // AddHeadlineBanner implements domain.IHeadlineBannerCollections.
 func (collection *Collections) AddHeadlineBanner(
-	ctx context.Context, headline domain.HeadlineBannerSchema) error {
-	body, err := json.Marshal(headline.Body)
-	if err != nil {
-		return err
-	}
+	ctx context.Context, headline entity.Collection) error {
 	return collection.db.SafeWrite(
-		ctx, insertIntoCollections, headline.Position, "", string(body))
+		ctx, insertIntoCollections, headline.Position, "", headline.Body)
 }

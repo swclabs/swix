@@ -1,0 +1,23 @@
+Domain
+
+DTO (Data transfer object): is a class that encapsulates 
+data for transfer between client-server or between services 
+in microservices. The purpose of creating DTOs is to reduce 
+the amount of unnecessary information that needs to be 
+transferred and to enhance security.
+
+Entity: corresponds to a table in the database and can be 
+mapped to the database. Note that only entities can represent 
+data in the database.Domain
+
+
+
+Web layer: should only handle DTOs, which means that controllers 
+should only receive and return data as DTOs.
+
+Service layer: receives DTOs (sent from controllers) or Domain 
+models (from other internal services). The data is processed (can 
+interact with the DB), and finally returned to the Web layer as DTOs.
+
+Repository layer: only operates on Entities, as they are the 
+appropriate objects that can be mapped to the DB.

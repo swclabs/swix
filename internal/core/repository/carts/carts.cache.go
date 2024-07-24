@@ -2,7 +2,7 @@ package carts
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 )
 
 type cache struct {
@@ -18,7 +18,7 @@ func useCache(repo ICartRepository) ICartRepository {
 var _ ICartRepository = (*cache)(nil)
 
 // GetCartByUserID implements ICartRepository.
-func (c *cache) GetCartByUserID(ctx context.Context, userID int64, limit int) (*domain.CartSlices, error) {
+func (c *cache) GetCartByUserID(ctx context.Context, userID int64, limit int) ([]entity.Carts, error) {
 	return c.cart.GetCartByUserID(ctx, userID, limit)
 }
 

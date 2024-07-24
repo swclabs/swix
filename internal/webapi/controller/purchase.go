@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/dto"
 	"swclabs/swipecore/internal/core/service/purchase"
 	"swclabs/swipecore/pkg/lib/valid"
 
@@ -39,39 +39,39 @@ func NewPurchase(services purchase.IPurchaseService) IPurchase {
 // @Accept json
 // @Produce json
 // @Param uid query string true "user id"
-// @Success 200 {object} []domain.OrderSchema
+// @Success 200 {object} []dto.OrderSchema
 // @Router /purchase/orders [GET]
 func (purchase *Purchase) GetOrders(c echo.Context) error {
 	sUserID := c.QueryParam("uid")
 	if sUserID == "" {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: "missing 'uid' required",
 		})
 	}
 	sLimit := c.QueryParam("limit")
 	if sLimit == "" {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: "missing 'limit' required",
 		})
 	}
 
 	userID, err := strconv.ParseInt(sUserID, 10, 64)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: "'uid' must be a positive integer",
 		})
 	}
 
 	limit, err := strconv.ParseInt(sLimit, 10, 64)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: "'limit' must be a positive integer",
 		})
 	}
 
 	orders, err := purchase.services.GetOrdersByUserID(c.Request().Context(), userID, int(limit))
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, domain.Error{
+		return c.JSON(http.StatusInternalServerError, dto.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -83,28 +83,28 @@ func (purchase *Purchase) GetOrders(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param login body domain.CreateOrderSchema true "order insert request"
-// @Success 200 {object} domain.OK
+// @Param login body dto.CreateOrderSchema true "order insert request"
+// @Success 200 {object} dto.OK
 // @Router /purchase/orders [POST]
 func (purchase *Purchase) CreateOrder(c echo.Context) error {
-	var orderReq domain.CreateOrderSchema
+	var orderReq dto.CreateOrderSchema
 	if err := c.Bind(&orderReq); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: err.Error(),
 		})
 	}
 	if err := valid.Validate(&orderReq); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: err.Error(),
 		})
 	}
 	msg, err := purchase.services.CreateOrders(c.Request().Context(), orderReq)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, domain.Error{
+		return c.JSON(http.StatusInternalServerError, dto.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, domain.OK{
+	return c.JSON(http.StatusCreated, dto.OK{
 		Msg: fmt.Sprintf("your order %s has been created successfully", msg),
 	})
 }
@@ -114,27 +114,27 @@ func (purchase *Purchase) CreateOrder(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param login body domain.CartInsert true "cart insert request"
-// @Success 200 {object} domain.OK
+// @Param login body dto.CartInsert true "cart insert request"
+// @Success 200 {object} dto.OK
 // @Router /purchase/carts [POST]
 func (purchase *Purchase) AddToCarts(c echo.Context) error {
-	var cartReq domain.CartInsert
+	var cartReq dto.CartInsert
 	if err := c.Bind(&cartReq); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: err.Error(),
 		})
 	}
 	if err := valid.Validate(&cartReq); err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: err.Error(),
 		})
 	}
 	if err := purchase.services.AddToCart(c.Request().Context(), cartReq); err != nil {
-		return c.JSON(http.StatusInternalServerError, domain.Error{
+		return c.JSON(http.StatusInternalServerError, dto.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, domain.OK{
+	return c.JSON(http.StatusCreated, dto.OK{
 		Msg: "your item has been update successfully",
 	})
 }
@@ -145,24 +145,24 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param uid query string true "user id"
-// @Success 200 {object} domain.CartSlices
+// @Success 200 {object} dto.CartSlices
 // @Router /purchase/carts [GET]
 func (purchase *Purchase) GetCarts(c echo.Context) error {
 	sUserID := c.QueryParam("uid")
 	if sUserID == "" {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: "missing 'uid' required",
 		})
 	}
 	userID, err := strconv.ParseInt(sUserID, 10, 64)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, domain.Error{
+		return c.JSON(http.StatusBadRequest, dto.Error{
 			Msg: "'uid' must be a positive integer",
 		})
 	}
 	items, err := purchase.services.GetCart(c.Request().Context(), userID, 10)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, domain.Error{
+		return c.JSON(http.StatusInternalServerError, dto.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -176,7 +176,7 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 // @Produce json
 // @Param uid query int true "user id"
 // @Param wid query int true "inventories id"
-// @Success 200 {object} domain.OK
+// @Success 200 {object} dto.OK
 // @Router /purchase/carts [DELETE]
 func (purchase *Purchase) DeleteItem(c echo.Context) error {
 	var (
@@ -192,13 +192,13 @@ func (purchase *Purchase) DeleteItem(c echo.Context) error {
 
 	for key, param := range ids {
 		if param == "" {
-			return c.JSON(http.StatusBadRequest, domain.Error{
+			return c.JSON(http.StatusBadRequest, dto.Error{
 				Msg: fmt.Sprintf("missing param '%s' required", key),
 			})
 		}
 		id, err := strconv.ParseInt(param, 10, 64)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, domain.Error{
+			return c.JSON(http.StatusBadRequest, dto.Error{
 				Msg: fmt.Sprintf(" param '%s' must be integer", key),
 			})
 		}
@@ -207,12 +207,12 @@ func (purchase *Purchase) DeleteItem(c echo.Context) error {
 
 	if err := purchase.services.
 		DeleteItemFromCart(c.Request().Context(), iIDs[uid], iIDs[wid]); err != nil {
-		return c.JSON(http.StatusInternalServerError, domain.Error{
+		return c.JSON(http.StatusInternalServerError, dto.Error{
 			Msg: err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusOK, domain.OK{
+	return c.JSON(http.StatusOK, dto.OK{
 		Msg: "your item has been deleted successfully",
 	})
 }
