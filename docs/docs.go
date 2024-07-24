@@ -447,6 +447,37 @@ const docTemplate = `{
                     }
                 }
             },
+            "put": {
+                "description": "update inventory",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "description": "Inventory Request",
+                        "name": "inventory",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateInventory"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.OK"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "add product to inventories",
                 "consumes": [
@@ -1772,6 +1803,32 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ward": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UpdateInventory": {
+            "type": "object",
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dto.InventorySpecsDetail"
+                },
+                "status": {
                     "type": "string"
                 }
             }

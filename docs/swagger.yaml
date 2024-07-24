@@ -458,6 +458,23 @@ definitions:
     - email
     - name
     type: object
+  dto.UpdateInventory:
+    properties:
+      available:
+        type: string
+      currency_code:
+        type: string
+      id:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: string
+      specs:
+        $ref: '#/definitions/dto.InventorySpecsDetail'
+      status:
+        type: string
+    type: object
   dto.UpdateProductInfo:
     properties:
       RAM:
@@ -887,6 +904,26 @@ paths:
       responses:
         "201":
           description: Created
+          schema:
+            $ref: '#/definitions/dto.OK'
+      tags:
+      - products
+    put:
+      consumes:
+      - application/json
+      description: update inventory
+      parameters:
+      - description: Inventory Request
+        in: body
+        name: inventory
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateInventory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/dto.OK'
       tags:

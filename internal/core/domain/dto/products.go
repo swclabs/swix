@@ -103,6 +103,7 @@ type Supplier struct {
 	Street   string `json:"street" db:"street"`
 }
 
+// UpdateInventory request, response
 type UpdateInventory struct {
 	ID           string               `json:"id" validate:"number"`
 	ProductID    string               `json:"product_id" validate:"number"`
