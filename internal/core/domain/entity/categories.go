@@ -1,3 +1,4 @@
+// Package entity Categories entities
 package entity
 
 // Categories Table

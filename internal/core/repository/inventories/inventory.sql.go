@@ -47,4 +47,33 @@ const (
 		)
 		WHERE id = $2;
 	`
+
+	update = `
+		UPDATE inventories
+		SET product_id = CASE
+							WHEN $2 <> 0 THEN $2
+							ELSE product_id
+						END,
+			status = CASE 
+						WHEN $3 <> '' THEN $3 
+						ELSE status 
+					END,
+			price = CASE
+						WHEN $4 <> 0 THEN $4
+						ELSE price
+					END,
+			currency_code = CASE
+								WHEN $5 <> '' THEN $5
+								ELSE currency_code
+							END,
+			specs = CASE
+						WHEN $6 <> '' THEN $6
+						ELSE specs
+					END,
+			available = CASE
+							WHEN $7 <> '' THEN $7
+							ELSE available
+						END
+		WHERE id = $1;
+	`
 )

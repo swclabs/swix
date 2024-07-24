@@ -2,7 +2,7 @@ package entity
 
 import "time"
 
-// Collection use to query data from database, 
+// Collection use to query data from database,
 // define in database, used to save a CollectionBody
 type Collection struct {
 	ID       int64     `json:"id" db:"id"`

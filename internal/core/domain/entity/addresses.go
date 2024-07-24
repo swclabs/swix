@@ -1,4 +1,4 @@
-// Package domain Addresses entities
+// Package entity Addresses entities
 package entity
 
 // Addresses Table

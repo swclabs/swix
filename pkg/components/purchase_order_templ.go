@@ -122,7 +122,7 @@ func documentHead() templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"documenthead\"><div id=\"metadata\"><table><tr class=\"metadata-purchaseorderid\" style=\"text-align: left\"><th>Purchase order</th><td></td></tr><tr class=\"metadata-inventories\" style=\"text-align: left\"><th>Warehouse</th><td></td></tr><tr class=\"metadata-date\" style=\"text-align: left\"><th>Date</th><td>01-01-2019</td></tr><tr class=\"metadata-boot-date\" style=\"text-align: left\"><th>Expected boot date</th><td>01-01-2019</td></tr><tr class=\"metadata-supplier-orderid\" style=\"text-align: left\"><th>Order number supplier</th><td></td></tr></table></div><br></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"documenthead\"><div id=\"metadata\"><table><tr class=\"metadata-purchaseorderid\" style=\"text-align: left\"><th>Purchase order</th><td></td></tr><tr class=\"metadata-warehouse\" style=\"text-align: left\"><th>Warehouse</th><td></td></tr><tr class=\"metadata-date\" style=\"text-align: left\"><th>Date</th><td>01-01-2019</td></tr><tr class=\"metadata-delivery-date\" style=\"text-align: left\"><th>Expected delivery date</th><td>01-01-2019</td></tr><tr class=\"metadata-supplier-orderid\" style=\"text-align: left\"><th>Order number supplier</th><td></td></tr></table></div><br></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

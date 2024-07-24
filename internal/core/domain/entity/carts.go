@@ -1,4 +1,4 @@
-// Package domain Cart entities
+// Package entity Cart entities
 package entity
 
 // Carts table

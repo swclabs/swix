@@ -47,7 +47,6 @@ func main() {
 		// EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
 
-	// Tạo cấu hình cho Zap
 	config := zap.Config{
 		Level:            zap.NewAtomicLevelAt(zapcore.DebugLevel),
 		Development:      false,
@@ -57,7 +56,6 @@ func main() {
 		ErrorOutputPaths: []string{"stderr"},
 	}
 
-	// Tạo logger từ cấu hình
 	logger, err := config.Build()
 	if err != nil {
 		panic(err)

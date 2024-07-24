@@ -52,6 +52,22 @@ type ProductService struct {
 	Inventory  inventories.IInventoryRepository
 }
 
+// UpdateInventory implements IProductService.
+func (s *ProductService) UpdateInventory(ctx context.Context, inventory dto.UpdateInventory) error {
+	pid, _ := strconv.Atoi(inventory.ProductID)
+	specs, _ := json.Marshal(inventory.Specs)
+	price, _ := decimal.NewFromString(inventory.Price)
+	return s.Inventory.Update(ctx, entity.Inventories{
+		Price:        price,
+		ProductID:    int64(pid),
+		ID:           inventory.ID,
+		Specs:        string(specs),
+		Status:       inventory.Status,
+		Available:    inventory.Available,
+		CurrencyCode: inventory.CurrencyCode,
+	})
+}
+
 // UploadStockImage implements IProductService.
 func (s *ProductService) UploadStockImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {

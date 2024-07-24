@@ -3,7 +3,7 @@ package main
 
 import (
 	"net/http"
-	"swclabs/swipecore/pkg/web/components"
+	"swclabs/swipecore/pkg/components"
 
 	"github.com/labstack/echo/v4"
 )

@@ -22,4 +22,3 @@ type FavoriteProduct struct {
 	UserID    int64 `json:"user_id" db:"user_id"`
 	ProductID int64 `json:"product_id" db:"product_id"`
 }
-

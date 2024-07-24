@@ -108,4 +108,10 @@ type IProductService interface {
 	// ID is the ID of the inventory.
 	// fileHeader contains the file headers of the images to be uploaded.
 	UploadStockImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
+
+	// UpdateInventory updates an inventory.
+	// ctx is the context to manage the request's lifecycle.
+	// inventory contains the updated inventory details.
+	// Returns an error if any issues occur during the update process.
+	UpdateInventory(ctx context.Context, inventory dto.UpdateInventory) error
 }
