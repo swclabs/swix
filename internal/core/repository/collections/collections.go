@@ -3,6 +3,7 @@ package collections
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -15,9 +16,14 @@ var _ ICollections = (*Collections)(nil)
 
 // New creates a new Collections object
 func New(conn db.IDatabase) ICollections {
-	return useCache(&Collections{
+	return &Collections{
 		db: conn,
-	})
+	}
+}
+
+// Init initializes the Collections object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) ICollections {
+	return useCache(cache, New(conn))
 }
 
 // UploadCollectionImage implements domain.ICollections.

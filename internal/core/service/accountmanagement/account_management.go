@@ -131,7 +131,7 @@ func (manager *AccountManagement) UserInfo(
 func (manager *AccountManagement) UpdateUserInfo(
 	ctx context.Context, req dto.User) error {
 	// call repository layer
-	return manager.User.SaveInfo(ctx, entity.Users{
+	return manager.User.Save(ctx, entity.Users{
 		ID:          req.ID,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -153,7 +153,7 @@ func (manager *AccountManagement) UploadAvatar(
 		log.Fatal(err)
 	}
 	// call repository layer to save user
-	return manager.User.SaveInfo(context.TODO(), entity.Users{
+	return manager.User.Save(context.TODO(), entity.Users{
 		Email: email,
 		Image: resp.SecureURL,
 	})

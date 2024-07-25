@@ -3,19 +3,24 @@ package addresses
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 )
 
-type cache struct {
+type _cache struct {
+	cache   cache.ICache
 	address IAddressRepository
 }
 
-var _ IAddressRepository = (*cache)(nil)
+var _ IAddressRepository = (*_cache)(nil)
 
-func useCache(repo IAddressRepository) IAddressRepository {
-	return &cache{address: repo}
+func useCache(cache cache.ICache, repo IAddressRepository) IAddressRepository {
+	return &_cache{
+		address: repo,
+		cache:   cache,
+	}
 }
 
 // Insert implements IAddressRepository.
-func (c *cache) Insert(ctx context.Context, data entity.Addresses) error {
+func (c *_cache) Insert(ctx context.Context, data entity.Addresses) error {
 	return c.address.Insert(ctx, data)
 }

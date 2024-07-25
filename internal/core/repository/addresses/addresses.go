@@ -4,6 +4,7 @@ package addresses
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -14,9 +15,14 @@ type Addresses struct {
 
 // New creates a new Addresses object
 func New(conn db.IDatabase) IAddressRepository {
-	return useCache(&Addresses{
+	return &Addresses{
 		db: conn,
-	})
+	}
+}
+
+// Init initializes the Addresses object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) IAddressRepository {
+	return useCache(cache, New(conn))
 }
 
 // Insert implements IAddressRepository.

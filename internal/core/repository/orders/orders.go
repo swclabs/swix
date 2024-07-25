@@ -18,6 +18,11 @@ func New(conn db.IDatabase) IOrdersRepository {
 	}
 }
 
+// Init initializes the Orders object with database and redis connection
+func Init(conn db.IDatabase) IOrdersRepository {
+	return New(conn)
+}
+
 var _ IOrdersRepository = (*Orders)(nil)
 
 // InsertProduct implements IOrdersRepository.

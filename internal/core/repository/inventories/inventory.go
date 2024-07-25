@@ -4,6 +4,7 @@ import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/dto"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 	"swclabs/swipecore/pkg/lib/errors"
 )
@@ -12,9 +13,14 @@ var _ IInventoryRepository = (*Inventory)(nil)
 
 // New creates a new Inventory object.
 func New(conn db.IDatabase) IInventoryRepository {
-	return useCache(&Inventory{
+	return &Inventory{
 		db: conn,
-	})
+	}
+}
+
+// Init initializes the Inventory object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) IInventoryRepository {
+	return useCache(cache, &Inventory{db: conn})
 }
 
 // Inventory represents the Inventory object.

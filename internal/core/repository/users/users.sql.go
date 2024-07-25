@@ -12,29 +12,25 @@ const (
 		JOIN accounts ON users.email = accounts.email
 		WHERE users.email = $1;
 	`
-
-	updateUsersFirstname string = `
+	updateInfo string = `
 		UPDATE users
-		SET first_name = $1
-		WHERE email = $2;
-	`
-
-	updateUsersImage string = `
-		UPDATE users
-		SET image = $1
-		WHERE email = $2;
-	`
-
-	updateUsersLastname string = `
-		UPDATE users
-		SET last_name = $1
-		WHERE email = $2;
-	`
-
-	updateUsersPhoneNumber string = `
-		UPDATE users
-		SET phone_number = $1
-		WHERE email = $2;
+		SET first_name = CASE 
+							WHEN $2 <> '' THEN $2
+							ELSE first_name 
+						END,
+			last_name = CASE
+							WHEN $3 <> '' THEN $3
+							ELSE last_name
+						END,
+			image = CASE
+						WHEN $4 <> 0 THEN $4
+						ELSE image
+					END,
+			phone_number = CASE
+							WHEN $5 <> 0 THEN $5
+							ELSE phone_number
+						END
+		WHERE email = $1;
 	`
 
 	insertUsersConflict string = `

@@ -15,9 +15,9 @@ import (
 
 func main() {
 	if config.StageStatus == "prod" {
-		boot.PrepareFor(boot.WorkerConsume | boot.ProdMode)
+		boot.PrepareFor(boot.Worker | boot.ProdMode)
 	} else {
-		boot.PrepareFor(boot.WorkerConsume | boot.DebugMode)
+		boot.PrepareFor(boot.Worker | boot.DebugMode)
 	}
 	app := boot.NewApp(boot.NewServer, workers.NewAdapter)
 	app.Run()

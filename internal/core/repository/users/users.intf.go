@@ -25,12 +25,9 @@ type IUserRepository interface {
 	// Info retrieves Users information based on email address.
 	Info(ctx context.Context, email string) (*model.Users, error)
 
-	// SaveInfo saves Users information.
-	SaveInfo(ctx context.Context, user entity.Users) error
+	// Save saves Users information.
+	Save(ctx context.Context, user entity.Users) error
 
 	// OAuth2SaveInfo saves Users information from OAuth2 login.
 	OAuth2SaveInfo(ctx context.Context, user entity.Users) error
-
-	// UpdateProperties updates Users properties.
-	UpdateProperties(ctx context.Context, query string, user entity.Users) error
 }

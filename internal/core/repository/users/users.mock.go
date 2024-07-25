@@ -50,15 +50,9 @@ func (u *Mock) OAuth2SaveInfo(ctx context.Context, user entity.Users) error {
 	return args.Error(0)
 }
 
-// SaveInfo implements IUserRepository.
-func (u *Mock) SaveInfo(ctx context.Context, user entity.Users) error {
+// Save implements IUserRepository.
+func (u *Mock) Save(ctx context.Context, user entity.Users) error {
 	args := u.Called(ctx, user)
-	return args.Error(0)
-}
-
-// UpdateProperties implements IUserRepository.
-func (u *Mock) UpdateProperties(ctx context.Context, query string, user entity.Users) error {
-	args := u.Called(ctx, query, user)
 	return args.Error(0)
 }
 
