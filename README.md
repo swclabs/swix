@@ -1,10 +1,10 @@
 <h3 align="center">
-    <img src="./docs/logo/hcmut.png" align=top height="50px">
-    <img src="./docs/logo/logo.svg" alt="logo" height="50px" align=top>
+    <img src="./logo/hcmut.png" align=top height="50px">
+    <img src="./logo/logo.svg" alt="logo" height="50px" align=top>
 </h3>
 <p align="center">
 APIs Server for Swipe written in Go 1.2+ <br>
-Designed for the final thesis at HCMUT-VNU
+Designed for the final thesis at HCMUT-VNUHCM
 </p>
 
 # Swipe
