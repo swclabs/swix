@@ -21,8 +21,8 @@ import (
 	"swclabs/swipecore/internal/webapi/router"
 )
 
-// @title Swipe API documentation
-// @version 1.0.0
+// @title Swipe Public API v0.0.1
+// @version 0.0.1
 // @description This is a documentation for the Swipe API
 // @host
 // @basePath /

@@ -19,15 +19,15 @@ import (
 // FxModule module of package repository
 var FxModule = fx.Options(
 	fx.Provide(
-		users.New,
-		accounts.New,
-		addresses.New,
-		categories.New,
-		products.New,
-		suppliers.New,
-		inventories.New,
-		collections.New,
-		orders.New,
-		carts.New,
+		users.Init,
+		accounts.Init,
+		addresses.Init,
+		categories.Init,
+		products.Init,
+		suppliers.Init,
+		inventories.Init,
+		collections.Init,
+		orders.Init,
+		carts.Init,
 	),
 )

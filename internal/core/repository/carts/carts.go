@@ -4,6 +4,7 @@ package carts
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -16,9 +17,14 @@ var _ ICartRepository = (*Carts)(nil)
 
 // New creates a new Carts object
 func New(connection db.IDatabase) ICartRepository {
-	return useCache(&Carts{
+	return &Carts{
 		db: connection,
-	})
+	}
+}
+
+// Init initializes the Carts object with database and redis connection
+func Init(connection db.IDatabase, cache cache.ICache) ICartRepository {
+	return useCache(cache, New(connection))
 }
 
 // GetCartByUserID implements domain.ICartRepository.
@@ -27,12 +33,10 @@ func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) ([
 	if err != nil {
 		return nil, err
 	}
-
 	cartItems, err := db.CollectRows[entity.Carts](rows)
 	if err != nil {
 		return nil, err
 	}
-
 	return cartItems, nil
 }
 

@@ -4,6 +4,7 @@ package products
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 	"swclabs/swipecore/pkg/lib/errors"
 )
@@ -17,9 +18,14 @@ var _ IProductRepository = (*Products)(nil)
 
 // New creates a new Products object
 func New(conn db.IDatabase) IProductRepository {
-	return useCache(&Products{
+	return &Products{
 		db: conn,
-	})
+	}
+}
+
+// Init initializes the Products object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) IProductRepository {
+	return useCache(cache, New(conn))
 }
 
 // Search implements IProductRepository.
@@ -83,12 +89,10 @@ func (product *Products) GetLimit(ctx context.Context, limit int) ([]entity.Prod
 	if err != nil {
 		return nil, errors.Repository("query", err)
 	}
-
 	products, err := db.CollectRows[entity.Products](rows)
 	if err != nil {
 		return nil, errors.Repository("collect rows", err)
 	}
-
 	return products, nil
 }
 

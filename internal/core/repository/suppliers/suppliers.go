@@ -3,6 +3,7 @@ package suppliers
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -13,7 +14,12 @@ type Suppliers struct {
 
 // New creates a new Suppliers object.
 func New(conn db.IDatabase) ISuppliersRepository {
-	return useCache(&Suppliers{db: conn})
+	return &Suppliers{db: conn}
+}
+
+// Init initializes the Suppliers object with database and redis connection.
+func Init(conn db.IDatabase, cache cache.ICache) ISuppliersRepository {
+	return useCache(cache, New(conn))
 }
 
 // Insert implements ISuppliersRepository.

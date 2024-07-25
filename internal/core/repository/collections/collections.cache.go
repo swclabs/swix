@@ -4,34 +4,39 @@ package collections
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 )
 
-type cache struct {
+type _cache struct {
+	cache      cache.ICache
 	collection ICollections
 }
 
-var _ ICollections = (*cache)(nil)
+var _ ICollections = (*_cache)(nil)
 
-func useCache(collection ICollections) ICollections {
-	return &cache{collection: collection}
+func useCache(cache cache.ICache, collection ICollections) ICollections {
+	return &_cache{
+		cache:      cache,
+		collection: collection,
+	}
 }
 
 // AddCollection implements ICollections.
-func (c *cache) AddCollection(ctx context.Context, banner entity.Collection) (int64, error) {
+func (c *_cache) AddCollection(ctx context.Context, banner entity.Collection) (int64, error) {
 	return c.collection.AddCollection(ctx, banner)
 }
 
 // AddHeadlineBanner implements ICollections.
-func (c *cache) AddHeadlineBanner(ctx context.Context, headline entity.Collection) error {
+func (c *_cache) AddHeadlineBanner(ctx context.Context, headline entity.Collection) error {
 	return c.collection.AddHeadlineBanner(ctx, headline)
 }
 
 // SlicesOfCollections implements ICollections.
-func (c *cache) SlicesOfCollections(ctx context.Context, position string, limit int) ([]entity.Collection, error) {
+func (c *_cache) SlicesOfCollections(ctx context.Context, position string, limit int) ([]entity.Collection, error) {
 	return c.collection.SlicesOfCollections(ctx, position, limit)
 }
 
 // UploadCollectionImage implements ICollections.
-func (c *cache) UploadCollectionImage(ctx context.Context, collectionID string, url string) error {
+func (c *_cache) UploadCollectionImage(ctx context.Context, collectionID string, url string) error {
 	return c.collection.UploadCollectionImage(ctx, collectionID, url)
 }

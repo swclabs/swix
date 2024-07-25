@@ -4,6 +4,7 @@ package categories
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -14,7 +15,12 @@ type Categories struct {
 
 // New creates a new Categories object
 func New(conn db.IDatabase) ICategoriesRepository {
-	return useCache(&Categories{db: conn})
+	return &Categories{db: conn}
+}
+
+// Init initializes the Categories object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) ICategoriesRepository {
+	return useCache(cache, New(conn))
 }
 
 // Insert implements ICategoriesRepository.

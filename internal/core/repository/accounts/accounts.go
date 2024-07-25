@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -17,7 +18,12 @@ type Accounts struct {
 
 // New creates a new Accounts object
 func New(conn db.IDatabase) IAccountRepository {
-	return useCache(&Accounts{conn})
+	return &Accounts{conn}
+}
+
+// Init initializes the Accounts object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) IAccountRepository {
+	return useCache(cache, &Accounts{db: conn})
 }
 
 // GetByEmail implements IAccountRepository.

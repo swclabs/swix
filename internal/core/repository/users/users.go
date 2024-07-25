@@ -7,6 +7,7 @@ import (
 
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/domain/model"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -17,7 +18,12 @@ type Users struct {
 
 // New creates a new instance of IUserRepository.
 func New(conn db.IDatabase) IUserRepository {
-	return useCache(&Users{conn})
+	return &Users{conn}
+}
+
+// Init initializes the Users object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) IUserRepository {
+	return useCache(cache, New(conn))
 }
 
 var _ IUserRepository = (*Users)(nil)
@@ -70,72 +76,18 @@ func (usr *Users) Info(ctx context.Context, email string) (*model.Users, error) 
 	return &user, nil
 }
 
-// SaveInfo implements IUserRepository.
-func (usr *Users) SaveInfo(ctx context.Context, user entity.Users) error {
+// Save implements IUserRepository.
+func (usr *Users) Save(ctx context.Context, user entity.Users) error {
 	if user.Email == "" {
 		return errors.New("missing key: email ")
 	}
-	if user.FirstName != "" {
-		if err := usr.db.SafeWrite(
-			ctx, updateUsersFirstname, user.FirstName, user.Email,
-		); err != nil {
-			return err
-		}
-	}
-	if user.LastName != "" {
-		if err := usr.db.SafeWrite(
-			ctx, updateUsersFirstname, user.FirstName, user.Email,
-		); err != nil {
-			return err
-		}
-	}
-	if user.Image != "" {
-		if err := usr.db.SafeWrite(
-			ctx, updateUsersImage, user.Image, user.Email,
-		); err != nil {
-			return err
-		}
-	}
-	if user.PhoneNumber != "" {
-		if err := usr.db.SafeWrite(
-			ctx, updateUsersPhoneNumber, user.PhoneNumber, user.Email,
-		); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// UpdateProperties implements IUserRepository.
-func (usr *Users) UpdateProperties(
-	ctx context.Context, query string, user entity.Users) error {
-	switch query {
-	case updateUsersLastname:
-		if err := usr.db.SafeWrite(ctx,
-			updateUsersLastname, user.LastName, user.Email,
-		); err != nil {
-			return err
-		}
-	case updateUsersFirstname:
-		if err := usr.db.SafeWrite(ctx,
-			updateUsersFirstname, user.FirstName, user.Email,
-		); err != nil {
-			return err
-		}
-	case updateUsersPhoneNumber:
-		if err := usr.db.SafeWrite(ctx,
-			updateUsersPhoneNumber, user.PhoneNumber, user.Email,
-		); err != nil {
-			return err
-		}
-	case updateUsersImage:
-		if err := usr.db.SafeWrite(ctx,
-			updateUsersImage, user.Image, user.Email,
-		); err != nil {
-			return err
-		}
-	}
-	return errors.New("unknown :" + query)
+	return usr.db.SafeWrite(ctx, updateInfo,
+		user.Email,
+		user.FirstName,
+		user.LastName,
+		user.Image,
+		user.PhoneNumber,
+	)
 }
 
 // OAuth2SaveInfo implements IUserRepository.

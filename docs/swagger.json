@@ -2,9 +2,9 @@
     "swagger": "2.0",
     "info": {
         "description": "This is a documentation for the Swipe API",
-        "title": "Swipe API documentation",
+        "title": "Swipe Public API v0.0.1",
         "contact": {},
-        "version": "1.0.0"
+        "version": "0.0.1"
     },
     "basePath": "/",
     "paths": {

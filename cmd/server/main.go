@@ -14,9 +14,9 @@ import (
 
 func main() {
 	if config.StageStatus == "prod" {
-		boot.PrepareFor(boot.RestAPI | boot.ProdMode)
+		boot.PrepareFor(boot.WebAPI | boot.ProdMode)
 	} else {
-		boot.PrepareFor(boot.RestAPI | boot.DebugMode)
+		boot.PrepareFor(boot.WebAPI | boot.DebugMode)
 	}
 	app := boot.NewApp(boot.NewServer, webapi.NewAdapter)
 	app.Run()
