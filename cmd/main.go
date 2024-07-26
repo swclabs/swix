@@ -28,9 +28,9 @@ var command = []*cli.Command{
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
 			if config.StageStatus == "prod" {
-				boot.PrepareFor(boot.WorkerConsume | boot.ProdMode)
+				boot.PrepareFor(boot.Worker | boot.ProdMode)
 			} else {
-				boot.PrepareFor(boot.WorkerConsume | boot.DebugMode)
+				boot.PrepareFor(boot.Worker | boot.DebugMode)
 			}
 			app := boot.NewApp(boot.NewWorker, workers.NewAdapter)
 			app.Run()
@@ -43,9 +43,9 @@ var command = []*cli.Command{
 		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
 			if config.StageStatus == "prod" {
-				boot.PrepareFor(boot.RestAPI | boot.ProdMode)
+				boot.PrepareFor(boot.WebAPI | boot.ProdMode)
 			} else {
-				boot.PrepareFor(boot.RestAPI | boot.DebugMode)
+				boot.PrepareFor(boot.WebAPI | boot.DebugMode)
 			}
 			app := boot.NewApp(boot.NewServer, webapi.NewAdapter)
 			app.Run()
@@ -59,7 +59,7 @@ func newClient() *cli.App {
 		Name:        "swipe",
 		Usage:       "swipe",
 		Version:     "0.0.1",
-		Description: "Swipe API server cli",
+		Description: "Swipe server cli",
 		Commands:    command,
 	}
 

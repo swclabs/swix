@@ -43,28 +43,14 @@ d: # Init swagger docs
 	@swag init
 templ: # Generate templates
 	@templ generate
-web: pkg/web/web.go
-	@go run pkg/web/web.go
+web: cmd/www/main.go
+	@go run cmd/www/main.go
 
-dev.build: docker-compose.dev.yml Dockerfile.dev
-	@docker compose -f \
-	docker-compose.dev.yml \
-	up --build -d
-dev: docker-compose.dev.yml Dockerfile.dev
-	@docker compose -f \
-	docker-compose.dev.yml \
-	up -d
-dev.down: docker-compose.dev.yml Dockerfile.dev
-	@docker compose -f \
-	docker-compose.dev.yml \
-	down
-
-compose.build: docker-compose.yml Dockerfile
-	@docker compose up \
-	--build -d
-compose: docker-compose.yml Dockerfile
+dev.build: docker-compose.yml Dockerfile
+	@docker compose up --build -d
+dev: docker-compose.yml Dockerfile
 	@docker compose up -d
-compose.down: docker-compose.yml Dockerfile
+dev.down: docker-compose.yml Dockerfile
 	@docker compose down
 
 db: docker-compose.db.yml

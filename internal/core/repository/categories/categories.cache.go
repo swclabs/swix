@@ -2,27 +2,30 @@ package categories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 )
 
-type cache struct {
+type _cache struct {
+	cache    cache.ICache
 	category ICategoriesRepository
 }
 
-var _ ICategoriesRepository = (*cache)(nil)
+var _ ICategoriesRepository = (*_cache)(nil)
 
-func useCache(repo ICategoriesRepository) ICategoriesRepository {
-	return &cache{
+func useCache(cache cache.ICache, repo ICategoriesRepository) ICategoriesRepository {
+	return &_cache{
 		category: repo,
+		cache:    cache,
 	}
 }
 
 // GetLimit implements ICategoriesRepository.
-func (c *cache) GetLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+func (c *_cache) GetLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
 	return c.category.GetLimit(ctx, limit)
 }
 
 // Insert implements ICategoriesRepository.
-func (c *cache) Insert(ctx context.Context, ctg domain.Categories) error {
+func (c *_cache) Insert(ctx context.Context, ctg entity.Categories) error {
 	return c.category.Insert(ctx, ctg)
 }

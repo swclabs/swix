@@ -3,7 +3,7 @@ package products
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/entity"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -21,12 +21,12 @@ func NewProductsMock() *Mock {
 }
 
 // Search implements IProductRepository.
-func (p *Mock) Search(_ context.Context, _ string) ([]domain.Products, error) {
+func (p *Mock) Search(_ context.Context, _ string) ([]entity.Products, error) {
 	panic("unimplemented")
 }
 
 // Update implements IProductRepository.
-func (p *Mock) Update(ctx context.Context, product domain.Products) error {
+func (p *Mock) Update(ctx context.Context, product entity.Products) error {
 	args := p.Called(ctx, product)
 	return args.Error(0)
 }
@@ -38,19 +38,19 @@ func (p *Mock) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // GetByID implements IProductRepository.
-func (p *Mock) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
+func (p *Mock) GetByID(ctx context.Context, productID int64) (*entity.Products, error) {
 	args := p.Called(ctx, productID)
-	return args.Get(0).(*domain.Products), args.Error(1)
+	return args.Get(0).(*entity.Products), args.Error(1)
 }
 
 // GetLimit implements IProductRepository.
-func (p *Mock) GetLimit(ctx context.Context, limit int) ([]domain.Products, error) {
+func (p *Mock) GetLimit(ctx context.Context, limit int) ([]entity.Products, error) {
 	args := p.Called(ctx, limit)
-	return args.Get(0).([]domain.Products), args.Error(1)
+	return args.Get(0).([]entity.Products), args.Error(1)
 }
 
 // Insert implements IProductRepository.
-func (p *Mock) Insert(ctx context.Context, prd domain.Products) (int64, error) {
+func (p *Mock) Insert(ctx context.Context, prd entity.Products) (int64, error) {
 	args := p.Called(ctx, prd)
 	return args.Get(0).(int64), args.Error(1)
 }

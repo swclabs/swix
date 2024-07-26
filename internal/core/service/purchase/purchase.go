@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"log"
 	"strings"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/carts"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/orders"
@@ -38,7 +39,7 @@ func New(
 }
 
 // GetOrdersByUserID implements IPurchaseService.
-func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]domain.OrderSchema, error) {
+func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dto.OrderSchema, error) {
 	// Get orders by user ID
 	orders, err := p.Order.Get(ctx, userID, limit)
 	if err != nil {
@@ -49,7 +50,7 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 	if err != nil {
 		return nil, err
 	}
-	var orderSchema []domain.OrderSchema
+	var orderSchema []dto.OrderSchema
 
 	for _, order := range orders {
 		// Get products by order ID
@@ -57,9 +58,9 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 		if err != nil {
 			return nil, err
 		}
-		var productSchema []domain.ProductOrderSchema
+		var productSchema []dto.ProductOrderSchema
 		for _, product := range products {
-			productSchema = append(productSchema, domain.ProductOrderSchema{
+			productSchema = append(productSchema, dto.ProductOrderSchema{
 				ID:           product.ID,
 				OrderID:      product.OrderID,
 				CurrencyCode: product.CurrencyCode,
@@ -69,7 +70,7 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 			})
 		}
 		// Merge product and order schema
-		orderSchema = append(orderSchema, domain.OrderSchema{
+		orderSchema = append(orderSchema, dto.OrderSchema{
 			ID:        order.ID,
 			UUID:      order.UUID,
 			Status:    order.Status,
@@ -82,23 +83,35 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 	return orderSchema, nil
 }
 
-// DeleteItemFromCart implements domain.IPurchaseService.
+// DeleteItemFromCart implements IPurchaseService.
 func (p *Purchase) DeleteItemFromCart(ctx context.Context, userID int64, inventoryID int64) error {
 	return p.Cart.RemoveItem(ctx, userID, inventoryID)
 }
 
-// AddToCart implements domain.IPurchaseService.
-func (p *Purchase) AddToCart(ctx context.Context, cart domain.CartInsert) error {
+// AddToCart implements IPurchaseService.
+func (p *Purchase) AddToCart(ctx context.Context, cart dto.CartInsert) error {
 	return p.Cart.Insert(ctx, cart.UserID, cart.InventoryID, cart.Quantity)
 }
 
-// GetCart implements domain.IPurchaseService.
-func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*domain.CartSlices, error) {
-	return p.Cart.GetCartByUserID(ctx, userID, limit)
+// GetCart implements IPurchaseService.
+func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*dto.CartSlices, error) {
+	cartItems, err := p.Cart.GetCartByUserID(ctx, userID, limit)
+	if err != nil {
+		return nil, err
+	}
+	var cartSchema dto.CartSlices
+	cartSchema.UserID = userID
+	for _, item := range cartItems {
+
+		cartSchema.Products = append(cartSchema.Products, dto.CartSchema{
+			Quantity: item.Quantity,
+		})
+	}
+	return &cartSchema, nil
 }
 
-// CreateOrders implements domain.IPurchaseService.
-func (p *Purchase) CreateOrders(ctx context.Context, createOrder domain.CreateOrderSchema) (string, error) {
+// CreateOrders implements IPurchaseService.
+func (p *Purchase) CreateOrders(ctx context.Context, createOrder dto.CreateOrderSchema) (string, error) {
 	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
 		return "", err
@@ -124,7 +137,7 @@ func (p *Purchase) CreateOrders(ctx context.Context, createOrder domain.CreateOr
 			productTotalAmount,
 			inven.Price.Mul(decimal.NewFromInt32(int32(product.Quantity))))
 	}
-	orderID, err := orderRepo.Create(ctx, domain.Orders{
+	orderID, err := orderRepo.Create(ctx, entity.Orders{
 		UUID:        _uuid,
 		UserID:      createOrder.UserID,
 		Status:      "pending",
@@ -137,7 +150,7 @@ func (p *Purchase) CreateOrders(ctx context.Context, createOrder domain.CreateOr
 		return "", err
 	}
 	for idx, product := range createOrder.Products {
-		if err := orderRepo.InsertProduct(ctx, domain.ProductInOrder{
+		if err := orderRepo.InsertProduct(ctx, entity.ProductInOrder{
 			OrderID:     orderID,
 			InventoryID: product.InventoryID,
 			Quantity:    product.Quantity,

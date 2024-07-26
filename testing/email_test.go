@@ -1,7 +1,7 @@
 package test
 
 import (
-	"swclabs/swipecore/internal/core/utils/mail"
+	"swclabs/swipecore/internal/core/extension/mail"
 	"testing"
 )
 

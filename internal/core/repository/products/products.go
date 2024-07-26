@@ -3,9 +3,10 @@ package products
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/errors"
+	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
+	"swclabs/swipecore/pkg/lib/errors"
 )
 
 // Products struct for product repository
@@ -17,18 +18,23 @@ var _ IProductRepository = (*Products)(nil)
 
 // New creates a new Products object
 func New(conn db.IDatabase) IProductRepository {
-	return useCache(&Products{
+	return &Products{
 		db: conn,
-	})
+	}
+}
+
+// Init initializes the Products object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) IProductRepository {
+	return useCache(cache, New(conn))
 }
 
 // Search implements IProductRepository.
-func (product *Products) Search(ctx context.Context, keyword string) ([]domain.Products, error) {
+func (product *Products) Search(ctx context.Context, keyword string) ([]entity.Products, error) {
 	rows, err := product.db.Query(ctx, searchByKeyword, keyword)
 	if err != nil {
 		return nil, errors.Repository("search", err)
 	}
-	products, err := db.CollectRows[domain.Products](rows)
+	products, err := db.CollectRows[entity.Products](rows)
 	if err != nil {
 		return nil, errors.Repository("search", err)
 	}
@@ -36,7 +42,7 @@ func (product *Products) Search(ctx context.Context, keyword string) ([]domain.P
 }
 
 // Update implements IProductRepository.
-func (product *Products) Update(ctx context.Context, prod domain.Products) error {
+func (product *Products) Update(ctx context.Context, prod entity.Products) error {
 	return errors.Repository("safely write data",
 		product.db.SafeWrite(ctx, updateByID,
 			prod.Name, prod.Price, prod.Description, prod.SupplierID,
@@ -52,12 +58,12 @@ func (product *Products) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // GetByID implements IProductRepository.
-func (product *Products) GetByID(ctx context.Context, productID int64) (*domain.Products, error) {
+func (product *Products) GetByID(ctx context.Context, productID int64) (*entity.Products, error) {
 	rows, err := product.db.Query(ctx, selectByID, productID)
 	if err != nil {
 		return nil, errors.Repository("query", err)
 	}
-	_product, err := db.CollectOneRow[domain.Products](rows)
+	_product, err := db.CollectOneRow[entity.Products](rows)
 	if err != nil {
 		return nil, errors.Repository("collect row", err)
 	}
@@ -65,7 +71,7 @@ func (product *Products) GetByID(ctx context.Context, productID int64) (*domain.
 }
 
 // Insert implements IProductRepository.
-func (product *Products) Insert(ctx context.Context, prd domain.Products) (int64, error) {
+func (product *Products) Insert(ctx context.Context, prd entity.Products) (int64, error) {
 	id, err := product.db.SafeWriteReturn(
 		ctx, insertIntoProducts,
 		prd.Image, prd.Price, prd.Name, prd.Description,
@@ -78,17 +84,15 @@ func (product *Products) Insert(ctx context.Context, prd domain.Products) (int64
 }
 
 // GetLimit implements IProductRepository.
-func (product *Products) GetLimit(ctx context.Context, limit int) ([]domain.Products, error) {
+func (product *Products) GetLimit(ctx context.Context, limit int) ([]entity.Products, error) {
 	rows, err := product.db.Query(ctx, selectLimit, limit)
 	if err != nil {
 		return nil, errors.Repository("query", err)
 	}
-
-	products, err := db.CollectRows[domain.Products](rows)
+	products, err := db.CollectRows[entity.Products](rows)
 	if err != nil {
 		return nil, errors.Repository("collect rows", err)
 	}
-
 	return products, nil
 }
 

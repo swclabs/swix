@@ -4,9 +4,9 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"swclabs/swipecore/internal/core/domain/dto"
 	"swclabs/swipecore/internal/core/service/accountmanagement"
 
-	"swclabs/swipecore/internal/core/domain"
 	"swclabs/swipecore/pkg/lib/worker"
 
 	"github.com/hibiken/asynq"
@@ -29,7 +29,7 @@ func NewAccountManagementConsume(handler accountmanagement.IAccountManagement) *
 func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 	return worker.GetTaskName(account.SignUp),
 		func(_ context.Context, task *asynq.Task) error {
-			var data domain.SignUpSchema
+			var data dto.SignUpRequest
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
@@ -41,7 +41,7 @@ func (account *AccountManagement) HandleSignUp() (string, worker.HandleFunc) {
 func (account *AccountManagement) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
 	return worker.GetTaskName(account.OAuth2SaveUser),
 		func(_ context.Context, task *asynq.Task) error {
-			var data domain.OAuth2SaveUser
+			var data dto.OAuth2SaveUser
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
@@ -53,7 +53,7 @@ func (account *AccountManagement) HandleOAuth2SaveUser() (string, worker.HandleF
 func (account *AccountManagement) HandleUpdateUserInfo() (string, worker.HandleFunc) {
 	return worker.GetTaskName(account.UpdateUserInfo),
 		func(_ context.Context, task *asynq.Task) error {
-			var data domain.UserUpdate
+			var data dto.User
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
