@@ -8,8 +8,8 @@ import (
 	"mime/multipart"
 	"strconv"
 	"strings"
-	"swclabs/swipecore/internal/core/domain"
-	"swclabs/swipecore/internal/core/errors"
+	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/categories"
 	"swclabs/swipecore/internal/core/repository/inventories"
@@ -17,19 +17,12 @@ import (
 	"swclabs/swipecore/internal/core/repository/suppliers"
 	"swclabs/swipecore/pkg/infra/blob"
 	"swclabs/swipecore/pkg/infra/db"
+	"swclabs/swipecore/pkg/lib/errors"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
-
-// ProductService struct for product service
-type ProductService struct {
-	Blob       blob.IBlobStorage
-	Categories categories.ICategoriesRepository
-	Products   products.IProductRepository
-	Suppliers  suppliers.ISuppliersRepository
-	Inventory  inventories.IInventoryRepository
-}
 
 var _ IProductService = (*ProductService)(nil)
 
@@ -50,15 +43,71 @@ func New(
 	}
 }
 
+// ProductService struct for product service
+type ProductService struct {
+	Blob       blob.IBlobStorage
+	Categories categories.ICategoriesRepository
+	Products   products.IProductRepository
+	Suppliers  suppliers.ISuppliersRepository
+	Inventory  inventories.IInventoryRepository
+}
+
+// UpdateInventory implements IProductService.
+func (s *ProductService) UpdateInventory(ctx context.Context, inventory dto.UpdateInventory) error {
+	pid, _ := strconv.Atoi(inventory.ProductID)
+	specs, _ := json.Marshal(inventory.Specs)
+	price, _ := decimal.NewFromString(inventory.Price)
+	return s.Inventory.Update(ctx, entity.Inventories{
+		Price:        price,
+		ProductID:    int64(pid),
+		ID:           inventory.ID,
+		Specs:        string(specs),
+		Status:       inventory.Status,
+		Available:    inventory.Available,
+		CurrencyCode: inventory.CurrencyCode,
+	})
+}
+
+// UploadStockImage implements IProductService.
+func (s *ProductService) UploadStockImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
+	if fileHeader == nil {
+		return fmt.Errorf("missing image file")
+	}
+	for _, fileheader := range fileHeader {
+		file, err := fileheader.Open()
+		if err != nil {
+			return err
+		}
+		resp, err := s.Blob.UploadImages(file)
+		if err == nil {
+			if err = s.Inventory.UploadImage(ctx, ID, resp.SecureURL); err == nil {
+				if err = file.Close(); err != nil {
+					return err
+				}
+			}
+		}
+
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// DeleteInventoryByID implements IProductService.
+func (s *ProductService) DeleteInventoryByID(ctx context.Context, inventoryID int64) error {
+	return s.Inventory.DeleteByID(ctx, inventoryID)
+}
+
 // GetAllStock implements IProductService.
-func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (*domain.InventoryStockSchema, error) {
+func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (*dto.StockInInventory, error) {
 	inventories, err := s.Inventory.GetLimit(ctx, limit, page)
 	if err != nil {
 		return nil, errors.Service("get stock", err)
 	}
 	var (
-		stock domain.InventoryStockSchema
-		specs domain.InventorySpecsDetail
+		stock dto.StockInInventory
+		specs dto.InventorySpecsDetail
 	)
 
 	for _, _inventory := range inventories {
@@ -71,16 +120,17 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 		}
 		switch _inventory.Status {
 		case "active":
-			stock.Active++
+			stock.Header.Active++
 		case "draft":
-			stock.Draft++
+			stock.Header.Draft++
 		case "archived":
-			stock.Active++
+			stock.Header.Active++
 		}
-		stock.Stock = append(stock.Stock, domain.InventorySchema{
+		stock.Stock = append(stock.Stock, dto.Inventory{
 			ID:          _inventory.ID,
+			Status:      _inventory.Status,
 			ProductName: product.Name,
-			InventoryStruct: domain.InventoryStruct{
+			InventoryDetail: dto.InventoryDetail{
 				ProductID:    strconv.Itoa(int(_inventory.ProductID)),
 				Price:        _inventory.Price.String(),
 				Available:    _inventory.Available,
@@ -92,32 +142,32 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 
 	stock.Page = page
 	stock.Limit = limit
-	stock.All = len(inventories)
+	stock.Header.All = len(inventories)
 
 	return &stock, nil
 }
 
 // GetInventory implements IProductService.
-func (s *ProductService) GetInventory(ctx context.Context, productID int64) ([]domain.Inventories, error) {
+func (s *ProductService) GetInventory(ctx context.Context, productID int64) ([]entity.Inventories, error) {
 	return s.Inventory.GetByProductID(ctx, productID)
 }
 
 // Search implements IProductService.
-func (s *ProductService) Search(ctx context.Context, keyword string) ([]domain.ProductSchema, error) {
+func (s *ProductService) Search(ctx context.Context, keyword string) ([]dto.ProductSchema, error) {
 	_products, err := s.Products.Search(ctx, keyword)
 	if err != nil {
 		return nil, errors.Service("keyword error", err)
 	}
 	var (
-		productSchema []domain.ProductSchema
-		specs         domain.Specs
+		productSchema []dto.ProductSchema
+		specs         dto.Specs
 	)
 	for _, p := range _products {
 		err := json.Unmarshal([]byte(p.Spec), &specs)
 		if err != nil {
 			return nil, errors.Service("failed to unmarshal", err)
 		}
-		productSchema = append(productSchema, domain.ProductSchema{
+		productSchema = append(productSchema, dto.ProductSchema{
 			ID:          p.ID,
 			Price:       p.Price,
 			Description: p.Description,
@@ -132,13 +182,13 @@ func (s *ProductService) Search(ctx context.Context, keyword string) ([]domain.P
 }
 
 // UpdateProductInfo implements IProductService.
-func (s *ProductService) UpdateProductInfo(ctx context.Context, product domain.UpdateProductInfo) error {
+func (s *ProductService) UpdateProductInfo(ctx context.Context, product dto.UpdateProductInfo) error {
 	spec, err := json.Marshal(product.Product.Specs)
 	if err != nil {
 		return errors.Service("update product info", err)
 	}
 	return s.Products.Update(ctx,
-		domain.Products{
+		entity.Products{
 			ID:          product.ID,
 			Name:        product.Name,
 			Price:       product.Price,
@@ -152,7 +202,7 @@ func (s *ProductService) UpdateProductInfo(ctx context.Context, product domain.U
 
 // FindDeviceInInventory implements IProductService.
 func (s *ProductService) FindDeviceInInventory(
-	ctx context.Context, deviceSpecs domain.InventoryDeviveSpecs) (*domain.InventorySchema, error) {
+	ctx context.Context, deviceSpecs dto.InventoryDeviceSpecs) (*dto.Inventory, error) {
 	_inventory, err := s.Inventory.FindDevice(ctx, deviceSpecs)
 	if err != nil {
 		return nil, err
@@ -161,10 +211,11 @@ func (s *ProductService) FindDeviceInInventory(
 	if err != nil {
 		return nil, err
 	}
-	var inventoryRes = domain.InventorySchema{
+	var inventoryRes = dto.Inventory{
 		ID:          _inventory.ID,
+		Status:      _inventory.Status,
 		ProductName: product.Name,
-		InventoryStruct: domain.InventoryStruct{
+		InventoryDetail: dto.InventoryDetail{
 			ProductID:    _inventory.ID,
 			Price:        _inventory.Price.String(),
 			Available:    _inventory.Available,
@@ -207,8 +258,8 @@ func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHea
 }
 
 // CreateProduct implements IProductService.
-func (s *ProductService) CreateProduct(ctx context.Context, products domain.Product) (int64, error) {
-	specs, err := json.Marshal(domain.Specs{
+func (s *ProductService) CreateProduct(ctx context.Context, products dto.Product) (int64, error) {
+	specs, err := json.Marshal(dto.Specs{
 		Screen:  products.Screen,
 		Display: products.Display,
 		SSD:     products.SSD,
@@ -217,7 +268,7 @@ func (s *ProductService) CreateProduct(ctx context.Context, products domain.Prod
 	if err != nil {
 		return -1, err
 	}
-	var prd = domain.Products{
+	var prd = entity.Products{
 		Price:       products.Price,
 		Description: products.Description,
 		Name:        products.Name,
@@ -230,17 +281,17 @@ func (s *ProductService) CreateProduct(ctx context.Context, products domain.Prod
 }
 
 // CreateSuppliers implements IProductService.
-func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain.SupplierSchema) error {
+func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq dto.Supplier) error {
 	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
 		return err
 	}
 	var (
-		supplier = domain.Suppliers{
+		supplier = entity.Suppliers{
 			Name:  supplierReq.Name,
 			Email: supplierReq.Email,
 		}
-		addr = domain.Addresses{
+		addr = entity.Addresses{
 			City:     supplierReq.City,
 			Ward:     supplierReq.Ward,
 			District: supplierReq.District,
@@ -269,7 +320,7 @@ func (s *ProductService) CreateSuppliers(ctx context.Context, supplierReq domain
 		}
 		return err
 	}
-	if err := supplierRepo.InsertAddress(ctx, domain.SuppliersAddress{
+	if err := supplierRepo.InsertAddress(ctx, entity.SuppliersAddress{
 		SuppliersID: supp.ID,
 		AddressUuiD: addr.UUID,
 	}); err != nil {
@@ -287,31 +338,41 @@ func (s *ProductService) DeleteProductByID(ctx context.Context, productID int64)
 }
 
 // InsertIntoInventory implements IProductService.
-func (s *ProductService) InsertIntoInventory(ctx context.Context, product domain.InventoryStruct) error {
-	return s.Inventory.InsertProduct(ctx, product)
+func (s *ProductService) InsertIntoInventory(ctx context.Context, product dto.InventoryDetail) error {
+	pid, _ := strconv.Atoi(product.ProductID)
+	specs, _ := json.Marshal(product.Specs)
+	price, _ := decimal.NewFromString(product.Price)
+	return s.Inventory.InsertProduct(ctx, entity.Inventories{
+		ProductID:    int64(pid),
+		Specs:        string(specs),
+		Price:        price,
+		Available:    product.Available,
+		CurrencyCode: product.CurrencyCode,
+		Status:       "active",
+	})
 }
 
 // GetCategoriesLimit implements IProductService.
-func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) ([]domain.Categories, error) {
+func (s *ProductService) GetCategoriesLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
 	return s.Categories.GetLimit(ctx, limit)
 }
 
 // GetProductsLimit implements IProductService.
-func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]domain.ProductSchema, error) {
+func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]dto.ProductSchema, error) {
 	products, err := s.Products.GetLimit(ctx, limit)
 	if err != nil {
 		return nil, err
 	}
-	var productResponse []domain.ProductSchema
+	var productResponse []dto.ProductSchema
 	for _, p := range products {
-		var spec domain.Specs
+		var spec dto.Specs
 		if err := json.Unmarshal([]byte(p.Spec), &spec); err != nil {
 			// don't find anything, just return empty object
 			return nil, errors.Repository("json", err)
 		}
 		images := strings.Split(p.Image, ",")
 		productResponse = append(productResponse,
-			domain.ProductSchema{
+			dto.ProductSchema{
 				ID:          p.ID,
 				Price:       p.Price,
 				Description: p.Description,
@@ -326,11 +387,11 @@ func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]dom
 }
 
 // CreateCategory implements IProductService.
-func (s *ProductService) CreateCategory(ctx context.Context, ctg domain.Categories) error {
+func (s *ProductService) CreateCategory(ctx context.Context, ctg entity.Categories) error {
 	return s.Categories.Insert(ctx, ctg)
 }
 
 // GetSuppliersLimit implements IProductService.
-func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]domain.Suppliers, error) {
+func (s *ProductService) GetSuppliersLimit(ctx context.Context, limit int) ([]entity.Suppliers, error) {
 	return s.Suppliers.GetLimit(ctx, limit)
 }

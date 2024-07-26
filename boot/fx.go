@@ -7,16 +7,17 @@ import (
 	"swclabs/swipecore/internal/webapi"
 	"swclabs/swipecore/internal/workers"
 	"swclabs/swipecore/pkg/infra/blob"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 
 	"go.uber.org/fx"
 )
 
 const (
-	// RestAPI flag build web api
-	RestAPI = 1 << iota
-	// WorkerConsume flag build worker
-	WorkerConsume
+	// WebAPI flag build web api
+	WebAPI = 1 << iota
+	// Worker flag build worker
+	Worker
 	// ProdMode build with production mode
 	ProdMode
 	// DebugMode build with developer mode
@@ -24,7 +25,7 @@ const (
 )
 
 var (
-	_FxInfrastructure = fx.Provide(blob.New, db.New)
+	_FxInfrastructure = fx.Provide(blob.New, db.New, cache.New)
 	_FxDataLayer      = fx.Options(repository.FxModule)
 	_FxBusinessLogic  = fx.Options(service.FxModule)
 	_FxPresenterLayer = fx.Provide()
@@ -33,10 +34,10 @@ var (
 
 // PrepareFor enable build web api or worker consume
 func PrepareFor(flag int) {
-	if flag&RestAPI != 0 {
+	if flag&WebAPI != 0 {
 		_FxPresenterLayer = webapi.FxModule
 	}
-	if flag&WorkerConsume != 0 {
+	if flag&Worker != 0 {
 		_FxPresenterLayer = workers.FxModule
 	}
 	if flag&DebugMode != 0 {

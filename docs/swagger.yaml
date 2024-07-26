@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  domain.CartInsert:
+  dto.CartInsert:
     properties:
       inventory_id:
         type: integer
@@ -13,7 +13,7 @@ definitions:
     - quantity
     - user_id
     type: object
-  domain.CartSchema:
+  dto.CartSchema:
     properties:
       amount:
         type: string
@@ -26,40 +26,37 @@ definitions:
       quantity:
         type: integer
     type: object
-  domain.CartSlices:
+  dto.CartSlices:
     properties:
       products:
         items:
-          $ref: '#/definitions/domain.CartSchema'
+          $ref: '#/definitions/dto.CartSchema'
         type: array
       user_id:
         type: integer
     type: object
-  domain.Categories:
+  dto.Collection:
     properties:
-      description:
+      body:
+        $ref: '#/definitions/dto.CollectionBody'
+      created:
+        type: string
+      headline:
         type: string
       id:
-        type: string
-      name:
+        type: integer
+      position:
         type: string
     required:
-    - description
-    - name
+    - body
+    - headline
+    - position
     type: object
-  domain.CategoriesSwagger:
+  dto.CollectionBody:
     properties:
       description:
         type: string
-      name:
-        type: string
-    required:
-    - description
-    - name
-    type: object
-  domain.CollectionBodySwagger:
-    properties:
-      description:
+      image:
         type: string
       subtitle:
         type: string
@@ -73,20 +70,7 @@ definitions:
     - text_color
     - title
     type: object
-  domain.CollectionSchemaSwagger:
-    properties:
-      body:
-        $ref: '#/definitions/domain.CollectionBodySwagger'
-      headline:
-        type: string
-      position:
-        type: string
-    required:
-    - body
-    - headline
-    - position
-    type: object
-  domain.CollectionSliceBody:
+  dto.CollectionSliceBody:
     properties:
       created:
         type: string
@@ -108,25 +92,25 @@ definitions:
     - text_color
     - title
     type: object
-  domain.CollectionSliceSchema:
-    properties:
-      card_banner:
-        items:
-          $ref: '#/definitions/domain.CollectionSliceBody'
-        type: array
-      headline:
-        type: string
-      position:
-        type: string
-    type: object
-  domain.CollectionUploadSchema:
+  dto.CollectionUpload:
     properties:
       id:
         type: integer
       msg:
         type: string
     type: object
-  domain.CreateOrderSchema:
+  dto.Collections:
+    properties:
+      card_banner:
+        items:
+          $ref: '#/definitions/dto.CollectionSliceBody'
+        type: array
+      headline:
+        type: string
+      position:
+        type: string
+    type: object
+  dto.CreateOrderSchema:
     properties:
       product:
         items:
@@ -140,29 +124,22 @@ definitions:
       user_id:
         type: integer
     type: object
-  domain.CreateProductSchema:
+  dto.CreateProduct:
     properties:
       id:
         type: integer
       msg:
         type: string
     type: object
-  domain.Error:
+  dto.Error:
     properties:
       msg:
         type: string
     type: object
-  domain.HeadlineBannerBody:
-    properties:
-      headline:
-        type: string
-    required:
-    - headline
-    type: object
-  domain.HeadlineBannerSchema:
+  dto.HeadlineBanner:
     properties:
       body:
-        $ref: '#/definitions/domain.HeadlineBannerBody'
+        $ref: '#/definitions/dto.HeadlineBannerBody'
       created:
         type: string
       position:
@@ -171,16 +148,14 @@ definitions:
     - body
     - position
     type: object
-  domain.HeadlineBannerSlices:
+  dto.HeadlineBannerBody:
     properties:
-      headlines:
-        items:
-          $ref: '#/definitions/domain.HeadlineBannerSlicesBody'
-        type: array
-      position:
+      headline:
         type: string
+    required:
+    - headline
     type: object
-  domain.HeadlineBannerSlicesBody:
+  dto.HeadlineBannerSlicesBody:
     properties:
       created:
         type: string
@@ -191,7 +166,16 @@ definitions:
     required:
     - headline
     type: object
-  domain.InventorySchema:
+  dto.HeadlineBanners:
+    properties:
+      headlines:
+        items:
+          $ref: '#/definitions/dto.HeadlineBannerSlicesBody'
+        type: array
+      position:
+        type: string
+    type: object
+  dto.Inventory:
     properties:
       available:
         type: string
@@ -199,75 +183,66 @@ definitions:
         type: string
       id:
         type: string
-      model:
+      price:
+        type: string
+      product_id:
+        type: string
+      product_name:
+        type: string
+      specs:
+        $ref: '#/definitions/dto.InventorySpecsDetail'
+      status:
+        type: string
+    required:
+    - available
+    - currency_code
+    - price
+    - product_id
+    type: object
+  dto.InventoryDetail:
+    properties:
+      available:
+        type: string
+      currency_code:
         type: string
       price:
         type: string
       product_id:
         type: string
       specs:
-        $ref: '#/definitions/domain.InventorySpecsDetail'
+        $ref: '#/definitions/dto.InventorySpecsDetail'
     required:
     - available
     - currency_code
-    - model
     - price
     - product_id
     type: object
-  domain.InventorySpecsDetail:
+  dto.InventorySpecsDetail:
     properties:
       color:
         type: string
       color_image:
         type: string
       image:
-        type: string
+        items:
+          type: string
+        type: array
       ram:
         type: string
       ssd:
         type: string
     type: object
-  domain.InventoryStockSchema:
+  dto.LoginRequest:
     properties:
-      active:
-        type: integer
-      all:
-        type: integer
-      archive:
-        type: integer
-      draft:
-        type: integer
-      limit:
-        type: integer
-      page:
-        type: integer
-      stock:
-        items:
-          $ref: '#/definitions/domain.InventorySchema'
-        type: array
-    type: object
-  domain.InventoryStruct:
-    properties:
-      available:
+      email:
         type: string
-      currency_code:
+      password:
         type: string
-      model:
-        type: string
-      price:
-        type: string
-      product_id:
-        type: string
-      specs:
-        $ref: '#/definitions/domain.InventorySpecsDetail'
     required:
-    - available
-    - currency_code
-    - model
-    - price
-    - product_id
+    - email
+    - password
     type: object
-  domain.LoginMessage:
+  dto.LoginResponse:
     properties:
       email:
         type: string
@@ -280,28 +255,18 @@ definitions:
     - success
     - token
     type: object
-  domain.LoginSchema:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    required:
-    - email
-    - password
-    type: object
-  domain.OK:
+  dto.OK:
     properties:
       msg:
         type: string
     type: object
-  domain.OrderSchema:
+  dto.OrderSchema:
     properties:
       id:
         type: integer
       products:
         items:
-          $ref: '#/definitions/domain.ProductOrderSchema'
+          $ref: '#/definitions/dto.ProductOrderSchema'
         type: array
       status:
         type: string
@@ -316,7 +281,7 @@ definitions:
       uuid:
         type: string
     type: object
-  domain.Product:
+  dto.Product:
     properties:
       RAM:
         items:
@@ -350,7 +315,7 @@ definitions:
     - status
     - supplier_id
     type: object
-  domain.ProductOrderSchema:
+  dto.ProductOrderSchema:
     properties:
       currency_code:
         type: string
@@ -365,7 +330,7 @@ definitions:
       total_amount:
         type: string
     type: object
-  domain.ProductSchema:
+  dto.ProductSchema:
     properties:
       created:
         type: string
@@ -382,21 +347,11 @@ definitions:
       price:
         type: string
       spec:
-        $ref: '#/definitions/domain.Specs'
+        $ref: '#/definitions/dto.Specs'
       status:
         type: string
     type: object
-  domain.SignUpMessage:
-    properties:
-      msg:
-        type: string
-      success:
-        type: boolean
-    required:
-    - msg
-    - success
-    type: object
-  domain.SignUpSchema:
+  dto.SignUpRequest:
     properties:
       email:
         type: string
@@ -415,28 +370,38 @@ definitions:
     - password
     - phone_number
     type: object
-  domain.Slices-domain_Categories:
+  dto.SignUpResponse:
+    properties:
+      msg:
+        type: string
+      success:
+        type: boolean
+    required:
+    - msg
+    - success
+    type: object
+  dto.Slices-dto_ProductSchema:
     properties:
       body:
         items:
-          $ref: '#/definitions/domain.Categories'
+          $ref: '#/definitions/dto.ProductSchema'
         type: array
     type: object
-  domain.Slices-domain_ProductSchema:
+  dto.Slices-entity_Categories:
     properties:
       body:
         items:
-          $ref: '#/definitions/domain.ProductSchema'
+          $ref: '#/definitions/entity.Categories'
         type: array
     type: object
-  domain.Slices-domain_Suppliers:
+  dto.Slices-entity_Suppliers:
     properties:
       body:
         items:
-          $ref: '#/definitions/domain.Suppliers'
+          $ref: '#/definitions/entity.Suppliers'
         type: array
     type: object
-  domain.Specs:
+  dto.Specs:
     properties:
       RAM:
         items:
@@ -451,7 +416,31 @@ definitions:
       screen:
         type: string
     type: object
-  domain.SupplierSchema:
+  dto.StockHeader:
+    properties:
+      active:
+        type: integer
+      all:
+        type: integer
+      archive:
+        type: integer
+      draft:
+        type: integer
+    type: object
+  dto.StockInInventory:
+    properties:
+      header:
+        $ref: '#/definitions/dto.StockHeader'
+      limit:
+        type: integer
+      page:
+        type: integer
+      stock:
+        items:
+          $ref: '#/definitions/dto.Inventory'
+        type: array
+    type: object
+  dto.Supplier:
     properties:
       city:
         type: string
@@ -469,16 +458,24 @@ definitions:
     - email
     - name
     type: object
-  domain.Suppliers:
+  dto.UpdateInventory:
     properties:
-      email:
+      available:
+        type: string
+      currency_code:
         type: string
       id:
         type: string
-      name:
+      price:
+        type: string
+      product_id:
+        type: string
+      specs:
+        $ref: '#/definitions/dto.InventorySpecsDetail'
+      status:
         type: string
     type: object
-  domain.UpdateProductInfo:
+  dto.UpdateProductInfo:
     properties:
       RAM:
         items:
@@ -515,7 +512,50 @@ definitions:
     - status
     - supplier_id
     type: object
-  domain.UserSchema:
+  dto.User:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - first_name
+    - id
+    - last_name
+    - phone_number
+    - username
+    type: object
+  entity.Categories:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - description
+    - name
+    type: object
+  entity.Suppliers:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  model.Users:
     properties:
       email:
         type: string
@@ -543,33 +583,11 @@ definitions:
     - role
     - username
     type: object
-  domain.UserUpdate:
-    properties:
-      email:
-        type: string
-      first_name:
-        type: string
-      id:
-        type: integer
-      last_name:
-        type: string
-      phone_number:
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - first_name
-    - id
-    - last_name
-    - phone_number
-    - username
-    type: object
 info:
   contact: {}
   description: This is a documentation for the Swipe API
-  title: Swipe API documentation
-  version: 1.0.0
+  title: Swipe Public API v0.0.1
+  version: 0.0.1
 paths:
   /auth:
     get:
@@ -588,7 +606,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - account_management
   /auth/login:
@@ -602,14 +620,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.LoginSchema'
+          $ref: '#/definitions/dto.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.LoginMessage'
+            $ref: '#/definitions/dto.LoginResponse'
       tags:
       - account_management
   /auth/logout:
@@ -623,7 +641,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - account_management
   /auth/signup:
@@ -637,14 +655,14 @@ paths:
         name: sign_up
         required: true
         schema:
-          $ref: '#/definitions/domain.SignUpSchema'
+          $ref: '#/definitions/dto.SignUpRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.SignUpMessage'
+            $ref: '#/definitions/dto.SignUpResponse'
       tags:
       - account_management
   /categories:
@@ -664,7 +682,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Slices-domain_Categories'
+            $ref: '#/definitions/dto.Slices-entity_Categories'
       tags:
       - products
     post:
@@ -677,14 +695,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.CategoriesSwagger'
+          $ref: '#/definitions/entity.Categories'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - products
   /collections:
@@ -709,7 +727,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.CollectionSliceSchema'
+            $ref: '#/definitions/dto.Collections'
       tags:
       - posts
     post:
@@ -722,14 +740,14 @@ paths:
         name: collection
         required: true
         schema:
-          $ref: '#/definitions/domain.CollectionSchemaSwagger'
+          $ref: '#/definitions/dto.Collection'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/domain.CollectionUploadSchema'
+            $ref: '#/definitions/dto.CollectionUpload'
       tags:
       - posts
   /collections/headline:
@@ -754,7 +772,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.HeadlineBannerSlices'
+            $ref: '#/definitions/dto.HeadlineBanners'
       tags:
       - posts
     post:
@@ -767,14 +785,14 @@ paths:
         name: banner
         required: true
         schema:
-          $ref: '#/definitions/domain.HeadlineBannerSchema'
+          $ref: '#/definitions/dto.HeadlineBanner'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - posts
   /collections/img:
@@ -799,7 +817,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - posts
   /common/healthcheck:
@@ -827,6 +845,25 @@ paths:
       tags:
       - common
   /inventories:
+    delete:
+      consumes:
+      - application/json
+      description: delete inventory by id
+      parameters:
+      - description: inventory id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.OK'
+      tags:
+      - products
     get:
       consumes:
       - application/json
@@ -848,7 +885,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.InventoryStockSchema'
+            $ref: '#/definitions/dto.StockInInventory'
       tags:
       - products
     post:
@@ -858,17 +895,37 @@ paths:
       parameters:
       - description: Inventories Request
         in: body
-        name: InventoryStruct
+        name: InventoryDetail
         required: true
         schema:
-          $ref: '#/definitions/domain.InventoryStruct'
+          $ref: '#/definitions/dto.InventoryDetail'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
+      tags:
+      - products
+    put:
+      consumes:
+      - application/json
+      description: update inventory
+      parameters:
+      - description: Inventory Request
+        in: body
+        name: inventory
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateInventory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.OK'
       tags:
       - products
   /inventories/details:
@@ -903,7 +960,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.InventorySchema'
+            $ref: '#/definitions/dto.Inventory'
+      tags:
+      - products
+  /inventory/image:
+    put:
+      consumes:
+      - application/json
+      description: update inventory image
+      parameters:
+      - description: stock image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.OK'
       tags:
       - products
   /oauth2/login:
@@ -935,7 +1012,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - products
     get:
@@ -954,7 +1031,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Slices-domain_ProductSchema'
+            $ref: '#/definitions/dto.Slices-dto_ProductSchema'
       tags:
       - products
     post:
@@ -967,14 +1044,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/domain.Product'
+          $ref: '#/definitions/dto.Product'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.CreateProductSchema'
+            $ref: '#/definitions/dto.CreateProduct'
       tags:
       - products
     put:
@@ -987,14 +1064,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/domain.UpdateProductInfo'
+          $ref: '#/definitions/dto.UpdateProductInfo'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - products
   /products/img:
@@ -1019,11 +1096,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/domain.Error'
+            $ref: '#/definitions/dto.Error'
       tags:
       - products
   /purchase/carts:
@@ -1048,7 +1125,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - purchase
     get:
@@ -1067,7 +1144,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.CartSlices'
+            $ref: '#/definitions/dto.CartSlices'
       tags:
       - purchase
     post:
@@ -1080,14 +1157,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.CartInsert'
+          $ref: '#/definitions/dto.CartInsert'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - purchase
   /purchase/orders:
@@ -1108,7 +1185,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/domain.OrderSchema'
+              $ref: '#/definitions/dto.OrderSchema'
             type: array
       tags:
       - purchase
@@ -1122,14 +1199,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/domain.CreateOrderSchema'
+          $ref: '#/definitions/dto.CreateOrderSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - purchase
   /suppliers:
@@ -1149,7 +1226,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Slices-domain_Suppliers'
+            $ref: '#/definitions/dto.Slices-entity_Suppliers'
       tags:
       - products
     post:
@@ -1159,17 +1236,17 @@ paths:
       parameters:
       - description: Suppliers Request
         in: body
-        name: SupplierSchema
+        name: Supplier
         required: true
         schema:
-          $ref: '#/definitions/domain.SupplierSchema'
+          $ref: '#/definitions/dto.Supplier'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - products
   /users:
@@ -1183,7 +1260,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.UserSchema'
+            $ref: '#/definitions/model.Users'
       tags:
       - account_management
     put:
@@ -1196,14 +1273,14 @@ paths:
         name: UserSchema
         required: true
         schema:
-          $ref: '#/definitions/domain.UserUpdate'
+          $ref: '#/definitions/dto.User'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - account_management
   /users/image:
@@ -1223,7 +1300,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.OK'
+            $ref: '#/definitions/dto.OK'
       tags:
       - account_management
 swagger: "2.0"

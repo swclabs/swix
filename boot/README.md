@@ -1,4 +1,4 @@
-# Swipe API `swiple-api/boot` GuildLines
+# Swipe API `swipecore/boot` GuildLines
 
 ## Overview
 

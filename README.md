@@ -1,8 +1,19 @@
+<h3 align="center">
+    <img src="./logo/hcmut.png" align=top height="50px">
+    <img src="./logo/logo.svg" alt="logo" height="50px" align=top>
+</h3>
+<p align="center">
+APIs Server for Swipe written in Go 1.2+ <br>
+Designed for the final thesis at HCMUT-VNUHCM
+</p>
+
 # Swipe
 
-Swipe (code: `swipe-api`) is a api server for [Swipe App](https://github.com/swclabs/swipe-app) & [Swipe Admin](https://github.com/swclabs/swipe-admin). `swipe-api` provides functions, and services through API and microservices. Designed for server, `swipe-api` provides cli commands to run api services and redis-based distributed systems cluster.
+Swipe (code: `swipecore`) is a api server for [Swipe](https://github.com/swclabs/swipe). `swipecore` provides functions, and services through API and microservices. Designed for server, `swipecore` provides cli commands to run api services and redis-based distributed systems cluster.
 
-## Installing
+The project is designed for the final thesis at the University of Technology, Vietnam National University, Ho Chi Minh City.
+
+## Install
 
 Before installing, you must install make (Makefile) if you use windows operating system
 
@@ -12,7 +23,7 @@ Before installing, you must install make (Makefile) if you use windows operating
 
 Update your environment variables. see [.env.example](./.env.example)
 
-### Monolithic
+### Start
 
 If you want to use makefile, see Other Command Below
 
@@ -33,35 +44,3 @@ Run worker server
 ```bash
 ./bin/swipe w
 ```
-
-with Docker compose
-
-```bash
-make all
-```
-
-### Other command
-
-`make s` : run api server in dev mode
-
-`make w` : run worker server in dev mode
-
-`make m` : migrate database
-
-`make d` : generate api documentation
-
-`make dev` : run application on docker but not build
-
-`make dev-b` : build and run application on docker in dev mode & no database
-
-`make dev-down` : remove all application containers from docker
-
-`make all` : run application on docker but not build
-
-`make all-b` : build and run application & database on docker
-
-`make all-down` : remove all application containers from docker
-
-`make db` : start database on docker
-
-`make db-down` : remove database container on docker

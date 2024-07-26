@@ -1,0 +1,283 @@
+#!/usr/bin/env bash
+
+# a : Duc Hung Ho @kyeranyo
+# e : <hunghd.dev@gmail.com>
+# bash scripts cli for swipe core api server
+
+# function to display help
+show_help() {
+    echo "Usage: $(basename $0) [command] [options]"
+    echo "Usage: $(basename $0) [options]"
+    echo
+    echo "Options:"
+    echo "  -h, --help              Show this help message and exit"
+    echo "Command:"
+    echo "  i, install              Install dependencies for swipe"
+    echo "  run                     Run swipe in dev mode with options"
+    echo "  start                   Start swipe"
+    echo "  build                   Build swipe binary file"
+    echo "  docker                  Interact with swipe docker image"
+    echo
+}
+
+function docker_command() {
+    docker_show_help() {
+        echo "Usage: $(basename $0) docker [options]"
+        echo
+        echo "Options:"
+        echo "  -h, --help              Show this help message and exit"
+        echo "  -b, --build NAME        Display a greeting message to NAME"
+        echo
+    }
+
+    build_docker(){
+        COMMIT_ID=$(git rev-parse --short HEAD)
+
+        COMMIT_TAG="$IMAGE_NAME:$COMMIT_ID"
+        #LATEST_TAG="$IMAGE_NAME:latest"
+
+        echo "[SWIPE] docker build: $COMMIT_TAG"
+        docker build  -t $COMMIT_TAG -f ./Dockerfile .
+        exit 0
+    }
+    
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            -b|--build)
+                IMAGE_NAME="$2"
+                build_docker
+                shift
+                ;;
+            -h|--help)
+                docker_show_help
+                exit 0
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
+                docker_show_help
+                exit 1
+                ;;
+        esac
+        shift
+    done
+    
+    exit 0
+}
+
+function run_command() {
+    run_show_help(){
+        echo "Usage: $(basename $0) run [options]"
+        echo
+        echo "Options:"
+        echo "  -h, --help                               Show this help message and exit"
+        echo "  -g, --greet  NAME                        Display a greeting message to NAME"
+        echo "  -t, --test   NAME                        Run unit test the module"
+        echo "  -d, --dash   REDIS:URI REDIS:PASSWORD    Connect to task worker dashboard"
+        echo "  -s, --server                             Run core api server"
+        echo "  -w, --worker                             Run worker of core api server"
+        echo
+    }
+
+    greet() {
+        if [[ -n "$NAME" ]]; then
+            echo "Hello, $NAME!"
+        fi
+        exit 0
+    }
+
+    worker() {
+        go run ./cmd/main.go s
+    }
+
+    server() {
+        go run ./cmd/main.go w
+    }
+
+    test(){
+        white_list=("common" "posts" "products")
+        input_value="$TEST_MODULE"
+
+        FOUND=0
+        for value in "${white_list[@]}"; do
+            if [ "$input_value" = "$value" ]; then
+                FOUND=1
+                break
+            fi
+        done
+
+        if [ $FOUND -eq 0 ]; then
+            echo "Modules not found, modules below are available:"
+            echo "  common"
+            echo "  posts"
+            echo "  products"
+            exit 1
+        fi
+
+        go test -v ./testing/$TEST_MODULE
+    }
+
+    dash(){
+        function get_host {
+            read -p "HOST: " REDIS_URI
+        }
+        function get_password {
+            stty -echo
+            read -p "PASSWORD: " REDIS_PASSWORD
+            stty echo
+            echo
+        }
+        get_host
+        get_password
+        if [ -n "$REDIS_PASSWORD" ]; then
+            asynq dash --uri $REDIS_URI --password $REDIS_PASSWORD
+        else
+            asynq dash --uri $REDIS_URI
+        fi
+    }
+
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            -h|--help)
+                run_show_help
+                exit 0
+                ;;
+            -g|--greet)
+                if [[ -n "$2" ]]; then
+                    NAME="$2"
+                    greet
+                    shift
+                else
+                    echo "Error: --greet requires a NAME argument" >&2
+                    exit 1
+                fi
+                ;;
+            -t|--test)
+                if [[ -n "$2" ]]; then
+                    TEST_MODULE="$2"
+                    test
+                    shift
+                else
+                    echo "Error: --test requires a NAME argument (module name)" >&2
+                    exit 1
+                fi
+                ;;
+            -d|--dash)
+                dash
+                ;;
+            -s|--server)
+                server
+                ;;
+            -w|--worker)
+                worker
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
+                run_show_help
+                exit 1
+                ;;
+        esac
+        shift
+    done
+    
+    exit 0
+}
+
+function start_command() {
+    start_show_help() {
+        echo "Usage: $(basename $0) start [options]"
+        echo
+        echo "Options:"
+        echo "  -h, --help                               Show this help message and exit"
+        echo "  -s, --server                             Run core api server"
+        echo "  -w, --worker                             Run worker of core api server"
+        echo
+    }
+
+    if [ -e [./bin/swipe] ]; then
+        echo "Binary file not found, please run 'bash hack/swipe build' to build binary file"
+        exit 1
+    fi
+
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            -h|--help)
+                start_show_help
+                exit 0
+                ;;
+            -s|--server)
+                ./bin/swipe s
+                exit 0
+                ;;
+            -w|--worker)
+                ./bin/swipe w
+                exit 0
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
+                start_show_help
+                exit 1
+                ;;
+        esac
+        shift
+    done
+    
+    exit 0
+
+}
+
+function build_command {
+    echo "Building swipe binary file ..."
+    go build -ldflags="-s -w" -o ./bin/swipe ./cmd
+    echo "done"
+    exit 0
+}
+
+command=$1
+case $command in 
+    docker)
+        shift
+        docker_command "$@"
+    ;;
+    run)
+        shift
+        run_command "$@"
+    ;;
+    start)
+        shift
+        start_command "$@"
+    ;;
+    build)
+        shift
+        build_command "$@"
+    ;;
+    i|install)
+        shift
+        go mod download
+        exit 0
+    ;;
+    tools)
+        shift
+        go install github.com/a-h/templ/cmd/templ@latest
+        go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.28
+        go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
+        go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.1
+        exit 0
+    ;;
+    *)
+esac
+
+# Parse command line arguments
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -h|--help)
+            show_help
+            exit 0
+            ;;
+        *)
+            echo "Unknown command: $1" >&2
+            show_help
+            exit 1
+            ;;
+    esac
+    shift
+done

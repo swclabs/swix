@@ -4,7 +4,9 @@ import (
 	"context"
 	"mime/multipart"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/model"
 	"swclabs/swipecore/internal/workers/queue"
 	"swclabs/swipecore/pkg/lib/worker"
 )
@@ -26,7 +28,7 @@ func UseTask(service IAccountManagement) IAccountManagement {
 }
 
 // SignUp user to access system, return error if exist
-func (t *Task) SignUp(_ context.Context, req domain.SignUpSchema) error {
+func (t *Task) SignUp(_ context.Context, req dto.SignUpRequest) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.SignUp),
 		req,
@@ -34,7 +36,7 @@ func (t *Task) SignUp(_ context.Context, req domain.SignUpSchema) error {
 }
 
 // UpdateUserInfo update user information
-func (t *Task) UpdateUserInfo(_ context.Context, req domain.UserUpdate) error {
+func (t *Task) UpdateUserInfo(_ context.Context, req dto.User) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.UpdateUserInfo),
 		req,
@@ -42,7 +44,7 @@ func (t *Task) UpdateUserInfo(_ context.Context, req domain.UserUpdate) error {
 }
 
 // OAuth2SaveUser save user information from oauth2
-func (t *Task) OAuth2SaveUser(_ context.Context, req domain.OAuth2SaveUser) error {
+func (t *Task) OAuth2SaveUser(_ context.Context, req dto.OAuth2SaveUser) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.OAuth2SaveUser),
 		req,
@@ -50,7 +52,7 @@ func (t *Task) OAuth2SaveUser(_ context.Context, req domain.OAuth2SaveUser) erro
 }
 
 // Login user to access system, return token if success
-func (t *Task) Login(ctx context.Context, req domain.LoginSchema) (string, error) {
+func (t *Task) Login(ctx context.Context, req dto.LoginRequest) (string, error) {
 	return t.service.Login(ctx, req)
 }
 
@@ -60,7 +62,7 @@ func (t *Task) CheckLoginEmail(ctx context.Context, email string) error {
 }
 
 // UserInfo get user information
-func (t *Task) UserInfo(ctx context.Context, email string) (*domain.UserSchema, error) {
+func (t *Task) UserInfo(ctx context.Context, email string) (*model.Users, error) {
 	return t.service.UserInfo(ctx, email)
 }
 
@@ -70,6 +72,6 @@ func (t *Task) UploadAvatar(email string, fileHeader *multipart.FileHeader) erro
 }
 
 // UploadAddress upload address to database
-func (t *Task) UploadAddress(ctx context.Context, data domain.Addresses) error {
+func (t *Task) UploadAddress(ctx context.Context, data entity.Addresses) error {
 	return t.service.UploadAddress(ctx, data)
 }

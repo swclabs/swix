@@ -2,7 +2,7 @@ package common
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain"
+	"swclabs/swipecore/internal/core/domain/dto"
 )
 
 // ICommonService : Common utility methods for the service.
@@ -11,7 +11,7 @@ type ICommonService interface {
 	// HealthCheck performs a health check on the service.
 	// ctx is the context to manage the request's lifecycle.
 	// Returns a HealthCheck object with the health check status.
-	HealthCheck(ctx context.Context) domain.HealthCheck
+	HealthCheck(ctx context.Context) dto.HealthCheck
 
 	// WorkerCheck checks the status of a worker.
 	// ctx is the context to manage the request's lifecycle.
