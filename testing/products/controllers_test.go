@@ -16,6 +16,7 @@ import (
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 
+
 	productRepo "swclabs/swipecore/internal/core/repository/products"
 )
 
@@ -32,8 +33,8 @@ func TestGetProductAvailability(t *testing.T) {
 	})
 	inventoryRepos := inventories.Mock{}
 	price, _ := decimal.NewFromString("10000")
-	inventoryRepos.On("FindDevice", context.Background(),
-		dto.InventoryDeviceSpecs{
+	repos.On("FindDevice", context.Background(),
+		domain.InventoryDeviveSpecs{
 			ProductID: "1",
 			Color:     "black",
 			RAM:       "16",
@@ -42,15 +43,12 @@ func TestGetProductAvailability(t *testing.T) {
 	).Return(&entity.Inventories{
 		ProductID:    1,
 		ID:           "1",
-		Status:       "active",
+		ProductID:    1,
+		Model:        "iPhone 15 Pro Max",
 		Available:    "100",
 		Price:        price,
 		Specs:        string(specs),
 		CurrencyCode: "USD",
-	}, nil)
-	productRepos := productRepo.Mock{}
-	productRepos.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
-		Name: "iPhone 15 Pro Max",
 	}, nil)
 
 	// business logic layers
@@ -70,6 +68,6 @@ func TestGetProductAvailability(t *testing.T) {
 
 	e.ServeHTTP(rr, req)
 
-	expected := "{\"id\":\"1\",\"product_name\":\"iPhone 15 Pro Max\",\"status\":\"active\",\"product_id\":\"1\",\"price\":\"10000\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":[]}}\n"
+	expected := "{\"id\":\"1\",\"product_id\":\"1\",\"price\":\"10000\",\"model\":\"iPhone 15 Pro Max\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":\"\"}}\n"
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
 }
