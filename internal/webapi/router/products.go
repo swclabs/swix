@@ -45,7 +45,7 @@ func (r *Products) Routers(e *echo.Echo) {
 	// endpoint for suppliers
 	e.GET("/suppliers", r.controller.GetSupplier)
 	e.POST("/suppliers", r.controller.InsertSupplier)
-	// TODO: implement edit supplier here
+	// TODO: implement edit supplier
 	// e.PUT("/suppliers")
 
 	// endpoint for inventories
