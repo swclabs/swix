@@ -41,6 +41,6 @@ func (c *_cache) InsertAddress(ctx context.Context, addr entity.SuppliersAddress
 	return c.supplier.InsertAddress(ctx, addr)
 }
 
-func (c *_cache) Edit(ctx context.Context, sup entity.Suppliers) error {
+func (c *cache) Edit(ctx context.Context, sup domain.Suppliers) error {
 	return c.supplier.Edit(ctx, sup)
 }

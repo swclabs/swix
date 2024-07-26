@@ -68,8 +68,8 @@ func (supplier *Suppliers) GetByPhone(
 	return &_supplier, nil
 }
 
-// Edit implements ISuppliersRepository.
-func (supplier *Suppliers) Edit(ctx context.Context, supp entity.Suppliers) error {
+// Edit implements domain.ISuppliersRepository.
+func (supplier *Suppliers) Edit(ctx context.Context, supp domain.Suppliers) error {
 	return supplier.db.SafeWrite(
 		ctx, updateSuppliers, supp.Name, supp.Email)
 }
