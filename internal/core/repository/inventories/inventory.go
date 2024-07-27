@@ -2,7 +2,6 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
@@ -38,6 +37,9 @@ func (w *Inventory) Update(ctx context.Context, inventory entity.Inventories) er
 		inventory.CurrencyCode,
 		inventory.Specs,
 		inventory.Available,
+		inventory.Image,
+		inventory.Color,
+		inventory.ColorImg,
 	)
 }
 
@@ -89,25 +91,11 @@ func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*entity.Inv
 	return &inventory, nil
 }
 
-// FindDevice implements IInventoryRepository.
-func (w *Inventory) FindDevice(ctx context.Context, device dtos.InventoryDeviceSpecs) (*entity.Inventories, error) {
-	rows, err := w.db.Query(ctx, getAvailableProducts,
-		device.ProductID, device.RAM, device.Ssd, device.Color)
-	if err != nil {
-		return nil, err
-	}
-	inventory, err := db.CollectOneRow[entity.Inventories](rows)
-	if err != nil {
-		return nil, err
-	}
-	return &inventory, nil
-}
-
 // InsertProduct implements IInventoryRepository.
 func (w *Inventory) InsertProduct(ctx context.Context, product entity.Inventories) error {
 	return w.db.SafeWrite(ctx, insertIntoInventory,
 		product.ProductID, product.Price,
 		product.Specs, product.Available, product.CurrencyCode,
-		product.Status,
+		product.Status, product.Image, product.Color, product.ColorImg,
 	)
 }

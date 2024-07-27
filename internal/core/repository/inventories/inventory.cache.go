@@ -3,9 +3,7 @@ package inventories
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
-	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/lib/crypto"
@@ -83,23 +81,6 @@ func (c *_Cache) GetByID(ctx context.Context, inventoryID int64) (*entity.Invent
 	result, err := cache.Get[entity.Inventories](ctx, c.cache, key)
 	if err != nil {
 		result, err = c.inventory.GetByID(ctx, inventoryID)
-		if err != nil {
-			return nil, err
-		}
-		if err := cache.Set[entity.Inventories](ctx, c.cache, key, *result); err != nil {
-			return result, nil
-		}
-	}
-	return result, nil
-}
-
-// FindDevice implements IInventoryRepository.
-func (c *_Cache) FindDevice(ctx context.Context, device dtos.InventoryDeviceSpecs) (*entity.Inventories, error) {
-	data, _ := json.Marshal(device)
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:FindDevice:%s", string(data)))
-	result, err := cache.Get[entity.Inventories](ctx, c.cache, key)
-	if err != nil {
-		result, err = c.inventory.FindDevice(ctx, device)
 		if err != nil {
 			return nil, err
 		}

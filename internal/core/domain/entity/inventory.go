@@ -10,5 +10,8 @@ type Inventories struct {
 	Available    string          `json:"available" db:"available"`
 	CurrencyCode string          `json:"currency_code" db:"currency_code"`
 	Status       string          `json:"status" db:"status"`
+	Color        string          `json:"color" db:"color"`
+	ColorImg     string          `json:"color_img" db:"color_img"`
+	Image        string          `json:"image" db:"image"`
 	Price        decimal.Decimal `json:"price" db:"price"`
 }

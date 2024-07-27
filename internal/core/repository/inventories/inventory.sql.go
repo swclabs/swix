@@ -2,18 +2,8 @@ package inventories
 
 const (
 	insertIntoInventory string = `
-		INSERT INTO inventories (product_id, price, specs, available, currency_code, status)
-		VALUES ($1, $2, $3, $4, $5, $6);
-	`
-
-	getAvailableProducts string = `
-		SELECT *
-		FROM inventories
-		WHERE 
-			product_id = $1 AND 
-			specs->>'ram' = $2 AND 
-			specs->>'ssd' = $3 AND 
-			specs->>'color' = $4;
+		INSERT INTO inventories (product_id, price, specs, available, currency_code, status, image, color, color_img)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
 	`
 
 	getByID string = `
@@ -34,16 +24,10 @@ const (
 
 	uploadInventoryImage = `
 		UPDATE inventories
-		SET specs = jsonb_set(
-			specs,
-			'{image}',
-			CASE
-				WHEN specs->>'image' IS NULL OR specs->>'image' = 'null' THEN
-					to_jsonb(array[$1]::text[])
-				ELSE
-					(specs->'image')::jsonb || to_jsonb($1::text)
-			END,
-			true
+		SET image = CASE
+						WHEN image is NULL OR image = '' THEN $1
+						ELSE image || ',' || $1
+					END
 		)
 		WHERE id = $2;
 	`
@@ -59,7 +43,7 @@ const (
 						ELSE status 
 					END,
 			price = CASE
-						WHEN $4 <> 0 THEN $4
+						WHEN $4 <> '' THEN $4
 						ELSE price
 					END,
 			currency_code = CASE
@@ -73,6 +57,18 @@ const (
 			available = CASE
 							WHEN $7 <> '' THEN $7
 							ELSE available
+						END,
+			image = CASE
+						WHEN $8 <> '' THEN $8
+						ELSE image
+					END,
+			color = CASE
+						WHEN $9 <> '' THEN $9
+						ELSE color
+					END,
+			color_img = CASE
+							WHEN $10 <> '' THEN $10
+							ELSE color_img
 						END
 		WHERE id = $1;
 	`

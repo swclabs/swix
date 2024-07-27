@@ -554,29 +554,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "number",
-                        "description": "product id",
-                        "name": "pid",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "ram",
-                        "name": "ram",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "ssd",
-                        "name": "ssd",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "color",
-                        "name": "color",
+                        "description": "inventory id",
+                        "name": "id",
                         "in": "query",
                         "required": true
                     }
@@ -666,7 +645,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.Slices-dtos_ProductSchema"
+                            "$ref": "#/definitions/dtos.Slices-dtos_ProductResponse"
                         }
                     }
                 }
@@ -720,7 +699,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.Product"
+                            "$ref": "#/definitions/dtos.ProductRequest"
                         }
                     }
                 ],
@@ -758,6 +737,37 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/details": {
+            "get": {
+                "description": "get product details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "product id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProductDetail"
                         }
                     }
                 }
@@ -1315,6 +1325,39 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.DetailColor": {
+            "type": "object",
+            "properties": {
+                "img": {
+                    "description": "Img of color Nature Titanium",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name Nature Titanium",
+                    "type": "string"
+                },
+                "product": {
+                    "description": "Img of product Nature Titanium",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "dtos.DetailSSD": {
+            "type": "object",
+            "properties": {
+                "price": {
+                    "description": "Price 1.000.000 VND",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Value 128GB",
+                    "type": "string"
+                }
+            }
+        },
         "dtos.Error": {
             "type": "object",
             "properties": {
@@ -1395,11 +1438,23 @@ const docTemplate = `{
                 "available": {
                     "type": "string"
                 },
+                "color": {
+                    "type": "string"
+                },
+                "color_img": {
+                    "type": "string"
+                },
                 "currency_code": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "price": {
                     "type": "string"
@@ -1410,9 +1465,7 @@ const docTemplate = `{
                 "product_name": {
                     "type": "string"
                 },
-                "specs": {
-                    "$ref": "#/definitions/dtos.InventorySpecsDetail"
-                },
+                "specs": {},
                 "status": {
                     "type": "string"
                 }
@@ -1430,27 +1483,13 @@ const docTemplate = `{
                 "available": {
                     "type": "string"
                 },
-                "currency_code": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "string"
-                },
-                "specs": {
-                    "$ref": "#/definitions/dtos.InventorySpecsDetail"
-                }
-            }
-        },
-        "dtos.InventorySpecsDetail": {
-            "type": "object",
-            "properties": {
                 "color": {
                     "type": "string"
                 },
-                "color_image": {
+                "color_img": {
+                    "type": "string"
+                },
+                "currency_code": {
                     "type": "string"
                 },
                 "image": {
@@ -1459,6 +1498,21 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "specs": {},
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.InventorySpecification": {
+            "type": "object",
+            "properties": {
                 "ram": {
                     "type": "string"
                 },
@@ -1541,7 +1595,66 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.Product": {
+        "dtos.ProductDetail": {
+            "type": "object",
+            "properties": {
+                "SSD": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.DetailSSD"
+                    }
+                },
+                "color": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.DetailColor"
+                    }
+                },
+                "display": {
+                    "description": "Display Super AMOLED",
+                    "type": "string"
+                },
+                "image": {
+                    "description": "Image of product",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "Name of product",
+                    "type": "string"
+                },
+                "screen": {
+                    "description": "Screen 6.1 inch",
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProductOrderSchema": {
+            "type": "object",
+            "properties": {
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "inventory_id": {
+                    "type": "integer"
+                },
+                "order_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "total_amount": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProductRequest": {
             "type": "object",
             "required": [
                 "category_id",
@@ -1590,30 +1703,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.ProductOrderSchema": {
-            "type": "object",
-            "properties": {
-                "currency_code": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "inventory_id": {
-                    "type": "integer"
-                },
-                "order_id": {
-                    "type": "integer"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "total_amount": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.ProductSchema": {
+        "dtos.ProductResponse": {
             "type": "object",
             "properties": {
                 "created": {
@@ -1637,9 +1727,7 @@ const docTemplate = `{
                 "price": {
                     "type": "string"
                 },
-                "spec": {
-                    "$ref": "#/definitions/dtos.Specs"
-                },
+                "spec": {},
                 "status": {
                     "type": "string"
                 }
@@ -1687,13 +1775,13 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.Slices-dtos_ProductSchema": {
+        "dtos.Slices-dtos_ProductResponse": {
             "type": "object",
             "properties": {
                 "body": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.ProductSchema"
+                        "$ref": "#/definitions/dtos.ProductResponse"
                     }
                 }
             }
@@ -1717,29 +1805,6 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/entity.Suppliers"
                     }
-                }
-            }
-        },
-        "dtos.Specs": {
-            "type": "object",
-            "properties": {
-                "RAM": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "SSD": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "display": {
-                    "type": "string"
-                },
-                "screen": {
-                    "type": "string"
                 }
             }
         },
@@ -1826,7 +1891,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "specs": {
-                    "$ref": "#/definitions/dtos.InventorySpecsDetail"
+                    "$ref": "#/definitions/dtos.InventorySpecification"
                 },
                 "status": {
                     "type": "string"

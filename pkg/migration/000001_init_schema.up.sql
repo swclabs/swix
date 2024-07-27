@@ -130,7 +130,10 @@ CREATE TABLE "inventories" (
   "status" varchar NOT NULL,
   "currency_code" varchar(3) NOT NULL,
   "specs" jsonb,
-  "available" int NOT NULL
+  "available" int NOT NULL,
+  "color" varchar NOT NULL,
+  "color_img" varchar,
+  "image" varchar
 );
 
 CREATE TABLE "collections" (

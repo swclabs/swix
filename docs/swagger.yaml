@@ -131,6 +131,29 @@ definitions:
       msg:
         type: string
     type: object
+  dtos.DetailColor:
+    properties:
+      img:
+        description: Img of color Nature Titanium
+        type: string
+      name:
+        description: Name Nature Titanium
+        type: string
+      product:
+        description: Img of product Nature Titanium
+        items:
+          type: string
+        type: array
+    type: object
+  dtos.DetailSSD:
+    properties:
+      price:
+        description: Price 1.000.000 VND
+        type: string
+      value:
+        description: Value 128GB
+        type: string
+    type: object
   dtos.Error:
     properties:
       msg:
@@ -179,18 +202,25 @@ definitions:
     properties:
       available:
         type: string
+      color:
+        type: string
+      color_img:
+        type: string
       currency_code:
         type: string
       id:
         type: string
+      image:
+        items:
+          type: string
+        type: array
       price:
         type: string
       product_id:
         type: string
       product_name:
         type: string
-      specs:
-        $ref: '#/definitions/dtos.InventorySpecsDetail'
+      specs: {}
       status:
         type: string
     required:
@@ -203,30 +233,31 @@ definitions:
     properties:
       available:
         type: string
+      color:
+        type: string
+      color_img:
+        type: string
       currency_code:
         type: string
+      image:
+        items:
+          type: string
+        type: array
       price:
         type: string
       product_id:
         type: string
-      specs:
-        $ref: '#/definitions/dtos.InventorySpecsDetail'
+      specs: {}
+      status:
+        type: string
     required:
     - available
     - currency_code
     - price
     - product_id
     type: object
-  dtos.InventorySpecsDetail:
+  dtos.InventorySpecification:
     properties:
-      color:
-        type: string
-      color_image:
-        type: string
-      image:
-        items:
-          type: string
-        type: array
       ram:
         type: string
       ssd:
@@ -281,7 +312,47 @@ definitions:
       uuid:
         type: string
     type: object
-  dtos.Product:
+  dtos.ProductDetail:
+    properties:
+      SSD:
+        items:
+          $ref: '#/definitions/dtos.DetailSSD'
+        type: array
+      color:
+        items:
+          $ref: '#/definitions/dtos.DetailColor'
+        type: array
+      display:
+        description: Display Super AMOLED
+        type: string
+      image:
+        description: Image of product
+        items:
+          type: string
+        type: array
+      name:
+        description: Name of product
+        type: string
+      screen:
+        description: Screen 6.1 inch
+        type: string
+    type: object
+  dtos.ProductOrderSchema:
+    properties:
+      currency_code:
+        type: string
+      id:
+        type: integer
+      inventory_id:
+        type: integer
+      order_id:
+        type: integer
+      quantity:
+        type: integer
+      total_amount:
+        type: string
+    type: object
+  dtos.ProductRequest:
     properties:
       RAM:
         items:
@@ -315,22 +386,7 @@ definitions:
     - status
     - supplier_id
     type: object
-  dtos.ProductOrderSchema:
-    properties:
-      currency_code:
-        type: string
-      id:
-        type: integer
-      inventory_id:
-        type: integer
-      order_id:
-        type: integer
-      quantity:
-        type: integer
-      total_amount:
-        type: string
-    type: object
-  dtos.ProductSchema:
+  dtos.ProductResponse:
     properties:
       created:
         type: string
@@ -346,8 +402,7 @@ definitions:
         type: string
       price:
         type: string
-      spec:
-        $ref: '#/definitions/dtos.Specs'
+      spec: {}
       status:
         type: string
     type: object
@@ -380,11 +435,11 @@ definitions:
     - msg
     - success
     type: object
-  dtos.Slices-dtos_ProductSchema:
+  dtos.Slices-dtos_ProductResponse:
     properties:
       body:
         items:
-          $ref: '#/definitions/dtos.ProductSchema'
+          $ref: '#/definitions/dtos.ProductResponse'
         type: array
     type: object
   dtos.Slices-entity_Categories:
@@ -400,21 +455,6 @@ definitions:
         items:
           $ref: '#/definitions/entity.Suppliers'
         type: array
-    type: object
-  dtos.Specs:
-    properties:
-      RAM:
-        items:
-          type: integer
-        type: array
-      SSD:
-        items:
-          type: integer
-        type: array
-      display:
-        type: string
-      screen:
-        type: string
     type: object
   dtos.StockHeader:
     properties:
@@ -471,7 +511,7 @@ definitions:
       product_id:
         type: string
       specs:
-        $ref: '#/definitions/dtos.InventorySpecsDetail'
+        $ref: '#/definitions/dtos.InventorySpecification'
       status:
         type: string
     type: object
@@ -934,26 +974,11 @@ paths:
       - application/json
       description: get product availability in inventories
       parameters:
-      - description: product id
+      - description: inventory id
         in: query
-        name: pid
+        name: id
         required: true
         type: number
-      - description: ram
-        in: query
-        name: ram
-        required: true
-        type: number
-      - description: ssd
-        in: query
-        name: ssd
-        required: true
-        type: number
-      - description: color
-        in: query
-        name: color
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -1031,7 +1056,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.Slices-dtos_ProductSchema'
+            $ref: '#/definitions/dtos.Slices-dtos_ProductResponse'
       tags:
       - products
     post:
@@ -1044,7 +1069,7 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/dtos.Product'
+          $ref: '#/definitions/dtos.ProductRequest'
       produces:
       - application/json
       responses:
@@ -1072,6 +1097,26 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dtos.OK'
+      tags:
+      - products
+  /products/details:
+    get:
+      consumes:
+      - application/json
+      description: get product details
+      parameters:
+      - description: product id
+        in: query
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.ProductDetail'
       tags:
       - products
   /products/img:

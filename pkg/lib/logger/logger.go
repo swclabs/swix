@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"io"
 	"log"
 	"time"
 
@@ -65,4 +66,25 @@ func Info(msg string) {
 		}
 	}()
 	logger.Info(msg)
+}
+
+// Write writes logs to a file
+func Write(file io.Writer) *zap.Logger {
+	encoderConfig := zapcore.EncoderConfig{
+		MessageKey:     "message",
+		LevelKey:       "level",
+		TimeKey:        "time",
+		NameKey:        "logger",
+		CallerKey:      "caller",
+		StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.LowercaseLevelEncoder,
+		EncodeTime:     zapcore.EpochTimeEncoder,
+		EncodeDuration: zapcore.SecondsDurationEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
+	}
+	encoder := zapcore.NewJSONEncoder(encoderConfig)
+	writer := zapcore.AddSync(file)
+	core := zapcore.NewCore(encoder, writer, zap.InfoLevel)
+	return zap.New(core)
 }
