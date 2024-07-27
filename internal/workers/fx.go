@@ -20,8 +20,8 @@ var FxModule = fx.Options(
 		handler.NewCommonConsume,
 		router.NewCommon,
 
-		handler.NewAccountManagementConsume,
-		router.NewAccountManagement,
+		handler.NewManagerConsume,
+		router.NewManager,
 	),
 	fx.Provide(
 		NewWriter,

@@ -1,4 +1,4 @@
-name: build test account management module
+name: build test manager module
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: build account management module
+    name: build manager module
     runs-on: ubuntu-latest
 
     steps:

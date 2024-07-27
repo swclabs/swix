@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/suppliers"
-	"swclabs/swipecore/internal/core/service/products"
+	"swclabs/swipecore/internal/core/service/classify"
 	"swclabs/swipecore/internal/webapi/controller"
 	"testing"
 
@@ -28,13 +28,13 @@ func TestGetSuppliers(t *testing.T) {
 	}, nil)
 
 	// business logic layers
-	services := products.ProductService{
-		Suppliers: &repos,
+	services := classify.Classify{
+		Supplier: &repos,
 	}
 
 	// presenter layers
-	controllers := controller.Products{
-		Services: &services,
+	controllers := controller.Classify{
+		Service: &services,
 	}
 
 	e.GET("/suppliers", controllers.GetSupplier)

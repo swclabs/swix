@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  dto.CartInsert:
+  dtos.CartInsert:
     properties:
       inventory_id:
         type: integer
@@ -13,7 +13,7 @@ definitions:
     - quantity
     - user_id
     type: object
-  dto.CartSchema:
+  dtos.CartSchema:
     properties:
       amount:
         type: string
@@ -26,19 +26,19 @@ definitions:
       quantity:
         type: integer
     type: object
-  dto.CartSlices:
+  dtos.CartSlices:
     properties:
       products:
         items:
-          $ref: '#/definitions/dto.CartSchema'
+          $ref: '#/definitions/dtos.CartSchema'
         type: array
       user_id:
         type: integer
     type: object
-  dto.Collection:
+  dtos.Collection:
     properties:
       body:
-        $ref: '#/definitions/dto.CollectionBody'
+        $ref: '#/definitions/dtos.CollectionBody'
       created:
         type: string
       headline:
@@ -52,7 +52,7 @@ definitions:
     - headline
     - position
     type: object
-  dto.CollectionBody:
+  dtos.CollectionBody:
     properties:
       description:
         type: string
@@ -70,7 +70,7 @@ definitions:
     - text_color
     - title
     type: object
-  dto.CollectionSliceBody:
+  dtos.CollectionSliceBody:
     properties:
       created:
         type: string
@@ -92,25 +92,25 @@ definitions:
     - text_color
     - title
     type: object
-  dto.CollectionUpload:
+  dtos.CollectionUpload:
     properties:
       id:
         type: integer
       msg:
         type: string
     type: object
-  dto.Collections:
+  dtos.Collections:
     properties:
       card_banner:
         items:
-          $ref: '#/definitions/dto.CollectionSliceBody'
+          $ref: '#/definitions/dtos.CollectionSliceBody'
         type: array
       headline:
         type: string
       position:
         type: string
     type: object
-  dto.CreateOrderSchema:
+  dtos.CreateOrderSchema:
     properties:
       product:
         items:
@@ -124,22 +124,22 @@ definitions:
       user_id:
         type: integer
     type: object
-  dto.CreateProduct:
+  dtos.CreateProduct:
     properties:
       id:
         type: integer
       msg:
         type: string
     type: object
-  dto.Error:
+  dtos.Error:
     properties:
       msg:
         type: string
     type: object
-  dto.HeadlineBanner:
+  dtos.HeadlineBanner:
     properties:
       body:
-        $ref: '#/definitions/dto.HeadlineBannerBody'
+        $ref: '#/definitions/dtos.HeadlineBannerBody'
       created:
         type: string
       position:
@@ -148,14 +148,14 @@ definitions:
     - body
     - position
     type: object
-  dto.HeadlineBannerBody:
+  dtos.HeadlineBannerBody:
     properties:
       headline:
         type: string
     required:
     - headline
     type: object
-  dto.HeadlineBannerSlicesBody:
+  dtos.HeadlineBannerSlicesBody:
     properties:
       created:
         type: string
@@ -166,16 +166,16 @@ definitions:
     required:
     - headline
     type: object
-  dto.HeadlineBanners:
+  dtos.HeadlineBanners:
     properties:
       headlines:
         items:
-          $ref: '#/definitions/dto.HeadlineBannerSlicesBody'
+          $ref: '#/definitions/dtos.HeadlineBannerSlicesBody'
         type: array
       position:
         type: string
     type: object
-  dto.Inventory:
+  dtos.Inventory:
     properties:
       available:
         type: string
@@ -190,7 +190,7 @@ definitions:
       product_name:
         type: string
       specs:
-        $ref: '#/definitions/dto.InventorySpecsDetail'
+        $ref: '#/definitions/dtos.InventorySpecsDetail'
       status:
         type: string
     required:
@@ -199,7 +199,7 @@ definitions:
     - price
     - product_id
     type: object
-  dto.InventoryDetail:
+  dtos.InventoryDetail:
     properties:
       available:
         type: string
@@ -210,14 +210,14 @@ definitions:
       product_id:
         type: string
       specs:
-        $ref: '#/definitions/dto.InventorySpecsDetail'
+        $ref: '#/definitions/dtos.InventorySpecsDetail'
     required:
     - available
     - currency_code
     - price
     - product_id
     type: object
-  dto.InventorySpecsDetail:
+  dtos.InventorySpecsDetail:
     properties:
       color:
         type: string
@@ -232,7 +232,7 @@ definitions:
       ssd:
         type: string
     type: object
-  dto.LoginRequest:
+  dtos.LoginRequest:
     properties:
       email:
         type: string
@@ -242,7 +242,7 @@ definitions:
     - email
     - password
     type: object
-  dto.LoginResponse:
+  dtos.LoginResponse:
     properties:
       email:
         type: string
@@ -255,18 +255,18 @@ definitions:
     - success
     - token
     type: object
-  dto.OK:
+  dtos.OK:
     properties:
       msg:
         type: string
     type: object
-  dto.OrderSchema:
+  dtos.OrderSchema:
     properties:
       id:
         type: integer
       products:
         items:
-          $ref: '#/definitions/dto.ProductOrderSchema'
+          $ref: '#/definitions/dtos.ProductOrderSchema'
         type: array
       status:
         type: string
@@ -281,7 +281,7 @@ definitions:
       uuid:
         type: string
     type: object
-  dto.Product:
+  dtos.Product:
     properties:
       RAM:
         items:
@@ -315,7 +315,7 @@ definitions:
     - status
     - supplier_id
     type: object
-  dto.ProductOrderSchema:
+  dtos.ProductOrderSchema:
     properties:
       currency_code:
         type: string
@@ -330,7 +330,7 @@ definitions:
       total_amount:
         type: string
     type: object
-  dto.ProductSchema:
+  dtos.ProductSchema:
     properties:
       created:
         type: string
@@ -347,11 +347,11 @@ definitions:
       price:
         type: string
       spec:
-        $ref: '#/definitions/dto.Specs'
+        $ref: '#/definitions/dtos.Specs'
       status:
         type: string
     type: object
-  dto.SignUpRequest:
+  dtos.SignUpRequest:
     properties:
       email:
         type: string
@@ -370,7 +370,7 @@ definitions:
     - password
     - phone_number
     type: object
-  dto.SignUpResponse:
+  dtos.SignUpResponse:
     properties:
       msg:
         type: string
@@ -380,28 +380,28 @@ definitions:
     - msg
     - success
     type: object
-  dto.Slices-dto_ProductSchema:
+  dtos.Slices-dtos_ProductSchema:
     properties:
       body:
         items:
-          $ref: '#/definitions/dto.ProductSchema'
+          $ref: '#/definitions/dtos.ProductSchema'
         type: array
     type: object
-  dto.Slices-entity_Categories:
+  dtos.Slices-entity_Categories:
     properties:
       body:
         items:
           $ref: '#/definitions/entity.Categories'
         type: array
     type: object
-  dto.Slices-entity_Suppliers:
+  dtos.Slices-entity_Suppliers:
     properties:
       body:
         items:
           $ref: '#/definitions/entity.Suppliers'
         type: array
     type: object
-  dto.Specs:
+  dtos.Specs:
     properties:
       RAM:
         items:
@@ -416,7 +416,7 @@ definitions:
       screen:
         type: string
     type: object
-  dto.StockHeader:
+  dtos.StockHeader:
     properties:
       active:
         type: integer
@@ -427,20 +427,20 @@ definitions:
       draft:
         type: integer
     type: object
-  dto.StockInInventory:
+  dtos.StockInInventory:
     properties:
       header:
-        $ref: '#/definitions/dto.StockHeader'
+        $ref: '#/definitions/dtos.StockHeader'
       limit:
         type: integer
       page:
         type: integer
       stock:
         items:
-          $ref: '#/definitions/dto.Inventory'
+          $ref: '#/definitions/dtos.Inventory'
         type: array
     type: object
-  dto.Supplier:
+  dtos.Supplier:
     properties:
       city:
         type: string
@@ -458,7 +458,7 @@ definitions:
     - email
     - name
     type: object
-  dto.UpdateInventory:
+  dtos.UpdateInventory:
     properties:
       available:
         type: string
@@ -471,11 +471,11 @@ definitions:
       product_id:
         type: string
       specs:
-        $ref: '#/definitions/dto.InventorySpecsDetail'
+        $ref: '#/definitions/dtos.InventorySpecsDetail'
       status:
         type: string
     type: object
-  dto.UpdateProductInfo:
+  dtos.UpdateProductInfo:
     properties:
       RAM:
         items:
@@ -512,7 +512,7 @@ definitions:
     - status
     - supplier_id
     type: object
-  dto.User:
+  dtos.User:
     properties:
       email:
         type: string
@@ -606,9 +606,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
-      - account_management
+      - manager
   /auth/login:
     post:
       consumes:
@@ -620,16 +620,16 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/dto.LoginRequest'
+          $ref: '#/definitions/dtos.LoginRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.LoginResponse'
+            $ref: '#/definitions/dtos.LoginResponse'
       tags:
-      - account_management
+      - manager
   /auth/logout:
     get:
       consumes:
@@ -641,9 +641,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
-      - account_management
+      - manager
   /auth/signup:
     post:
       consumes:
@@ -655,16 +655,16 @@ paths:
         name: sign_up
         required: true
         schema:
-          $ref: '#/definitions/dto.SignUpRequest'
+          $ref: '#/definitions/dtos.SignUpRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.SignUpResponse'
+            $ref: '#/definitions/dtos.SignUpResponse'
       tags:
-      - account_management
+      - manager
   /categories:
     get:
       consumes:
@@ -682,7 +682,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Slices-entity_Categories'
+            $ref: '#/definitions/dtos.Slices-entity_Categories'
       tags:
       - categories
     post:
@@ -702,7 +702,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - categories
   /collections:
@@ -727,7 +727,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Collections'
+            $ref: '#/definitions/dtos.Collections'
       tags:
       - collections
     post:
@@ -740,14 +740,14 @@ paths:
         name: collection
         required: true
         schema:
-          $ref: '#/definitions/dto.Collection'
+          $ref: '#/definitions/dtos.Collection'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dto.CollectionUpload'
+            $ref: '#/definitions/dtos.CollectionUpload'
       tags:
       - collections
   /collections/headline:
@@ -772,7 +772,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.HeadlineBanners'
+            $ref: '#/definitions/dtos.HeadlineBanners'
       tags:
       - collections
     post:
@@ -785,14 +785,14 @@ paths:
         name: banner
         required: true
         schema:
-          $ref: '#/definitions/dto.HeadlineBanner'
+          $ref: '#/definitions/dtos.HeadlineBanner'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - collections
   /collections/img:
@@ -817,7 +817,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - collections
   /common/healthcheck:
@@ -861,7 +861,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
     get:
@@ -885,7 +885,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.StockInInventory'
+            $ref: '#/definitions/dtos.StockInInventory'
       tags:
       - inventories
     post:
@@ -898,14 +898,14 @@ paths:
         name: InventoryDetail
         required: true
         schema:
-          $ref: '#/definitions/dto.InventoryDetail'
+          $ref: '#/definitions/dtos.InventoryDetail'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
     put:
@@ -918,14 +918,14 @@ paths:
         name: inventory
         required: true
         schema:
-          $ref: '#/definitions/dto.UpdateInventory'
+          $ref: '#/definitions/dtos.UpdateInventory'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
   /inventories/details:
@@ -960,7 +960,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Inventory'
+            $ref: '#/definitions/dtos.Inventory'
       tags:
       - inventories
   /inventories/image:
@@ -980,7 +980,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
   /oauth2/login:
@@ -1012,7 +1012,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - products
     get:
@@ -1031,7 +1031,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Slices-dto_ProductSchema'
+            $ref: '#/definitions/dtos.Slices-dtos_ProductSchema'
       tags:
       - products
     post:
@@ -1044,14 +1044,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/dto.Product'
+          $ref: '#/definitions/dtos.Product'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.CreateProduct'
+            $ref: '#/definitions/dtos.CreateProduct'
       tags:
       - products
     put:
@@ -1064,14 +1064,14 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/dto.UpdateProductInfo'
+          $ref: '#/definitions/dtos.UpdateProductInfo'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - products
   /products/img:
@@ -1096,11 +1096,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/dto.Error'
+            $ref: '#/definitions/dtos.Error'
       tags:
       - products
   /purchase/carts:
@@ -1125,7 +1125,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - purchase
     get:
@@ -1144,7 +1144,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.CartSlices'
+            $ref: '#/definitions/dtos.CartSlices'
       tags:
       - purchase
     post:
@@ -1157,14 +1157,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/dto.CartInsert'
+          $ref: '#/definitions/dtos.CartInsert'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - purchase
   /purchase/orders:
@@ -1185,7 +1185,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dto.OrderSchema'
+              $ref: '#/definitions/dtos.OrderSchema'
             type: array
       tags:
       - purchase
@@ -1199,14 +1199,14 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateOrderSchema'
+          $ref: '#/definitions/dtos.CreateOrderSchema'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - purchase
   /suppliers:
@@ -1226,7 +1226,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.Slices-entity_Suppliers'
+            $ref: '#/definitions/dtos.Slices-entity_Suppliers'
       tags:
       - suppliers
     post:
@@ -1239,14 +1239,14 @@ paths:
         name: Supplier
         required: true
         schema:
-          $ref: '#/definitions/dto.Supplier'
+          $ref: '#/definitions/dtos.Supplier'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - suppliers
   /users:
@@ -1262,7 +1262,7 @@ paths:
           schema:
             $ref: '#/definitions/model.Users'
       tags:
-      - account_management
+      - manager
     put:
       consumes:
       - application/json
@@ -1273,16 +1273,16 @@ paths:
         name: UserSchema
         required: true
         schema:
-          $ref: '#/definitions/dto.User'
+          $ref: '#/definitions/dtos.User'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
-      - account_management
+      - manager
   /users/image:
     put:
       consumes:
@@ -1300,7 +1300,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.OK'
+            $ref: '#/definitions/dtos.OK'
       tags:
-      - account_management
+      - manager
 swagger: "2.0"

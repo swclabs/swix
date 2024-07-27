@@ -16,18 +16,20 @@ var _ types.IAdapter = (*_Adapter)(nil)
 func NewAdapter(
 	server IServer,
 	products router.IProducts,
-	accountManagement router.IAccountManagement,
+	manager router.IManager,
 	posts router.IPosts,
 	purchase router.IPurchase,
+	classify router.IClassify,
 ) types.IAdapter {
 	adapter := &_Adapter{
 		server: server,
 	}
 
 	adapter.server.Connect(products)
-	adapter.server.Connect(accountManagement)
+	adapter.server.Connect(manager)
 	adapter.server.Connect(posts)
 	adapter.server.Connect(purchase)
+	adapter.server.Connect(classify)
 
 	return adapter
 }

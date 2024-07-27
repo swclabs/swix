@@ -1,4 +1,4 @@
-package dto
+package dtos
 
 // SignUpRequest schema
 type SignUpRequest struct {

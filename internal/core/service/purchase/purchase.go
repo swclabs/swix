@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/carts"
 	"swclabs/swipecore/internal/core/repository/inventories"
@@ -39,7 +39,7 @@ func New(
 }
 
 // GetOrdersByUserID implements IPurchaseService.
-func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dto.OrderSchema, error) {
+func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderSchema, error) {
 	// Get orders by user ID
 	orders, err := p.Order.Get(ctx, userID, limit)
 	if err != nil {
@@ -50,7 +50,7 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 	if err != nil {
 		return nil, err
 	}
-	var orderSchema []dto.OrderSchema
+	var orderSchema []dtos.OrderSchema
 
 	for _, order := range orders {
 		// Get products by order ID
@@ -58,9 +58,9 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 		if err != nil {
 			return nil, err
 		}
-		var productSchema []dto.ProductOrderSchema
+		var productSchema []dtos.ProductOrderSchema
 		for _, product := range products {
-			productSchema = append(productSchema, dto.ProductOrderSchema{
+			productSchema = append(productSchema, dtos.ProductOrderSchema{
 				ID:           product.ID,
 				OrderID:      product.OrderID,
 				CurrencyCode: product.CurrencyCode,
@@ -70,7 +70,7 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 			})
 		}
 		// Merge product and order schema
-		orderSchema = append(orderSchema, dto.OrderSchema{
+		orderSchema = append(orderSchema, dtos.OrderSchema{
 			ID:        order.ID,
 			UUID:      order.UUID,
 			Status:    order.Status,
@@ -89,21 +89,21 @@ func (p *Purchase) DeleteItemFromCart(ctx context.Context, userID int64, invento
 }
 
 // AddToCart implements IPurchaseService.
-func (p *Purchase) AddToCart(ctx context.Context, cart dto.CartInsert) error {
+func (p *Purchase) AddToCart(ctx context.Context, cart dtos.CartInsert) error {
 	return p.Cart.Insert(ctx, cart.UserID, cart.InventoryID, cart.Quantity)
 }
 
 // GetCart implements IPurchaseService.
-func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*dto.CartSlices, error) {
+func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*dtos.CartSlices, error) {
 	cartItems, err := p.Cart.GetCartByUserID(ctx, userID, limit)
 	if err != nil {
 		return nil, err
 	}
-	var cartSchema dto.CartSlices
+	var cartSchema dtos.CartSlices
 	cartSchema.UserID = userID
 	for _, item := range cartItems {
 
-		cartSchema.Products = append(cartSchema.Products, dto.CartSchema{
+		cartSchema.Products = append(cartSchema.Products, dtos.CartSchema{
 			Quantity: item.Quantity,
 		})
 	}
@@ -111,7 +111,7 @@ func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*dto.C
 }
 
 // CreateOrders implements IPurchaseService.
-func (p *Purchase) CreateOrders(ctx context.Context, createOrder dto.CreateOrderSchema) (string, error) {
+func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrderSchema) (string, error) {
 	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
 		return "", err

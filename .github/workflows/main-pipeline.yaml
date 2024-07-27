@@ -50,7 +50,7 @@ jobs:
 
   test-posts:
     needs: [build]
-    name: unit test posts module
+    name: unit test classify module
     runs-on: ubuntu-latest
 
     steps:
@@ -65,8 +65,8 @@ jobs:
       - name: Download package dependencies
         run: go mod download
 
-      - name: Unit test - posts
-        run: bash hack/swipe run -t posts
+      - name: Unit test - classify
+        run: bash hack/swipe run -t classify
 
   test-products:
     needs: [build]

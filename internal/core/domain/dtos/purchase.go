@@ -1,4 +1,4 @@
-package dto
+package dtos
 
 // CartSchema schema request, response
 type CartSchema struct {

@@ -49,7 +49,7 @@ var command = []*cli.Command{
 			} else {
 				boot.PrepareFor(boot.WebAPI | boot.DebugMode)
 			}
-			app := boot.NewApp(boot.NewServer, webapi.NewAccountManagementsAdapter)
+			app := boot.NewApp(boot.NewServer, webapi.NewManagerAdapter)
 			app.Run()
 			return nil
 		},
@@ -61,7 +61,7 @@ func newClient() *cli.App {
 		Name:        "swipe",
 		Usage:       "Swipe Project",
 		Version:     "0.0.1",
-		Description: "Swipe Account Management API server",
+		Description: "Swipe Manager API server",
 		Commands:    command,
 	}
 

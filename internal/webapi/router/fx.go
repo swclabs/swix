@@ -13,6 +13,7 @@ var FxModule = fx.Options(
 		NewProducts,
 		NewPosts,
 		NewPurchase,
-		NewAccountManagement,
+		NewManager,
+		NewClassify,
 	),
 )

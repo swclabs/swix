@@ -1,27 +1,27 @@
-package accountmanagement
+package manager
 
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/domain/model"
 )
 
-// IAccountManagement : Module for Account Management with use-cases.
+// IManager : Module for manager with use-cases.
 // Actor: Admin & Customer (Users)
-type IAccountManagement interface {
+type IManager interface {
 	// SignUp registers a new user.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the sign-up request details.
 	// Returns an error if any issues occur during the sign-up process.
-	SignUp(ctx context.Context, req dto.SignUpRequest) error
+	SignUp(ctx context.Context, req dtos.SignUpRequest) error
 
 	// Login authenticates a user and returns a token.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the login request details.
 	// Returns a token string and an error if any issues occur during the login process.
-	Login(ctx context.Context, req dto.LoginRequest) (string, error)
+	Login(ctx context.Context, req dtos.LoginRequest) (string, error)
 
 	// CheckLoginEmail checks if the email is already registered.
 	// ctx is the context to manage the request's lifecycle.
@@ -39,7 +39,7 @@ type IAccountManagement interface {
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the updated user information details.
 	// Returns an error if any issues occur during the update process.
-	UpdateUserInfo(ctx context.Context, req dto.User) error
+	UpdateUserInfo(ctx context.Context, req dtos.User) error
 
 	// UploadAvatar uploads a user's avatar.
 	// email is the email address of the user.
@@ -51,7 +51,7 @@ type IAccountManagement interface {
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the OAuth2 user information details.
 	// Returns an error if any issues occur during the save process.
-	OAuth2SaveUser(ctx context.Context, req dto.OAuth2SaveUser) error
+	OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) error
 
 	// UploadAddress uploads a user's address.
 	// ctx is the context to manage the request's lifecycle.

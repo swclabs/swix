@@ -1,4 +1,4 @@
-package dto
+package dtos
 
 // Specs request, response
 type Specs struct {

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/service/products"
@@ -23,7 +23,7 @@ var e = echo.New()
 
 func TestGetProductAvailability(t *testing.T) {
 	// repository layers
-	specs, _ := json.Marshal(dto.InventorySpecsDetail{
+	specs, _ := json.Marshal(dtos.InventorySpecsDetail{
 		Color:      "black",
 		RAM:        "16",
 		Ssd:        "512",
@@ -33,7 +33,7 @@ func TestGetProductAvailability(t *testing.T) {
 	inventoryRepos := inventories.Mock{}
 	price, _ := decimal.NewFromString("10000")
 	inventoryRepos.On("FindDevice", context.Background(),
-		dto.InventoryDeviceSpecs{
+		dtos.InventoryDeviceSpecs{
 			ProductID: "1",
 			Color:     "black",
 			RAM:       "16",

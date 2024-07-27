@@ -1,9 +1,9 @@
-// Package dto (Data transfer object): is a class that encapsulates
+// Package dtos (Data transfer object): is a class that encapsulates
 // data for transfer between client-server or between services
 // in microservices. The purpose of creating DTOs is to reduce
 // the amount of unnecessary information that needs to be
 // transferred and to enhance security.
-package dto
+package dtos
 
 // request -> [name]
 // response -> [name]Schema
