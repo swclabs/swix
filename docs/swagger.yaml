@@ -684,7 +684,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.Slices-entity_Categories'
       tags:
-      - products
+      - categories
     post:
       consumes:
       - application/json
@@ -704,7 +704,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.OK'
       tags:
-      - products
+      - categories
   /collections:
     get:
       consumes:
@@ -729,7 +729,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.Collections'
       tags:
-      - posts
+      - collections
     post:
       consumes:
       - application/json
@@ -749,7 +749,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.CollectionUpload'
       tags:
-      - posts
+      - collections
   /collections/headline:
     get:
       consumes:
@@ -774,7 +774,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.HeadlineBanners'
       tags:
-      - posts
+      - collections
     post:
       consumes:
       - application/json
@@ -794,7 +794,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.OK'
       tags:
-      - posts
+      - collections
   /collections/img:
     put:
       consumes:
@@ -819,7 +819,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.OK'
       tags:
-      - posts
+      - collections
   /common/healthcheck:
     get:
       consumes:
@@ -863,7 +863,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.OK'
       tags:
-      - products
+      - inventories
     get:
       consumes:
       - application/json
@@ -887,7 +887,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.StockInInventory'
       tags:
-      - products
+      - inventories
     post:
       consumes:
       - application/json
@@ -907,7 +907,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.OK'
       tags:
-      - products
+      - inventories
     put:
       consumes:
       - application/json
@@ -927,7 +927,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.OK'
       tags:
-      - products
+      - inventories
   /inventories/details:
     get:
       consumes:
@@ -962,8 +962,8 @@ paths:
           schema:
             $ref: '#/definitions/dto.Inventory'
       tags:
-      - products
-  /inventory/image:
+      - inventories
+  /inventories/image:
     put:
       consumes:
       - application/json
@@ -982,7 +982,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.OK'
       tags:
-      - products
+      - inventories
   /oauth2/login:
     get:
       consumes:
@@ -1228,7 +1228,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.Slices-entity_Suppliers'
       tags:
-      - products
+      - suppliers
     post:
       consumes:
       - application/json
@@ -1248,7 +1248,7 @@ paths:
           schema:
             $ref: '#/definitions/dto.OK'
       tags:
-      - products
+      - suppliers
   /users:
     get:
       consumes:

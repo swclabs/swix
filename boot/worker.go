@@ -2,6 +2,7 @@
 package boot
 
 import (
+	"strconv"
 	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/types"
 )
@@ -33,5 +34,5 @@ func NewWorker() IServer {
 }
 
 func (w *_Worker) Connect(adapter types.IAdapter) error {
-	return adapter.StartWorker(w.concurrency)
+	return adapter.Run(strconv.Itoa(w.concurrency))
 }
