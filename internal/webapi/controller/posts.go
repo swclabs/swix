@@ -4,7 +4,7 @@ package controller
 import (
 	"net/http"
 	"strconv"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/service/posts"
 	"swclabs/swipecore/pkg/lib/valid"
 
@@ -40,7 +40,7 @@ func NewPosts(service posts.IPostsService) IPosts {
 // @Produce json
 // @Param position query string true "position of collections"
 // @Param limit query int true "limit headline of collections"
-// @Success 200 {object} dto.HeadlineBanners
+// @Success 200 {object} dtos.HeadlineBanners
 // @Router /collections/headline [GET]
 func (p *Posts) GetSlicesOfHeadlineBanner(c echo.Context) error {
 	var (
@@ -49,13 +49,13 @@ func (p *Posts) GetSlicesOfHeadlineBanner(c echo.Context) error {
 	)
 	limit, err := strconv.Atoi(sLimit)
 	if pos == "" || err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "position and limit are required. limit must be a number",
 		})
 	}
 	headlines, err := p.Services.SliceOfHeadlineBanner(c.Request().Context(), pos, limit)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -67,27 +67,27 @@ func (p *Posts) GetSlicesOfHeadlineBanner(c echo.Context) error {
 // @Tags collections
 // @Accept json
 // @Produce json
-// @Param banner body dto.HeadlineBanner true "headline banner data request"
-// @Success 201 {object} dto.OK
+// @Param banner body dtos.HeadlineBanner true "headline banner data request"
+// @Success 201 {object} dtos.OK
 // @Router /collections/headline [POST]
 func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
-	var banner dto.HeadlineBanner
+	var banner dtos.HeadlineBanner
 	if err := c.Bind(&banner); err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	if err := valid.Validate(&banner); err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	if err := p.Services.UploadHeadlineBanner(c.Request().Context(), banner); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, dto.OK{
+	return c.JSON(http.StatusCreated, dtos.OK{
 		Msg: "your headline has been created successfully",
 	})
 }
@@ -97,28 +97,28 @@ func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
 // @Tags collections
 // @Accept json
 // @Produce json
-// @Param collection body dto.Collection true "collections Request"
-// @Success 201 {object} dto.CollectionUpload
+// @Param collection body dtos.Collection true "collections Request"
+// @Success 201 {object} dtos.CollectionUpload
 // @Router /collections [POST]
 func (p *Posts) UploadCollections(c echo.Context) error {
-	var cardBanner dto.Collection
+	var cardBanner dtos.Collection
 	if err := c.Bind(&cardBanner); err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	if _valid := valid.Validate(&cardBanner); _valid != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: _valid.Error(),
 		})
 	}
 	id, err := p.Services.UploadCollections(c.Request().Context(), cardBanner)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, dto.CollectionUpload{
+	return c.JSON(http.StatusCreated, dtos.CollectionUpload{
 		Msg: "collection uploaded successfully",
 		ID:  id,
 	})
@@ -131,29 +131,29 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 // @Produce json
 // @Param img formData file true "image of collections"
 // @Param id formData string true "collections identifier"
-// @Success 200 {object} dto.OK
+// @Success 200 {object} dtos.OK
 // @Router /collections/img [PUT]
 func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 	file, err := c.FormFile("img")
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	id := c.FormValue("id")
 	if id == "" {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "missing 'id' field",
 		})
 	}
 
 	if err := p.Services.UploadCollectionsImage(c.Request().Context(), id, file); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusOK, dto.Error{
+	return c.JSON(http.StatusOK, dtos.Error{
 		Msg: "upload image of collection successfully",
 	})
 }
@@ -165,27 +165,27 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 // @Produce json
 // @Param position query string true "position of collections"
 // @Param limit query string true "limit of cards banner slices"
-// @Success 200 {object} dto.Collections
+// @Success 200 {object} dtos.Collections
 // @Router /collections [GET]
 func (p *Posts) GetSlicesOfCollections(c echo.Context) error {
 	position := c.QueryParam("position")
 	limit := c.QueryParam("limit")
 	if position == "" || limit == "" {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "missing 'position' or 'limit' field",
 		})
 	}
 
 	_limit, err := strconv.Atoi(limit)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 
 	slices, err := p.Services.SlicesOfCollections(c.Request().Context(), position, _limit)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}

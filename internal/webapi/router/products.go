@@ -2,7 +2,7 @@
 // File products.go defines APIs for functions related to products
 // such as getting a list of products, adding a product, updating product information,
 // deleting a product, adding product images.
-// It also includes APIs related to product categories, suppliers, and inventory.
+// It also includes APIs related to inventory.
 package router
 
 import (
@@ -30,9 +30,6 @@ func NewProducts(controllers controller.IProducts) IProducts {
 
 // Routers define route endpoints
 func (r *Products) Routers(e *echo.Echo) {
-	// endpoint for categories
-	e.GET("/categories", r.controller.GetCategories)
-	e.POST("/categories", r.controller.InsertCategory)
 
 	// endpoint for products
 	e.GET("/products", r.controller.GetProductLimit)
@@ -41,12 +38,6 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.DELETE("/products", r.controller.DeleteProduct)
 
 	e.POST("/products/img", r.controller.UploadProductImage)
-
-	// endpoint for suppliers
-	e.GET("/suppliers", r.controller.GetSupplier)
-	e.POST("/suppliers", r.controller.InsertSupplier)
-	// TODO: implement edit supplier here
-	// e.PUT("/suppliers")
 
 	// endpoint for inventories
 	e.PUT("/inventories/image", r.controller.UploadInventoryImage)

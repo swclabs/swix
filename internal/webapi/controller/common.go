@@ -3,7 +3,7 @@ package controller
 
 import (
 	"net/http"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/extension/oauth2"
 	"swclabs/swipecore/internal/core/service/common"
 	"swclabs/swipecore/pkg/utils"
@@ -50,11 +50,11 @@ func (cm *Common) HealthCheck(c echo.Context) error {
 func (cm *Common) WorkerCheck(c echo.Context) error {
 	results, err := common.UseTask(cm.service).WorkerCheckResult(c.Request().Context(), 10)
 	if err != nil {
-		return c.JSON(400, dto.Error{
+		return c.JSON(400, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(200, dto.OK{
+	return c.JSON(200, dtos.OK{
 		Msg: results,
 	})
 }
@@ -70,7 +70,7 @@ func Auth0Login(c echo.Context) error {
 	auth := oauth2.New()
 	url := auth.AuthCodeURL(auth.State)
 	if err := utils.SaveSession(c, utils.BaseSessions, "state", auth.State); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}

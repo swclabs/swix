@@ -1,4 +1,4 @@
-package dto
+package dtos
 
 // CollectionBody used to bind from json mapping to structure
 type CollectionBody struct {

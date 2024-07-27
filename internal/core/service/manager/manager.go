@@ -1,4 +1,4 @@
-// Package accountmanagement account management service implementation
+// Package manager manager service implementation
 // Three layer
 //
 //		Controller_____
@@ -6,7 +6,7 @@
 //		Service _______|___ Domain
 //	 	|			   |
 //	 	Repository ____|
-package accountmanagement
+package manager
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 	"fmt"
 	"log"
 	"mime/multipart"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/domain/model"
 	"swclabs/swipecore/internal/core/repository/accounts"
@@ -26,24 +26,24 @@ import (
 	"swclabs/swipecore/pkg/utils"
 )
 
-// AccountManagement implement domain.AccountManagementService
-type AccountManagement struct {
+// Manager implement IManager
+type Manager struct {
 	Blob    blob.IBlobStorage
 	User    users.IUserRepository
 	Account accounts.IAccountRepository
 	Address addresses.IAddressRepository
 }
 
-var _ IAccountManagement = (*AccountManagement)(nil)
+var _ IManager = (*Manager)(nil)
 
-// New create new AccountManagement object
+// New create new Manager object
 func New(
 	blob blob.IBlobStorage,
 	user users.IUserRepository,
 	account accounts.IAccountRepository,
 	address addresses.IAddressRepository,
-) IAccountManagement {
-	return &AccountManagement{
+) IManager {
+	return &Manager{
 		Blob:    blob,
 		User:    user,
 		Account: account,
@@ -52,7 +52,7 @@ func New(
 }
 
 // SignUp user to access system, return error if exist
-func (manager *AccountManagement) SignUp(ctx context.Context, req dto.SignUpRequest) error {
+func (manager *Manager) SignUp(ctx context.Context, req dtos.SignUpRequest) error {
 	tx, err := db.BeginTransaction(ctx)
 	if err != nil {
 		return err
@@ -106,8 +106,8 @@ func (manager *AccountManagement) SignUp(ctx context.Context, req dto.SignUpRequ
 }
 
 // Login to system, return token if error not exist
-func (manager *AccountManagement) Login(
-	ctx context.Context, req dto.LoginRequest) (string, error) {
+func (manager *Manager) Login(
+	ctx context.Context, req dtos.LoginRequest) (string, error) {
 	// get account form email
 	account, err := manager.Account.GetByEmail(ctx, req.Email)
 	if err != nil {
@@ -121,15 +121,15 @@ func (manager *AccountManagement) Login(
 }
 
 // UserInfo return user information from Database
-func (manager *AccountManagement) UserInfo(
+func (manager *Manager) UserInfo(
 	ctx context.Context, email string) (*model.Users, error) {
 	// get user information
 	return manager.User.Info(ctx, email)
 }
 
 // UpdateUserInfo update user information to database
-func (manager *AccountManagement) UpdateUserInfo(
-	ctx context.Context, req dto.User) error {
+func (manager *Manager) UpdateUserInfo(
+	ctx context.Context, req dtos.User) error {
 	// call repository layer
 	return manager.User.Save(ctx, entity.Users{
 		ID:          req.ID,
@@ -141,7 +141,7 @@ func (manager *AccountManagement) UpdateUserInfo(
 }
 
 // UploadAvatar upload image to blob storage and save img url to database
-func (manager *AccountManagement) UploadAvatar(
+func (manager *Manager) UploadAvatar(
 	email string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
@@ -160,8 +160,8 @@ func (manager *AccountManagement) UploadAvatar(
 }
 
 // OAuth2SaveUser save user use oauth2 protocol
-func (manager *AccountManagement) OAuth2SaveUser(
-	ctx context.Context, req dto.OAuth2SaveUser) error {
+func (manager *Manager) OAuth2SaveUser(
+	ctx context.Context, req dtos.OAuth2SaveUser) error {
 	hash, err := crypto.GenPassword(utils.RandomString(18))
 	if err != nil {
 		return err
@@ -209,7 +209,7 @@ func (manager *AccountManagement) OAuth2SaveUser(
 }
 
 // CheckLoginEmail check email already exist in database
-func (manager *AccountManagement) CheckLoginEmail(
+func (manager *Manager) CheckLoginEmail(
 	ctx context.Context, email string) error {
 	_, err := manager.Account.GetByEmail(ctx, email)
 	if err != nil {
@@ -219,6 +219,6 @@ func (manager *AccountManagement) CheckLoginEmail(
 }
 
 // UploadAddress update user address to database
-func (manager *AccountManagement) UploadAddress(ctx context.Context, data entity.Addresses) error {
+func (manager *Manager) UploadAddress(ctx context.Context, data entity.Addresses) error {
 	return manager.Address.Insert(ctx, data)
 }

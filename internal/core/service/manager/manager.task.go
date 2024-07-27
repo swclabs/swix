@@ -1,26 +1,26 @@
-package accountmanagement
+package manager
 
 import (
 	"context"
 	"mime/multipart"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/domain/model"
 	"swclabs/swipecore/internal/workers/queue"
 	"swclabs/swipecore/pkg/lib/worker"
 )
 
-var _ IAccountManagement = (*Task)(nil)
+var _ IManager = (*Task)(nil)
 
-// Task struct for account management service
+// Task struct for manager service
 type Task struct {
 	worker  worker.IWorkerClient
-	service IAccountManagement
+	service IManager
 }
 
 // UseTask creates a new Task object wrapping the provided service
-func UseTask(service IAccountManagement) IAccountManagement {
+func UseTask(service IManager) IManager {
 	return &Task{
 		worker:  worker.NewClient(config.RedisHost, config.RedisPort, config.RedisPassword),
 		service: service,
@@ -28,7 +28,7 @@ func UseTask(service IAccountManagement) IAccountManagement {
 }
 
 // SignUp user to access system, return error if exist
-func (t *Task) SignUp(_ context.Context, req dto.SignUpRequest) error {
+func (t *Task) SignUp(_ context.Context, req dtos.SignUpRequest) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.SignUp),
 		req,
@@ -36,7 +36,7 @@ func (t *Task) SignUp(_ context.Context, req dto.SignUpRequest) error {
 }
 
 // UpdateUserInfo update user information
-func (t *Task) UpdateUserInfo(_ context.Context, req dto.User) error {
+func (t *Task) UpdateUserInfo(_ context.Context, req dtos.User) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.UpdateUserInfo),
 		req,
@@ -44,7 +44,7 @@ func (t *Task) UpdateUserInfo(_ context.Context, req dto.User) error {
 }
 
 // OAuth2SaveUser save user information from oauth2
-func (t *Task) OAuth2SaveUser(_ context.Context, req dto.OAuth2SaveUser) error {
+func (t *Task) OAuth2SaveUser(_ context.Context, req dtos.OAuth2SaveUser) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.OAuth2SaveUser),
 		req,
@@ -52,7 +52,7 @@ func (t *Task) OAuth2SaveUser(_ context.Context, req dto.OAuth2SaveUser) error {
 }
 
 // Login user to access system, return token if success
-func (t *Task) Login(ctx context.Context, req dto.LoginRequest) (string, error) {
+func (t *Task) Login(ctx context.Context, req dtos.LoginRequest) (string, error) {
 	return t.service.Login(ctx, req)
 }
 

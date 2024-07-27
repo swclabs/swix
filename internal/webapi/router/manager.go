@@ -1,5 +1,5 @@
-// Package router account management implementation
-// File account_management.go defines routes for APIs related to account management,
+// Package router manager implementation
+// File manager.go defines routes for APIs related to manager
 // such as login, signup, logout, and user information.
 package router
 
@@ -10,25 +10,25 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// IAccountManagement interface for account management
-type IAccountManagement interface {
+// IManager interface for manager
+type IManager interface {
 	IRouter
 }
 
-// AccountManagement struct	implementation of IAccountManagement
-type AccountManagement struct {
-	controller controller.IAccountManagement
+// Manager struct	implementation of IManager
+type Manager struct {
+	controller controller.IManager
 }
 
-// NewAccountManagement creates a new AccountManagement router object
-func NewAccountManagement(controllers controller.IAccountManagement) IAccountManagement {
-	return &AccountManagement{
+// NewManager creates a new Manager router object
+func NewManager(controllers controller.IManager) IManager {
+	return &Manager{
 		controller: controllers,
 	}
 }
 
 // Routers define route endpoint
-func (account *AccountManagement) Routers(e *echo.Echo) {
+func (account *Manager) Routers(e *echo.Echo) {
 	// endpoint for users
 	user := e.Group("/users")
 	user.GET("", account.controller.GetMe, middleware.SessionProtected)

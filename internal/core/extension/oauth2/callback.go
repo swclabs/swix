@@ -5,11 +5,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/repository/accounts"
 	"swclabs/swipecore/internal/core/repository/addresses"
 	"swclabs/swipecore/internal/core/repository/users"
-	"swclabs/swipecore/internal/core/service/accountmanagement"
+	"swclabs/swipecore/internal/core/service/manager"
 	"swclabs/swipecore/pkg/infra/blob"
 	"swclabs/swipecore/pkg/infra/db"
 	"swclabs/swipecore/pkg/lib/crypto"
@@ -34,7 +34,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 	var query Query
 
 	if err := ctx.Bind(&query); err != nil {
-		return ctx.JSON(http.StatusBadRequest, dto.Error{
+		return ctx.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -59,7 +59,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		dbpool = db.GetPool()
 		blob   = blob.Connection()
 	)
-	account := accountmanagement.New(
+	account := manager.New(
 		blob,
 		users.New(dbpool),
 		accounts.New(dbpool),
@@ -67,7 +67,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 	)
 	if err := account.OAuth2SaveUser(
 		context.TODO(),
-		dto.OAuth2SaveUser{
+		dtos.OAuth2SaveUser{
 			Email:     profile.Email,
 			FirstName: profile.GivenName,
 			LastName:  profile.FamilyName,
@@ -78,13 +78,13 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 
 	accessToken, err := crypto.GenerateToken(profile.Email)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, dto.Error{
+		return ctx.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 
 	if err := utils.SaveSession(ctx, utils.BaseSessions, "access_token", accessToken); err != nil {
-		return ctx.JSON(http.StatusInternalServerError, dto.Error{
+		return ctx.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}

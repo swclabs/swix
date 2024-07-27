@@ -2,7 +2,7 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 )
 
@@ -12,7 +12,7 @@ type IInventoryRepository interface {
 	InsertProduct(ctx context.Context, product entity.Inventories) error
 
 	// FindDevice finds a device in the inventory.
-	FindDevice(ctx context.Context, device dto.InventoryDeviceSpecs) (*entity.Inventories, error)
+	FindDevice(ctx context.Context, device dtos.InventoryDeviceSpecs) (*entity.Inventories, error)
 
 	// GetByID gets an inventory by its ID.
 	GetByID(ctx context.Context, inventoryID int64) (*entity.Inventories, error)

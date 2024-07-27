@@ -3,7 +3,7 @@ package middleware
 
 import (
 	"net/http"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/pkg/lib/crypto"
 
 	"swclabs/swipecore/pkg/utils"
@@ -51,7 +51,7 @@ func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
 			// 	return c.String(http.StatusInternalServerError, err.Error())
 			// }
 			if err := utils.SaveSession(c, utils.BaseSessions, "email", email); err != nil {
-				return c.JSON(http.StatusInternalServerError, dto.Error{
+				return c.JSON(http.StatusInternalServerError, dtos.Error{
 					Msg: err.Error(),
 				})
 			}

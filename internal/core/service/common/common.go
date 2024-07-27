@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 )
 
 var _ ICommonService = (*Service)(nil)
@@ -24,8 +24,8 @@ func (common *Service) WorkerCheckResult(ctx context.Context, num int64) (string
 }
 
 // HealthCheck implements ICommonService.
-func (common *Service) HealthCheck(_ context.Context) dto.HealthCheck {
-	return dto.HealthCheck{
+func (common *Service) HealthCheck(_ context.Context) dtos.HealthCheck {
+	return dtos.HealthCheck{
 		Status: "ok",
 	}
 }

@@ -3,7 +3,7 @@ package common
 import (
 	"context"
 	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/workers/queue"
 	"swclabs/swipecore/pkg/lib/worker"
 )
@@ -25,8 +25,8 @@ func UseTask(service ICommonService) ICommonService {
 }
 
 // HealthCheck implements ICommonService.
-func (t *Task) HealthCheck(_ context.Context) dto.HealthCheck {
-	return dto.HealthCheck{
+func (t *Task) HealthCheck(_ context.Context) dtos.HealthCheck {
+	return dtos.HealthCheck{
 		Status: "Ok",
 	}
 }

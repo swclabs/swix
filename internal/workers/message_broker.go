@@ -15,7 +15,7 @@ type Writer struct {
 func NewWriter(
 	engine *worker.Engine,
 	common *router.Common,
-	accountManagement *router.AccountManagements,
+	manager *router.Manager,
 ) *Writer {
 
 	writer := &Writer{
@@ -23,7 +23,7 @@ func NewWriter(
 	}
 
 	common.Register(writer.engine)
-	accountManagement.Register(writer.engine)
+	manager.Register(writer.engine)
 
 	return writer
 }

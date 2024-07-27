@@ -2,7 +2,7 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/dto"
+	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
@@ -90,7 +90,7 @@ func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*entity.Inv
 }
 
 // FindDevice implements IInventoryRepository.
-func (w *Inventory) FindDevice(ctx context.Context, device dto.InventoryDeviceSpecs) (*entity.Inventories, error) {
+func (w *Inventory) FindDevice(ctx context.Context, device dtos.InventoryDeviceSpecs) (*entity.Inventories, error) {
 	rows, err := w.db.Query(ctx, getAvailableProducts,
 		device.ProductID, device.RAM, device.Ssd, device.Color)
 	if err != nil {

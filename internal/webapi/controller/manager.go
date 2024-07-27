@@ -1,10 +1,10 @@
-// Package controller account management implementation
+// Package controller manager implementation
 package controller
 
 import (
 	"net/http"
-	"swclabs/swipecore/internal/core/domain/dto"
-	"swclabs/swipecore/internal/core/service/accountmanagement"
+	"swclabs/swipecore/internal/core/domain/dtos"
+	"swclabs/swipecore/internal/core/service/manager"
 	"swclabs/swipecore/pkg/lib/valid"
 
 	"swclabs/swipecore/pkg/utils"
@@ -12,8 +12,8 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// IAccountManagement interface for account management
-type IAccountManagement interface {
+// IManager interface for manager
+type IManager interface {
 	Login(c echo.Context) error
 	SignUp(c echo.Context) error
 	Logout(c echo.Context) error
@@ -23,42 +23,42 @@ type IAccountManagement interface {
 	UpdateUserInfo(c echo.Context) error
 }
 
-// AccountManagement struct implementation of IAccountManagement
-type AccountManagement struct {
-	Service accountmanagement.IAccountManagement
+// Manager struct implementation of IManager
+type Manager struct {
+	Service manager.IManager
 }
 
-// NewAccountManagement creates a new AccountManagement object
-func NewAccountManagement(services accountmanagement.IAccountManagement) IAccountManagement {
-	return &AccountManagement{
+// NewManager creates a new Manager object
+func NewManager(services manager.IManager) IManager {
+	return &Manager{
 		Service: services,
 	}
 }
 
 // Login .
 // @Description Login account.
-// @Tags account_management
+// @Tags manager
 // @Accept json
 // @Produce json
-// @Param login body dto.LoginRequest true "Login"
-// @Success 200 {object} dto.LoginResponse
+// @Param login body dtos.LoginRequest true "Login"
+// @Success 200 {object} dtos.LoginResponse
 // @Router /auth/login [POST]
-func (account *AccountManagement) Login(c echo.Context) error {
-	var request dto.LoginRequest
+func (account *Manager) Login(c echo.Context) error {
+	var request dtos.LoginRequest
 	if err := c.Bind(&request); err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	if _valid := valid.Validate(&request); _valid != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: _valid.Error(),
 		})
 	}
 	// var account = service.New()
 	accessToken, err := account.Service.Login(c.Request().Context(), request)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -69,12 +69,12 @@ func (account *AccountManagement) Login(c echo.Context) error {
 	// }
 
 	if err := utils.SaveSession(c, utils.BaseSessions, "access_token", accessToken); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 
-	return c.JSON(http.StatusOK, dto.LoginResponse{
+	return c.JSON(http.StatusOK, dtos.LoginResponse{
 		Success: true,
 		Token:   accessToken,
 		Email:   request.Email,
@@ -83,30 +83,30 @@ func (account *AccountManagement) Login(c echo.Context) error {
 
 // SignUp .
 // @Description Register account for admin.
-// @Tags account_management
+// @Tags manager
 // @Accept json
 // @Produce json
-// @Param sign_up body dto.SignUpRequest true "Sign Up"
-// @Success 200 {object} dto.SignUpResponse
+// @Param sign_up body dtos.SignUpRequest true "Sign Up"
+// @Success 200 {object} dtos.SignUpResponse
 // @Router /auth/signup [POST]
-func (account *AccountManagement) SignUp(c echo.Context) error {
-	var request dto.SignUpRequest
+func (account *Manager) SignUp(c echo.Context) error {
+	var request dtos.SignUpRequest
 	if err := c.Bind(&request); err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	if _valid := valid.Validate(&request); _valid != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: _valid.Error(),
 		})
 	}
 	if err := account.Service.SignUp(c.Request().Context(), request); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: "user data invalid",
 		})
 	}
-	return c.JSON(http.StatusCreated, dto.SignUpResponse{
+	return c.JSON(http.StatusCreated, dtos.SignUpResponse{
 		Success: true,
 		Msg:     "user has been created",
 	})
@@ -114,41 +114,41 @@ func (account *AccountManagement) SignUp(c echo.Context) error {
 
 // Logout .
 // @Description logout user from the service
-// @Tags account_management
+// @Tags manager
 // @Accept json
 // @Produce json
-// @Success 200 {object} dto.OK
+// @Success 200 {object} dtos.OK
 // @Router /auth/logout [GET]
-func (account *AccountManagement) Logout(c echo.Context) error {
+func (account *Manager) Logout(c echo.Context) error {
 	// session := sessions.Default(c)
 	// session.Delete("access_token")
 	// if err := session.Save(); err != nil {
 	// 	return c.String(http.StatusInternalServerError, err.Error())
 	// }
 	if err := utils.SaveSession(c, utils.BaseSessions, "access_token", ""); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, dto.OK{
+	return c.JSON(http.StatusOK, dtos.OK{
 		Msg: "user logged out",
 	})
 }
 
 // GetMe .
 // @Description get information for users.
-// @Tags account_management
+// @Tags manager
 // @Accept json
 // @Produce json
 // @Success 200 {object} model.Users
 // @Router /users [GET]
-func (account *AccountManagement) GetMe(c echo.Context) error {
+func (account *Manager) GetMe(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
 	email := utils.Session(c, utils.BaseSessions, "email").(string)
 	response, err := account.Service.UserInfo(c.Request().Context(), email)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
@@ -157,30 +157,30 @@ func (account *AccountManagement) GetMe(c echo.Context) error {
 
 // UpdateUserInfo .
 // @Description update information for users.
-// @Tags account_management
+// @Tags manager
 // @Accept json
 // @Produce json
-// @Param UserSchema body dto.User true "Update Users"
-// @Success 200 {object} dto.OK
+// @Param UserSchema body dtos.User true "Update Users"
+// @Success 200 {object} dtos.OK
 // @Router /users [PUT]
-func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
-	var request dto.User
+func (account *Manager) UpdateUserInfo(c echo.Context) error {
+	var request dtos.User
 	if err := c.Bind(&request); err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	if _valid := valid.Validate(&request); _valid != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: _valid.Error(),
 		})
 	}
 	if err := account.Service.UpdateUserInfo(c.Request().Context(), request); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, dto.OK{
+	return c.JSON(http.StatusOK, dtos.OK{
 		Msg: "update user information successfully",
 	})
 
@@ -188,53 +188,53 @@ func (account *AccountManagement) UpdateUserInfo(c echo.Context) error {
 
 // UpdateUserImage .
 // @Description update information for users.
-// @Tags account_management
+// @Tags manager
 // @Accept json
 // @Produce json
 // @Param img formData file true "image of collections"
-// @Success 200 {object} dto.OK
+// @Success 200 {object} dtos.OK
 // @Router /users/image [PUT]
-func (account *AccountManagement) UpdateUserImage(c echo.Context) error {
+func (account *Manager) UpdateUserImage(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
 	email := utils.Session(c, utils.BaseSessions, "email").(string)
 	file, err := c.FormFile("img")
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	if err := account.Service.UploadAvatar(email, file); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, dto.OK{
+	return c.JSON(http.StatusOK, dtos.OK{
 		Msg: "update user images successfully",
 	})
 }
 
 // CheckLoginEmail .
 // @Description check email address before login
-// @Tags account_management
+// @Tags manager
 // @Accept json
 // @Produce json
 // @Param email query string true "email address"
-// @Success 200 {object} dto.OK
+// @Success 200 {object} dtos.OK
 // @Router /auth [GET]
-func (account *AccountManagement) CheckLoginEmail(c echo.Context) error {
+func (account *Manager) CheckLoginEmail(c echo.Context) error {
 	email := c.QueryParam("email")
 	if email == "" {
-		return c.JSON(http.StatusBadRequest, dto.Error{
+		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "missing query parameter: email",
 		})
 	}
 	if err := account.Service.CheckLoginEmail(c.Request().Context(), email); err != nil {
-		return c.JSON(http.StatusInternalServerError, dto.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, dto.OK{
+	return c.JSON(http.StatusOK, dtos.OK{
 		Msg: "email: " + email,
 	})
 }
