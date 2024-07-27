@@ -3,6 +3,7 @@ package workers
 
 import (
 	"fmt"
+	"strconv"
 	"swclabs/swipecore/internal/types"
 )
 
@@ -19,11 +20,10 @@ func NewAdapter(writer *Writer) types.IAdapter {
 }
 
 // Run implements types.IAdapter.
-func (a *Adapter) Run(_ string) error {
-	return fmt.Errorf("service unavailable")
-}
-
-// StartWorker implements types.IAdapter.
-func (a *Adapter) StartWorker(concurrency int) error {
-	return a.engine.Run(concurrency)
+func (a *Adapter) Run(concurrency string) error {
+	_concurrency, err := strconv.Atoi(concurrency)
+	if err != nil {
+		return fmt.Errorf("invalid concurrency value: %v", err)
+	}
+	return a.engine.Run(_concurrency)
 }

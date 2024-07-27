@@ -144,7 +144,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "categories"
                 ],
                 "parameters": [
                     {
@@ -173,7 +173,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "categories"
                 ],
                 "parameters": [
                     {
@@ -206,7 +206,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -242,7 +242,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -275,7 +275,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -311,7 +311,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -344,7 +344,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -420,7 +420,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -456,7 +456,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -487,7 +487,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -518,7 +518,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -549,7 +549,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -591,7 +591,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/inventory/image": {
+        "/inventories/image": {
             "put": {
                 "description": "update inventory image",
                 "consumes": [
@@ -601,7 +601,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -980,7 +980,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "suppliers"
                 ],
                 "parameters": [
                     {
@@ -1009,7 +1009,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "suppliers"
                 ],
                 "parameters": [
                     {

@@ -3,6 +3,7 @@ package orders
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 )
 
@@ -19,8 +20,8 @@ func New(conn db.IDatabase) IOrdersRepository {
 }
 
 // Init initializes the Orders object with database and redis connection
-func Init(conn db.IDatabase) IOrdersRepository {
-	return New(conn)
+func Init(conn db.IDatabase, cache cache.ICache) IOrdersRepository {
+	return useCache(cache, New(conn))
 }
 
 var _ IOrdersRepository = (*Orders)(nil)
