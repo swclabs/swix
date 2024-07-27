@@ -15,8 +15,8 @@ type IProductService interface {
 	// GetProductsLimit retrieves a list of products with a specified limit.
 	// ctx is the context to manage the request's lifecycle.
 	// limit is the maximum number of products to retrieve.
-	// Returns a slice of ProductSchema objects and an error if any issues occur during the retrieval process.
-	GetProductsLimit(ctx context.Context, limit int) ([]dtos.ProductSchema, error)
+	// Returns a slice of ProductResponse objects and an error if any issues occur during the retrieval process.
+	GetProductsLimit(ctx context.Context, limit int) ([]dtos.ProductResponse, error)
 
 	// UploadProductImage uploads images for a product.
 	// ctx is the context to manage the request's lifecycle.
@@ -29,19 +29,13 @@ type IProductService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// products contains the product details to be added.
 	// Returns the ID of the newly inserted product and an error if any issues occur during the insertion process.
-	CreateProduct(ctx context.Context, products dtos.Product) (int64, error)
+	CreateProduct(ctx context.Context, products dtos.ProductRequest) (int64, error)
 
 	// InsertIntoInventory adds a product to the Inventories.
 	// ctx is the context to manage the request's lifecycle.
 	// product contains the inventories product details to be added.
 	// Returns an error if any issues occur during the insertion process.
 	InsertIntoInventory(ctx context.Context, product dtos.InventoryDetail) error
-
-	// FindDeviceInInventory retrieves device details from the Inventories.
-	// ctx is the context to manage the request's lifecycle.
-	// deviceSpecs specify the product attributes to retrieve.
-	// Returns a pointer to the Inventory object and an error if any issues occur during the retrieval process.
-	FindDeviceInInventory(ctx context.Context, deviceSpecs dtos.InventoryDeviceSpecs) (*dtos.Inventory, error)
 
 	// DeleteProductByID deletes a product from the database.
 	// ctx is the context to manage the request's lifecycle.
@@ -64,8 +58,8 @@ type IProductService interface {
 	// Search retrieves a list of products based on a search keyword.
 	// ctx is the context to manage the request's lifecycle.
 	// keyword is the search keyword.
-	// Returns a slice of ProductSchema objects and an error if any issues occur during the retrieval process.
-	Search(ctx context.Context, keyword string) ([]dtos.ProductSchema, error)
+	// Returns a slice of ProductResponse objects and an error if any issues occur during the retrieval process.
+	Search(ctx context.Context, keyword string) ([]dtos.ProductResponse, error)
 
 	// GetAllStock retrieves a list of all stock.
 	// ctx is the context to manage the request's lifecycle.
@@ -92,5 +86,6 @@ type IProductService interface {
 	// Returns an error if any issues occur during the update process.
 	UpdateInventory(ctx context.Context, inventory dtos.UpdateInventory) error
 
-	DetailOf(ctx context.Context, productID int64) (*dtos.Detail, error)
+	ProductDetailOf(ctx context.Context, productID int64) (*dtos.ProductDetail, error)
+	GetInventoryByID(ctx context.Context, inventoryID int64) (*dtos.Inventory, error)
 }

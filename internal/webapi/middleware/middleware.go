@@ -55,5 +55,7 @@ func BaseSetting(e *echo.Echo) {
 	e.Use(CORS())
 	// use logger to write logs to api.log file
 	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	if config.StageStatus != "dev" {
+		e.Use(middleware.Recover())
+	}
 }

@@ -2,7 +2,6 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 
 	"github.com/stretchr/testify/mock"
@@ -36,19 +35,14 @@ func (w *Mock) GetLimit(_ context.Context, _ int, _ int) ([]entity.Inventories, 
 }
 
 // GetByProductID implements IInventoryRepository.
-func (w *Mock) GetByProductID(_ context.Context, _ int64) ([]entity.Inventories, error) {
-	//TODO implement me
-	panic("implement me")
+func (w *Mock) GetByProductID(ctx context.Context, ID int64) ([]entity.Inventories, error) {
+	args := w.Called(ctx, ID)
+	return args.Get(0).([]entity.Inventories), args.Error(1)
 }
 
 // GetByID implements IInventoryRepository.
-func (w *Mock) GetByID(_ context.Context, _ int64) (*entity.Inventories, error) {
-	panic("unimplemented")
-}
-
-// FindDevice implements IInventoryRepository.
-func (w *Mock) FindDevice(ctx context.Context, device dtos.InventoryDeviceSpecs) (*entity.Inventories, error) {
-	args := w.Called(ctx, device)
+func (w *Mock) GetByID(ctx context.Context, ID int64) (*entity.Inventories, error) {
+	args := w.Called(ctx, ID)
 	return args.Get(0).(*entity.Inventories), args.Error(1)
 }
 

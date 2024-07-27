@@ -62,4 +62,4 @@ db.down: docker-compose.db.yml
 	docker-compose.db.yml \
 	down
 db.clean: docker-compose.db.yml
-	@rm -rf ./boot/.swipe
+	@rm -rf ./.swipe

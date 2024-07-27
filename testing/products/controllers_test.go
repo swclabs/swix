@@ -5,71 +5,188 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/internal/webapi/controller"
+	"swclabs/swipecore/pkg/lib/logger"
 	"testing"
+
+	productRepo "swclabs/swipecore/internal/core/repository/products"
 
 	"github.com/labstack/echo/v4"
 	"github.com/shopspring/decimal"
-	"github.com/stretchr/testify/assert"
-
-	productRepo "swclabs/swipecore/internal/core/repository/products"
+	"go.uber.org/zap"
 )
 
 var e = echo.New()
 
-func TestGetProductAvailability(t *testing.T) {
-	// repository layers
-	specs, _ := json.Marshal(dtos.InventorySpecsDetail{
-		Color:      "black",
-		RAM:        "16",
-		Ssd:        "512",
-		ColorImage: "",
-		Image:      []string{},
-	})
-	inventoryRepos := inventories.Mock{}
-	price, _ := decimal.NewFromString("10000")
-	inventoryRepos.On("FindDevice", context.Background(),
-		dtos.InventoryDeviceSpecs{
-			ProductID: "1",
-			Color:     "black",
-			RAM:       "16",
-			Ssd:       "512",
-		},
-	).Return(&entity.Inventories{
-		ProductID:    1,
+func TestGetInventory(t *testing.T) {
+	var (
+		specs = dtos.InventorySpecification{
+			RAM: "8GB",
+			SSD: "256GB",
+		}
+
+		inventory inventories.Mock
+		product   productRepo.Mock
+		service   = products.ProductService{
+			Inventory: &inventory,
+			Products:  &product,
+		}
+		controller = controller.Products{
+			Services: &service,
+		}
+	)
+
+	sspecs, _ := json.Marshal(specs)
+
+	inventory.On("GetByID", context.Background(), int64(1)).Return(&entity.Inventories{
 		ID:           "1",
+		ProductID:    1,
+		Available:    "1000",
+		Price:        decimal.NewFromInt(10000),
+		CurrencyCode: "VND",
 		Status:       "active",
-		Available:    "100",
-		Price:        price,
-		Specs:        string(specs),
-		CurrencyCode: "USD",
-	}, nil)
-	productRepos := productRepo.Mock{}
-	productRepos.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
-		Name: "iPhone 15 Pro Max",
+		Color:        "Black Titanium",
+		ColorImg:     "https://example.com/black-titanium.jpg",
+		Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
+		Specs:        string(sspecs),
 	}, nil)
 
-	// business logic layers
-	services := products.ProductService{
-		Inventory: &inventoryRepos,
-		Products:  &productRepos,
-	}
-	// presenter layers
-	controllers := controller.Products{
-		Services: &services,
-	}
+	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
+		Name: "iPhone 12",
+	}, nil)
 
-	e.GET("/inventories", controllers.GetProductAvailability)
-
-	req := httptest.NewRequest(http.MethodGet, "/inventories?pid=1&ram=16&ssd=512&color=black", nil)
+	e.GET("/inventories/details", controller.GetInventoryDetails)
+	req := httptest.NewRequest(http.MethodGet, "/inventories/details?id=1", nil)
 	rr := httptest.NewRecorder()
-
 	e.ServeHTTP(rr, req)
 
-	expected := "{\"id\":\"1\",\"product_name\":\"iPhone 15 Pro Max\",\"status\":\"active\",\"product_id\":\"1\",\"price\":\"10000\",\"available\":\"100\",\"currency_code\":\"USD\",\"specs\":{\"color\":\"black\",\"ram\":\"16\",\"ssd\":\"512\",\"color_image\":\"\",\"image\":[]}}\n"
-	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
+	responseBody := rr.Body.Bytes()
+	var body dtos.Inventory
+	if err := json.Unmarshal(responseBody, &body); err != nil {
+		t.Fail()
+	}
+
+	file, err := os.Create("./inventory_detail_out.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := file.Close(); err != nil {
+			t.Fatal(err)
+		}
+	}()
+	logger := logger.Write(file)
+	logger.Info("Response body", zap.Any("body", body), zap.Int("status", rr.Code))
+}
+
+func TestProductDetails(t *testing.T) {
+	var (
+		productSpecs = dtos.ProductSpecs{
+			Screen:  "6.1 inch",
+			Display: "Super Retina XDR display",
+			SSD:     []int{128, 256, 512},
+			RAM:     []int{4, 8},
+		}
+		inventorySpec = dtos.InventorySpecification{
+			RAM: "8GB",
+			SSD: "256GB",
+		}
+		inventory inventories.Mock
+		product   productRepo.Mock
+		service   = products.ProductService{
+			Inventory: &inventory,
+			Products:  &product,
+		}
+		controller = controller.Products{
+			Services: &service,
+		}
+	)
+
+	sProductSpecs, _ := json.Marshal(productSpecs)
+	sInventorySpec, _ := json.Marshal(inventorySpec)
+	inventory.On("GetByProductID", context.Background(), int64(1)).Return([]entity.Inventories{
+		{
+			ID:           "1",
+			ProductID:    1,
+			Available:    "1000",
+			Price:        decimal.NewFromInt(10000),
+			CurrencyCode: "VND",
+			Status:       "active",
+			Color:        "Black Titanium",
+			ColorImg:     "https://example.com/black-titanium.jpg",
+			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg,https://example.com/iphone-12-3.jpg",
+			Specs:        string(sInventorySpec),
+		},
+		{
+			ID:           "2",
+			ProductID:    1,
+			Available:    "1000",
+			Price:        decimal.NewFromInt(10000),
+			CurrencyCode: "VND",
+			Status:       "active",
+			Color:        "White Ceramic",
+			ColorImg:     "https://example.com/white-ceramic.jpg",
+			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
+			Specs:        string(sInventorySpec),
+		},
+		{
+			ID:           "3",
+			ProductID:    1,
+			Available:    "1000",
+			Price:        decimal.NewFromInt(10000),
+			CurrencyCode: "VND",
+			Status:       "active",
+			Color:        "Blue Titanium",
+			ColorImg:     "https://example.com/blue-titanium.jpg",
+			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
+			Specs:        string(sInventorySpec),
+		},
+		{
+			ID:           "4",
+			ProductID:    1,
+			Available:    "1000",
+			Price:        decimal.NewFromInt(10000),
+			CurrencyCode: "VND",
+			Status:       "active",
+			Color:        "Red Titanium",
+			ColorImg:     "https://example.com/red-titanium.jpg",
+			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
+			Specs:        string(sInventorySpec),
+		},
+	}, nil)
+	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
+		Name:   "iPhone 12",
+		Image:  "/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-1-202309.jpg,/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-2-202309.jpg,/img/shop/iphone-15-pro/iphone-15-pro-finish-select.jpg",
+		Price:  "17.000.000 - 18.000.000",
+		Spec:   string(sProductSpecs),
+		Status: "active",
+	}, nil)
+
+	e.GET("/products/details", controller.GetProductDetails)
+	req := httptest.NewRequest(http.MethodGet, "/products/details?id=1", nil)
+	rr := httptest.NewRecorder()
+	e.ServeHTTP(rr, req)
+
+	responseBody := rr.Body.Bytes()
+	var body dtos.ProductDetail
+	if err := json.Unmarshal(responseBody, &body); err != nil {
+		t.Fail()
+	}
+
+	file, err := os.Create("./products_detail_out.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer func() {
+		if err := file.Close(); err != nil {
+			t.Fatal(err)
+		}
+	}()
+	logger := logger.Write(file)
+	logger.Info("Response body", zap.Any("body", body), zap.Int("status", rr.Code))
 }

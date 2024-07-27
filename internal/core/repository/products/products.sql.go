@@ -9,7 +9,10 @@ const (
 
 	updateProductImage string = `
 		UPDATE products
-		SET image = image || ',' || $1
+		SET image = CASE
+						WHEN image IS NULL OR image = '' THEN $1
+						ELSE image || ',' || $1
+					END
 		WHERE id = $2;
 	`
 
@@ -33,13 +36,34 @@ const (
 	updateByID = `
 		UPDATE products
 		SET 
-			name = $1,
-			price = $2,
-			description = $3,
-			supplier_id = $4,
-			category_id = $5,
-			spec = $6,
-			satus = $7,
+			name = CASE
+						WHEN $1 <> '' THEN $1
+						ELSE name 
+					END,
+			price = CASE
+						WHEN $2 <> '' THEN $2
+						ELSE price
+					END,
+			description = CASE
+							WHEN $3 <> '' THEN $3
+							ELSE description
+						END,
+			supplier_id = CASE
+							WHEN $4 <> '' THEN $4
+							ELSE supplier_id
+						END,
+			category_id = CASE
+							WHEN $5 <> '' THEN $5
+							ELSE category_id
+						END,
+			spec = CASE
+						WHEN $6 <> '' THEN $6
+						ELSE spec
+					END,
+			satus = CASE
+						WHEN $7 <> '' THEN $7
+						ELSE status
+					END,
 			created = now() AT TIME ZONE 'utc',
 		WHERE id = $9;
 	`

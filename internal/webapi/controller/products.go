@@ -16,10 +16,11 @@ type IProducts interface {
 	GetProductLimit(c echo.Context) error
 	UploadProductImage(c echo.Context) error
 	CreateProduct(c echo.Context) error
-	GetProductAvailability(c echo.Context) error
 	DeleteProduct(c echo.Context) error
 	UpdateProductInfo(c echo.Context) error
+	GetProductDetails(c echo.Context) error
 
+	GetInventoryDetails(c echo.Context) error
 	AddToInventory(c echo.Context) error
 	DeleteInventory(c echo.Context) error
 	UploadInventoryImage(c echo.Context) error
@@ -37,6 +38,31 @@ func NewProducts(services products.IProductService) IProducts {
 // Products struct implementation of IProducts
 type Products struct {
 	Services products.IProductService
+}
+
+// GetProductDetails .
+// @Description get product details
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param id query number true "product id"
+// @Success 200 {object} dtos.ProductDetail
+// @Router /products/details [GET]
+func (p *Products) GetProductDetails(c echo.Context) error {
+	ID, err := strconv.Atoi(c.QueryParam("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'id' query parameter",
+		})
+	}
+
+	product, err := p.Services.ProductDetailOf(c.Request().Context(), int64(ID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, product)
 }
 
 // UpdateInventory .
@@ -194,37 +220,23 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 	})
 }
 
-// GetProductAvailability .
+// GetInventoryDetails .
 // @Description get product availability in inventories
 // @Tags inventories
 // @Accept json
 // @Produce json
-// @Param pid query number true "product id"
-// @Param ram query number true "ram"
-// @Param ssd query number true "ssd"
-// @Param color query string true "color"
+// @Param id query number true "inventory id"
 // @Success 200 {object} dtos.Inventory
 // @Router /inventories/details [GET]
-func (p *Products) GetProductAvailability(c echo.Context) error {
-	var (
-		pid   = c.QueryParam("pid")
-		ram   = c.QueryParam("ram")
-		ssd   = c.QueryParam("ssd")
-		color = c.QueryParam("color")
-	)
-	if pid == "" {
+func (p *Products) GetInventoryDetails(c echo.Context) error {
+	ID, err := strconv.Atoi(c.QueryParam("id"))
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "required 'limit' query params",
+			Msg: "Invalid 'id' query parameter",
 		})
 	}
 
-	product, err := p.Services.FindDeviceInInventory(c.Request().Context(),
-		dtos.InventoryDeviceSpecs{
-			ProductID: pid,
-			RAM:       ram,
-			Ssd:       ssd,
-			Color:     color,
-		})
+	product, err := p.Services.GetInventoryByID(c.Request().Context(), int64(ID))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -239,7 +251,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of products"
-// @Success 200 {object} dtos.Slices[dtos.ProductSchema]
+// @Success 200 {object} dtos.Slices[dtos.ProductResponse]
 // @Router /products [GET]
 func (p *Products) GetProductLimit(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
@@ -254,7 +266,7 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, dtos.Slices[dtos.ProductSchema]{
+	return c.JSON(http.StatusOK, dtos.Slices[dtos.ProductResponse]{
 		Body: prd,
 	})
 }
@@ -331,12 +343,12 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param product body dtos.Product true "Product Request"
+// @Param product body dtos.ProductRequest true "Product Request"
 // @Success 200 {object} dtos.CreateProduct
 // @Router /products [POST]
 func (p *Products) CreateProduct(c echo.Context) error {
 	// bind json to structure
-	var productReq dtos.Product
+	var productReq dtos.ProductRequest
 	if err := c.Bind(&productReq); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),

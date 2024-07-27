@@ -94,7 +94,7 @@ function run_command() {
     }
 
     test(){
-        white_list=("common" "posts" "products")
+        white_list=("common" "classify" "products")
         input_value="$TEST_MODULE"
 
         FOUND=0
