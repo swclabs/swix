@@ -137,7 +137,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "categories"
                 ],
                 "parameters": [
                     {
@@ -166,7 +166,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "categories"
                 ],
                 "parameters": [
                     {
@@ -199,7 +199,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -235,7 +235,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -268,7 +268,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -304,7 +304,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -337,7 +337,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "posts"
+                    "collections"
                 ],
                 "parameters": [
                     {
@@ -413,7 +413,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -449,7 +449,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -480,7 +480,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -511,7 +511,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -542,7 +542,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -584,7 +584,7 @@
                 }
             }
         },
-        "/inventory/image": {
+        "/inventories/image": {
             "put": {
                 "description": "update inventory image",
                 "consumes": [
@@ -594,7 +594,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "inventories"
                 ],
                 "parameters": [
                     {
@@ -973,7 +973,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "suppliers"
                 ],
                 "parameters": [
                     {
@@ -1002,7 +1002,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "products"
+                    "suppliers"
                 ],
                 "parameters": [
                     {

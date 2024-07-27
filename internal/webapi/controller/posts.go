@@ -35,7 +35,7 @@ func NewPosts(service posts.IPostsService) IPosts {
 
 // GetSlicesOfHeadlineBanner .
 // @Description get list of headline banner
-// @Tags posts
+// @Tags collections
 // @Accept json
 // @Produce json
 // @Param position query string true "position of collections"
@@ -64,7 +64,7 @@ func (p *Posts) GetSlicesOfHeadlineBanner(c echo.Context) error {
 
 // UploadHeadlineBanner .
 // @Description create headline banner into collections
-// @Tags posts
+// @Tags collections
 // @Accept json
 // @Produce json
 // @Param banner body dto.HeadlineBanner true "headline banner data request"
@@ -94,7 +94,7 @@ func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
 
 // UploadCollections .
 // @Description create collections
-// @Tags posts
+// @Tags collections
 // @Accept json
 // @Produce json
 // @Param collection body dto.Collection true "collections Request"
@@ -126,7 +126,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 
 // UpdateCollectionsImage .
 // @Description create collections
-// @Tags posts
+// @Tags collections
 // @Accept json
 // @Produce json
 // @Param img formData file true "image of collections"
@@ -160,7 +160,7 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 
 // GetSlicesOfCollections .
 // @Description create collections
-// @Tags posts
+// @Tags collections
 // @Accept json
 // @Produce json
 // @Param position query string true "position of collections"

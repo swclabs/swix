@@ -23,6 +23,16 @@ package types
 
 // IAdapter interface for adapter objects
 type IAdapter interface {
-	Run(addr string) error
-	StartWorker(concurrency int) error
+	// Run starts the server via the adapter
+	// prop is the address of the server if you are using the webapi adapter
+	// or the number of workers if you are using the worker adapter
+	//
+	// WebAPI Example:
+	//
+	//  adapter.Run("localhost:8080")
+	//
+	// Worker Example:
+	//
+	//  adapter.Run("10")
+	Run(prop string) error
 }

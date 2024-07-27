@@ -15,19 +15,22 @@ import (
 // IProducts interface for products controller
 type IProducts interface {
 	GetCategories(c echo.Context) error
-	GetProductLimit(c echo.Context) error
-	GetSupplier(c echo.Context) error
 	InsertCategory(c echo.Context) error
-	InsertSupplier(c echo.Context) error
+
+	GetProductLimit(c echo.Context) error
 	UploadProductImage(c echo.Context) error
 	CreateProduct(c echo.Context) error
 	GetProductAvailability(c echo.Context) error
-	AddToInventory(c echo.Context) error
 	DeleteProduct(c echo.Context) error
 	UpdateProductInfo(c echo.Context) error
-	GetStock(c echo.Context) error
+
+	GetSupplier(c echo.Context) error
+	InsertSupplier(c echo.Context) error
+
+	AddToInventory(c echo.Context) error
 	DeleteInventory(c echo.Context) error
 	UploadInventoryImage(c echo.Context) error
+	GetStock(c echo.Context) error
 	UpdateInventory(c echo.Context) error
 }
 
@@ -45,7 +48,7 @@ type Products struct {
 
 // UpdateInventory .
 // @Description update inventory
-// @Tags products
+// @Tags inventories
 // @Accept json
 // @Produce json
 // @Param inventory body dto.UpdateInventory true "Inventory Request"
@@ -75,12 +78,12 @@ func (p *Products) UpdateInventory(c echo.Context) error {
 
 // UploadInventoryImage .
 // @Description update inventory image
-// @Tags products
+// @Tags inventories
 // @Accept json
 // @Produce json
 // @Param image formData file true "stock image"
 // @Success 200 {object} dto.OK
-// @Router /inventory/image [PUT]
+// @Router /inventories/image [PUT]
 func (p *Products) UploadInventoryImage(c echo.Context) error {
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -108,7 +111,7 @@ func (p *Products) UploadInventoryImage(c echo.Context) error {
 
 // DeleteInventory .
 // @Description delete inventory by id
-// @Tags products
+// @Tags inventories
 // @Accept json
 // @Produce json
 // @Param id query int true "inventory id"
@@ -139,7 +142,7 @@ func (p *Products) DeleteInventory(c echo.Context) error {
 
 // GetStock .
 // @Description get all product from inventory
-// @Tags products
+// @Tags inventories
 // @Accept json
 // @Produce json
 // @Param page query number true "page"
@@ -200,7 +203,7 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 
 // GetProductAvailability .
 // @Description get product availability in inventories
-// @Tags products
+// @Tags inventories
 // @Accept json
 // @Produce json
 // @Param pid query number true "product id"
@@ -239,7 +242,7 @@ func (p *Products) GetProductAvailability(c echo.Context) error {
 
 // GetCategories .
 // @Description get categories
-// @Tags products
+// @Tags categories
 // @Accept json
 // @Produce json
 // @Param limit query number true "limit number"
@@ -324,7 +327,7 @@ func (p *Products) DeleteProduct(c echo.Context) error {
 
 // InsertCategory .
 // @Description insert new category
-// @Tags products
+// @Tags categories
 // @Accept json
 // @Produce json
 // @Param login body entity.Categories true "Categories Request"
@@ -425,7 +428,7 @@ func (p *Products) CreateProduct(c echo.Context) error {
 
 // GetSupplier .
 // @Description get suppliers information
-// @Tags products
+// @Tags suppliers
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of suppliers"
@@ -451,7 +454,7 @@ func (p *Products) GetSupplier(c echo.Context) error {
 
 // InsertSupplier .
 // @Description insert new suppliers information
-// @Tags products
+// @Tags suppliers
 // @Accept json
 // @Produce json
 // @Param Supplier body dto.Supplier true "Suppliers Request"
@@ -481,7 +484,7 @@ func (p *Products) InsertSupplier(c echo.Context) error {
 
 // AddToInventory .
 // @Description add product to inventories
-// @Tags products
+// @Tags inventories
 // @Accept json
 // @Produce json
 // @Param InventoryDetail body dto.InventoryDetail true "Inventories Request"
