@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/enum"
 )
 
 // IProductService : Module for Product interactions.
@@ -86,6 +87,21 @@ type IProductService interface {
 	// Returns an error if any issues occur during the update process.
 	UpdateInventory(ctx context.Context, inventory dtos.UpdateInventory) error
 
+	// ProductDetailOf retrieves the details of a product.
+	// ctx is the context to manage the request's lifecycle.
+	// productID is the ID of the product to retrieve details for.
+	// Returns a pointer to the ProductDetail object and an error if any issues occur during the retrieval
 	ProductDetailOf(ctx context.Context, productID int64) (*dtos.ProductDetail, error)
+
+	// GetInventoryByID retrieves an inventory by its ID.
+	// ctx is the context to manage the request's lifecycle.
+	// inventoryID is the ID of the inventory to retrieve.
+	// Returns a pointer to the Inventory object and an error if any issues occur during the retrieval process.
 	GetInventoryByID(ctx context.Context, inventoryID int64) (*dtos.Inventory, error)
+
+	// ViewDataOf retrieves the data of a product.
+	// ctx is the context to manage the request's lifecycle.
+	// types is the category of the product.
+	// Returns a slice of ProductView objects and an error if any issues occur during the retrieval process.
+	ViewDataOf(ctx context.Context, types enum.Category) ([]dtos.ProductView, error)
 }

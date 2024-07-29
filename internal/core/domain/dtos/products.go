@@ -95,3 +95,11 @@ type UpdateInventory struct {
 	Status       string                 `json:"status"`
 	Specs        InventorySpecification `json:"specs"`
 }
+
+type ProductView struct {
+	Title string      `json:"title"`
+	Price string      `json:"price"`
+	Decs  string      `json:"decs"`
+	Image string      `json:"image"`
+	Specs interface{} `json:"specs"`
+}
