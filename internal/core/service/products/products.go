@@ -9,6 +9,7 @@ import (
 	"strings"
 	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/enum"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/pkg/infra/blob"
@@ -38,6 +39,11 @@ type ProductService struct {
 	Blob      blob.IBlobStorage
 	Products  products.IProductRepository
 	Inventory inventories.IInventoryRepository
+}
+
+// ViewDataOf implements IProductService.
+func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category) ([]dtos.ProductView, error) {
+	panic("unimplemented")
 }
 
 // GetInventoryByID implements IProductService.

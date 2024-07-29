@@ -2,7 +2,6 @@
 package webapi
 
 import (
-	"fmt"
 	"swclabs/swipecore/internal/types"
 	"swclabs/swipecore/internal/webapi/router"
 )
@@ -31,9 +30,4 @@ func (manager *_ManagerAdapter) Run(addr string) error {
 
 func (manager *_ManagerAdapter) Routers() []string {
 	return manager.server.Routes()
-}
-
-// StartWorker implements types.IAdapter.
-func (manager *_ManagerAdapter) StartWorker(_ int) error {
-	return fmt.Errorf("services unavailable")
 }
