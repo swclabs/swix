@@ -97,9 +97,10 @@ type UpdateInventory struct {
 }
 
 type ProductView struct {
-	Title string      `json:"title"`
+	ID    int64       `json:"id"`
+	Name  string      `json:"name"`
 	Price string      `json:"price"`
-	Decs  string      `json:"decs"`
+	Desc  string      `json:"desc"`
 	Image string      `json:"image"`
 	Specs interface{} `json:"specs"`
 }

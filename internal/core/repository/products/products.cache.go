@@ -3,13 +3,10 @@ package products
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/enum"
+	"swclabs/swipecore/internal/core/domain/model"
 	"swclabs/swipecore/pkg/infra/cache"
 )
-
-type _cache struct {
-	cache    cache.ICache
-	products IProductRepository
-}
 
 var _ IProductRepository = (*_cache)(nil)
 
@@ -18,6 +15,16 @@ func useCache(cache cache.ICache, product IProductRepository) IProductRepository
 		products: product,
 		cache:    cache,
 	}
+}
+
+type _cache struct {
+	cache    cache.ICache
+	products IProductRepository
+}
+
+// GetByCategory implements IProductRepository.
+func (c *_cache) GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error) {
+	panic("unimplemented")
 }
 
 // Search implements IProductRepository.

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"swclabs/swipecore/internal/core/domain/dtos"
+	"swclabs/swipecore/internal/core/domain/enum"
 	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/pkg/lib/valid"
 
@@ -19,6 +20,7 @@ type IProducts interface {
 	DeleteProduct(c echo.Context) error
 	UpdateProductInfo(c echo.Context) error
 	GetProductDetails(c echo.Context) error
+	GetProductView(c echo.Context) error
 
 	GetInventoryDetails(c echo.Context) error
 	AddToInventory(c echo.Context) error
@@ -38,6 +40,30 @@ func NewProducts(services products.IProductService) IProducts {
 // Products struct implementation of IProducts
 type Products struct {
 	Services products.IProductService
+}
+
+// GetProductView .
+// @Description get product view
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param type query string true "type of product"
+// @Success 200 {object} dtos.ProductView
+// @Router /products/view [GET]
+func (p *Products) GetProductView(c echo.Context) error {
+	var types enum.Category
+	if err := types.Load(c.QueryParam("type")); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	product, err := p.Services.ViewDataOf(c.Request().Context(), types, 0)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, product)
 }
 
 // GetProductDetails .

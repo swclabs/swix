@@ -75,4 +75,17 @@ const (
 			description ILIKE '%$1%';
 	
 	`
+
+	selectByCategory = `
+		SELECT 
+			products.id,
+			image, price, products.description, spec,
+			products.name as name, 
+			categories.name as category_name
+		FROM 
+			products JOIN categories
+			ON products.category_id = categories.id
+		WHERE categories.name = $1;
+		OFFSET $2;
+	`
 )

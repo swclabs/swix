@@ -42,8 +42,27 @@ type ProductService struct {
 }
 
 // ViewDataOf implements IProductService.
-func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category) ([]dtos.ProductView, error) {
-	panic("unimplemented")
+func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductView, error) {
+	products, err := s.Products.GetByCategory(ctx, types, offset)
+	if err != nil {
+		return nil, err
+	}
+	var productView []dtos.ProductView
+	for _, p := range products {
+		var specs dtos.ProductSpecs
+		if err := json.Unmarshal([]byte(p.Spec), &specs); err != nil {
+			return nil, err
+		}
+		productView = append(productView, dtos.ProductView{
+			ID:    p.ID,
+			Price: p.Price,
+			Desc:  p.Description,
+			Name:  p.Name,
+			Image: p.Image,
+			Specs: specs,
+		})
+	}
+	return productView, nil
 }
 
 // GetInventoryByID implements IProductService.

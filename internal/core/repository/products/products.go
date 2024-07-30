@@ -4,15 +4,12 @@ package products
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/enum"
+	"swclabs/swipecore/internal/core/domain/model"
 	"swclabs/swipecore/pkg/infra/cache"
 	"swclabs/swipecore/pkg/infra/db"
 	"swclabs/swipecore/pkg/lib/errors"
 )
-
-// Products struct for product repository
-type Products struct {
-	db db.IDatabase
-}
 
 var _ IProductRepository = (*Products)(nil)
 
@@ -26,6 +23,24 @@ func New(conn db.IDatabase) IProductRepository {
 // Init initializes the Products object with database and redis connection
 func Init(conn db.IDatabase, cache cache.ICache) IProductRepository {
 	return useCache(cache, New(conn))
+}
+
+// Products struct for product repository
+type Products struct {
+	db db.IDatabase
+}
+
+// GetByCategory implements IProductRepository.
+func (product *Products) GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error) {
+	rows, err := product.db.Query(ctx, selectByCategory, types.String(), offset)
+	if err != nil {
+		return nil, err
+	}
+	products, err := db.CollectRows[model.ProductXCategory](rows)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
 }
 
 // Search implements IProductRepository.
