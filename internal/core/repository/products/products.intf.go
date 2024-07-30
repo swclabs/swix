@@ -3,6 +3,8 @@ package products
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/enum"
+	"swclabs/swipecore/internal/core/domain/model"
 )
 
 // IProductRepository defines methods to interact with product (Products) data.
@@ -49,4 +51,10 @@ type IProductRepository interface {
 	// keyword is the search keyword.
 	// Returns a slice of Products objects and an error if any issues occur during the retrieval process.
 	Search(ctx context.Context, keyword string) ([]entity.Products, error)
+
+	// GetByCategory retrieves a list of products based on a specified category.
+	// ctx is the context to manage the request's lifecycle.
+	// types is the category type.
+	// offset is the number of products to skip.
+	GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error)
 }

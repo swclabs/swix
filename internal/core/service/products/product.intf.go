@@ -103,5 +103,5 @@ type IProductService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// types is the category of the product.
 	// Returns a slice of ProductView objects and an error if any issues occur during the retrieval process.
-	ViewDataOf(ctx context.Context, types enum.Category) ([]dtos.ProductView, error)
+	ViewDataOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductView, error)
 }

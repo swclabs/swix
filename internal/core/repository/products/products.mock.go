@@ -4,20 +4,27 @@ package products
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swipecore/internal/core/domain/enum"
+	"swclabs/swipecore/internal/core/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
-
-// Mock is a mock for IProductRepository.
-type Mock struct {
-	mock.Mock
-}
 
 var _ IProductRepository = (*Mock)(nil)
 
 // NewProductsMock creates a new Mock.
 func NewProductsMock() *Mock {
 	return &Mock{}
+}
+
+// Mock is a mock for IProductRepository.
+type Mock struct {
+	mock.Mock
+}
+
+// GetByCategory implements IProductRepository.
+func (p *Mock) GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error) {
+	panic("unimplemented")
 }
 
 // Search implements IProductRepository.
