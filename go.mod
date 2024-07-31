@@ -4,7 +4,7 @@ go 1.22.5
 
 require (
 	github.com/a-h/templ v0.2.747
-	github.com/cloudinary/cloudinary-go/v2 v2.7.0
+	github.com/cloudinary/cloudinary-go/v2 v2.8.0
 	github.com/coreos/go-oidc/v3 v3.11.0
 	github.com/getsentry/sentry-go v0.28.1
 	github.com/go-playground/validator/v10 v10.22.0
@@ -37,7 +37,7 @@ require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
-	github.com/creasty/defaults v1.5.1 // indirect
+	github.com/creasty/defaults v1.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
@@ -52,7 +52,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/gorilla/context v1.1.2 // indirect
-	github.com/gorilla/schema v1.2.0 // indirect
+	github.com/gorilla/schema v1.4.1 // indirect
 	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
