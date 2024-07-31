@@ -85,7 +85,7 @@ const (
 		FROM 
 			products JOIN categories
 			ON products.category_id = categories.id
-		WHERE categories.name = $1;
+		WHERE categories.name = $1
 		OFFSET $2;
 	`
 )

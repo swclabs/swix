@@ -11,4 +11,10 @@ const (
 		FROM categories
 		LIMIT $1;
 	`
+
+	selectCategoryByID string = `
+		SELECT *
+		FROM categories
+		WHERE id = $1;
+	`
 )

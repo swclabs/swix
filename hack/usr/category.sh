@@ -9,6 +9,6 @@ curl --location "$BASE_URL/categories" \
 --header "Accept: application/json" \
 --data '{
   "description": "iPhone",
-  "name": "Phone"
+  "name": "phone"
 }'
 echo "categories ... ok"

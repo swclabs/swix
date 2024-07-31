@@ -15,11 +15,11 @@ curl --location "$BASE_URL/products" \
 --header "Content-Type: application/json" \
 --header "Accept: application/json" \
 --data '{
-  "category_id": "1",
-  "description": "iphone",
-  "name": "iphone 16",
+  "name": "iPhone 16",
+  "description": "iPhone 16",
   "price": "1666-111111",
   "status": "active",
+  "category_id": "1",
   "supplier_id": "1"
 }'
 check_result $?

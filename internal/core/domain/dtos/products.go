@@ -10,13 +10,13 @@ type ProductSpecs struct {
 
 // ProductRequest request, response
 type ProductRequest struct {
-	ProductSpecs
-	Price       string `json:"price" validate:"required"`
-	Description string `json:"description" validate:"required"`
-	Name        string `json:"name" validate:"required"`
-	SupplierID  string `json:"supplier_id" validate:"required"`
-	CategoryID  string `json:"category_id" validate:"required"`
-	Status      string `json:"status" validate:"required"`
+	Specs       interface{} `json:"specs"`
+	Price       string      `json:"price" validate:"required"`
+	Description string      `json:"description" validate:"required"`
+	Name        string      `json:"name" validate:"required"`
+	SupplierID  string      `json:"supplier_id" validate:"number,required"`
+	CategoryID  string      `json:"category_id" validate:"number,required"`
+	Status      string      `json:"status" validate:"required"`
 }
 
 // ProductResponse request, response

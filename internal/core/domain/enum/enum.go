@@ -29,6 +29,9 @@ const (
 	Accessories
 )
 
+// ElectronicDevice is an enumeration of the electronic devices.
+const ElectronicDevice = Phone | Laptop | Tablet | Computer
+
 const (
 	// PhoneAccessory is an accessory of the product.
 	PhoneAccessory Accessory = iota
@@ -49,12 +52,12 @@ const (
 // String returns the string representation of the Category.
 func (c Category) String() string {
 	return [...]string{
-		"iPhone",
-		"iPad",
-		"Macbook",
-		"AirPod",
-		"iMac",
-		"Accessories",
+		"phone",
+		"tablet",
+		"laptop",
+		"earphone",
+		"computer",
+		"accessories",
 	}[c]
 }
 
@@ -73,8 +76,10 @@ func (c Category) Load(types string) error {
 		c = Computer
 	case "accessories":
 		c = Accessories
+	default:
+		return fmt.Errorf("invalid category type")
 	}
-	return fmt.Errorf("invalid category type")
+	return nil
 }
 
 // String returns the string representation of the Accessory.

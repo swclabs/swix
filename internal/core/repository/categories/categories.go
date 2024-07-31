@@ -8,11 +8,6 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
-// Categories struct for category repository
-type Categories struct {
-	db db.IDatabase
-}
-
 // New creates a new Categories object
 func New(conn db.IDatabase) ICategoriesRepository {
 	return &Categories{db: conn}
@@ -21,6 +16,24 @@ func New(conn db.IDatabase) ICategoriesRepository {
 // Init initializes the Categories object with database and redis connection
 func Init(conn db.IDatabase, cache cache.ICache) ICategoriesRepository {
 	return useCache(cache, New(conn))
+}
+
+// Categories struct for category repository
+type Categories struct {
+	db db.IDatabase
+}
+
+// GetByID implements ICategoriesRepository.
+func (category *Categories) GetByID(ctx context.Context, ID int64) (*entity.Categories, error) {
+	raw, err := category.db.Query(ctx, selectCategoryByID, ID)
+	if err != nil {
+		return nil, err
+	}
+	result, err := db.CollectOneRow[entity.Categories](raw)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
 }
 
 // Insert implements ICategoriesRepository.

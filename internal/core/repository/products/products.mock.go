@@ -23,8 +23,9 @@ type Mock struct {
 }
 
 // GetByCategory implements IProductRepository.
-func (p *Mock) GetByCategory(_ context.Context, _ enum.Category, _ int) ([]model.ProductXCategory, error) {
-	panic("unimplemented")
+func (p *Mock) GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error) {
+	args := p.Called(ctx, types, offset)
+	return args.Get(0).([]model.ProductXCategory), args.Error(1)
 }
 
 // Search implements IProductRepository.

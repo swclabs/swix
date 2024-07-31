@@ -719,6 +719,30 @@ paths:
             $ref: '#/definitions/dtos.SignUpResponse'
       tags:
       - manager
+  /base/healthcheck:
+    get:
+      consumes:
+      - application/json
+      description: health check api server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - base
+  /base/worker:
+    get:
+      consumes:
+      - application/json
+      description: health check worker consume server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - base
   /categories:
     get:
       consumes:
@@ -874,30 +898,6 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - collections
-  /common/healthcheck:
-    get:
-      consumes:
-      - application/json
-      description: health check api server.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-      tags:
-      - common
-  /common/worker:
-    get:
-      consumes:
-      - application/json
-      description: health check worker consume server.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-      tags:
-      - common
   /inventories:
     delete:
       consumes:
@@ -1033,7 +1033,7 @@ paths:
         "200":
           description: OK
       tags:
-      - common
+      - base
   /products:
     delete:
       consumes:
@@ -1179,7 +1179,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.ProductView'
+            items:
+              $ref: '#/definitions/dtos.ProductView'
+            type: array
       tags:
       - products
   /purchase/carts:
