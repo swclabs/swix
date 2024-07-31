@@ -37,6 +37,7 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.DELETE("/products", r.controller.DeleteProduct)
 	e.GET("/products/details", r.controller.GetProductDetails)
 	e.POST("/products/img", r.controller.UploadProductImage)
+	e.GET("/products/view", r.controller.GetProductView)
 
 	// endpoint for inventories
 	e.PUT("/inventories/image", r.controller.UploadInventoryImage)

@@ -134,6 +134,44 @@ const docTemplate = `{
                 }
             }
         },
+        "/base/healthcheck": {
+            "get": {
+                "description": "health check api server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "base"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/base/worker": {
+            "get": {
+                "description": "health check worker consume server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "base"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/categories": {
             "get": {
                 "description": "get categories",
@@ -372,44 +410,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/common/healthcheck": {
-            "get": {
-                "description": "health check api server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "common"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/common/worker": {
-            "get": {
-                "description": "health check worker consume server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "common"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/inventories": {
             "get": {
                 "description": "get all product from inventory",
@@ -611,7 +611,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "common"
+                    "base"
                 ],
                 "responses": {
                     "200": {
@@ -842,7 +842,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.ProductView"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.ProductView"
+                            }
                         }
                     }
                 }

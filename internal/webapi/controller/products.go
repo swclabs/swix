@@ -48,7 +48,7 @@ type Products struct {
 // @Accept json
 // @Produce json
 // @Param type query string true "type of product"
-// @Success 200 {object} dtos.ProductView
+// @Success 200 {object} []dtos.ProductView
 // @Router /products/view [GET]
 func (p *Products) GetProductView(c echo.Context) error {
 	var types enum.Category

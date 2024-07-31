@@ -19,6 +19,11 @@ func NewCategoriesMock() *Mock {
 	return &Mock{}
 }
 
+// GetByID implements ICategoriesRepository.
+func (c *Mock) GetByID(ctx context.Context, ID int64) (*entity.Categories, error) {
+	panic("unimplemented")
+}
+
 // GetLimit implements ICategoriesRepository.
 func (c *Mock) GetLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
 	args := c.Called(ctx, limit)

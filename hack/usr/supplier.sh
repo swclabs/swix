@@ -9,7 +9,7 @@ curl --location "$BASE_URL/suppliers" \
 --header "Accept: application/json" \
 --data-raw '{
   "email": "exam@example2.com",
-  "name": "Apple2",
+  "name": "Apple",
   "city": "Ho Chi Minh City",
   "district": "D1",
   "street": "Ton Duc Thang",

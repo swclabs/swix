@@ -10,6 +10,7 @@ import (
 	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/domain/enum"
+	"swclabs/swipecore/internal/core/repository/categories"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	"swclabs/swipecore/internal/core/repository/products"
 	"swclabs/swipecore/pkg/infra/blob"
@@ -26,11 +27,13 @@ func New(
 	blob blob.IBlobStorage,
 	products products.IProductRepository,
 	inventory inventories.IInventoryRepository,
+	category categories.ICategoriesRepository,
 ) IProductService {
 	return &ProductService{
 		Blob:      blob,
 		Products:  products,
 		Inventory: inventory,
+		Category:  category,
 	}
 }
 
@@ -39,6 +42,7 @@ type ProductService struct {
 	Blob      blob.IBlobStorage
 	Products  products.IProductRepository
 	Inventory inventories.IInventoryRepository
+	Category  categories.ICategoriesRepository
 }
 
 // ViewDataOf implements IProductService.
@@ -47,20 +51,25 @@ func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category, of
 	if err != nil {
 		return nil, err
 	}
-	var productView []dtos.ProductView
+	var (
+		productView []dtos.ProductView
+	)
 	for _, p := range products {
-		var specs dtos.ProductSpecs
-		if err := json.Unmarshal([]byte(p.Spec), &specs); err != nil {
-			return nil, err
-		}
-		productView = append(productView, dtos.ProductView{
+		_view := dtos.ProductView{
 			ID:    p.ID,
 			Price: p.Price,
 			Desc:  p.Description,
 			Name:  p.Name,
 			Image: p.Image,
-			Specs: specs,
-		})
+		}
+		if p.Spec != "" && types&enum.ElectronicDevice != 0 {
+			var specs dtos.ProductSpecs
+			if err := json.Unmarshal([]byte(p.Spec), &specs); err != nil {
+				return nil, err
+			}
+			_view.Specs = specs
+		}
+		productView = append(productView, _view)
 	}
 	return productView, nil
 }
@@ -297,26 +306,39 @@ func (s *ProductService) Search(ctx context.Context, keyword string) ([]dtos.Pro
 
 // UpdateProductInfo implements IProductService.
 func (s *ProductService) UpdateProductInfo(ctx context.Context, product dtos.UpdateProductInfo) error {
-	spec, err := json.Marshal(product.ProductRequest.ProductSpecs)
+	ID, _ := strconv.Atoi(product.CategoryID)
+	_category, err := s.Category.GetByID(ctx, int64(ID))
 	if err != nil {
-		return errors.Service("update product info", err)
+		return fmt.Errorf("category not found %v", err)
 	}
-	return s.Products.Update(ctx,
-		entity.Products{
-			ID:          product.ID,
-			Name:        product.Name,
-			Price:       product.Price,
-			Description: product.Description,
-			SupplierID:  product.SupplierID,
-			CategoryID:  product.CategoryID,
-			Status:      product.Status,
-			Spec:        string(spec),
-		})
+	var types enum.Category
+	if err := types.Load(_category.Name); err != nil {
+		return fmt.Errorf("category invalid %v", err)
+	}
+	_product := entity.Products{
+		ID:          product.ID,
+		Name:        product.Name,
+		Price:       product.Price,
+		Description: product.Description,
+		SupplierID:  product.SupplierID,
+		CategoryID:  product.CategoryID,
+		Status:      product.Status,
+	}
+
+	if product.Specs != nil && types&enum.ElectronicDevice != 0 {
+		var specs, ok = product.Specs.(dtos.ProductSpecs)
+		if !ok {
+			return fmt.Errorf("invalid specifications")
+		}
+		specsByte, _ := json.Marshal(specs)
+		_product.Spec = string(specsByte)
+	}
+	return s.Products.Update(ctx, _product)
+
 }
 
 // UploadProductImage implements IProductService.
 func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
-
 	if fileHeader == nil {
 		return fmt.Errorf("missing image file")
 	}
@@ -341,14 +363,15 @@ func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHea
 
 // CreateProduct implements IProductService.
 func (s *ProductService) CreateProduct(ctx context.Context, products dtos.ProductRequest) (int64, error) {
-	specs, err := json.Marshal(dtos.ProductSpecs{
-		Screen:  products.Screen,
-		Display: products.Display,
-		SSD:     products.SSD,
-		RAM:     products.RAM,
-	})
+	ID, _ := strconv.Atoi(products.CategoryID)
+	_category, err := s.Category.GetByID(ctx, int64(ID))
 	if err != nil {
-		return -1, err
+		return -1, fmt.Errorf("category not found %v", err)
+	}
+
+	var types enum.Category
+	if err := types.Load(_category.Name); err != nil {
+		return -1, fmt.Errorf("category invalid %v", err)
 	}
 	var prd = entity.Products{
 		Price:       products.Price,
@@ -357,7 +380,15 @@ func (s *ProductService) CreateProduct(ctx context.Context, products dtos.Produc
 		SupplierID:  products.SupplierID,
 		CategoryID:  products.CategoryID,
 		Status:      products.Status,
-		Spec:        string(specs),
+		Spec:        "{}",
+	}
+	if products.Specs != nil && types&enum.ElectronicDevice != 0 {
+		var specs, ok = products.Specs.(dtos.ProductSpecs)
+		if !ok {
+			return -1, fmt.Errorf("invalid specifications")
+		}
+		specsByte, _ := json.Marshal(specs)
+		prd.Spec = string(specsByte)
 	}
 	return s.Products.Insert(ctx, prd)
 }

@@ -20,6 +20,11 @@ func useCache(cache cache.ICache, repo ICategoriesRepository) ICategoriesReposit
 	}
 }
 
+// GetByID implements ICategoriesRepository.
+func (c *_cache) GetByID(ctx context.Context, ID int64) (*entity.Categories, error) {
+	return c.category.GetByID(ctx, ID)
+}
+
 // GetLimit implements ICategoriesRepository.
 func (c *_cache) GetLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
 	return c.category.GetLimit(ctx, limit)

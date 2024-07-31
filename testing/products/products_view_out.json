@@ -1,0 +1,32 @@
+{
+    "level": "info",
+    "time": 1722436729.2489548,
+    "message": "Response body",
+    "body": [
+        {
+            "id": 1,
+            "name": "iPhone 12",
+            "price": "1.000.000 - 2.000.000",
+            "desc": "iPhone 12",
+            "image": "https://example.com/iphone-12.jpg",
+            "specs": null
+        },
+        {
+            "id": 2,
+            "name": "iPhone 12 Pro",
+            "price": "2.000.000 - 3.000.000",
+            "desc": "iPhone 12 Pro",
+            "image": "https://example.com/iphone-12-pro.jpg",
+            "specs": null
+        },
+        {
+            "id": 3,
+            "name": "iPhone 12 Mini",
+            "price": "1.000.000 - 2.000.000",
+            "desc": "iPhone 12 Mini",
+            "image": "https://example.com/iphone-12-mini.jpg",
+            "specs": null
+        }
+    ],
+    "status": 200
+}

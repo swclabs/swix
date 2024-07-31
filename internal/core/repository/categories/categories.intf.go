@@ -18,4 +18,10 @@ type ICategoriesRepository interface {
 	// limit is the maximum number of categories to retrieve.
 	// Returns a slice of Categories objects and an error if any issues occur during the retrieval process.
 	GetLimit(ctx context.Context, limit string) ([]entity.Categories, error)
+
+	// GetByID retrieves a category by its ID.
+	// ctx is the context to manage the request's lifecycle.
+	// ID is the ID of the category to retrieve.
+	// Returns a pointer to the Categories object and an error if any issues occur during the retrieval process.
+	GetByID(ctx context.Context, ID int64) (*entity.Categories, error)
 }
