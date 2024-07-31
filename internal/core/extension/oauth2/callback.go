@@ -76,7 +76,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
-	accessToken, err := crypto.GenerateToken(profile.Email)
+	accessToken, err := crypto.GenerateToken(profile.Email, "Customer")
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),

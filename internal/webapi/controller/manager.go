@@ -2,6 +2,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/service/manager"
@@ -18,6 +19,7 @@ type IManager interface {
 	SignUp(c echo.Context) error
 	Logout(c echo.Context) error
 	GetMe(c echo.Context) error
+	Auth(c echo.Context) error
 	UpdateUserImage(c echo.Context) error
 	CheckLoginEmail(c echo.Context) error
 	UpdateUserInfo(c echo.Context) error
@@ -33,6 +35,25 @@ func NewManager(services manager.IManager) IManager {
 	return &Manager{
 		Service: services,
 	}
+}
+
+// Auth implements IManager.
+func (account *Manager) Auth(c echo.Context) error {
+	var (
+		email    = c.FormValue("email")
+		password = c.FormValue("password")
+	)
+	accessToken, err := account.Service.Login(c.Request().Context(), dtos.LoginRequest{
+		Email:    email,
+		Password: password,
+	})
+	if err != nil {
+		return c.String(http.StatusBadRequest, fmt.Sprintf("error login: %v, %s, %s", err, email, password))
+	}
+	if err := utils.SaveSession(c, utils.BaseSessions, "access_token", accessToken); err != nil {
+		return c.String(http.StatusBadRequest, err.Error())
+	}
+	return c.Redirect(http.StatusSeeOther, "/docs/index.html")
 }
 
 // Login .
@@ -221,7 +242,7 @@ func (account *Manager) UpdateUserImage(c echo.Context) error {
 // @Produce json
 // @Param email query string true "email address"
 // @Success 200 {object} dtos.OK
-// @Router /auth [GET]
+// @Router /auth/email [GET]
 func (account *Manager) CheckLoginEmail(c echo.Context) error {
 	email := c.QueryParam("email")
 	if email == "" {

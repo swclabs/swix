@@ -117,7 +117,7 @@ func (manager *Manager) Login(
 	if err := crypto.ComparePassword(account.Password, req.Password); err != nil {
 		return "", errors.New("email or password incorrect")
 	}
-	return crypto.GenerateToken(req.Email)
+	return crypto.GenerateToken(req.Email, account.Role)
 }
 
 // UserInfo return user information from Database

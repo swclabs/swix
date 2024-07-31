@@ -17,8 +17,8 @@ var FxModule = fx.Options(
 		worker.New,
 	),
 	fx.Provide(
-		handler.NewCommonConsume,
-		router.NewCommon,
+		handler.NewBaseConsume,
+		router.NewBase,
 
 		handler.NewManagerConsume,
 		router.NewManager,

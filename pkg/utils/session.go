@@ -11,7 +11,7 @@ import (
 )
 
 // BaseSessions is the base session name
-const BaseSessions = "session"
+const BaseSessions = "swipe_session"
 
 var store *sessions.CookieStore
 var lock = &sync.Mutex{}

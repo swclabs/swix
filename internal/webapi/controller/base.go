@@ -5,50 +5,50 @@ import (
 	"net/http"
 	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/extension/oauth2"
-	"swclabs/swipecore/internal/core/service/common"
+	"swclabs/swipecore/internal/core/service/base"
 	"swclabs/swipecore/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 )
 
-// ICommon interface for common controller
-type ICommon interface {
+// IBase interface for base controller
+type IBase interface {
 	HealthCheck(c echo.Context) error
 	WorkerCheck(c echo.Context) error
 }
 
-// Common struct implementation of ICommon
-type Common struct {
-	service common.ICommonService
+// Base struct implementation of IBase
+type Base struct {
+	service base.IService
 }
 
-// NewCommon creates a new Common object
-func NewCommon(services common.ICommonService) ICommon {
-	return &Common{
+// New creates a new Base object
+func New(services base.IService) IBase {
+	return &Base{
 		service: services,
 	}
 }
 
 // HealthCheck .
 // @Description health check api server.
-// @Tags common
+// @Tags base
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /common/healthcheck [GET]
-func (cm *Common) HealthCheck(c echo.Context) error {
-	return c.JSON(200, cm.service.HealthCheck(c.Request().Context()))
+// @Router /base/healthcheck [GET]
+func (b *Base) HealthCheck(c echo.Context) error {
+	return c.JSON(200, b.service.HealthCheck(c.Request().Context()))
 }
 
 // WorkerCheck .
 // @Description health check worker consume server.
-// @Tags common
+// @Tags base
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /common/worker [GET]
-func (cm *Common) WorkerCheck(c echo.Context) error {
-	results, err := common.UseTask(cm.service).WorkerCheckResult(c.Request().Context(), 10)
+// @Router /base/worker [GET]
+func (b *Base) WorkerCheck(c echo.Context) error {
+	results, err := base.UseTask(b.service).WorkerCheckResult(c.Request().Context(), 10)
 	if err != nil {
 		return c.JSON(400, dtos.Error{
 			Msg: err.Error(),
@@ -61,7 +61,7 @@ func (cm *Common) WorkerCheck(c echo.Context) error {
 
 // Auth0Login .
 // @Description Auth0 Login form.
-// @Tags common
+// @Tags base
 // @Accept json
 // @Produce json
 // @Success 200
@@ -81,11 +81,4 @@ func Auth0Login(c echo.Context) error {
 func Auth0Callback(c echo.Context) error {
 	auth := oauth2.New()
 	return auth.OAuth2CallBack(c)
-}
-
-// Foo .
-func Foo(_ echo.Context) error {
-	// sentrygin handler will catch it just fine. Also, because we attached "someRandomTag"
-	// in the middleware before, it will be sent through as well
-	panic("y tho")
 }

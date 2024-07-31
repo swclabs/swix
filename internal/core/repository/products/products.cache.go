@@ -24,7 +24,7 @@ type _cache struct {
 
 // GetByCategory implements IProductRepository.
 func (c *_cache) GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error) {
-	panic("unimplemented")
+	return c.products.GetByCategory(ctx, types, offset)
 }
 
 // Search implements IProductRepository.

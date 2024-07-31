@@ -1,4 +1,4 @@
-package common
+package base
 
 import (
 	"context"
@@ -8,30 +8,30 @@ import (
 	"swclabs/swipecore/pkg/lib/worker"
 )
 
-var _ ICommonService = (*Task)(nil)
+var _ IService = (*Task)(nil)
 
-// Task struct for common service
+// Task struct for base service
 type Task struct {
 	worker  worker.IWorkerClient
-	service ICommonService
+	service IService
 }
 
 // UseTask creates a new Task object wrapping the provided service
-func UseTask(service ICommonService) ICommonService {
+func UseTask(service IService) IService {
 	return &Task{
 		worker:  worker.NewClient(config.RedisHost, config.RedisPort, config.RedisPassword),
 		service: service,
 	}
 }
 
-// HealthCheck implements ICommonService.
+// HealthCheck implements IbaseService.
 func (t *Task) HealthCheck(_ context.Context) dtos.HealthCheck {
 	return dtos.HealthCheck{
 		Status: "Ok",
 	}
 }
 
-// WorkerCheck implements ICommonService.
+// WorkerCheck implements IbaseService.
 func (t *Task) WorkerCheck(_ context.Context, _ int64) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.WorkerCheck),
@@ -39,7 +39,7 @@ func (t *Task) WorkerCheck(_ context.Context, _ int64) error {
 	))
 }
 
-// WorkerCheckResult implements ICommonService.
+// WorkerCheckResult implements IbaseService.
 func (t *Task) WorkerCheckResult(ctx context.Context, num int64) (string, error) {
 	result, err := t.worker.ExecGetResult(ctx, queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.WorkerCheckResult),

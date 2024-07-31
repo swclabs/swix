@@ -25,13 +25,13 @@ func NewServer() IServer {
 //
 //	func main() {
 //		var (
-//			commonService    = common.New()
-//			commonController = controller.NewCommon(commonService)
-//			commonRouter     = router.NewCommon(commonController)
+// 			baseService    = base.New()
+// 			baseController = controller.New(baseService)
+// 			baseRouter     = router.New(baseController)
+//			httpServer = webapi.NewServer(baseRouter)
+//			adapt      = webapi.NewBaseAdapter(httpServer)
+//			server     = boot.NewServer()
 //
-//			httpServer = webapipi.NewServer(router.NewDocs(),commonRouter)
-//			adapt  = webapipi.NewBaseAdapter(httpServer)
-//			server = boot.NewServer()
 //		)
 //
 //		log.Fatal(server.Connect(adapt))

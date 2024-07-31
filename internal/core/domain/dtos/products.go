@@ -96,6 +96,7 @@ type UpdateInventory struct {
 	Specs        InventorySpecification `json:"specs"`
 }
 
+// ProductView request, response
 type ProductView struct {
 	ID    int64       `json:"id"`
 	Name  string      `json:"name"`

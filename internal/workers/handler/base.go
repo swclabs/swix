@@ -5,37 +5,37 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"swclabs/swipecore/internal/core/service/common"
+	"swclabs/swipecore/internal/core/service/base"
 
 	"swclabs/swipecore/pkg/lib/worker"
 
 	"github.com/hibiken/asynq"
 )
 
-// Common struct define the Common object
-type Common struct {
-	common.Task                       // embedded delay function here
-	handler     common.ICommonService // create handler for services
+// Base struct define the base object
+type Base struct {
+	base.Task               // embedded delay function here
+	handler   base.IService // create handler for services
 }
 
-// NewCommonConsume creates a new Common object
-func NewCommonConsume(_common common.ICommonService) *Common {
-	return &Common{
-		handler: _common,
+// NewBaseConsume creates a new base object
+func NewBaseConsume(_base base.IService) *Base {
+	return &Base{
+		handler: _base,
 	}
 }
 
 // HandleHealthCheck handle health check
-func (common *Common) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
+func (base *Base) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
 	// get task name from delay function
-	taskName = worker.GetTaskName(common.WorkerCheckResult)
+	taskName = worker.GetTaskName(base.WorkerCheckResult)
 	// implement handler function base on delay function
 	return taskName, func(_ context.Context, task *asynq.Task) error {
 		var num int64
 		if err := json.Unmarshal(task.Payload(), &num); err != nil {
 			return err
 		}
-		result, err := common.handler.WorkerCheckResult(context.Background(), num)
+		result, err := base.handler.WorkerCheckResult(context.Background(), num)
 		if err != nil {
 			return err
 		}

@@ -14,7 +14,7 @@ type Writer struct {
 // NewWriter creates a new Writer object
 func NewWriter(
 	engine *worker.Engine,
-	common *router.Common,
+	base *router.Base,
 	manager *router.Manager,
 ) *Writer {
 
@@ -22,7 +22,7 @@ func NewWriter(
 		engine: engine,
 	}
 
-	common.Register(writer.engine)
+	base.Register(writer.engine)
 	manager.Register(writer.engine)
 
 	return writer
