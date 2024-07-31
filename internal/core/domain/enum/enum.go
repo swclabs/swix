@@ -58,6 +58,7 @@ func (c Category) String() string {
 	}[c]
 }
 
+// Load loads the category type.
 func (c Category) Load(types string) error {
 	switch types {
 	case "phone":

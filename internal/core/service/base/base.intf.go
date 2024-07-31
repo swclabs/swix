@@ -1,13 +1,13 @@
-package common
+package base
 
 import (
 	"context"
 	"swclabs/swipecore/internal/core/domain/dtos"
 )
 
-// ICommonService : Common utility methods for the service.
+// IService : base utility methods for the service.
 // Actor: System
-type ICommonService interface {
+type IService interface {
 	// HealthCheck performs a health check on the service.
 	// ctx is the context to manage the request's lifecycle.
 	// Returns a HealthCheck object with the health check status.

@@ -15,7 +15,7 @@ package main
 import (
 	"log"
 	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/core/service/common"
+	"swclabs/swipecore/internal/core/service/base"
 	"swclabs/swipecore/internal/webapi"
 	"swclabs/swipecore/internal/webapi/controller"
 	"swclabs/swipecore/internal/webapi/router"
@@ -28,11 +28,11 @@ import (
 // @basePath /
 func main() {
 	var (
-		commonService    = common.New()
-		commonController = controller.NewCommon(commonService)
-		commonRouter     = router.NewCommon(commonController)
+		baseService    = base.New()
+		baseController = controller.New(baseService)
+		baseRouter     = router.New(baseController)
 
-		httpServer = webapi.NewServer(router.NewDocs(), commonRouter)
+		httpServer = webapi.NewServer(baseRouter)
 		adapt      = webapi.NewBaseAdapter(httpServer)
 		server     = boot.NewServer()
 	)

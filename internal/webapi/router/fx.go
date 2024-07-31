@@ -8,8 +8,7 @@ import (
 // FxModule module of package router
 var FxModule = fx.Options(
 	fx.Provide(
-		NewDocs,
-		NewCommon,
+		New,
 		NewProducts,
 		NewPosts,
 		NewPurchase,

@@ -406,6 +406,20 @@ definitions:
       status:
         type: string
     type: object
+  dtos.ProductView:
+    properties:
+      desc:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      specs: {}
+    type: object
   dtos.SignUpRequest:
     properties:
       email:
@@ -629,7 +643,7 @@ info:
   title: Swipe Public API v0.0.1
   version: 0.0.1
 paths:
-  /auth:
+  /auth/email:
     get:
       consumes:
       - application/json
@@ -1146,6 +1160,26 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/dtos.Error'
+      tags:
+      - products
+  /products/view:
+    get:
+      consumes:
+      - application/json
+      description: get product view
+      parameters:
+      - description: type of product
+        in: query
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.ProductView'
       tags:
       - products
   /purchase/carts:

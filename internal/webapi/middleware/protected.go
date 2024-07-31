@@ -46,14 +46,18 @@ func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
 					"success": false,
 				})
 			}
-			// session.Set("email", email)
-			// if err := session.Save(); err != nil {
-			// 	return c.String(http.StatusInternalServerError, err.Error())
-			// }
 			if err := utils.SaveSession(c, utils.BaseSessions, "email", email); err != nil {
 				return c.JSON(http.StatusInternalServerError, dtos.Error{
 					Msg: err.Error(),
 				})
+			}
+			role, _ := crypto.ParseTokenRole(AccessToken.(string))
+			if role != "" {
+				if err := utils.SaveSession(c, utils.BaseSessions, "role", role); err != nil {
+					return c.JSON(http.StatusInternalServerError, dtos.Error{
+						Msg: err.Error(),
+					})
+				}
 			}
 			return next(c)
 		}
@@ -61,5 +65,32 @@ func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
 			"msg":     "unauthorized",
 			"success": false,
 		})
+	}
+}
+
+// RequireAdmin middleware for admin routes
+func RequireAdmin(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// session := sessions.Default(c)
+		AccessToken := utils.Session(c, utils.BaseSessions, "access_token")
+		if AccessToken != nil {
+			email, err := crypto.ParseToken(AccessToken.(string))
+			if err != nil {
+				return c.Redirect(http.StatusSeeOther, "/")
+			}
+			if err := utils.SaveSession(c, utils.BaseSessions, "email", email); err != nil {
+				return c.Redirect(http.StatusSeeOther, "/")
+			}
+			role, _ := crypto.ParseTokenRole(AccessToken.(string))
+			if role != "" {
+				if err := utils.SaveSession(c, utils.BaseSessions, "role", role); err != nil {
+					return c.Redirect(http.StatusSeeOther, "/")
+				}
+			} else {
+				return c.Redirect(http.StatusSeeOther, "/")
+			}
+			return next(c)
+		}
+		return c.Redirect(http.StatusSeeOther, "/")
 	}
 }

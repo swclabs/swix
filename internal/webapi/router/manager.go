@@ -37,7 +37,8 @@ func (account *Manager) Routers(e *echo.Echo) {
 
 	// endpoint for authentication
 	auth := e.Group("/auth")
-	auth.GET("", account.controller.CheckLoginEmail)
+	auth.POST("", account.controller.Auth)
+	auth.GET("/email", account.controller.CheckLoginEmail)
 	auth.POST("/signup", account.controller.SignUp)
 	auth.POST("/login", account.controller.Login)
 	auth.GET("/logout", account.controller.Logout)

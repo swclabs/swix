@@ -20,14 +20,13 @@ type _Server struct {
 var _ IServer = &_Server{}
 
 // NewServer creates a new instance of the Server
-func NewServer(docs router.IDocs, common router.ICommon) IServer {
+func NewServer(base router.IBase) IServer {
 	sentry.Init()
 	server := &_Server{
 		engine: echo.New(),
 	}
 	server.initMiddleware()
-	server.Connect(docs)
-	server.Connect(common)
+	server.Connect(base)
 	return server
 }
 

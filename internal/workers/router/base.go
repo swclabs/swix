@@ -6,19 +6,19 @@ import (
 	"swclabs/swipecore/pkg/lib/worker"
 )
 
-// Common struct define the Common object
-type Common struct {
-	handlers *handler.Common
+// Base struct define the Base object
+type Base struct {
+	handlers *handler.Base
 }
 
-// NewCommon creates a new Common object
-func NewCommon(handler *handler.Common) *Common {
-	return &Common{
+// NewBase creates a new Base object
+func NewBase(handler *handler.Base) *Base {
+	return &Base{
 		handlers: handler,
 	}
 }
 
 // Register register the queue
-func (c *Common) Register(eng *worker.Engine) {
+func (c *Base) Register(eng *worker.Engine) {
 	eng.RegisterQueue(c.handlers.HandleHealthCheck)
 }

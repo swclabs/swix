@@ -2,8 +2,8 @@
 package service
 
 import (
+	"swclabs/swipecore/internal/core/service/base"
 	"swclabs/swipecore/internal/core/service/classify"
-	"swclabs/swipecore/internal/core/service/common"
 	"swclabs/swipecore/internal/core/service/manager"
 	"swclabs/swipecore/internal/core/service/posts"
 	"swclabs/swipecore/internal/core/service/products"
@@ -15,7 +15,7 @@ import (
 // FxModule module of package service
 var FxModule = fx.Options(
 	fx.Provide(
-		common.New,
+		base.New,
 		products.New,
 		manager.New,
 		posts.New,

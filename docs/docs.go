@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth": {
+        "/auth/email": {
             "get": {
                 "description": "check email address before login",
                 "consumes": [
@@ -812,6 +812,37 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/dtos.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/view": {
+            "get": {
+                "description": "get product view",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "type of product",
+                        "name": "type",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProductView"
                         }
                     }
                 }
@@ -1731,6 +1762,27 @@ const docTemplate = `{
                 "status": {
                     "type": "string"
                 }
+            }
+        },
+        "dtos.ProductView": {
+            "type": "object",
+            "properties": {
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "specs": {}
             }
         },
         "dtos.SignUpRequest": {
