@@ -39,6 +39,7 @@ func New(lc fx.Lifecycle) ICache {
 type ICache interface {
 	Set(ctx context.Context, key, val string) error
 	Get(ctx context.Context, key string) (string, error)
+	Del(ctx context.Context, key string) error
 }
 
 var _ ICache = (*Cache)(nil)
@@ -46,6 +47,11 @@ var _ ICache = (*Cache)(nil)
 // Cache struct for cache
 type Cache struct {
 	conn *redis.Client
+}
+
+// Del implements ICache.
+func (c *Cache) Del(ctx context.Context, key string) error {
+	return c.conn.Del(ctx, key).Err()
 }
 
 // Get implements ICache.

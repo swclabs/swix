@@ -39,3 +39,8 @@ func Set[T any](ctx context.Context, cache ICache, key string, val T) error {
 	}
 	return cache.Set(ctx, key, string(raw))
 }
+
+// Delete removes a value from the cache.
+func Delete(ctx context.Context, cache ICache, key string) error {
+	return cache.Del(ctx, key)
+}

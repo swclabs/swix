@@ -37,7 +37,3 @@ func NewAdapter(
 func (adapter *_Adapter) Run(addr string) error {
 	return adapter.server.Run(addr)
 }
-
-func (adapter *_Adapter) Routers() []string {
-	return adapter.server.Routes()
-}

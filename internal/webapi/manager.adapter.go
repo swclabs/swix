@@ -27,7 +27,3 @@ func NewManagerAdapter(
 func (manager *_ManagerAdapter) Run(addr string) error {
 	return manager.server.Run(addr)
 }
-
-func (manager *_ManagerAdapter) Routers() []string {
-	return manager.server.Routes()
-}

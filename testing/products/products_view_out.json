@@ -1,6 +1,6 @@
 {
     "level": "info",
-    "time": 1722436729.2489548,
+    "time": 1722501498.2123563,
     "message": "Response body",
     "body": [
         {
@@ -9,7 +9,19 @@
             "price": "1.000.000 - 2.000.000",
             "desc": "iPhone 12",
             "image": "https://example.com/iphone-12.jpg",
-            "specs": null
+            "specs": {
+                "RAM": [
+                    4,
+                    8
+                ],
+                "SSD": [
+                    128,
+                    256,
+                    512
+                ],
+                "display": "Super Retina XDR display",
+                "screen": "6.1 inch"
+            }
         },
         {
             "id": 2,
@@ -17,7 +29,19 @@
             "price": "2.000.000 - 3.000.000",
             "desc": "iPhone 12 Pro",
             "image": "https://example.com/iphone-12-pro.jpg",
-            "specs": null
+            "specs": {
+                "RAM": [
+                    4,
+                    8
+                ],
+                "SSD": [
+                    128,
+                    256,
+                    512
+                ],
+                "display": "Super Retina XDR display",
+                "screen": "6.7 inch"
+            }
         },
         {
             "id": 3,
@@ -25,7 +49,19 @@
             "price": "1.000.000 - 2.000.000",
             "desc": "iPhone 12 Mini",
             "image": "https://example.com/iphone-12-mini.jpg",
-            "specs": null
+            "specs": {
+                "RAM": [
+                    4,
+                    8
+                ],
+                "SSD": [
+                    128,
+                    256,
+                    512
+                ],
+                "display": "Super Retina XDR display",
+                "screen": "5.4 inch"
+            }
         }
     ],
     "status": 200
