@@ -28,7 +28,3 @@ func NewProductsAdapter(
 func (product *_ProductsAdapter) Run(addr string) error {
 	return product.server.Run(addr)
 }
-
-func (product *_ProductsAdapter) Routers() []string {
-	return product.server.Routes()
-}

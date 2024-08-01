@@ -24,10 +24,10 @@ package types
 // IAdapter interface for adapter objects
 type IAdapter interface {
 	// Run starts the server via the adapter
-	// prop is the address of the server if you are using the webapi adapter
+	// prop is the address of the server if you are using the webapi or gRPC adapter
 	// or the number of workers if you are using the worker adapter
 	//
-	// WebAPI Example:
+	// WebAPI or gRPC Example:
 	//
 	//  adapter.Run("localhost:8080")
 	//

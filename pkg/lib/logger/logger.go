@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"log"
@@ -8,6 +9,9 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 var (
@@ -87,4 +91,37 @@ func Write(file io.Writer) *zap.Logger {
 	writer := zapcore.AddSync(file)
 	core := zapcore.NewCore(encoder, writer, zap.InfoLevel)
 	return zap.New(core)
+}
+
+// GRPCLogger is middleware for grpc server
+func GRPCLogger(
+	ctx context.Context,
+	req interface{},
+	info *grpc.UnaryServerInfo,
+	handler grpc.UnaryHandler,
+) (interface{}, error) {
+	logger, err := zap.NewProduction()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := logger.Sync(); err != nil {
+			return // ignore error
+		}
+	}()
+	statusCode := codes.Unknown
+	result, errHandle := handler(ctx, req)
+	if st, ok := status.FromError(errHandle); ok {
+		statusCode = st.Code()
+	}
+	logger.Info(
+		fmt.Sprintf("CALL %s", info.FullMethod),
+		zap.String("status_code", statusCode.String()),
+	)
+	return result, errHandle
+}
+
+// GRPCServerINFO logs grpc server info
+func GRPCServerINFO(serverName, address string) {
+	Info(fmt.Sprintf("[%s] server listening on: %s", Cyan.Add(serverName), Magenta.Add(address)))
 }

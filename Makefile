@@ -25,8 +25,8 @@ lint: $(GOLANGCI) # Runs golangci-lint with predefined configuration
 fmt:
 	@find . -type f -name '*.go' -exec goimports -w {} \;
 
-GENERATED_DIR=internal/core/proto
-PROTO_DIR=internal/core/proto
+GENERATED_DIR=internal/mod/proto
+PROTO_DIR=internal/mod/proto
 proto: $(GENERATED_DIR) $(PROTO_DIR)
 	@protoc --proto_path=./ \
 			--go_out=$(GENERATED_DIR) \

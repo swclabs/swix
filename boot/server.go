@@ -21,13 +21,20 @@ func NewServer() IServer {
 	}
 }
 
+// NewServerWithAddress creates a new server instance with address
+func NewServerWithAddress(address string) IServer {
+	return &_Server{
+		address: address,
+	}
+}
+
 // Connect to module via adapter
 //
 //	func main() {
 //		var (
-// 			baseService    = base.New()
-// 			baseController = controller.New(baseService)
-// 			baseRouter     = router.New(baseController)
+//			baseService    = base.New()
+//			baseController = controller.New(baseService)
+//			baseRouter     = router.New(baseController)
 //			httpServer = webapi.NewServer(baseRouter)
 //			adapt      = webapi.NewBaseAdapter(httpServer)
 //			server     = boot.NewServer()

@@ -1,7 +1,9 @@
 // Package enum contains the enumerations used in the application.
 package enum
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // Category is an enumeration of the product categories.
 type Category int
@@ -11,7 +13,7 @@ type Accessory int
 
 const (
 	// Phone is a category of the product.
-	Phone Category = iota
+	Phone Category = 1 << iota
 
 	// Tablet is a category of the product.
 	Tablet
@@ -51,31 +53,38 @@ const (
 
 // String returns the string representation of the Category.
 func (c Category) String() string {
-	return [...]string{
-		"phone",
-		"tablet",
-		"laptop",
-		"earphone",
-		"computer",
-		"accessories",
-	}[c]
+	switch {
+	case c&Phone != 0:
+		return "phone"
+	case c&Tablet != 0:
+		return "tablet"
+	case c&Laptop != 0:
+		return "laptop"
+	case c&Earphone != 0:
+		return "earphone"
+	case c&Computer != 0:
+		return "computer"
+	case c&Accessories != 0:
+		return "accessories"
+	}
+	return "unknown_category"
 }
 
 // Load loads the category type.
-func (c Category) Load(types string) error {
+func (c *Category) Load(types string) error {
 	switch types {
 	case "phone":
-		c = Phone
+		*c = Phone
 	case "tablet":
-		c = Tablet
+		*c = Tablet
 	case "laptop":
-		c = Laptop
+		*c = Laptop
 	case "earphone":
-		c = Earphone
+		*c = Earphone
 	case "computer":
-		c = Computer
+		*c = Computer
 	case "accessories":
-		c = Accessories
+		*c = Accessories
 	default:
 		return fmt.Errorf("invalid category type")
 	}

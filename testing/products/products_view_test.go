@@ -122,7 +122,7 @@ func TestProductViewAccessory(t *testing.T) {
 		}
 	)
 
-	product.On("GetByCategory", context.Background(), enum.Phone, 0).Return(
+	product.On("GetByCategory", context.Background(), enum.Accessories, 0).Return(
 		[]model.ProductXCategory{
 			{
 				ID:           1,

@@ -25,22 +25,38 @@ type _Cache struct {
 
 // Update implements IInventoryRepository.
 func (c *_Cache) Update(ctx context.Context, inventory entity.Inventories) error {
-	return c.inventory.Update(ctx, inventory)
+	if err := c.inventory.Update(ctx, inventory); err != nil {
+		return err
+	}
+	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%s", inventory.ID))
+	return cache.Set(ctx, c.cache, key, inventory)
 }
 
 // UploadImage implements IInventoryRepository.
 func (c *_Cache) UploadImage(ctx context.Context, ID int, url string) error {
-	return c.inventory.UploadImage(ctx, ID, url)
+	if err := c.inventory.UploadImage(ctx, ID, url); err != nil {
+		return err
+	}
+	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%d", ID))
+	return cache.Delete(ctx, c.cache, key)
 }
 
 // DeleteByID implements IInventoryRepository.
 func (c *_Cache) DeleteByID(ctx context.Context, inventoryID int64) error {
-	return c.inventory.DeleteByID(ctx, inventoryID)
+	if err := c.inventory.DeleteByID(ctx, inventoryID); err != nil {
+		return err
+	}
+	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%d", inventoryID))
+	return cache.Delete(ctx, c.cache, key)
 }
 
 // InsertProduct implements IInventoryRepository.
 func (c *_Cache) InsertProduct(ctx context.Context, product entity.Inventories) error {
-	return c.inventory.InsertProduct(ctx, product)
+	if err := c.inventory.InsertProduct(ctx, product); err != nil {
+		return err
+	}
+	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:InsertProduct:%d", product.ProductID))
+	return cache.Set(ctx, c.cache, key, product)
 }
 
 // GetLimit implements IInventoryRepository.
