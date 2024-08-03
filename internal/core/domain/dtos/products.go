@@ -10,13 +10,23 @@ type ProductSpecs struct {
 
 // ProductRequest request, response
 type ProductRequest struct {
+	Specs       ProductSpecs `json:"specs"`
+	Price       string       `json:"price" validate:"required"`
+	Description string       `json:"description" validate:"required"`
+	Name        string       `json:"name" validate:"required"`
+	SupplierID  string       `json:"supplier_id" validate:"number,required"`
+	CategoryID  string       `json:"category_id" validate:"number,required"`
+	Status      string       `json:"status"`
+}
+
+type Product struct {
 	Specs       interface{} `json:"specs"`
 	Price       string      `json:"price" validate:"required"`
 	Description string      `json:"description" validate:"required"`
 	Name        string      `json:"name" validate:"required"`
 	SupplierID  string      `json:"supplier_id" validate:"number,required"`
 	CategoryID  string      `json:"category_id" validate:"number,required"`
-	Status      string      `json:"status" validate:"required"`
+	Status      string      `json:"status"`
 }
 
 // ProductResponse request, response
@@ -33,7 +43,7 @@ type ProductResponse struct {
 
 // UpdateProductInfo request, response
 type UpdateProductInfo struct {
-	ProductRequest
+	Product
 	ID int64 `json:"id" validate:"required"`
 }
 
@@ -51,6 +61,21 @@ type InventorySpecification struct {
 
 // InventoryDetail request, response
 type InventoryDetail struct {
+	ProductID    string                 `json:"product_id" validate:"number,required"`
+	Price        string                 `json:"price" validate:"number,required"`
+	Available    string                 `json:"available" validate:"number,required"`
+	CurrencyCode string                 `json:"currency_code" validate:"required"`
+	ColorImg     string                 `json:"color_img"`
+	Color        string                 `json:"color"`
+	Status       string                 `json:"status"`
+	Image        []string               `json:"image"`
+	Specs        InventorySpecification `json:"specs"`
+}
+
+// Inventory response, request
+type Inventory struct {
+	ID           string      `json:"id"`
+	ProductName  string      `json:"product_name"`
 	ProductID    string      `json:"product_id" validate:"number,required"`
 	Price        string      `json:"price" validate:"number,required"`
 	Available    string      `json:"available" validate:"number,required"`
@@ -60,13 +85,6 @@ type InventoryDetail struct {
 	Status       string      `json:"status"`
 	Image        []string    `json:"image"`
 	Specs        interface{} `json:"specs"`
-}
-
-// Inventory response, request
-type Inventory struct {
-	ID          string `json:"id"`
-	ProductName string `json:"product_name"`
-	InventoryDetail
 }
 
 // StockHeader response, request

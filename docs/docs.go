@@ -236,7 +236,7 @@ const docTemplate = `{
         },
         "/collections": {
             "get": {
-                "description": "create collections",
+                "description": "get collections",
                 "consumes": [
                     "application/json"
                 ],
@@ -256,7 +256,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "number",
-                        "description": "limit of cards banner slices",
+                        "description": "limit of cards carousel",
                         "name": "limit",
                         "in": "query",
                         "required": true
@@ -374,7 +374,7 @@ const docTemplate = `{
         },
         "/collections/img": {
             "put": {
-                "description": "create collections",
+                "description": "update collections image",
                 "consumes": [
                     "application/json"
                 ],
@@ -1494,7 +1494,9 @@ const docTemplate = `{
                 "product_id": {
                     "type": "string"
                 },
-                "specs": {},
+                "specs": {
+                    "$ref": "#/definitions/dtos.InventorySpecification"
+                },
                 "status": {
                     "type": "string"
                 }
@@ -1651,7 +1653,6 @@ const docTemplate = `{
                 "description",
                 "name",
                 "price",
-                "status",
                 "supplier_id"
             ],
             "properties": {
@@ -1667,7 +1668,9 @@ const docTemplate = `{
                 "price": {
                     "type": "string"
                 },
-                "specs": {},
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                },
                 "status": {
                     "type": "string"
                 },
@@ -1702,6 +1705,29 @@ const docTemplate = `{
                 },
                 "spec": {},
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProductSpecs": {
+            "type": "object",
+            "properties": {
+                "RAM": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "SSD": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "display": {
+                    "type": "string"
+                },
+                "screen": {
                     "type": "string"
                 }
             }
@@ -1900,7 +1926,6 @@ const docTemplate = `{
                 "id",
                 "name",
                 "price",
-                "status",
                 "supplier_id"
             ],
             "properties": {

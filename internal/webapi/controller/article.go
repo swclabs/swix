@@ -125,7 +125,7 @@ func (p *Article) UploadArticle(c echo.Context) error {
 }
 
 // UpdateCollectionsImage .
-// @Description create collections
+// @Description update collections image
 // @Tags collections
 // @Accept json
 // @Produce json
@@ -159,7 +159,7 @@ func (p *Article) UpdateCollectionsImage(c echo.Context) error {
 }
 
 // GetArticleData .
-// @Description create collections
+// @Description get collections
 // @Tags collections
 // @Accept json
 // @Produce json

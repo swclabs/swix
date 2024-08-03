@@ -229,7 +229,7 @@
         },
         "/collections": {
             "get": {
-                "description": "create collections",
+                "description": "get collections",
                 "consumes": [
                     "application/json"
                 ],
@@ -249,7 +249,7 @@
                     },
                     {
                         "type": "number",
-                        "description": "limit of cards banner slices",
+                        "description": "limit of cards carousel",
                         "name": "limit",
                         "in": "query",
                         "required": true
@@ -367,7 +367,7 @@
         },
         "/collections/img": {
             "put": {
-                "description": "create collections",
+                "description": "update collections image",
                 "consumes": [
                     "application/json"
                 ],
@@ -1487,7 +1487,9 @@
                 "product_id": {
                     "type": "string"
                 },
-                "specs": {},
+                "specs": {
+                    "$ref": "#/definitions/dtos.InventorySpecification"
+                },
                 "status": {
                     "type": "string"
                 }
@@ -1644,7 +1646,6 @@
                 "description",
                 "name",
                 "price",
-                "status",
                 "supplier_id"
             ],
             "properties": {
@@ -1660,7 +1661,9 @@
                 "price": {
                     "type": "string"
                 },
-                "specs": {},
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                },
                 "status": {
                     "type": "string"
                 },
@@ -1695,6 +1698,29 @@
                 },
                 "spec": {},
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProductSpecs": {
+            "type": "object",
+            "properties": {
+                "RAM": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "SSD": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "display": {
+                    "type": "string"
+                },
+                "screen": {
                     "type": "string"
                 }
             }
@@ -1893,7 +1919,6 @@
                 "id",
                 "name",
                 "price",
-                "status",
                 "supplier_id"
             ],
             "properties": {
