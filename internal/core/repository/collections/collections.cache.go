@@ -22,8 +22,8 @@ func useCache(cache cache.ICache, collection ICollections) ICollections {
 }
 
 // AddCollection implements ICollections.
-func (c *_cache) AddCollection(ctx context.Context, banner entity.Collection) (int64, error) {
-	return c.collection.AddCollection(ctx, banner)
+func (c *_cache) Create(ctx context.Context, banner entity.Collection) (int64, error) {
+	return c.collection.Create(ctx, banner)
 }
 
 // AddHeadlineBanner implements ICollections.
@@ -31,9 +31,9 @@ func (c *_cache) AddHeadlineBanner(ctx context.Context, headline entity.Collecti
 	return c.collection.AddHeadlineBanner(ctx, headline)
 }
 
-// SlicesOfCollections implements ICollections.
-func (c *_cache) SlicesOfCollections(ctx context.Context, position string, limit int) ([]entity.Collection, error) {
-	return c.collection.SlicesOfCollections(ctx, position, limit)
+// GetMany implements ICollections.
+func (c *_cache) GetMany(ctx context.Context, position string, limit int) ([]entity.Collection, error) {
+	return c.collection.GetMany(ctx, position, limit)
 }
 
 // UploadCollectionImage implements ICollections.

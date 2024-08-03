@@ -2,10 +2,10 @@
 package service
 
 import (
+	"swclabs/swipecore/internal/core/service/article"
 	"swclabs/swipecore/internal/core/service/base"
 	"swclabs/swipecore/internal/core/service/classify"
 	"swclabs/swipecore/internal/core/service/manager"
-	"swclabs/swipecore/internal/core/service/posts"
 	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/internal/core/service/purchase"
 
@@ -18,7 +18,7 @@ var FxModule = fx.Options(
 		base.New,
 		products.New,
 		manager.New,
-		posts.New,
+		article.New,
 		purchase.New,
 		classify.New,
 	),

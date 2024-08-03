@@ -255,7 +255,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "type": "string",
+                        "type": "number",
                         "description": "limit of cards banner slices",
                         "name": "limit",
                         "in": "query",
@@ -266,7 +266,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.Collections"
+                            "$ref": "#/definitions/dtos.Article"
                         }
                     }
                 }
@@ -289,7 +289,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.Collection"
+                            "$ref": "#/definitions/dtos.UploadArticle"
                         }
                     }
                 ],
@@ -1162,6 +1162,62 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dtos.Article": {
+            "type": "object",
+            "required": [
+                "cards",
+                "headline"
+            ],
+            "properties": {
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardInArticle"
+                    }
+                },
+                "headline": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CardContent": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "src": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CardInArticle": {
+            "type": "object",
+            "required": [
+                "category",
+                "title"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardContent"
+                    }
+                },
+                "src": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.CartInsert": {
             "type": "object",
             "required": [
@@ -1215,89 +1271,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.Collection": {
-            "type": "object",
-            "required": [
-                "body",
-                "headline",
-                "position"
-            ],
-            "properties": {
-                "body": {
-                    "$ref": "#/definitions/dtos.CollectionBody"
-                },
-                "created": {
-                    "type": "string"
-                },
-                "headline": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "position": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.CollectionBody": {
-            "type": "object",
-            "required": [
-                "description",
-                "subtitle",
-                "text_color",
-                "title"
-            ],
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "subtitle": {
-                    "type": "string"
-                },
-                "text_color": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.CollectionSliceBody": {
-            "type": "object",
-            "required": [
-                "description",
-                "subtitle",
-                "text_color",
-                "title"
-            ],
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "description": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "subtitle": {
-                    "type": "string"
-                },
-                "text_color": {
-                    "type": "string"
-                },
-                "title": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.CollectionUpload": {
             "type": "object",
             "properties": {
@@ -1305,23 +1278,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "msg": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.Collections": {
-            "type": "object",
-            "properties": {
-                "card_banner": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.CollectionSliceBody"
-                    }
-                },
-                "headline": {
-                    "type": "string"
-                },
-                "position": {
                     "type": "string"
                 }
             }
@@ -1699,25 +1655,10 @@ const docTemplate = `{
                 "supplier_id"
             ],
             "properties": {
-                "RAM": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "SSD": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
                 "category_id": {
                     "type": "string"
                 },
                 "description": {
-                    "type": "string"
-                },
-                "display": {
                     "type": "string"
                 },
                 "name": {
@@ -1726,9 +1667,7 @@ const docTemplate = `{
                 "price": {
                     "type": "string"
                 },
-                "screen": {
-                    "type": "string"
-                },
+                "specs": {},
                 "status": {
                     "type": "string"
                 },
@@ -1965,25 +1904,10 @@ const docTemplate = `{
                 "supplier_id"
             ],
             "properties": {
-                "RAM": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "SSD": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
                 "category_id": {
                     "type": "string"
                 },
                 "description": {
-                    "type": "string"
-                },
-                "display": {
                     "type": "string"
                 },
                 "id": {
@@ -1995,13 +1919,33 @@ const docTemplate = `{
                 "price": {
                     "type": "string"
                 },
-                "screen": {
-                    "type": "string"
-                },
+                "specs": {},
                 "status": {
                     "type": "string"
                 },
                 "supplier_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UploadArticle": {
+            "type": "object",
+            "required": [
+                "cards",
+                "headline",
+                "position"
+            ],
+            "properties": {
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardInArticle"
+                    }
+                },
+                "headline": {
+                    "type": "string"
+                },
+                "position": {
                     "type": "string"
                 }
             }

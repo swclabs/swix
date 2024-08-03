@@ -35,8 +35,8 @@ func (collection *Collections) UploadCollectionImage(
 	)
 }
 
-// AddCollection implements domain.ICollections.
-func (collection *Collections) AddCollection(
+// Create implements domain.ICollections.
+func (collection *Collections) Create(
 	ctx context.Context, collectionType entity.Collection) (int64, error) {
 	return collection.db.SafeWriteReturn(
 		ctx, insertIntoCollections,
@@ -44,8 +44,8 @@ func (collection *Collections) AddCollection(
 	)
 }
 
-// SlicesOfCollections implements domain.ICollections.
-func (collection *Collections) SlicesOfCollections(
+// GetMany implements domain.ICollections.
+func (collection *Collections) GetMany(
 	ctx context.Context, position string, limit int) ([]entity.Collection, error) {
 	rows, err := collection.db.Query(ctx, selectCollectionByPosition, position, limit)
 	if err != nil {
