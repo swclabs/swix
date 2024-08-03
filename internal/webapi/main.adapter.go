@@ -16,7 +16,7 @@ func NewAdapter(
 	server IServer,
 	products router.IProducts,
 	manager router.IManager,
-	posts router.IPosts,
+	article router.IArticle,
 	purchase router.IPurchase,
 	classify router.IClassify,
 ) types.IAdapter {
@@ -26,7 +26,7 @@ func NewAdapter(
 
 	adapter.server.Connect(products)
 	adapter.server.Connect(manager)
-	adapter.server.Connect(posts)
+	adapter.server.Connect(article)
 	adapter.server.Connect(purchase)
 	adapter.server.Connect(classify)
 

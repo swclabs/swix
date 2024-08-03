@@ -5,30 +5,30 @@ import (
 	"net/http"
 	"strconv"
 	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/service/posts"
+	"swclabs/swipecore/internal/core/service/article"
 	"swclabs/swipecore/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )
 
-// IPosts interface for posts controller
-type IPosts interface {
-	UploadCollections(c echo.Context) error
+// IArticle interface for article controller
+type IArticle interface {
+	UploadArticle(c echo.Context) error
 	UpdateCollectionsImage(c echo.Context) error
-	GetSlicesOfCollections(c echo.Context) error
+	GetArticleData(c echo.Context) error
 
 	UploadHeadlineBanner(c echo.Context) error
 	GetSlicesOfHeadlineBanner(c echo.Context) error
 }
 
-// Posts struct implementation of IPosts
-type Posts struct {
-	Services posts.IPostsService
+// Article struct implementation of IArticle
+type Article struct {
+	Services article.IArticle
 }
 
-// NewPosts creates a new Posts object
-func NewPosts(service posts.IPostsService) IPosts {
-	return &Posts{
+// NewArticle creates a new Article object
+func NewArticle(service article.IArticle) IArticle {
+	return &Article{
 		Services: service,
 	}
 }
@@ -42,7 +42,7 @@ func NewPosts(service posts.IPostsService) IPosts {
 // @Param limit query int true "limit headline of collections"
 // @Success 200 {object} dtos.HeadlineBanners
 // @Router /collections/headline [GET]
-func (p *Posts) GetSlicesOfHeadlineBanner(c echo.Context) error {
+func (p *Article) GetSlicesOfHeadlineBanner(c echo.Context) error {
 	var (
 		pos    = c.QueryParam("position")
 		sLimit = c.QueryParam("limit")
@@ -70,7 +70,7 @@ func (p *Posts) GetSlicesOfHeadlineBanner(c echo.Context) error {
 // @Param banner body dtos.HeadlineBanner true "headline banner data request"
 // @Success 201 {object} dtos.OK
 // @Router /collections/headline [POST]
-func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
+func (p *Article) UploadHeadlineBanner(c echo.Context) error {
 	var banner dtos.HeadlineBanner
 	if err := c.Bind(&banner); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -92,16 +92,16 @@ func (p *Posts) UploadHeadlineBanner(c echo.Context) error {
 	})
 }
 
-// UploadCollections .
+// UploadArticle .
 // @Description create collections
 // @Tags collections
 // @Accept json
 // @Produce json
-// @Param collection body dtos.Collection true "collections Request"
+// @Param collection body dtos.UploadArticle true "collections Request"
 // @Success 201 {object} dtos.CollectionUpload
 // @Router /collections [POST]
-func (p *Posts) UploadCollections(c echo.Context) error {
-	var cardBanner dtos.Collection
+func (p *Article) UploadArticle(c echo.Context) error {
+	var cardBanner dtos.UploadArticle
 	if err := c.Bind(&cardBanner); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -112,7 +112,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 			Msg: _valid.Error(),
 		})
 	}
-	id, err := p.Services.UploadCollections(c.Request().Context(), cardBanner)
+	id, err := p.Services.UploadArticle(c.Request().Context(), cardBanner)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -133,7 +133,7 @@ func (p *Posts) UploadCollections(c echo.Context) error {
 // @Param id formData string true "collections identifier"
 // @Success 200 {object} dtos.OK
 // @Router /collections/img [PUT]
-func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
+func (p *Article) UpdateCollectionsImage(c echo.Context) error {
 	file, err := c.FormFile("img")
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -158,16 +158,16 @@ func (p *Posts) UpdateCollectionsImage(c echo.Context) error {
 	})
 }
 
-// GetSlicesOfCollections .
+// GetArticleData .
 // @Description create collections
 // @Tags collections
 // @Accept json
 // @Produce json
 // @Param position query string true "position of collections"
-// @Param limit query string true "limit of cards banner slices"
-// @Success 200 {object} dtos.Collections
+// @Param limit query number true "limit of cards carousel"
+// @Success 200 {object} dtos.Article
 // @Router /collections [GET]
-func (p *Posts) GetSlicesOfCollections(c echo.Context) error {
+func (p *Article) GetArticleData(c echo.Context) error {
 	position := c.QueryParam("position")
 	limit := c.QueryParam("limit")
 	if position == "" || limit == "" {
@@ -183,11 +183,11 @@ func (p *Posts) GetSlicesOfCollections(c echo.Context) error {
 		})
 	}
 
-	slices, err := p.Services.SlicesOfCollections(c.Request().Context(), position, _limit)
+	carousel, err := p.Services.GetCarousels(c.Request().Context(), position, _limit)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, *slices)
+	return c.JSON(http.StatusOK, *carousel)
 }

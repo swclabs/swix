@@ -108,7 +108,7 @@ function run_command() {
         if [ $FOUND -eq 0 ]; then
             echo "Modules not found, modules below are available:"
             echo "  common"
-            echo "  posts"
+            echo "  article"
             echo "  products"
             exit 1
         fi

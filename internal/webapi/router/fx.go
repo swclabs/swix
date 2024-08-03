@@ -10,7 +10,7 @@ var FxModule = fx.Options(
 	fx.Provide(
 		New,
 		NewProducts,
-		NewPosts,
+		NewArticle,
 		NewPurchase,
 		NewManager,
 		NewClassify,

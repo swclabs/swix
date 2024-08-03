@@ -1,5 +1,42 @@
 basePath: /
 definitions:
+  dtos.Article:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/dtos.CardInArticle'
+        type: array
+      headline:
+        type: string
+    required:
+    - cards
+    - headline
+    type: object
+  dtos.CardContent:
+    properties:
+      content:
+        type: string
+      src:
+        type: string
+    required:
+    - content
+    type: object
+  dtos.CardInArticle:
+    properties:
+      category:
+        type: string
+      content:
+        items:
+          $ref: '#/definitions/dtos.CardContent'
+        type: array
+      src:
+        type: string
+      title:
+        type: string
+    required:
+    - category
+    - title
+    type: object
   dtos.CartInsert:
     properties:
       inventory_id:
@@ -35,79 +72,11 @@ definitions:
       user_id:
         type: integer
     type: object
-  dtos.Collection:
-    properties:
-      body:
-        $ref: '#/definitions/dtos.CollectionBody'
-      created:
-        type: string
-      headline:
-        type: string
-      id:
-        type: integer
-      position:
-        type: string
-    required:
-    - body
-    - headline
-    - position
-    type: object
-  dtos.CollectionBody:
-    properties:
-      description:
-        type: string
-      image:
-        type: string
-      subtitle:
-        type: string
-      text_color:
-        type: string
-      title:
-        type: string
-    required:
-    - description
-    - subtitle
-    - text_color
-    - title
-    type: object
-  dtos.CollectionSliceBody:
-    properties:
-      created:
-        type: string
-      description:
-        type: string
-      id:
-        type: integer
-      image:
-        type: string
-      subtitle:
-        type: string
-      text_color:
-        type: string
-      title:
-        type: string
-    required:
-    - description
-    - subtitle
-    - text_color
-    - title
-    type: object
   dtos.CollectionUpload:
     properties:
       id:
         type: integer
       msg:
-        type: string
-    type: object
-  dtos.Collections:
-    properties:
-      card_banner:
-        items:
-          $ref: '#/definitions/dtos.CollectionSliceBody'
-        type: array
-      headline:
-        type: string
-      position:
         type: string
     type: object
   dtos.CreateOrderSchema:
@@ -354,26 +323,15 @@ definitions:
     type: object
   dtos.ProductRequest:
     properties:
-      RAM:
-        items:
-          type: integer
-        type: array
-      SSD:
-        items:
-          type: integer
-        type: array
       category_id:
         type: string
       description:
-        type: string
-      display:
         type: string
       name:
         type: string
       price:
         type: string
-      screen:
-        type: string
+      specs: {}
       status:
         type: string
       supplier_id:
@@ -531,19 +489,9 @@ definitions:
     type: object
   dtos.UpdateProductInfo:
     properties:
-      RAM:
-        items:
-          type: integer
-        type: array
-      SSD:
-        items:
-          type: integer
-        type: array
       category_id:
         type: string
       description:
-        type: string
-      display:
         type: string
       id:
         type: integer
@@ -551,8 +499,7 @@ definitions:
         type: string
       price:
         type: string
-      screen:
-        type: string
+      specs: {}
       status:
         type: string
       supplier_id:
@@ -565,6 +512,21 @@ definitions:
     - price
     - status
     - supplier_id
+    type: object
+  dtos.UploadArticle:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/dtos.CardInArticle'
+        type: array
+      headline:
+        type: string
+      position:
+        type: string
+    required:
+    - cards
+    - headline
+    - position
     type: object
   dtos.User:
     properties:
@@ -798,14 +760,14 @@ paths:
         in: query
         name: limit
         required: true
-        type: string
+        type: number
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.Collections'
+            $ref: '#/definitions/dtos.Article'
       tags:
       - collections
     post:
@@ -818,7 +780,7 @@ paths:
         name: collection
         required: true
         schema:
-          $ref: '#/definitions/dtos.Collection'
+          $ref: '#/definitions/dtos.UploadArticle'
       produces:
       - application/json
       responses:
