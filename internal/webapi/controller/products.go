@@ -387,7 +387,16 @@ func (p *Products) CreateProduct(c echo.Context) error {
 		})
 	}
 	// call services
-	id, err := p.Services.CreateProduct(c.Request().Context(), productReq)
+	product := dtos.Product{
+		Specs:       productReq.Specs,
+		Price:       productReq.Price,
+		Description: productReq.Description,
+		Name:        productReq.Name,
+		SupplierID:  productReq.SupplierID,
+		CategoryID:  productReq.CategoryID,
+		Status:      productReq.Status,
+	}
+	id, err := p.Services.CreateProduct(c.Request().Context(), product)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -419,7 +428,18 @@ func (p *Products) AddToInventory(c echo.Context) error {
 			Msg: validate.Error(),
 		})
 	}
-	if err := p.Services.InsertIntoInventory(c.Request().Context(), req); err != nil {
+	if err := p.Services.InsertIntoInventory(c.Request().Context(),
+		dtos.Inventory{
+			ProductID:    req.ProductID,
+			Price:        req.Price,
+			Available:    req.Available,
+			CurrencyCode: req.CurrencyCode,
+			ColorImg:     req.ColorImg,
+			Color:        req.Color,
+			Status:       req.Status,
+			Image:        req.Image,
+			Specs:        req.Specs,
+		}); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})

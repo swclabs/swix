@@ -87,19 +87,17 @@ func (s *ProductService) GetInventoryByID(ctx context.Context, inventoryID int64
 	var (
 		specs  dtos.InventorySpecification
 		result = dtos.Inventory{
-			ID:          stock.ID,
-			ProductName: product.Name,
-			InventoryDetail: dtos.InventoryDetail{
-				ProductID:    strconv.Itoa(int(stock.ProductID)),
-				Price:        stock.Price.String(),
-				Available:    stock.Available,
-				CurrencyCode: stock.CurrencyCode,
-				Status:       stock.Status,
-				Color:        stock.Color,
-				ColorImg:     stock.ColorImg,
-				Image:        strings.Split(stock.Image, ","),
-				Specs:        nil,
-			},
+			ID:           stock.ID,
+			ProductName:  product.Name,
+			ProductID:    strconv.Itoa(int(stock.ProductID)),
+			Price:        stock.Price.String(),
+			Available:    stock.Available,
+			CurrencyCode: stock.CurrencyCode,
+			Status:       stock.Status,
+			Color:        stock.Color,
+			ColorImg:     stock.ColorImg,
+			Image:        strings.Split(stock.Image, ","),
+			Specs:        nil,
 		}
 	)
 	if err := json.Unmarshal([]byte(stock.Specs), &specs); err == nil {
@@ -128,19 +126,18 @@ func (s *ProductService) ProductDetailOf(ctx context.Context, productID int64) (
 	for _, stock := range rawStocks {
 		var (
 			inventory = dtos.Inventory{
-				ID:          stock.ID,
-				ProductName: rawProduct.Name,
-				InventoryDetail: dtos.InventoryDetail{
-					ProductID:    strconv.Itoa(int(stock.ProductID)),
-					Price:        stock.Price.String(),
-					Available:    stock.Available,
-					CurrencyCode: stock.CurrencyCode,
-					Status:       stock.Status,
-					Color:        stock.Color,
-					ColorImg:     stock.ColorImg,
-					Image:        strings.Split(stock.Image, ","),
-					Specs:        nil,
-				}}
+				ID:           stock.ID,
+				ProductName:  rawProduct.Name,
+				ProductID:    strconv.Itoa(int(stock.ProductID)),
+				Price:        stock.Price.String(),
+				Available:    stock.Available,
+				CurrencyCode: stock.CurrencyCode,
+				Status:       stock.Status,
+				Color:        stock.Color,
+				ColorImg:     stock.ColorImg,
+				Image:        strings.Split(stock.Image, ","),
+				Specs:        nil,
+			}
 			specification dtos.InventorySpecification
 		)
 		if err := json.Unmarshal([]byte(stock.Specs), &specification); err == nil {
@@ -250,16 +247,14 @@ func (s *ProductService) GetAllStock(ctx context.Context, page int, limit int) (
 			stock.Header.Active++
 		}
 		stock.Stock = append(stock.Stock, dtos.Inventory{
-			ID:          _inventory.ID,
-			ProductName: product.Name,
-			InventoryDetail: dtos.InventoryDetail{
-				ProductID:    strconv.Itoa(int(_inventory.ProductID)),
-				Price:        _inventory.Price.String(),
-				Available:    _inventory.Available,
-				CurrencyCode: _inventory.CurrencyCode,
-				Status:       _inventory.Status,
-				Specs:        specs,
-			},
+			ID:           _inventory.ID,
+			ProductName:  product.Name,
+			ProductID:    strconv.Itoa(int(_inventory.ProductID)),
+			Price:        _inventory.Price.String(),
+			Available:    _inventory.Available,
+			CurrencyCode: _inventory.CurrencyCode,
+			Status:       _inventory.Status,
+			Specs:        specs,
 		})
 	}
 
@@ -362,7 +357,7 @@ func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHea
 }
 
 // CreateProduct implements IProductService.
-func (s *ProductService) CreateProduct(ctx context.Context, products dtos.ProductRequest) (int64, error) {
+func (s *ProductService) CreateProduct(ctx context.Context, products dtos.Product) (int64, error) {
 	ID, _ := strconv.Atoi(products.CategoryID)
 	_category, err := s.Category.GetByID(ctx, int64(ID))
 	if err != nil {
@@ -399,7 +394,7 @@ func (s *ProductService) DeleteProductByID(ctx context.Context, productID int64)
 }
 
 // InsertIntoInventory implements IProductService.
-func (s *ProductService) InsertIntoInventory(ctx context.Context, product dtos.InventoryDetail) error {
+func (s *ProductService) InsertIntoInventory(ctx context.Context, product dtos.Inventory) error {
 	pid, _ := strconv.Atoi(product.ProductID)
 	specs, _ := json.Marshal(product.Specs)
 	price, _ := decimal.NewFromString(product.Price)
@@ -421,23 +416,34 @@ func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]dto
 	}
 	var productResponse []dtos.ProductResponse
 	for _, p := range products {
-		var spec dtos.ProductSpecs
-		if err := json.Unmarshal([]byte(p.Spec), &spec); err != nil {
-			// don't find anything, just return empty object
-			return nil, errors.Repository("json", err)
-		}
-		images := strings.Split(p.Image, ",")
-		productResponse = append(productResponse,
-			dtos.ProductResponse{
+		var (
+			product = dtos.ProductResponse{
 				ID:          p.ID,
 				Price:       p.Price,
 				Description: p.Description,
 				Name:        p.Name,
 				Status:      p.Status,
 				Created:     utils.HanoiTimezone(p.Created),
-				Image:       images[1:],
-				Spec:        spec,
-			})
+				Image:       strings.Split(p.Image, ","),
+				Spec:        nil,
+			}
+			types         enum.Category
+			categoryID, _ = strconv.ParseInt(p.CategoryID, 10, 64)
+		)
+		category, err := s.Category.GetByID(ctx, categoryID)
+		if err != nil {
+			return nil, err
+		}
+		if err := types.Load(category.Name); err != nil {
+			return nil, err
+		}
+		if types&enum.ElectronicDevice != 0 {
+			var specs dtos.ProductSpecs
+			if err := json.Unmarshal([]byte(p.Spec), &specs); err == nil {
+				product.Spec = specs
+			}
+		}
+		productResponse = append(productResponse, product)
 	}
 	return productResponse, nil
 }
