@@ -9,6 +9,7 @@ import (
 	"go.uber.org/fx"
 
 	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/pkg/lib/logger"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -26,9 +27,11 @@ func New(lc fx.Lifecycle) ICache {
 			if err != nil {
 				return err
 			}
+			logger.Info(fmt.Sprintf("%s to %s", logger.Green.Add("Connect"), logger.Red.Add("Redis")))
 			return nil
 		},
 		OnStop: func(_ context.Context) error {
+			logger.Info(fmt.Sprintf("%s %s connection", logger.Green.Add("Closed"), logger.Red.Add("Redis")))
 			return conn.Close()
 		},
 	})

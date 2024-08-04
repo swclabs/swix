@@ -21,7 +21,7 @@ func useCache(cache cache.ICache, collection ICollections) ICollections {
 	}
 }
 
-// AddCollection implements ICollections.
+// Create implements ICollections.
 func (c *_cache) Create(ctx context.Context, banner entity.Collection) (int64, error) {
 	return c.collection.Create(ctx, banner)
 }

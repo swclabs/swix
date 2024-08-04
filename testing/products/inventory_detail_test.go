@@ -26,7 +26,7 @@ var e = echo.New()
 
 func TestGetInventory(t *testing.T) {
 	var (
-		spec = dtos.InventorySpecification{
+		spec = dtos.InvSpecification{
 			RAM: "8GB",
 			SSD: "256GB",
 		}
@@ -68,7 +68,7 @@ func TestGetInventory(t *testing.T) {
 		Name: "iPhone 12",
 	}, nil)
 
-	e.GET("/inventories/details", controller.GetInventoryDetails)
+	e.GET("/inventories/details", controller.GetInvDetails)
 	req := httptest.NewRequest(http.MethodGet, "/inventories/details?id=1", nil)
 	rr := httptest.NewRecorder()
 	e.ServeHTTP(rr, req)

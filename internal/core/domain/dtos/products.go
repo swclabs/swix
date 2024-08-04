@@ -37,6 +37,7 @@ type ProductResponse struct {
 	Name        string   `json:"name"`
 	Status      string   `json:"status"`
 	Created     string   `json:"created"`
+	Category    string   `json:"category"`
 }
 
 // UpdateProductInfo request, response
@@ -51,38 +52,39 @@ type CreateProduct struct {
 	ID  int64  `json:"id"`
 }
 
-// InventorySpecification request, response
-type InventorySpecification struct {
+// InvSpecification request, response
+type InvSpecification struct {
 	RAM string `json:"ram"`
 	SSD string `json:"ssd"`
 }
 
-// InventoryDetail request, response
-type InventoryDetail struct {
-	ProductID    string                   `json:"product_id" validate:"number,required"`
-	Price        string                   `json:"price" validate:"number,required"`
-	Available    string                   `json:"available" validate:"number,required"`
-	CurrencyCode string                   `json:"currency_code" validate:"required"`
-	ColorImg     string                   `json:"color_img"`
-	Color        string                   `json:"color"`
-	Status       string                   `json:"status"`
-	Image        []string                 `json:"image"`
-	Specs        []InventorySpecification `json:"specs"`
+// InvDetail request, response
+type InvDetail struct {
+	ProductID    string             `json:"product_id" validate:"number,required"`
+	Price        string             `json:"price" validate:"number,required"`
+	Available    string             `json:"available" validate:"number,required"`
+	CurrencyCode string             `json:"currency_code" validate:"required"`
+	ColorImg     string             `json:"color_img"`
+	Color        string             `json:"color"`
+	Status       string             `json:"status"`
+	Image        []string           `json:"image"`
+	Specs        []InvSpecification `json:"specs"`
 }
 
 // Inventory response, request
 type Inventory struct {
-	ID           string                   `json:"id"`
-	ProductName  string                   `json:"product_name"`
-	ProductID    string                   `json:"product_id" validate:"number,required"`
-	Price        string                   `json:"price" validate:"number,required"`
-	Available    string                   `json:"available" validate:"number,required"`
-	CurrencyCode string                   `json:"currency_code" validate:"required"`
-	ColorImg     string                   `json:"color_img"`
-	Color        string                   `json:"color"`
-	Status       string                   `json:"status"`
-	Image        []string                 `json:"image"`
-	Specs        []InventorySpecification `json:"specs"`
+	ID           string             `json:"id"`
+	ProductName  string             `json:"product_name"`
+	ProductID    string             `json:"product_id" validate:"number,required"`
+	Price        string             `json:"price" validate:"number,required"`
+	Available    string             `json:"available" validate:"number,required"`
+	CurrencyCode string             `json:"currency_code" validate:"required"`
+	Category     string             `json:"category"`
+	ColorImg     string             `json:"color_img"`
+	Color        string             `json:"color"`
+	Status       string             `json:"status"`
+	Image        []string           `json:"image"`
+	Specs        []InvSpecification `json:"specs"`
 }
 
 // StockHeader response, request
@@ -93,16 +95,16 @@ type StockHeader struct {
 	Archive int `json:"archive"`
 }
 
-// StockInInventory response, request
-type StockInInventory struct {
+// InvStock response, request
+type InvStock struct {
 	Page   int         `json:"page"`
 	Limit  int         `json:"limit"`
 	Header StockHeader `json:"header"`
 	Stock  []Inventory `json:"stock"`
 }
 
-// UpdateInventory request, response
-type UpdateInventory struct {
+// InvUpdate request, response
+type InvUpdate struct {
 	ID           string `json:"id" validate:"number,require"`
 	ProductID    string `json:"product_id" validate:"number,require"`
 	Price        string `json:"price" validate:"number,require"`
@@ -113,10 +115,17 @@ type UpdateInventory struct {
 
 // ProductView request, response
 type ProductView struct {
-	ID    int64       `json:"id"`
-	Name  string      `json:"name"`
-	Price string      `json:"price"`
-	Desc  string      `json:"desc"`
-	Image string      `json:"image"`
-	Specs interface{} `json:"specs"`
+	ID       int64       `json:"id"`
+	Name     string      `json:"name"`
+	Price    string      `json:"price"`
+	Desc     string      `json:"desc"`
+	Image    string      `json:"image"`
+	Category string      `json:"category"`
+	Specs    interface{} `json:"specs"`
+}
+
+type Specifications struct {
+	InventoryID int64  `json:"inventory_id" validate:"number,required"`
+	RAM         string `json:"ram" validate:"number,required"`
+	SSD         string `json:"ssd" validate:"number,required"`
 }

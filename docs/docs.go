@@ -442,7 +442,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.StockInInventory"
+                            "$ref": "#/definitions/dtos.InvStock"
                         }
                     }
                 }
@@ -465,7 +465,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.UpdateInventory"
+                            "$ref": "#/definitions/dtos.InvUpdate"
                         }
                     }
                 ],
@@ -492,11 +492,11 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "description": "Inventories Request",
-                        "name": "InventoryDetail",
+                        "name": "InvDetail",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.InventoryDetail"
+                            "$ref": "#/definitions/dtos.InvDetail"
                         }
                     }
                 ],
@@ -596,6 +596,42 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventories/specs": {
+            "post": {
+                "description": "create new specification for inventory",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "description": "Specifications inventory Request",
+                        "name": "specs",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Specifications"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.OK"
+                            }
                         }
                     }
                 }
@@ -1426,6 +1462,104 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.InvDetail": {
+            "type": "object",
+            "required": [
+                "available",
+                "currency_code",
+                "price",
+                "product_id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "color_img": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "specs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.InvSpecification"
+                    }
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.InvSpecification": {
+            "type": "object",
+            "properties": {
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.InvStock": {
+            "type": "object",
+            "properties": {
+                "header": {
+                    "$ref": "#/definitions/dtos.StockHeader"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.Inventory"
+                    }
+                }
+            }
+        },
+        "dtos.InvUpdate": {
+            "type": "object",
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.Inventory": {
             "type": "object",
             "required": [
@@ -1436,6 +1570,9 @@ const docTemplate = `{
             ],
             "properties": {
                 "available": {
+                    "type": "string"
+                },
+                "category": {
                     "type": "string"
                 },
                 "color": {
@@ -1468,65 +1605,10 @@ const docTemplate = `{
                 "specs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.InventorySpecification"
+                        "$ref": "#/definitions/dtos.InvSpecification"
                     }
                 },
                 "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.InventoryDetail": {
-            "type": "object",
-            "required": [
-                "available",
-                "currency_code",
-                "price",
-                "product_id"
-            ],
-            "properties": {
-                "available": {
-                    "type": "string"
-                },
-                "color": {
-                    "type": "string"
-                },
-                "color_img": {
-                    "type": "string"
-                },
-                "currency_code": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "price": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "string"
-                },
-                "specs": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.InventorySpecification"
-                    }
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.InventorySpecification": {
-            "type": "object",
-            "properties": {
-                "ram": {
-                    "type": "string"
-                },
-                "ssd": {
                     "type": "string"
                 }
             }
@@ -1695,6 +1777,9 @@ const docTemplate = `{
         "dtos.ProductResponse": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "created": {
                     "type": "string"
                 },
@@ -1735,6 +1820,9 @@ const docTemplate = `{
         "dtos.ProductView": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "desc": {
                     "type": "string"
                 },
@@ -1828,6 +1916,25 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.Specifications": {
+            "type": "object",
+            "required": [
+                "inventory_id",
+                "ram",
+                "ssd"
+            ],
+            "properties": {
+                "inventory_id": {
+                    "type": "integer"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.StockHeader": {
             "type": "object",
             "properties": {
@@ -1842,26 +1949,6 @@ const docTemplate = `{
                 },
                 "draft": {
                     "type": "integer"
-                }
-            }
-        },
-        "dtos.StockInInventory": {
-            "type": "object",
-            "properties": {
-                "header": {
-                    "$ref": "#/definitions/dtos.StockHeader"
-                },
-                "limit": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "stock": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.Inventory"
-                    }
                 }
             }
         },
@@ -1888,29 +1975,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ward": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.UpdateInventory": {
-            "type": "object",
-            "properties": {
-                "available": {
-                    "type": "string"
-                },
-                "currency_code": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "string"
-                },
-                "status": {
                     "type": "string"
                 }
             }

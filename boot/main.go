@@ -54,11 +54,10 @@ package boot
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"swclabs/swipecore/internal/config"
 	"swclabs/swipecore/internal/types"
 	"swclabs/swipecore/pkg/infra/db"
+	"swclabs/swipecore/pkg/lib/logger"
 
 	"go.uber.org/fx"
 
@@ -95,7 +94,7 @@ func NewApp(serverConstructor func() IServer, adapterConstructors ...interface{}
 func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(_ context.Context) error {
-			fmt.Printf("[SWIPE]-v%s ===============> server starting\n", config.Version)
+			logger.Info("Server starting")
 			if err := db.MigrateUp(); err != nil {
 				return err
 			}
@@ -105,7 +104,7 @@ func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 			return nil
 		},
 		OnStop: func(_ context.Context) error {
-			fmt.Printf("[SWIPE]-v%s ===============> server stopping\n", config.Version)
+			logger.Info("Server stopping")
 			return nil
 		},
 	})

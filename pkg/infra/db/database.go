@@ -9,6 +9,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/pkg/lib/logger"
 
 	"go.uber.org/fx"
 )
@@ -57,12 +58,16 @@ func New(lc fx.Lifecycle) IDatabase {
 			if err != nil {
 				return err
 			}
-			fmt.Printf("[SWIPE]-v%s ===============> connect to PostgreSQL\n", config.Version)
+			logger.Info(fmt.Sprintf(
+				"%s to %s", logger.Green.Add("Connect"), logger.Blue.Add("PostgreSQL")),
+			)
 			return nil
 		},
 		OnStop: func(_ context.Context) error {
 			pgxConnection.Close()
-			fmt.Printf("[SWIPE]-v%s ===============> closed PostgreSQL connection\n", config.Version)
+			logger.Info(fmt.Sprintf(
+				"%s %s connection", logger.Green.Add("Closed"), logger.Blue.Add("PostgreSQL")),
+			)
 			return nil
 		},
 	})

@@ -174,9 +174,76 @@ definitions:
       position:
         type: string
     type: object
+  dtos.InvDetail:
+    properties:
+      available:
+        type: string
+      color:
+        type: string
+      color_img:
+        type: string
+      currency_code:
+        type: string
+      image:
+        items:
+          type: string
+        type: array
+      price:
+        type: string
+      product_id:
+        type: string
+      specs:
+        items:
+          $ref: '#/definitions/dtos.InvSpecification'
+        type: array
+      status:
+        type: string
+    required:
+    - available
+    - currency_code
+    - price
+    - product_id
+    type: object
+  dtos.InvSpecification:
+    properties:
+      ram:
+        type: string
+      ssd:
+        type: string
+    type: object
+  dtos.InvStock:
+    properties:
+      header:
+        $ref: '#/definitions/dtos.StockHeader'
+      limit:
+        type: integer
+      page:
+        type: integer
+      stock:
+        items:
+          $ref: '#/definitions/dtos.Inventory'
+        type: array
+    type: object
+  dtos.InvUpdate:
+    properties:
+      available:
+        type: string
+      currency_code:
+        type: string
+      id:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: string
+      status:
+        type: string
+    type: object
   dtos.Inventory:
     properties:
       available:
+        type: string
+      category:
         type: string
       color:
         type: string
@@ -198,7 +265,7 @@ definitions:
         type: string
       specs:
         items:
-          $ref: '#/definitions/dtos.InventorySpecification'
+          $ref: '#/definitions/dtos.InvSpecification'
         type: array
       status:
         type: string
@@ -207,43 +274,6 @@ definitions:
     - currency_code
     - price
     - product_id
-    type: object
-  dtos.InventoryDetail:
-    properties:
-      available:
-        type: string
-      color:
-        type: string
-      color_img:
-        type: string
-      currency_code:
-        type: string
-      image:
-        items:
-          type: string
-        type: array
-      price:
-        type: string
-      product_id:
-        type: string
-      specs:
-        items:
-          $ref: '#/definitions/dtos.InventorySpecification'
-        type: array
-      status:
-        type: string
-    required:
-    - available
-    - currency_code
-    - price
-    - product_id
-    type: object
-  dtos.InventorySpecification:
-    properties:
-      ram:
-        type: string
-      ssd:
-        type: string
     type: object
   dtos.LoginRequest:
     properties:
@@ -356,6 +386,8 @@ definitions:
     type: object
   dtos.ProductResponse:
     properties:
+      category:
+        type: string
       created:
         type: string
       description:
@@ -382,6 +414,8 @@ definitions:
     type: object
   dtos.ProductView:
     properties:
+      category:
+        type: string
       desc:
         type: string
       id:
@@ -444,6 +478,19 @@ definitions:
           $ref: '#/definitions/entity.Suppliers'
         type: array
     type: object
+  dtos.Specifications:
+    properties:
+      inventory_id:
+        type: integer
+      ram:
+        type: string
+      ssd:
+        type: string
+    required:
+    - inventory_id
+    - ram
+    - ssd
+    type: object
   dtos.StockHeader:
     properties:
       active:
@@ -454,19 +501,6 @@ definitions:
         type: integer
       draft:
         type: integer
-    type: object
-  dtos.StockInInventory:
-    properties:
-      header:
-        $ref: '#/definitions/dtos.StockHeader'
-      limit:
-        type: integer
-      page:
-        type: integer
-      stock:
-        items:
-          $ref: '#/definitions/dtos.Inventory'
-        type: array
     type: object
   dtos.Supplier:
     properties:
@@ -485,21 +519,6 @@ definitions:
     required:
     - email
     - name
-    type: object
-  dtos.UpdateInventory:
-    properties:
-      available:
-        type: string
-      currency_code:
-        type: string
-      id:
-        type: string
-      price:
-        type: string
-      product_id:
-        type: string
-      status:
-        type: string
     type: object
   dtos.UpdateProductInfo:
     properties:
@@ -914,7 +933,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.StockInInventory'
+            $ref: '#/definitions/dtos.InvStock'
       tags:
       - inventories
     post:
@@ -924,10 +943,10 @@ paths:
       parameters:
       - description: Inventories Request
         in: body
-        name: InventoryDetail
+        name: InvDetail
         required: true
         schema:
-          $ref: '#/definitions/dtos.InventoryDetail'
+          $ref: '#/definitions/dtos.InvDetail'
       produces:
       - application/json
       responses:
@@ -947,7 +966,7 @@ paths:
         name: inventory
         required: true
         schema:
-          $ref: '#/definitions/dtos.UpdateInventory'
+          $ref: '#/definitions/dtos.InvUpdate'
       produces:
       - application/json
       responses:
@@ -995,6 +1014,29 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
+  /inventories/specs:
+    post:
+      consumes:
+      - application/json
+      description: create new specification for inventory
+      parameters:
+      - description: Specifications inventory Request
+        in: body
+        name: specs
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.Specifications'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.OK'
+            type: array
       tags:
       - inventories
   /oauth2/login:

@@ -37,12 +37,12 @@ func (c *_cache) Update(ctx context.Context, product entity.Products) error {
 	return c.products.Update(ctx, product)
 }
 
-// DeleteById implements IProductRepository.
+// DeleteByID implements IProductRepository.
 func (c *_cache) DeleteByID(ctx context.Context, ID int64) error {
 	return c.products.DeleteByID(ctx, ID)
 }
 
-// GetById implements IProductRepository.
+// GetByID implements IProductRepository.
 func (c *_cache) GetByID(ctx context.Context, productID int64) (*entity.Products, error) {
 	return c.products.GetByID(ctx, productID)
 }

@@ -26,7 +26,7 @@ func TestProductDetails(t *testing.T) {
 			Screen:  "6.1 inch",
 			Display: "Super Retina XDR display",
 		}
-		inventorySpec = dtos.InventorySpecification{
+		inventorySpec = dtos.InvSpecification{
 			RAM: "8GB",
 			SSD: "256GB",
 		}
