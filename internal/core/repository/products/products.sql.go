@@ -2,8 +2,8 @@ package products
 
 const (
 	insertIntoProducts string = `
-		INSERT INTO products (image, price, name, description, supplier_id, category_id, status, spec)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO products (image, price, name, description, supplier_id, category_id, status)
+		VALUES ($1, $2, $3, $4, $5, $6, $7)
 		RETURNING id;
 	`
 
@@ -65,7 +65,7 @@ const (
 						ELSE status
 					END,
 			created = now() AT TIME ZONE 'utc',
-		WHERE id = $9;
+		WHERE id = $7;
 	`
 	searchByKeyword = `
 		SELECT *
@@ -79,7 +79,7 @@ const (
 	selectByCategory = `
 		SELECT 
 			products.id,
-			image, price, products.description, spec,
+			image, price, products.description, specs,
 			products.name as name, 
 			categories.name as category_name
 		FROM 

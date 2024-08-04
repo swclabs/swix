@@ -10,6 +10,7 @@ import (
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/inventories"
 	productRepo "swclabs/swipecore/internal/core/repository/products"
+	"swclabs/swipecore/internal/core/repository/specifications"
 	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/internal/webapi/controller"
 	"swclabs/swipecore/pkg/lib/logger"
@@ -24,26 +25,47 @@ func TestProductDetails(t *testing.T) {
 		productSpecs = dtos.ProductSpecs{
 			Screen:  "6.1 inch",
 			Display: "Super Retina XDR display",
-			SSD:     []int{128, 256, 512},
-			RAM:     []int{4, 8},
 		}
 		inventorySpec = dtos.InventorySpecification{
 			RAM: "8GB",
 			SSD: "256GB",
 		}
-		inventory inventories.Mock
-		product   productRepo.Mock
-		service   = products.ProductService{
+		bProductSpecs, _ = json.Marshal(productSpecs)
+		bInvSpec, _      = json.Marshal(inventorySpec)
+		inventory        inventories.Mock
+		product          productRepo.Mock
+		specs            specifications.Mock
+		service          = products.ProductService{
 			Inventory: &inventory,
 			Products:  &product,
+			Specs:     &specs,
 		}
 		controller = controller.Products{
 			Services: &service,
 		}
 	)
 
-	sProductSpecs, _ := json.Marshal(productSpecs)
-	sInventorySpec, _ := json.Marshal(inventorySpec)
+	for i := 1; i <= 4; i++ {
+		specs.On("GetByInventoryID", context.Background(), int64(i)).Return([]entity.Specifications{
+			{
+				ID:          1,
+				InventoryID: int64(i),
+				Content:     string(bInvSpec),
+			},
+			{
+				ID:          2,
+				InventoryID: int64(i),
+				Content:     string(bInvSpec),
+			},
+			{
+				ID:          3,
+				InventoryID: int64(i),
+				Content:     string(bInvSpec),
+			},
+		}, nil)
+	}
+
+	// sInventorySpec, _ := json.Marshal(inventorySpec)
 	inventory.On("GetByProductID", context.Background(), int64(1)).Return([]entity.Inventories{
 		{
 			ID:           "1",
@@ -55,7 +77,6 @@ func TestProductDetails(t *testing.T) {
 			Color:        "Black Titanium",
 			ColorImg:     "https://example.com/black-titanium.jpg",
 			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg,https://example.com/iphone-12-3.jpg",
-			Specs:        string(sInventorySpec),
 		},
 		{
 			ID:           "2",
@@ -67,7 +88,6 @@ func TestProductDetails(t *testing.T) {
 			Color:        "White Ceramic",
 			ColorImg:     "https://example.com/white-ceramic.jpg",
 			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
-			Specs:        string(sInventorySpec),
 		},
 		{
 			ID:           "3",
@@ -79,7 +99,6 @@ func TestProductDetails(t *testing.T) {
 			Color:        "Blue Titanium",
 			ColorImg:     "https://example.com/blue-titanium.jpg",
 			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
-			Specs:        string(sInventorySpec),
 		},
 		{
 			ID:           "4",
@@ -91,14 +110,13 @@ func TestProductDetails(t *testing.T) {
 			Color:        "Red Titanium",
 			ColorImg:     "https://example.com/red-titanium.jpg",
 			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
-			Specs:        string(sInventorySpec),
 		},
 	}, nil)
 	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
 		Name:   "iPhone 12",
 		Image:  "/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-1-202309.jpg,/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-2-202309.jpg,/img/shop/iphone-15-pro/iphone-15-pro-finish-select.jpg",
 		Price:  "17.000.000 - 18.000.000",
-		Spec:   string(sProductSpecs),
+		Specs:  string(bProductSpecs),
 		Status: "active",
 	}, nil)
 

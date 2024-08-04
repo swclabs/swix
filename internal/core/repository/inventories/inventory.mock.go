@@ -47,7 +47,7 @@ func (w *Mock) GetByID(ctx context.Context, ID int64) (*entity.Inventories, erro
 }
 
 // InsertProduct implements IInventoryRepository.
-func (w *Mock) InsertProduct(ctx context.Context, product entity.Inventories) error {
+func (w *Mock) InsertProduct(ctx context.Context, product entity.Inventories) (int64, error) {
 	args := w.Called(ctx, product)
-	return args.Error(0)
+	return int64(args.Int(0)), args.Error(1)
 }

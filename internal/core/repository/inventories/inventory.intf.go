@@ -8,7 +8,7 @@ import (
 // IInventoryRepository represents the interface for Inventory repository.
 type IInventoryRepository interface {
 	// InsertProduct inserts a product to the inventory.
-	InsertProduct(ctx context.Context, product entity.Inventories) error
+	InsertProduct(ctx context.Context, product entity.Inventories) (int64, error)
 
 	// GetByID gets an inventory by its ID.
 	GetByID(ctx context.Context, inventoryID int64) (*entity.Inventories, error)

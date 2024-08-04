@@ -44,12 +44,12 @@ INSERT INTO suppliers_address (suppliers_id, address_uuid) VALUES (1, '2a0db3cf-
 -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, spec, status) VALUES (1, '', '1.000.000 - 2.000.000', 'iPhone 12', 'iPhone 12', 1, 1, '2024-08-03 16:43:30.048345', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "6.1 inch", "display": "Super Retina XDR display"}', 'active');
-INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, spec, status) VALUES (2, '', '2.000.000 - 3.000.000', 'iPhone 12 Pro', 'iPhone 12 Pro', 1, 1, '2024-08-03 16:44:35.806808', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "6.7 inch", "display": "Super Retina XDR display"}', 'active');
-INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, spec, status) VALUES (3, '', '1.000.000 - 2.000.000', 'iPhone 12 Mini', 'iPhone 12 Mini', 1, 1, '2024-08-03 16:45:45.19697', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "5.4 inch", "display": "Super Retina XDR display"}', 'active');
-INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, spec, status) VALUES (4, '', '500.000', 'Apple iPhone Adapter 20W', 'Apple iPhone Adapter', 1, 2, '2024-08-03 16:54:21.488746', '{}', 'active');
-INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, spec, status) VALUES (5, '', '500.000', 'Apple iPhone Case', 'Apple iPhone Case', 1, 2, '2024-08-03 16:54:48.684444', '{}', 'active');
-INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, spec, status) VALUES (6, '', '500.000', 'Apple iPhone Screen Protector', 'Apple iPhone Screen Protector', 1, 2, '2024-08-03 16:55:02.747345', '{}', 'active');
+INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (1, '', '1.000.000 - 2.000.000', 'iPhone 12', 'iPhone 12', 1, 1, '2024-08-03 16:43:30.048345', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "6.1 inch", "display": "Super Retina XDR display"}', 'active');
+INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (2, '', '2.000.000 - 3.000.000', 'iPhone 12 Pro', 'iPhone 12 Pro', 1, 1, '2024-08-03 16:44:35.806808', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "6.7 inch", "display": "Super Retina XDR display"}', 'active');
+INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (3, '', '1.000.000 - 2.000.000', 'iPhone 12 Mini', 'iPhone 12 Mini', 1, 1, '2024-08-03 16:45:45.19697', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "5.4 inch", "display": "Super Retina XDR display"}', 'active');
+INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (4, '', '500.000', 'Apple iPhone Adapter 20W', 'Apple iPhone Adapter', 1, 2, '2024-08-03 16:54:21.488746', '{}', 'active');
+INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (5, '', '500.000', 'Apple iPhone Case', 'Apple iPhone Case', 1, 2, '2024-08-03 16:54:48.684444', '{}', 'active');
+INSERT INTO products (id, image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (6, '', '500.000', 'Apple iPhone Screen Protector', 'Apple iPhone Screen Protector', 1, 2, '2024-08-03 16:55:02.747345', '{}', 'active');
 
 --
 -- TOC entry 3416 (class 0 OID 16547)

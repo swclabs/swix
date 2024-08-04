@@ -35,7 +35,6 @@ func (w *Inventory) Update(ctx context.Context, inventory entity.Inventories) er
 		inventory.Status,
 		inventory.Price,
 		inventory.CurrencyCode,
-		inventory.Specs,
 		inventory.Available,
 		inventory.Image,
 		inventory.Color,
@@ -92,10 +91,10 @@ func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*entity.Inv
 }
 
 // InsertProduct implements IInventoryRepository.
-func (w *Inventory) InsertProduct(ctx context.Context, product entity.Inventories) error {
-	return w.db.SafeWrite(ctx, insertIntoInventory,
+func (w *Inventory) InsertProduct(ctx context.Context, product entity.Inventories) (int64, error) {
+	return w.db.SafeWriteReturn(ctx, insertIntoInventory,
 		product.ProductID, product.Price,
-		product.Specs, product.Available, product.CurrencyCode,
+		product.Available, product.CurrencyCode,
 		product.Status, product.Image, product.Color, product.ColorImg,
 	)
 }

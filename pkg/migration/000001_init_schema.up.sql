@@ -51,7 +51,7 @@ CREATE TABLE "products" (
   "supplier_id" bigint NOT NULL,
   "category_id" bigint NOT NULL,
   "created" timestamp default (now() at time zone 'utc'),
-  "spec" jsonb,
+  "specs" jsonb,
   "status" varchar NOT NULL
 );
 
@@ -129,7 +129,6 @@ CREATE TABLE "inventories" (
   "price" NUMERIC(19, 4) NOT NULL,
   "status" varchar NOT NULL,
   "currency_code" varchar(3) NOT NULL,
-  "specs" jsonb,
   "available" int NOT NULL,
   "color" varchar NOT NULL,
   "color_img" varchar,
@@ -142,4 +141,10 @@ CREATE TABLE "collections" (
   "position" varchar NOT NULL ,
   "headline" varchar,
   "body" jsonb
+);
+
+CREATE TABLE "specifications" (
+  "id" bigserial PRIMARY KEY,
+  "inventory_id" int NOT NULL,
+  "content" jsonb
 );

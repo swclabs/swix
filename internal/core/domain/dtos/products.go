@@ -4,8 +4,6 @@ package dtos
 type ProductSpecs struct {
 	Screen  string `json:"screen"`
 	Display string `json:"display"`
-	SSD     []int  `json:"SSD"`
-	RAM     []int  `json:"RAM"`
 }
 
 // ProductRequest request, response
@@ -19,6 +17,7 @@ type ProductRequest struct {
 	Status      string       `json:"status"`
 }
 
+// Product request, response
 type Product struct {
 	Specs       interface{} `json:"specs"`
 	Price       string      `json:"price" validate:"required"`
@@ -31,14 +30,13 @@ type Product struct {
 
 // ProductResponse request, response
 type ProductResponse struct {
-	ID          int64       `json:"id"`
-	Image       []string    `json:"image"`
-	Price       string      `json:"price"`
-	Description string      `json:"description"`
-	Name        string      `json:"name"`
-	Status      string      `json:"status"`
-	Created     string      `json:"created"`
-	Spec        interface{} `json:"spec"`
+	ID          int64    `json:"id"`
+	Image       []string `json:"image"`
+	Price       string   `json:"price"`
+	Description string   `json:"description"`
+	Name        string   `json:"name"`
+	Status      string   `json:"status"`
+	Created     string   `json:"created"`
 }
 
 // UpdateProductInfo request, response
@@ -61,30 +59,30 @@ type InventorySpecification struct {
 
 // InventoryDetail request, response
 type InventoryDetail struct {
-	ProductID    string                 `json:"product_id" validate:"number,required"`
-	Price        string                 `json:"price" validate:"number,required"`
-	Available    string                 `json:"available" validate:"number,required"`
-	CurrencyCode string                 `json:"currency_code" validate:"required"`
-	ColorImg     string                 `json:"color_img"`
-	Color        string                 `json:"color"`
-	Status       string                 `json:"status"`
-	Image        []string               `json:"image"`
-	Specs        InventorySpecification `json:"specs"`
+	ProductID    string                   `json:"product_id" validate:"number,required"`
+	Price        string                   `json:"price" validate:"number,required"`
+	Available    string                   `json:"available" validate:"number,required"`
+	CurrencyCode string                   `json:"currency_code" validate:"required"`
+	ColorImg     string                   `json:"color_img"`
+	Color        string                   `json:"color"`
+	Status       string                   `json:"status"`
+	Image        []string                 `json:"image"`
+	Specs        []InventorySpecification `json:"specs"`
 }
 
 // Inventory response, request
 type Inventory struct {
-	ID           string      `json:"id"`
-	ProductName  string      `json:"product_name"`
-	ProductID    string      `json:"product_id" validate:"number,required"`
-	Price        string      `json:"price" validate:"number,required"`
-	Available    string      `json:"available" validate:"number,required"`
-	CurrencyCode string      `json:"currency_code" validate:"required"`
-	ColorImg     string      `json:"color_img"`
-	Color        string      `json:"color"`
-	Status       string      `json:"status"`
-	Image        []string    `json:"image"`
-	Specs        interface{} `json:"specs"`
+	ID           string                   `json:"id"`
+	ProductName  string                   `json:"product_name"`
+	ProductID    string                   `json:"product_id" validate:"number,required"`
+	Price        string                   `json:"price" validate:"number,required"`
+	Available    string                   `json:"available" validate:"number,required"`
+	CurrencyCode string                   `json:"currency_code" validate:"required"`
+	ColorImg     string                   `json:"color_img"`
+	Color        string                   `json:"color"`
+	Status       string                   `json:"status"`
+	Image        []string                 `json:"image"`
+	Specs        []InventorySpecification `json:"specs"`
 }
 
 // StockHeader response, request
@@ -105,13 +103,12 @@ type StockInInventory struct {
 
 // UpdateInventory request, response
 type UpdateInventory struct {
-	ID           string                 `json:"id" validate:"number,require"`
-	ProductID    string                 `json:"product_id" validate:"number,require"`
-	Price        string                 `json:"price" validate:"number,require"`
-	Available    string                 `json:"available" validate:"number,require"`
-	CurrencyCode string                 `json:"currency_code"`
-	Status       string                 `json:"status"`
-	Specs        InventorySpecification `json:"specs"`
+	ID           string `json:"id" validate:"number,require"`
+	ProductID    string `json:"product_id" validate:"number,require"`
+	Price        string `json:"price" validate:"number,require"`
+	Available    string `json:"available" validate:"number,require"`
+	CurrencyCode string `json:"currency_code"`
+	Status       string `json:"status"`
 }
 
 // ProductView request, response

@@ -1,6 +1,6 @@
 {
     "level": "info",
-    "time": 1722501498.2123563,
+    "time": 1722766439.640682,
     "message": "Response body",
     "body": [
         {
@@ -10,15 +10,6 @@
             "desc": "iPhone 12",
             "image": "https://example.com/iphone-12.jpg",
             "specs": {
-                "RAM": [
-                    4,
-                    8
-                ],
-                "SSD": [
-                    128,
-                    256,
-                    512
-                ],
                 "display": "Super Retina XDR display",
                 "screen": "6.1 inch"
             }
@@ -30,15 +21,6 @@
             "desc": "iPhone 12 Pro",
             "image": "https://example.com/iphone-12-pro.jpg",
             "specs": {
-                "RAM": [
-                    4,
-                    8
-                ],
-                "SSD": [
-                    128,
-                    256,
-                    512
-                ],
                 "display": "Super Retina XDR display",
                 "screen": "6.7 inch"
             }
@@ -50,15 +32,6 @@
             "desc": "iPhone 12 Mini",
             "image": "https://example.com/iphone-12-mini.jpg",
             "specs": {
-                "RAM": [
-                    4,
-                    8
-                ],
-                "SSD": [
-                    128,
-                    256,
-                    512
-                ],
                 "display": "Super Retina XDR display",
                 "screen": "5.4 inch"
             }
