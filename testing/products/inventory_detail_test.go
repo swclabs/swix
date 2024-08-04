@@ -53,9 +53,9 @@ func TestGetInventory(t *testing.T) {
 	}, nil)
 
 	inventory.On("GetByID", context.Background(), int64(1)).Return(&entity.Inventories{
-		ID:           "1",
+		ID:           1,
 		ProductID:    1,
-		Available:    "1000",
+		Available:    1000,
 		Price:        decimal.NewFromInt(10000),
 		CurrencyCode: "VND",
 		Status:       "active",

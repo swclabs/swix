@@ -1539,6 +1539,9 @@ const docTemplate = `{
         },
         "dtos.InvUpdate": {
             "type": "object",
+            "required": [
+                "id"
+            ],
             "properties": {
                 "available": {
                     "type": "string"
@@ -1585,7 +1588,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "image": {
                     "type": "array",

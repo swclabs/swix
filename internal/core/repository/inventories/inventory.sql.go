@@ -36,7 +36,7 @@ const (
 	update = `
 		UPDATE inventories
 		SET product_id = CASE
-							WHEN $2 <> 0 THEN $2
+							WHEN $2 <> -1 THEN $2
 							ELSE product_id
 						END,
 			status = CASE 
@@ -44,31 +44,27 @@ const (
 						ELSE status 
 					END,
 			price = CASE
-						WHEN $4 <> '' THEN $4
+						WHEN $4 <> '-1' THEN CAST($4 AS NUMERIC)
 						ELSE price
 					END,
 			currency_code = CASE
 								WHEN $5 <> '' THEN $5
 								ELSE currency_code
 							END,
-			specs = CASE
-						WHEN $6 <> '' THEN $6
-						ELSE specs
-					END,
 			available = CASE
-							WHEN $7 <> '' THEN $7
+							WHEN $6 <> -1 THEN $6
 							ELSE available
 						END,
 			image = CASE
-						WHEN $8 <> '' THEN $8
+						WHEN $7 <> '' THEN $7
 						ELSE image
 					END,
 			color = CASE
-						WHEN $9 <> '' THEN $9
+						WHEN $8 <> '' THEN $8
 						ELSE color
 					END,
 			color_img = CASE
-							WHEN $10 <> '' THEN $10
+							WHEN $9 <> '' THEN $9
 							ELSE color_img
 						END
 		WHERE id = $1;

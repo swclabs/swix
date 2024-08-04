@@ -4,9 +4,9 @@ import "github.com/shopspring/decimal"
 
 // Inventories table
 type Inventories struct {
-	ID           string          `json:"id" db:"id"`
+	ID           int64           `json:"id" db:"id"`
 	ProductID    int64           `json:"product_id" db:"product_id"`
-	Available    string          `json:"available" db:"available"`
+	Available    int64           `json:"available" db:"available"`
 	CurrencyCode string          `json:"currency_code" db:"currency_code"`
 	Status       string          `json:"status" db:"status"`
 	Color        string          `json:"color" db:"color"`

@@ -33,7 +33,7 @@ func (w *Inventory) Update(ctx context.Context, inventory entity.Inventories) er
 		inventory.ID,
 		inventory.ProductID,
 		inventory.Status,
-		inventory.Price,
+		inventory.Price.String(),
 		inventory.CurrencyCode,
 		inventory.Available,
 		inventory.Image,

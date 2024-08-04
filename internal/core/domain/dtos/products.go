@@ -73,7 +73,7 @@ type InvDetail struct {
 
 // Inventory response, request
 type Inventory struct {
-	ID           string             `json:"id"`
+	ID           int64              `json:"id"`
 	ProductName  string             `json:"product_name"`
 	ProductID    string             `json:"product_id" validate:"number,required"`
 	Price        string             `json:"price" validate:"number,required"`
@@ -105,10 +105,10 @@ type InvStock struct {
 
 // InvUpdate request, response
 type InvUpdate struct {
-	ID           string `json:"id" validate:"number,require"`
-	ProductID    string `json:"product_id" validate:"number,require"`
-	Price        string `json:"price" validate:"number,require"`
-	Available    string `json:"available" validate:"number,require"`
+	ID           string `json:"id" validate:"number,required"`
+	ProductID    string `json:"product_id" validate:"omitempty,number"`
+	Price        string `json:"price" validate:"omitempty,number"`
+	Available    string `json:"available" validate:"omitempty,number"`
 	CurrencyCode string `json:"currency_code"`
 	Status       string `json:"status"`
 }

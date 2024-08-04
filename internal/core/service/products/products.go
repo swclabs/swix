@@ -126,7 +126,7 @@ func (s *ProductService) GetInvByID(ctx context.Context, inventoryID int64) (*dt
 			ProductName:  product.Name,
 			ProductID:    strconv.Itoa(int(stock.ProductID)),
 			Price:        stock.Price.String(),
-			Available:    stock.Available,
+			Available:    strconv.Itoa(int(stock.Available)),
 			CurrencyCode: stock.CurrencyCode,
 			Status:       stock.Status,
 			Color:        stock.Color,
@@ -186,7 +186,7 @@ func (s *ProductService) ProductDetailOf(ctx context.Context, productID int64) (
 				ProductName:  rawProduct.Name,
 				ProductID:    strconv.Itoa(int(stock.ProductID)),
 				Price:        stock.Price.String(),
-				Available:    stock.Available,
+				Available:    strconv.Itoa(int(stock.Available)),
 				CurrencyCode: stock.CurrencyCode,
 				Status:       stock.Status,
 				Color:        stock.Color,
@@ -194,10 +194,9 @@ func (s *ProductService) ProductDetailOf(ctx context.Context, productID int64) (
 				Image:        strings.Split(stock.Image, ","),
 				Specs:        nil,
 			}
-			invID, _ = strconv.ParseInt(stock.ID, 10, 64)
-			specs    []dtos.InvSpecification
+			specs []dtos.InvSpecification
 		)
-		specOfproduct, err := s.Specs.GetByInventoryID(ctx, invID)
+		specOfproduct, err := s.Specs.GetByInventoryID(ctx, stock.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -238,14 +237,25 @@ func (s *ProductService) ProductDetailOf(ctx context.Context, productID int64) (
 
 // UpdateInv implements IProductService.
 func (s *ProductService) UpdateInv(ctx context.Context, inventory dtos.InvUpdate) error {
-	pid, _ := strconv.Atoi(inventory.ProductID)
-	price, _ := decimal.NewFromString(inventory.Price)
+	pid, err := strconv.Atoi(inventory.ProductID)
+	if err != nil {
+		pid = -1
+	}
+	price, err := decimal.NewFromString(inventory.Price)
+	if err != nil {
+		price = decimal.NewFromInt(-1)
+	}
+	avai, err := strconv.ParseInt(inventory.Available, 10, 64)
+	if err != nil {
+		avai = -1
+	}
+	invID, _ := strconv.ParseInt(inventory.ID, 10, 64)
 	return s.Inventory.Update(ctx, entity.Inventories{
 		Price:        price,
+		ID:           invID,
+		Available:    avai,
 		ProductID:    int64(pid),
-		ID:           inventory.ID,
 		Status:       inventory.Status,
-		Available:    inventory.Available,
 		CurrencyCode: inventory.CurrencyCode,
 	})
 }
@@ -289,8 +299,8 @@ func (s *ProductService) GetAllInvStock(ctx context.Context, page int, limit int
 	}
 	var stock dtos.InvStock
 
-	for _, _inventory := range inventories {
-		switch _inventory.Status {
+	for _, inv := range inventories {
+		switch inv.Status {
 		case "active":
 			stock.Header.Active++
 		case "draft":
@@ -298,11 +308,8 @@ func (s *ProductService) GetAllInvStock(ctx context.Context, page int, limit int
 		case "archived":
 			stock.Header.Active++
 		}
-		var (
-			specs    []dtos.InvSpecification
-			invID, _ = strconv.ParseInt(_inventory.ID, 10, 64)
-		)
-		specOfproduct, err := s.Specs.GetByInventoryID(ctx, invID)
+		var specs []dtos.InvSpecification
+		specOfproduct, err := s.Specs.GetByInventoryID(ctx, inv.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -313,7 +320,7 @@ func (s *ProductService) GetAllInvStock(ctx context.Context, page int, limit int
 			}
 			specs = append(specs, _spec)
 		}
-		product, err := s.Products.GetByID(ctx, _inventory.ProductID)
+		product, err := s.Products.GetByID(ctx, inv.ProductID)
 		if err != nil {
 			return nil, err
 		}
@@ -325,16 +332,16 @@ func (s *ProductService) GetAllInvStock(ctx context.Context, page int, limit int
 		stock.Stock = append(stock.Stock, dtos.Inventory{
 			Specs:        specs,
 			ProductName:  product.Name,
-			ProductID:    strconv.Itoa(int(_inventory.ProductID)),
-			Image:        strings.Split(_inventory.Image, ","),
+			ProductID:    strconv.Itoa(int(inv.ProductID)),
+			Image:        strings.Split(inv.Image, ","),
 			Category:     category.Name,
-			ID:           _inventory.ID,
-			Price:        _inventory.Price.String(),
-			Available:    _inventory.Available,
-			CurrencyCode: _inventory.CurrencyCode,
-			Status:       _inventory.Status,
-			ColorImg:     _inventory.ColorImg,
-			Color:        _inventory.Color,
+			ID:           inv.ID,
+			Price:        inv.Price.String(),
+			Available:    strconv.Itoa(int(inv.Available)),
+			CurrencyCode: inv.CurrencyCode,
+			Status:       inv.Status,
+			ColorImg:     inv.ColorImg,
+			Color:        inv.Color,
 		})
 	}
 
@@ -467,13 +474,14 @@ func (s *ProductService) InsertInv(ctx context.Context, product dtos.Inventory) 
 	var (
 		pid, _    = strconv.Atoi(product.ProductID)
 		price, _  = decimal.NewFromString(product.Price)
+		avai, _   = strconv.Atoi(product.Available)
 		inventory = entity.Inventories{
 			Color:        product.Color,
 			ColorImg:     product.ColorImg,
 			Image:        strings.Join(product.Image, ","),
 			ProductID:    int64(pid),
 			Price:        price,
-			Available:    product.Available,
+			Available:    int64(avai),
 			CurrencyCode: product.CurrencyCode,
 			Status:       "active",
 		}
