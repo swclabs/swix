@@ -61,7 +61,7 @@ func (product *Products) Update(ctx context.Context, prod entity.Products) error
 	return errors.Repository("safely write data",
 		product.db.SafeWrite(ctx, updateByID,
 			prod.Name, prod.Price, prod.Description, prod.SupplierID,
-			prod.CategoryID, prod.Spec, prod.Status, prod.ID,
+			prod.CategoryID, prod.Specs, prod.Status, prod.ID,
 		),
 	)
 }
@@ -90,7 +90,7 @@ func (product *Products) Insert(ctx context.Context, prd entity.Products) (int64
 	id, err := product.db.SafeWriteReturn(
 		ctx, insertIntoProducts,
 		prd.Image, prd.Price, prd.Name, prd.Description,
-		prd.SupplierID, prd.CategoryID, prd.Status, prd.Spec,
+		prd.SupplierID, prd.CategoryID, prd.Status, prd.Specs,
 	)
 	if err != nil {
 		return -1, errors.Repository("write data", err)

@@ -51,12 +51,13 @@ func (c *_Cache) DeleteByID(ctx context.Context, inventoryID int64) error {
 }
 
 // InsertProduct implements IInventoryRepository.
-func (c *_Cache) InsertProduct(ctx context.Context, product entity.Inventories) error {
-	if err := c.inventory.InsertProduct(ctx, product); err != nil {
-		return err
+func (c *_Cache) InsertProduct(ctx context.Context, product entity.Inventories) (int64, error) {
+	ID, err := c.inventory.InsertProduct(ctx, product)
+	if err != nil {
+		return -1, err
 	}
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:InsertProduct:%d", product.ProductID))
-	return cache.Set(ctx, c.cache, key, product)
+	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByProductID:%d", product.ProductID))
+	return ID, cache.Delete(ctx, c.cache, key)
 }
 
 // GetLimit implements IInventoryRepository.

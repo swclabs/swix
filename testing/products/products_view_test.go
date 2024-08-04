@@ -31,20 +31,14 @@ func TestProductView(t *testing.T) {
 			{
 				Screen:  "6.1 inch",
 				Display: "Super Retina XDR display",
-				SSD:     []int{128, 256, 512},
-				RAM:     []int{4, 8},
 			},
 			{
 				Screen:  "6.7 inch",
 				Display: "Super Retina XDR display",
-				SSD:     []int{128, 256, 512},
-				RAM:     []int{4, 8},
 			},
 			{
 				Screen:  "5.4 inch",
 				Display: "Super Retina XDR display",
-				SSD:     []int{128, 256, 512},
-				RAM:     []int{4, 8},
 			},
 		}
 
@@ -65,7 +59,7 @@ func TestProductView(t *testing.T) {
 				Price:        "1.000.000 - 2.000.000",
 				Image:        "https://example.com/iphone-12.jpg",
 				CategoryName: enum.Phone.String(),
-				Spec:         sspecs[0],
+				Specs:        sspecs[0],
 			},
 			{
 				ID:           2,
@@ -74,7 +68,7 @@ func TestProductView(t *testing.T) {
 				Price:        "2.000.000 - 3.000.000",
 				Image:        "https://example.com/iphone-12-pro.jpg",
 				CategoryName: enum.Phone.String(),
-				Spec:         sspecs[1],
+				Specs:        sspecs[1],
 			},
 			{
 				ID:           3,
@@ -83,7 +77,7 @@ func TestProductView(t *testing.T) {
 				Price:        "1.000.000 - 2.000.000",
 				Image:        "https://example.com/iphone-12-mini.jpg",
 				CategoryName: enum.Phone.String(),
-				Spec:         sspecs[2],
+				Specs:        sspecs[2],
 			},
 		},
 		nil)
@@ -130,7 +124,7 @@ func TestProductViewAccessory(t *testing.T) {
 				Description:  "Apple iPhone Adapter 20W",
 				Price:        "500.000",
 				Image:        "https://example.com/apple-iphone-adapter.jpg",
-				Spec:         "",
+				Specs:        "",
 				CategoryName: enum.Accessories.String(),
 			},
 			{
@@ -139,7 +133,7 @@ func TestProductViewAccessory(t *testing.T) {
 				Description:  "Apple iPhone Case",
 				Price:        "500.000",
 				Image:        "https://example.com/apple-iphone-case.jpg",
-				Spec:         "",
+				Specs:        "",
 				CategoryName: enum.Accessories.String(),
 			},
 			{
@@ -148,7 +142,7 @@ func TestProductViewAccessory(t *testing.T) {
 				Description:  "Apple iPhone Screen Protector",
 				Price:        "500.000",
 				Image:        "https://example.com/apple-iphone-screen-protector.jpg",
-				Spec:         "",
+				Specs:        "",
 				CategoryName: enum.Accessories.String(),
 			},
 		},

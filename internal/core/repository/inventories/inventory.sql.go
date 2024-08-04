@@ -2,8 +2,9 @@ package inventories
 
 const (
 	insertIntoInventory string = `
-		INSERT INTO inventories (product_id, price, specs, available, currency_code, status, image, color, color_img)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);
+		INSERT INTO inventories (product_id, price, available, currency_code, status, image, color, color_img)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		RETURNING id;
 	`
 
 	getByID string = `

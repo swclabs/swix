@@ -1,9 +1,12 @@
 package dtos
 
-// DetailSSD is a type use to accept request and response
-type DetailSSD struct {
+// DetailSpecs is a type use to accept request and response
+type DetailSpecs struct {
+	// Value 8GB
+	RAM string `json:"RAM"`
+
 	// Value 128GB
-	Value string `json:"value"`
+	SSD string `json:"SSD"`
 
 	// Price 1.000.000 VND
 	Price string `json:"price"`
@@ -19,6 +22,8 @@ type DetailColor struct {
 
 	// Img of product Nature Titanium
 	Product []string `json:"product"`
+
+	Specs []DetailSpecs `json:"specs"`
 }
 
 // ProductDetail is a type use to accept request and response
@@ -35,7 +40,7 @@ type ProductDetail struct {
 	// Image of product
 	Image []string `json:"image"`
 
-	SSD   []DetailSSD   `json:"SSD"`
+	// Color of product
 	Color []DetailColor `json:"color"`
 }
 

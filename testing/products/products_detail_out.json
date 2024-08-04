@@ -1,6 +1,6 @@
 {
     "level": "info",
-    "time": 1722499496.9313705,
+    "time": 1722766283.9118671,
     "message": "Response body",
     "body": {
         "name": "iPhone 12",
@@ -11,24 +11,6 @@
             "/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-2-202309.jpg",
             "/img/shop/iphone-15-pro/iphone-15-pro-finish-select.jpg"
         ],
-        "SSD": [
-            {
-                "value": "256GB",
-                "price": "10000"
-            },
-            {
-                "value": "256GB",
-                "price": "10000"
-            },
-            {
-                "value": "256GB",
-                "price": "10000"
-            },
-            {
-                "value": "256GB",
-                "price": "10000"
-            }
-        ],
         "color": [
             {
                 "name": "Black Titanium",
@@ -37,6 +19,23 @@
                     "https://example.com/iphone-12.jpg",
                     "https://example.com/iphone-12-2.jpg",
                     "https://example.com/iphone-12-3.jpg"
+                ],
+                "specs": [
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    },
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    },
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    }
                 ]
             },
             {
@@ -45,6 +44,23 @@
                 "product": [
                     "https://example.com/iphone-12.jpg",
                     "https://example.com/iphone-12-2.jpg"
+                ],
+                "specs": [
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    },
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    },
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    }
                 ]
             },
             {
@@ -53,6 +69,23 @@
                 "product": [
                     "https://example.com/iphone-12.jpg",
                     "https://example.com/iphone-12-2.jpg"
+                ],
+                "specs": [
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    },
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    },
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    }
                 ]
             },
             {
@@ -61,6 +94,23 @@
                 "product": [
                     "https://example.com/iphone-12.jpg",
                     "https://example.com/iphone-12-2.jpg"
+                ],
+                "specs": [
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    },
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    },
+                    {
+                        "RAM": "8GB",
+                        "SSD": "256GB",
+                        "price": "10000"
+                    }
                 ]
             }
         ]

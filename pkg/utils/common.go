@@ -4,6 +4,7 @@ package utils
 import (
 	"math/rand"
 	"net/mail"
+	"strings"
 	"time"
 )
 
@@ -33,4 +34,8 @@ func HanoiTimezone(t time.Time) string {
 // HanoiZone returns the time in Hanoi timezone
 func HanoiZone(t time.Time) time.Time {
 	return t.In(time.FixedZone("GMT+7", 7*60*60))
+}
+
+func RemoveSpace(s string) string {
+	return strings.ReplaceAll(s, " ", "")
 }

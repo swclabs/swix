@@ -113,14 +113,21 @@ definitions:
         items:
           type: string
         type: array
+      specs:
+        items:
+          $ref: '#/definitions/dtos.DetailSpecs'
+        type: array
     type: object
-  dtos.DetailSSD:
+  dtos.DetailSpecs:
     properties:
+      RAM:
+        description: Value 8GB
+        type: string
+      SSD:
+        description: Value 128GB
+        type: string
       price:
         description: Price 1.000.000 VND
-        type: string
-      value:
-        description: Value 128GB
         type: string
     type: object
   dtos.Error:
@@ -189,7 +196,10 @@ definitions:
         type: string
       product_name:
         type: string
-      specs: {}
+      specs:
+        items:
+          $ref: '#/definitions/dtos.InventorySpecification'
+        type: array
       status:
         type: string
     required:
@@ -217,7 +227,9 @@ definitions:
       product_id:
         type: string
       specs:
-        $ref: '#/definitions/dtos.InventorySpecification'
+        items:
+          $ref: '#/definitions/dtos.InventorySpecification'
+        type: array
       status:
         type: string
     required:
@@ -284,11 +296,8 @@ definitions:
     type: object
   dtos.ProductDetail:
     properties:
-      SSD:
-        items:
-          $ref: '#/definitions/dtos.DetailSSD'
-        type: array
       color:
+        description: Color of product
         items:
           $ref: '#/definitions/dtos.DetailColor'
         type: array
@@ -361,20 +370,11 @@ definitions:
         type: string
       price:
         type: string
-      spec: {}
       status:
         type: string
     type: object
   dtos.ProductSpecs:
     properties:
-      RAM:
-        items:
-          type: integer
-        type: array
-      SSD:
-        items:
-          type: integer
-        type: array
       display:
         type: string
       screen:
@@ -498,8 +498,6 @@ definitions:
         type: string
       product_id:
         type: string
-      specs:
-        $ref: '#/definitions/dtos.InventorySpecification'
       status:
         type: string
     type: object

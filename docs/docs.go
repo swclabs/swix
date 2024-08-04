@@ -1332,18 +1332,28 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
+                },
+                "specs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.DetailSpecs"
+                    }
                 }
             }
         },
-        "dtos.DetailSSD": {
+        "dtos.DetailSpecs": {
             "type": "object",
             "properties": {
-                "price": {
-                    "description": "Price 1.000.000 VND",
+                "RAM": {
+                    "description": "Value 8GB",
                     "type": "string"
                 },
-                "value": {
+                "SSD": {
                     "description": "Value 128GB",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "Price 1.000.000 VND",
                     "type": "string"
                 }
             }
@@ -1455,7 +1465,12 @@ const docTemplate = `{
                 "product_name": {
                     "type": "string"
                 },
-                "specs": {},
+                "specs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.InventorySpecification"
+                    }
+                },
                 "status": {
                     "type": "string"
                 }
@@ -1495,7 +1510,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "specs": {
-                    "$ref": "#/definitions/dtos.InventorySpecification"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.InventorySpecification"
+                    }
                 },
                 "status": {
                     "type": "string"
@@ -1590,13 +1608,8 @@ const docTemplate = `{
         "dtos.ProductDetail": {
             "type": "object",
             "properties": {
-                "SSD": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.DetailSSD"
-                    }
-                },
                 "color": {
+                    "description": "Color of product",
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dtos.DetailColor"
@@ -1703,7 +1716,6 @@ const docTemplate = `{
                 "price": {
                     "type": "string"
                 },
-                "spec": {},
                 "status": {
                     "type": "string"
                 }
@@ -1712,18 +1724,6 @@ const docTemplate = `{
         "dtos.ProductSpecs": {
             "type": "object",
             "properties": {
-                "RAM": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
-                "SSD": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
-                },
                 "display": {
                     "type": "string"
                 },
@@ -1909,9 +1909,6 @@ const docTemplate = `{
                 },
                 "product_id": {
                     "type": "string"
-                },
-                "specs": {
-                    "$ref": "#/definitions/dtos.InventorySpecification"
                 },
                 "status": {
                     "type": "string"

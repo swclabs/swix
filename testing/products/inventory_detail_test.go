@@ -9,6 +9,7 @@ import (
 	"swclabs/swipecore/internal/core/domain/dtos"
 	"swclabs/swipecore/internal/core/domain/entity"
 	"swclabs/swipecore/internal/core/repository/inventories"
+	"swclabs/swipecore/internal/core/repository/specifications"
 	"swclabs/swipecore/internal/core/service/products"
 	"swclabs/swipecore/internal/webapi/controller"
 	"swclabs/swipecore/pkg/lib/logger"
@@ -25,23 +26,31 @@ var e = echo.New()
 
 func TestGetInventory(t *testing.T) {
 	var (
-		specs = dtos.InventorySpecification{
+		spec = dtos.InventorySpecification{
 			RAM: "8GB",
 			SSD: "256GB",
 		}
-
+		bSpec, _  = json.Marshal(spec)
 		inventory inventories.Mock
 		product   productRepo.Mock
+		specs     specifications.Mock
 		service   = products.ProductService{
 			Inventory: &inventory,
 			Products:  &product,
+			Specs:     &specs,
 		}
 		controller = controller.Products{
 			Services: &service,
 		}
 	)
 
-	sspecs, _ := json.Marshal(specs)
+	specs.On("GetByInventoryID", context.Background(), int64(1)).Return([]entity.Specifications{
+		{
+			ID:          1,
+			InventoryID: 1,
+			Content:     string(bSpec),
+		},
+	}, nil)
 
 	inventory.On("GetByID", context.Background(), int64(1)).Return(&entity.Inventories{
 		ID:           "1",
@@ -53,7 +62,6 @@ func TestGetInventory(t *testing.T) {
 		Color:        "Black Titanium",
 		ColorImg:     "https://example.com/black-titanium.jpg",
 		Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
-		Specs:        string(sspecs),
 	}, nil)
 
 	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
