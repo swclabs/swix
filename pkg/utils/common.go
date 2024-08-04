@@ -36,6 +36,7 @@ func HanoiZone(t time.Time) time.Time {
 	return t.In(time.FixedZone("GMT+7", 7*60*60))
 }
 
+// RemoveSpace removes all spaces in the given string
 func RemoveSpace(s string) string {
 	return strings.ReplaceAll(s, " ", "")
 }

@@ -9,17 +9,18 @@ import (
 
 var _ ICollections = (*Mock)(nil)
 
+// Mock is a mock type for ICollections.
 type Mock struct {
 	mock.Mock
 }
 
 // AddHeadlineBanner implements ICollections.
-func (m *Mock) AddHeadlineBanner(ctx context.Context, headline entity.Collection) error {
+func (m *Mock) AddHeadlineBanner(_ context.Context, _ entity.Collection) error {
 	panic("unimplemented")
 }
 
 // Create implements ICollections.
-func (m *Mock) Create(ctx context.Context, banner entity.Collection) (int64, error) {
+func (m *Mock) Create(_ context.Context, _ entity.Collection) (int64, error) {
 	panic("unimplemented")
 }
 
@@ -30,6 +31,6 @@ func (m *Mock) GetMany(ctx context.Context, position string, limit int) ([]entit
 }
 
 // UploadCollectionImage implements ICollections.
-func (m *Mock) UploadCollectionImage(ctx context.Context, collectionID string, url string) error {
+func (m *Mock) UploadCollectionImage(_ context.Context, _ string, _ string) error {
 	panic("unimplemented")
 }

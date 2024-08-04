@@ -9,6 +9,7 @@ import (
 
 var _ ISpecifications = (*Mock)(nil)
 
+// Mock is a mock type for ISpecifications.
 type Mock struct {
 	mock.Mock
 }
@@ -20,6 +21,6 @@ func (m *Mock) GetByInventoryID(ctx context.Context, inventoryID int64) ([]entit
 }
 
 // Insert implements ISpecifications.
-func (m *Mock) Insert(ctx context.Context, specs entity.Specifications) error {
+func (m *Mock) Insert(_ context.Context, _ entity.Specifications) error {
 	panic("unimplemented")
 }

@@ -8,6 +8,6 @@ type ProductXCategory struct {
 	Price        string `json:"price" db:"price"`
 	Description  string `json:"description" db:"description"`
 	Name         string `json:"name" db:"name"`
-	Specs         string `json:"spec" db:"specs"`
+	Specs        string `json:"spec" db:"specs"`
 	CategoryName string `json:"category_name" db:"category_name"`
 }

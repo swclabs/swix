@@ -1,3 +1,4 @@
+// Package specifications contains the Specifications repository.
 package specifications
 
 import (
@@ -7,12 +8,14 @@ import (
 	"swclabs/swipecore/pkg/infra/db"
 )
 
-func Init(conn db.IDatabase, cache cache.ICache) ISpecifications {
+// Init initializes the Specifications repository.
+func Init(conn db.IDatabase, _ cache.ICache) ISpecifications {
 	return &Specifications{
 		db: conn,
 	}
 }
 
+// Specifications represents the Specifications repository.
 type Specifications struct {
 	db db.IDatabase
 }

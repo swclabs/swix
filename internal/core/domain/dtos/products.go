@@ -17,6 +17,7 @@ type ProductRequest struct {
 	Status      string       `json:"status"`
 }
 
+// Product request, response
 type Product struct {
 	Specs       interface{} `json:"specs"`
 	Price       string      `json:"price" validate:"required"`
