@@ -22,12 +22,13 @@ type IProducts interface {
 	GetProductDetails(c echo.Context) error
 	GetProductView(c echo.Context) error
 
-	GetInventoryDetails(c echo.Context) error
-	AddToInventory(c echo.Context) error
-	DeleteInventory(c echo.Context) error
-	UploadInventoryImage(c echo.Context) error
+	GetInvDetails(c echo.Context) error
+	AddInv(c echo.Context) error
+	DeleteInv(c echo.Context) error
+	UploadInvImage(c echo.Context) error
 	GetStock(c echo.Context) error
-	UpdateInventory(c echo.Context) error
+	UpdateInv(c echo.Context) error
+	InsertInvSpecs(c echo.Context) error
 }
 
 // NewProducts creates a new Products object
@@ -40,6 +41,36 @@ func NewProducts(services products.IProductService) IProducts {
 // Products struct implementation of IProducts
 type Products struct {
 	Services products.IProductService
+}
+
+// InsertInvSpecs .
+// @Description create new specification for inventory
+// @Tags inventories
+// @Accept json
+// @Produce json
+// @Param specs body dtos.Specifications true "Specifications inventory Request"
+// @Success 200 {object} []dtos.OK
+// @Router /inventories/specs [POST]
+func (p *Products) InsertInvSpecs(c echo.Context) error {
+	var invSpec dtos.Specifications
+	if err := c.Bind(&invSpec); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if _valid := valid.Validate(&invSpec); _valid != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: _valid.Error(),
+		})
+	}
+	if err := p.Services.InsertSpecs(c.Request().Context(), invSpec); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, dtos.OK{
+		Msg: "your specification has been created successfully",
+	})
 }
 
 // GetProductView .
@@ -91,16 +122,16 @@ func (p *Products) GetProductDetails(c echo.Context) error {
 	return c.JSON(http.StatusOK, product)
 }
 
-// UpdateInventory .
+// UpdateInv .
 // @Description update inventory
 // @Tags inventories
 // @Accept json
 // @Produce json
-// @Param inventory body dtos.UpdateInventory true "Inventory Request"
+// @Param inventory body dtos.InvUpdate true "Inventory Request"
 // @Success 200 {object} dtos.OK
 // @Router /inventories [PUT]
-func (p *Products) UpdateInventory(c echo.Context) error {
-	var inventory dtos.UpdateInventory
+func (p *Products) UpdateInv(c echo.Context) error {
+	var inventory dtos.InvUpdate
 	if err := c.Bind(&inventory); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -111,7 +142,7 @@ func (p *Products) UpdateInventory(c echo.Context) error {
 			Msg: _valid.Error(),
 		})
 	}
-	if err := p.Services.UpdateInventory(c.Request().Context(), inventory); err != nil {
+	if err := p.Services.UpdateInv(c.Request().Context(), inventory); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -121,7 +152,7 @@ func (p *Products) UpdateInventory(c echo.Context) error {
 	})
 }
 
-// UploadInventoryImage .
+// UploadInvImage .
 // @Description update inventory image
 // @Tags inventories
 // @Accept json
@@ -129,7 +160,7 @@ func (p *Products) UpdateInventory(c echo.Context) error {
 // @Param image formData file true "stock image"
 // @Success 200 {object} dtos.OK
 // @Router /inventories/image [PUT]
-func (p *Products) UploadInventoryImage(c echo.Context) error {
+func (p *Products) UploadInvImage(c echo.Context) error {
 	form, err := c.MultipartForm()
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -144,7 +175,7 @@ func (p *Products) UploadInventoryImage(c echo.Context) error {
 			Msg: "Invalid 'limit' query parameter",
 		})
 	}
-	if err := p.Services.UploadStockImage(c.Request().Context(), id, files); err != nil {
+	if err := p.Services.UploadInvStockImage(c.Request().Context(), id, files); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -154,7 +185,7 @@ func (p *Products) UploadInventoryImage(c echo.Context) error {
 	})
 }
 
-// DeleteInventory .
+// DeleteInv .
 // @Description delete inventory by id
 // @Tags inventories
 // @Accept json
@@ -162,7 +193,7 @@ func (p *Products) UploadInventoryImage(c echo.Context) error {
 // @Param id query int true "inventory id"
 // @Success 200 {object} dtos.OK
 // @Router /inventories [DELETE]
-func (p *Products) DeleteInventory(c echo.Context) error {
+func (p *Products) DeleteInv(c echo.Context) error {
 	iID := c.QueryParam("id")
 	if iID == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -175,7 +206,7 @@ func (p *Products) DeleteInventory(c echo.Context) error {
 			Msg: "param 'id' must be integer",
 		})
 	}
-	if err := p.Services.DeleteInventoryByID(c.Request().Context(), id); err != nil {
+	if err := p.Services.DeleteInvByID(c.Request().Context(), id); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -192,7 +223,7 @@ func (p *Products) DeleteInventory(c echo.Context) error {
 // @Produce json
 // @Param page query number true "page"
 // @Param limit query number true "limit"
-// @Success 200 {object} dtos.StockInInventory
+// @Success 200 {object} dtos.InvStock
 // @Router /inventories [GET]
 func (p *Products) GetStock(c echo.Context) error {
 	page, err := strconv.Atoi(c.QueryParam("page"))
@@ -207,7 +238,7 @@ func (p *Products) GetStock(c echo.Context) error {
 			Msg: "missing 'limit' or 'limit' is not a number",
 		})
 	}
-	stock, err := p.Services.GetAllStock(c.Request().Context(), page, limit)
+	stock, err := p.Services.GetAllInvStock(c.Request().Context(), page, limit)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -246,7 +277,7 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 	})
 }
 
-// GetInventoryDetails .
+// GetInvDetails .
 // @Description get product availability in inventories
 // @Tags inventories
 // @Accept json
@@ -254,7 +285,7 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 // @Param id query number true "inventory id"
 // @Success 200 {object} dtos.Inventory
 // @Router /inventories/details [GET]
-func (p *Products) GetInventoryDetails(c echo.Context) error {
+func (p *Products) GetInvDetails(c echo.Context) error {
 	ID, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -262,7 +293,7 @@ func (p *Products) GetInventoryDetails(c echo.Context) error {
 		})
 	}
 
-	product, err := p.Services.GetInventoryByID(c.Request().Context(), int64(ID))
+	product, err := p.Services.GetInvByID(c.Request().Context(), int64(ID))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -407,16 +438,16 @@ func (p *Products) CreateProduct(c echo.Context) error {
 	})
 }
 
-// AddToInventory .
+// AddInv .
 // @Description add product to inventories
 // @Tags inventories
 // @Accept json
 // @Produce json
-// @Param InventoryDetail body dtos.InventoryDetail true "Inventories Request"
+// @Param InvDetail body dtos.InvDetail true "Inventories Request"
 // @Success 201 {object} dtos.OK
 // @Router /inventories [POST]
-func (p *Products) AddToInventory(c echo.Context) error {
-	var req dtos.InventoryDetail
+func (p *Products) AddInv(c echo.Context) error {
+	var req dtos.InvDetail
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -427,7 +458,7 @@ func (p *Products) AddToInventory(c echo.Context) error {
 			Msg: validate.Error(),
 		})
 	}
-	if err := p.Services.InsertIntoInventory(c.Request().Context(),
+	if err := p.Services.InsertInv(c.Request().Context(),
 		dtos.Inventory{
 			ProductID:    req.ProductID,
 			Price:        req.Price,

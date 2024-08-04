@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"swclabs/swipecore/internal/config"
+	"swclabs/swipecore/pkg/lib/logger"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
@@ -44,11 +45,15 @@ func New(lc fx.Lifecycle) IBlobStorage {
 			if err != nil {
 				return err
 			}
-			fmt.Printf("[SWIPE]-v%s ===============> connect to cloudinary\n", config.Version)
+			logger.Info(fmt.Sprintf(
+				"%s to %s", logger.Green.Add("Connect"), logger.Blue.Add("Cloudinary")),
+			)
 			return nil
 		},
 		OnStop: func(_ context.Context) error {
-			fmt.Printf("[SWIPE]-v%s ===============> closed cloudinary connection\n", config.Version)
+			logger.Info(fmt.Sprintf(
+				"%s %s connection", logger.Green.Add("Closed"), logger.Blue.Add("Cloudinary")),
+			)
 			return nil
 		},
 	})

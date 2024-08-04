@@ -28,7 +28,7 @@ func (c *_Cache) Update(ctx context.Context, inventory entity.Inventories) error
 	if err := c.inventory.Update(ctx, inventory); err != nil {
 		return err
 	}
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%s", inventory.ID))
+	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%d", inventory.ID))
 	return cache.Set(ctx, c.cache, key, inventory)
 }
 

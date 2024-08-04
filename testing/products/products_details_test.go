@@ -26,7 +26,7 @@ func TestProductDetails(t *testing.T) {
 			Screen:  "6.1 inch",
 			Display: "Super Retina XDR display",
 		}
-		inventorySpec = dtos.InventorySpecification{
+		inventorySpec = dtos.InvSpecification{
 			RAM: "8GB",
 			SSD: "256GB",
 		}
@@ -68,9 +68,9 @@ func TestProductDetails(t *testing.T) {
 	// sInventorySpec, _ := json.Marshal(inventorySpec)
 	inventory.On("GetByProductID", context.Background(), int64(1)).Return([]entity.Inventories{
 		{
-			ID:           "1",
+			ID:           1,
 			ProductID:    1,
-			Available:    "1000",
+			Available:    1000,
 			Price:        decimal.NewFromInt(10000),
 			CurrencyCode: "VND",
 			Status:       "active",
@@ -79,9 +79,9 @@ func TestProductDetails(t *testing.T) {
 			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg,https://example.com/iphone-12-3.jpg",
 		},
 		{
-			ID:           "2",
+			ID:           2,
 			ProductID:    1,
-			Available:    "1000",
+			Available:    1000,
 			Price:        decimal.NewFromInt(10000),
 			CurrencyCode: "VND",
 			Status:       "active",
@@ -90,9 +90,9 @@ func TestProductDetails(t *testing.T) {
 			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
 		},
 		{
-			ID:           "3",
+			ID:           3,
 			ProductID:    1,
-			Available:    "1000",
+			Available:    1000,
 			Price:        decimal.NewFromInt(10000),
 			CurrencyCode: "VND",
 			Status:       "active",
@@ -101,9 +101,9 @@ func TestProductDetails(t *testing.T) {
 			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
 		},
 		{
-			ID:           "4",
+			ID:           4,
 			ProductID:    1,
-			Available:    "1000",
+			Available:    1000,
 			Price:        decimal.NewFromInt(10000),
 			CurrencyCode: "VND",
 			Status:       "active",
