@@ -39,7 +39,7 @@ type IManager interface {
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the updated user information details.
 	// Returns an error if any issues occur during the update process.
-	UpdateUserInfo(ctx context.Context, req dtos.User) error
+	UpdateUserInfo(ctx context.Context, req dtos.UserUpdate) error
 
 	// UploadAvatar uploads a user's avatar.
 	// email is the email address of the user.

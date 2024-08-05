@@ -36,7 +36,7 @@ func (t *Task) SignUp(_ context.Context, req dtos.SignUpRequest) error {
 }
 
 // UpdateUserInfo update user information
-func (t *Task) UpdateUserInfo(_ context.Context, req dtos.User) error {
+func (t *Task) UpdateUserInfo(_ context.Context, req dtos.UserUpdate) error {
 	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.UpdateUserInfo),
 		req,

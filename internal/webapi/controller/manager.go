@@ -185,7 +185,7 @@ func (account *Manager) GetMe(c echo.Context) error {
 // @Success 200 {object} dtos.OK
 // @Router /users [PUT]
 func (account *Manager) UpdateUserInfo(c echo.Context) error {
-	var request dtos.User
+	var request dtos.UserUpdate
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),

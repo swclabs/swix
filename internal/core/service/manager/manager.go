@@ -128,11 +128,9 @@ func (manager *Manager) UserInfo(
 }
 
 // UpdateUserInfo update user information to database
-func (manager *Manager) UpdateUserInfo(
-	ctx context.Context, req dtos.User) error {
+func (manager *Manager) UpdateUserInfo(ctx context.Context, req dtos.UserUpdate) error {
 	// call repository layer
 	return manager.User.Save(ctx, entity.Users{
-		ID:          req.ID,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
 		FirstName:   req.FirstName,

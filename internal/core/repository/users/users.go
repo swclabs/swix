@@ -3,7 +3,6 @@ package users
 
 import (
 	"context"
-	"errors"
 
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/model"
@@ -78,9 +77,6 @@ func (usr *Users) Info(ctx context.Context, email string) (*model.Users, error) 
 
 // Save implements IUserRepository.
 func (usr *Users) Save(ctx context.Context, user entity.Users) error {
-	if user.Email == "" {
-		return errors.New("missing key: email ")
-	}
 	return usr.db.SafeWrite(ctx, updateInfo,
 		user.Email,
 		user.FirstName,
