@@ -2,8 +2,8 @@
 package webapi
 
 import (
-	"swclabs/swipecore/internal/webapi/controller"
-	"swclabs/swipecore/internal/webapi/router"
+	"swclabs/swix/internal/webapi/controller"
+	"swclabs/swix/internal/webapi/router"
 
 	"go.uber.org/fx"
 )

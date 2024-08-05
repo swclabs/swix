@@ -4,7 +4,7 @@ package workers
 import (
 	"fmt"
 	"strconv"
-	"swclabs/swipecore/internal/types"
+	"swclabs/swix/internal/types"
 )
 
 // Adapter struct define the Adapter object

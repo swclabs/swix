@@ -8,8 +8,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/lib/logger"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/pkg/lib/logger"
 
 	"go.uber.org/fx"
 )

@@ -7,8 +7,8 @@ import (
 	"mime/multipart"
 	"sync"
 
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/lib/logger"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/pkg/lib/logger"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"

@@ -2,8 +2,8 @@ package carts
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/pkg/infra/cache"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/pkg/infra/cache"
 )
 
 type _cache struct {

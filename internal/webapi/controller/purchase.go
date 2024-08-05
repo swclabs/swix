@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/service/purchase"
-	"swclabs/swipecore/pkg/lib/valid"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/service/purchase"
+	"swclabs/swix/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )

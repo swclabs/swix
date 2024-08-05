@@ -1755,7 +1755,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "category_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "description": {
                     "type": "string"
@@ -1773,7 +1773,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "supplier_id": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
@@ -1985,16 +1985,11 @@ const docTemplate = `{
         "dtos.UpdateProductInfo": {
             "type": "object",
             "required": [
-                "category_id",
-                "description",
-                "id",
-                "name",
-                "price",
-                "supplier_id"
+                "id"
             ],
             "properties": {
                 "category_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "description": {
                     "type": "string"
@@ -2008,12 +2003,14 @@ const docTemplate = `{
                 "price": {
                     "type": "string"
                 },
-                "specs": {},
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                },
                 "status": {
                     "type": "string"
                 },
                 "supplier_id": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },

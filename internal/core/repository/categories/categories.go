@@ -3,9 +3,9 @@ package categories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/pkg/infra/cache"
-	"swclabs/swipecore/pkg/infra/db"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/pkg/infra/cache"
+	"swclabs/swix/pkg/infra/db"
 )
 
 // New creates a new Categories object

@@ -5,8 +5,8 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/lib/logger"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/pkg/lib/logger"
 
 	"github.com/hibiken/asynq"
 )

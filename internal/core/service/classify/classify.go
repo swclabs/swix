@@ -4,12 +4,12 @@ package classify
 import (
 	"context"
 	"log"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/internal/core/repository/addresses"
-	"swclabs/swipecore/internal/core/repository/categories"
-	"swclabs/swipecore/internal/core/repository/suppliers"
-	"swclabs/swipecore/pkg/infra/db"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/repository/addresses"
+	"swclabs/swix/internal/core/repository/categories"
+	"swclabs/swix/internal/core/repository/suppliers"
+	"swclabs/swix/pkg/infra/db"
 
 	"github.com/google/uuid"
 )

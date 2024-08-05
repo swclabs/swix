@@ -2,9 +2,9 @@ package base
 
 import (
 	"net"
-	"swclabs/swipecore/internal/mod/proto/base"
-	"swclabs/swipecore/internal/types"
-	"swclabs/swipecore/pkg/lib/logger"
+	"swclabs/swix/internal/mod/proto/base"
+	"swclabs/swix/internal/types"
+	"swclabs/swix/pkg/lib/logger"
 
 	"google.golang.org/grpc"
 )

@@ -2,7 +2,7 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/entity"
 )
 
 // IInventoryRepository represents the interface for Inventory repository.

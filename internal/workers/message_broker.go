@@ -2,8 +2,8 @@
 package workers
 
 import (
-	"swclabs/swipecore/internal/workers/router"
-	"swclabs/swipecore/pkg/lib/worker"
+	"swclabs/swix/internal/workers/router"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 // Writer struct define the Writer object

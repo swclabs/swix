@@ -2,8 +2,8 @@ package boot
 
 import (
 	"fmt"
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/types"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/internal/types"
 )
 
 // struct server in project

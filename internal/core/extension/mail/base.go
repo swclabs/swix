@@ -3,10 +3,10 @@ package mail
 
 import (
 	"context"
-	"swclabs/swipecore/pkg/lib/mailer"
+	"swclabs/swix/pkg/lib/mailer"
 
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/components"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/pkg/components"
 
 	"github.com/a-h/templ"
 )

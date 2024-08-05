@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"swclabs/swipecore/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/dtos"
 )
 
 var _ IService = (*Service)(nil)

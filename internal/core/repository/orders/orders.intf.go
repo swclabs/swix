@@ -2,7 +2,7 @@ package orders
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/entity"
 )
 
 // IOrdersRepository interface for orders repository

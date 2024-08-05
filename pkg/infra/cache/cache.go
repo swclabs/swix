@@ -8,8 +8,8 @@ import (
 
 	"go.uber.org/fx"
 
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/lib/logger"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/pkg/lib/logger"
 
 	"github.com/redis/go-redis/v9"
 )

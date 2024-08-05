@@ -3,7 +3,7 @@ package base
 
 import (
 	"context"
-	"swclabs/swipecore/internal/mod/proto/base"
+	"swclabs/swix/internal/mod/proto/base"
 )
 
 // NewBaseServer creates a new BaseServer.

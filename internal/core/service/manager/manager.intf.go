@@ -3,9 +3,9 @@ package manager
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/internal/core/domain/model"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 )
 
 // IManager : Module for manager with use-cases.

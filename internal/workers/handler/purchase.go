@@ -2,7 +2,7 @@
 package handler
 
 import (
-	"swclabs/swipecore/pkg/lib/worker"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 // IPurchase is an interface for Purchase.

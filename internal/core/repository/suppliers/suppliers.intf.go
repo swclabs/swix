@@ -2,7 +2,7 @@ package suppliers
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/entity"
 )
 
 // ISuppliersRepository implements all methods to access and manage supplier data in the database.

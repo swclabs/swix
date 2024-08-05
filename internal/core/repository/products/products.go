@@ -3,12 +3,12 @@ package products
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/internal/core/domain/enum"
-	"swclabs/swipecore/internal/core/domain/model"
-	"swclabs/swipecore/pkg/infra/cache"
-	"swclabs/swipecore/pkg/infra/db"
-	"swclabs/swipecore/pkg/lib/errors"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/enum"
+	"swclabs/swix/internal/core/domain/model"
+	"swclabs/swix/pkg/infra/cache"
+	"swclabs/swix/pkg/infra/db"
+	"swclabs/swix/pkg/lib/errors"
 )
 
 var _ IProductRepository = (*Products)(nil)
@@ -61,7 +61,7 @@ func (product *Products) Update(ctx context.Context, prod entity.Products) error
 	return errors.Repository("safely write data",
 		product.db.SafeWrite(ctx, updateByID,
 			prod.Name, prod.Price, prod.Description, prod.SupplierID,
-			prod.CategoryID, prod.Specs, prod.Status, prod.ID,
+			prod.CategoryID, prod.Status, prod.Specs, prod.ID,
 		),
 	)
 }

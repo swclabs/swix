@@ -3,10 +3,10 @@ package controller
 
 import (
 	"net/http"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/extension/oauth2"
-	"swclabs/swipecore/internal/core/service/base"
-	"swclabs/swipecore/pkg/utils"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/extension/oauth2"
+	"swclabs/swix/internal/core/service/base"
+	"swclabs/swix/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 )

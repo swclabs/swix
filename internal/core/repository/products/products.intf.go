@@ -2,9 +2,9 @@ package products
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/internal/core/domain/enum"
-	"swclabs/swipecore/internal/core/domain/model"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/enum"
+	"swclabs/swix/internal/core/domain/model"
 )
 
 // IProductRepository defines methods to interact with product (Products) data.

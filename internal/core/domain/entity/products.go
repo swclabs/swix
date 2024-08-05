@@ -9,8 +9,8 @@ type Products struct {
 	Price       string    `json:"price" db:"price"`
 	Description string    `json:"description" db:"description"`
 	Name        string    `json:"name" db:"name"`
-	SupplierID  string    `json:"supplier_id" db:"supplier_id"`
-	CategoryID  string    `json:"category_id" db:"category_id"`
+	SupplierID  int64     `json:"supplier_id" db:"supplier_id"`
+	CategoryID  int64     `json:"category_id" db:"category_id"`
 	Specs       string    `json:"specs" db:"specs"`
 	Status      string    `json:"status" db:"status"`
 	Created     time.Time `json:"created" db:"created"`

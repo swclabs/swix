@@ -4,7 +4,7 @@ package sentry
 import (
 	"fmt"
 
-	"swclabs/swipecore/internal/config"
+	"swclabs/swix/internal/config"
 
 	"github.com/getsentry/sentry-go"
 	sentryecho "github.com/getsentry/sentry-go/echo"

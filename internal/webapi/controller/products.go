@@ -4,10 +4,10 @@ package controller
 import (
 	"net/http"
 	"strconv"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/domain/enum"
-	"swclabs/swipecore/internal/core/service/products"
-	"swclabs/swipecore/pkg/lib/valid"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/enum"
+	"swclabs/swix/internal/core/service/products"
+	"swclabs/swix/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )

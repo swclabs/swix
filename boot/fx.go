@@ -2,13 +2,13 @@
 package boot
 
 import (
-	"swclabs/swipecore/internal/core/repository"
-	"swclabs/swipecore/internal/core/service"
-	"swclabs/swipecore/internal/webapi"
-	"swclabs/swipecore/internal/workers"
-	"swclabs/swipecore/pkg/infra/blob"
-	"swclabs/swipecore/pkg/infra/cache"
-	"swclabs/swipecore/pkg/infra/db"
+	"swclabs/swix/internal/core/repository"
+	"swclabs/swix/internal/core/service"
+	"swclabs/swix/internal/webapi"
+	"swclabs/swix/internal/workers"
+	"swclabs/swix/pkg/infra/blob"
+	"swclabs/swix/pkg/infra/cache"
+	"swclabs/swix/pkg/infra/db"
 
 	"go.uber.org/fx"
 )

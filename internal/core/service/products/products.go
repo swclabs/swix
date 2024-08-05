@@ -7,16 +7,16 @@ import (
 	"mime/multipart"
 	"strconv"
 	"strings"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/internal/core/domain/enum"
-	"swclabs/swipecore/internal/core/repository/categories"
-	"swclabs/swipecore/internal/core/repository/inventories"
-	"swclabs/swipecore/internal/core/repository/products"
-	"swclabs/swipecore/internal/core/repository/specifications"
-	"swclabs/swipecore/pkg/infra/blob"
-	"swclabs/swipecore/pkg/lib/errors"
-	"swclabs/swipecore/pkg/utils"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/enum"
+	"swclabs/swix/internal/core/repository/categories"
+	"swclabs/swix/internal/core/repository/inventories"
+	"swclabs/swix/internal/core/repository/products"
+	"swclabs/swix/internal/core/repository/specifications"
+	"swclabs/swix/pkg/infra/blob"
+	"swclabs/swix/pkg/lib/errors"
+	"swclabs/swix/pkg/utils"
 
 	"github.com/shopspring/decimal"
 )
@@ -59,8 +59,7 @@ func (s *ProductService) InsertSpecs(ctx context.Context, specification dtos.Spe
 	if err != nil {
 		return err
 	}
-	pID, _ := strconv.ParseInt(product.CategoryID, 10, 64)
-	category, err := s.Category.GetByID(ctx, pID)
+	category, err := s.Category.GetByID(ctx, product.CategoryID)
 	if err != nil {
 		return err
 	}
@@ -87,16 +86,15 @@ func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category, of
 	if err != nil {
 		return nil, err
 	}
-	var (
-		productView []dtos.ProductView
-	)
+	var productView []dtos.ProductView
 	for _, p := range products {
 		_view := dtos.ProductView{
-			ID:    p.ID,
-			Price: p.Price,
-			Desc:  p.Description,
-			Name:  p.Name,
-			Image: p.Image,
+			ID:       p.ID,
+			Price:    p.Price,
+			Desc:     p.Description,
+			Name:     p.Name,
+			Image:    p.Image,
+			Category: p.CategoryName,
 		}
 		if p.Specs != "" && types&enum.ElectronicDevice != 0 {
 			var specs dtos.ProductSpecs
@@ -324,8 +322,7 @@ func (s *ProductService) GetAllInvStock(ctx context.Context, page int, limit int
 		if err != nil {
 			return nil, err
 		}
-		cID, _ := strconv.ParseInt(product.CategoryID, 10, 64)
-		category, err := s.Category.GetByID(ctx, cID)
+		category, err := s.Category.GetByID(ctx, product.CategoryID)
 		if err != nil {
 			return nil, err
 		}
@@ -365,8 +362,7 @@ func (s *ProductService) Search(ctx context.Context, keyword string) ([]dtos.Pro
 	}
 	var productSchema []dtos.ProductResponse
 	for _, p := range _products {
-		cID, _ := strconv.ParseInt(p.CategoryID, 10, 64)
-		category, err := s.Category.GetByID(ctx, cID)
+		category, err := s.Category.GetByID(ctx, p.CategoryID)
 		if err != nil {
 			return nil, err
 		}
@@ -386,14 +382,23 @@ func (s *ProductService) Search(ctx context.Context, keyword string) ([]dtos.Pro
 
 // UpdateProductInfo implements IProductService.
 func (s *ProductService) UpdateProductInfo(ctx context.Context, product dtos.UpdateProductInfo) error {
-	ID, _ := strconv.Atoi(product.CategoryID)
-	_category, err := s.Category.GetByID(ctx, int64(ID))
-	if err != nil {
-		return fmt.Errorf("category not found %v", err)
+	if product.CategoryID != 0 {
+		_category, err := s.Category.GetByID(ctx, product.CategoryID)
+		if err != nil {
+			return fmt.Errorf("category not found %v", err)
+		}
+		var types enum.Category
+		if err := types.Load(_category.Name); err != nil {
+			return fmt.Errorf("category invalid %v", err)
+		}
 	}
-	var types enum.Category
-	if err := types.Load(_category.Name); err != nil {
-		return fmt.Errorf("category invalid %v", err)
+	var (
+		sampleSpec, _ = json.Marshal(dtos.ProductSpecs{})
+		spec, _       = json.Marshal(product.Specs)
+		sspec         = ""
+	)
+	if string(sampleSpec) != string(spec) {
+		sspec = string(spec)
 	}
 	_product := entity.Products{
 		ID:          product.ID,
@@ -403,6 +408,7 @@ func (s *ProductService) UpdateProductInfo(ctx context.Context, product dtos.Upd
 		SupplierID:  product.SupplierID,
 		CategoryID:  product.CategoryID,
 		Status:      product.Status,
+		Specs:       sspec,
 	}
 	return s.Products.Update(ctx, _product)
 
@@ -434,8 +440,7 @@ func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHea
 
 // CreateProduct implements IProductService.
 func (s *ProductService) CreateProduct(ctx context.Context, products dtos.Product) (int64, error) {
-	ID, _ := strconv.Atoi(products.CategoryID)
-	_category, err := s.Category.GetByID(ctx, int64(ID))
+	_category, err := s.Category.GetByID(ctx, products.CategoryID)
 	if err != nil {
 		return -1, fmt.Errorf("category not found %v", err)
 	}
@@ -492,8 +497,7 @@ func (s *ProductService) InsertInv(ctx context.Context, product dtos.Inventory) 
 	if err != nil {
 		return err
 	}
-	cID, _ := strconv.ParseInt(p.CategoryID, 10, 64)
-	category, err := s.Category.GetByID(ctx, cID)
+	category, err := s.Category.GetByID(ctx, p.CategoryID)
 	if err != nil {
 		return err
 	}
@@ -536,10 +540,9 @@ func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]dto
 				Created:     utils.HanoiTimezone(p.Created),
 				Image:       strings.Split(p.Image, ","),
 			}
-			types         enum.Category
-			categoryID, _ = strconv.ParseInt(p.CategoryID, 10, 64)
+			types enum.Category
 		)
-		category, err := s.Category.GetByID(ctx, categoryID)
+		category, err := s.Category.GetByID(ctx, p.CategoryID)
 		if err != nil {
 			return nil, err
 		}

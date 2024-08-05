@@ -4,9 +4,9 @@ package inventories
 import (
 	"context"
 	"fmt"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/pkg/infra/cache"
-	"swclabs/swipecore/pkg/lib/crypto"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/pkg/infra/cache"
+	"swclabs/swix/pkg/lib/crypto"
 )
 
 var _ IInventoryRepository = (*_Cache)(nil)

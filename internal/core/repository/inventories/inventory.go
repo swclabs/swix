@@ -2,10 +2,10 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/pkg/infra/cache"
-	"swclabs/swipecore/pkg/infra/db"
-	"swclabs/swipecore/pkg/lib/errors"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/pkg/infra/cache"
+	"swclabs/swix/pkg/infra/db"
+	"swclabs/swix/pkg/lib/errors"
 )
 
 var _ IInventoryRepository = (*Inventory)(nil)

@@ -2,8 +2,8 @@
 package router
 
 import (
-	"swclabs/swipecore/internal/workers/handler"
-	"swclabs/swipecore/pkg/lib/worker"
+	"swclabs/swix/internal/workers/handler"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 // Manager struct define the Manager object

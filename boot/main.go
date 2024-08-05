@@ -24,9 +24,9 @@ package main
 
 import (
 	"log"
-	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/webapipipipi"
-	"swclabs/swipecore/internal/types"
+	"swclabs/swix/boot"
+	"swclabs/swix/internal/webapipipipi"
+	"swclabs/swix/internal/types"
 
 	"go.uber.org/fx"
 )
@@ -55,13 +55,13 @@ package boot
 import (
 	"context"
 	"log"
-	"swclabs/swipecore/internal/types"
-	"swclabs/swipecore/pkg/infra/db"
-	"swclabs/swipecore/pkg/lib/logger"
+	"swclabs/swix/internal/types"
+	"swclabs/swix/pkg/infra/db"
+	"swclabs/swix/pkg/lib/logger"
 
 	"go.uber.org/fx"
 
-	_ "swclabs/swipecore/boot/init" // init package deps, like docs, migration
+	_ "swclabs/swix/boot/init" // init package deps, like docs, migration
 )
 
 // IServer connect and run via adapter (webapi, worker, rpc)

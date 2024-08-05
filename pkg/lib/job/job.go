@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"swclabs/swipecore/pkg/lib/logger"
+	"swclabs/swix/pkg/lib/logger"
 )
 
 // Job struct

@@ -2,7 +2,7 @@ package specifications
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/entity"
 )
 
 // ISpecifications represents the interface for Specifications repository.

@@ -1748,7 +1748,7 @@
             ],
             "properties": {
                 "category_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "description": {
                     "type": "string"
@@ -1766,7 +1766,7 @@
                     "type": "string"
                 },
                 "supplier_id": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
@@ -1978,16 +1978,11 @@
         "dtos.UpdateProductInfo": {
             "type": "object",
             "required": [
-                "category_id",
-                "description",
-                "id",
-                "name",
-                "price",
-                "supplier_id"
+                "id"
             ],
             "properties": {
                 "category_id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "description": {
                     "type": "string"
@@ -2001,12 +1996,14 @@
                 "price": {
                     "type": "string"
                 },
-                "specs": {},
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                },
                 "status": {
                     "type": "string"
                 },
                 "supplier_id": {
-                    "type": "string"
+                    "type": "integer"
                 }
             }
         },
