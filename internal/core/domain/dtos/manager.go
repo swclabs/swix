@@ -38,6 +38,15 @@ type User struct {
 	Username    string `json:"username" validate:"required"`
 }
 
+// UserUpdate request, response
+type UserUpdate struct {
+	Email       string `json:"email" validate:"email,required"`
+	PhoneNumber string `json:"phone_number"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Image       string `json:"image"`
+}
+
 // OAuth2SaveUser schema
 type OAuth2SaveUser struct {
 	Email       string `json:"email" validate:"required"`

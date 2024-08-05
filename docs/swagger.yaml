@@ -711,30 +711,6 @@ paths:
             $ref: '#/definitions/dtos.SignUpResponse'
       tags:
       - manager
-  /base/healthcheck:
-    get:
-      consumes:
-      - application/json
-      description: health check api server.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-      tags:
-      - base
-  /base/worker:
-    get:
-      consumes:
-      - application/json
-      description: health check worker consume server.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-      tags:
-      - base
   /categories:
     get:
       consumes:
@@ -890,6 +866,30 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - collections
+  /common/healthcheck:
+    get:
+      consumes:
+      - application/json
+      description: health check api server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - base
+  /common/worker:
+    get:
+      consumes:
+      - application/json
+      description: health check worker consume server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - base
   /inventories:
     delete:
       consumes:

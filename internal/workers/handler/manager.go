@@ -53,7 +53,7 @@ func (manager *Manager) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
 func (manager *Manager) HandleUpdateUserInfo() (string, worker.HandleFunc) {
 	return worker.GetTaskName(manager.UpdateUserInfo),
 		func(_ context.Context, task *asynq.Task) error {
-			var data dtos.User
+			var data dtos.UserUpdate
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}

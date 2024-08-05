@@ -23,11 +23,11 @@ const (
 							ELSE last_name
 						END,
 			image = CASE
-						WHEN $4 <> 0 THEN $4
+						WHEN $4 <> '' THEN $4
 						ELSE image
 					END,
 			phone_number = CASE
-							WHEN $5 <> 0 THEN $5
+							WHEN $5 <> '' THEN $5
 							ELSE phone_number
 						END
 		WHERE email = $1;

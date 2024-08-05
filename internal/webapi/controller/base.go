@@ -35,7 +35,7 @@ func New(services base.IService) IBase {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /base/healthcheck [GET]
+// @Router /common/healthcheck [GET]
 func (b *Base) HealthCheck(c echo.Context) error {
 	return c.JSON(200, b.service.HealthCheck(c.Request().Context()))
 }
@@ -46,7 +46,7 @@ func (b *Base) HealthCheck(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /base/worker [GET]
+// @Router /common/worker [GET]
 func (b *Base) WorkerCheck(c echo.Context) error {
 	results, err := base.UseTask(b.service).WorkerCheckResult(c.Request().Context(), 10)
 	if err != nil {
