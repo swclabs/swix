@@ -3,10 +3,10 @@ package middleware
 
 import (
 	"net/http"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/pkg/lib/crypto"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/pkg/lib/crypto"
 
-	"swclabs/swipecore/pkg/utils"
+	"swclabs/swix/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 )

@@ -12,11 +12,11 @@ import (
 	"log"
 	"os"
 	"sort"
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/webapi"
-	"swclabs/swipecore/internal/workers"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/internal/webapi"
+	"swclabs/swix/internal/workers"
 
-	"swclabs/swipecore/boot"
+	"swclabs/swix/boot"
 
 	"github.com/urfave/cli/v2"
 )

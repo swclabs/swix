@@ -14,11 +14,11 @@ package main
 
 import (
 	"log"
-	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/core/service/base"
-	"swclabs/swipecore/internal/webapi"
-	"swclabs/swipecore/internal/webapi/controller"
-	"swclabs/swipecore/internal/webapi/router"
+	"swclabs/swix/boot"
+	"swclabs/swix/internal/core/service/base"
+	"swclabs/swix/internal/webapi"
+	"swclabs/swix/internal/webapi/controller"
+	"swclabs/swix/internal/webapi/router"
 )
 
 // @title Swipe Public API v0.0.1

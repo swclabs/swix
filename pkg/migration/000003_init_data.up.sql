@@ -63,3 +63,27 @@ INSERT INTO collections (id, created, "position", headline, body) VALUES (3, '20
 INSERT INTO collections (id, created, "position", headline, body) VALUES (4, '2024-08-03 17:26:15.088919', 'phone_1', 'Get to know your iPhone.', '{"src": "/img/posts/4.jpg", "title": "Maps for your iPhone 15 Pro Max.", "content": [{"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}, {"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}, {"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}], "category": "Product"}');
 INSERT INTO collections (id, created, "position", headline, body) VALUES (5, '2024-08-03 17:26:15.088919', 'phone_1', 'Get to know your iPhone.', '{"src": "/img/posts/5.jpg", "title": "Photography just got better.", "content": [{"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}, {"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}, {"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}], "category": "iOS"}');
 INSERT INTO collections (id, created, "position", headline, body) VALUES (6, '2024-08-03 17:26:15.088919', 'phone_1', 'Get to know your iPhone.', '{"src": "/img/posts/6.jpg", "title": "Hiring for a Staff Software Engineer.", "content": [{"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}, {"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}, {"src": "/img/posts/8.jpg", "content": "Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to capture every thought."}], "category": "Hiring"}');
+
+--
+-- TOC entry 3421 (class 0 OID 16538)
+-- Dependencies: 246
+-- Data for Name: inventories; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image) VALUES (2, 1, 10000.0000, 'active', 'VND', 1000, 'Blue Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg');
+INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image) VALUES (3, 1, 10000.0000, 'active', 'VND', 1000, 'Red Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg');
+INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image) VALUES (1, 1, 10000.0000, 'active', 'VND', 5000, 'Grey Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg');
+INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image) VALUES (4, 1, 10000000.0000, 'active', 'VND', 70, 'Black Titanium', 'https://example.com/black-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg');
+
+--
+-- TOC entry 3421 (class 0 OID 16557)
+-- Dependencies: 250
+-- Data for Name: specifications; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO specifications (id, inventory_id, content) VALUES (1, 1, '{"ram": "16", "ssd": "512"}');
+INSERT INTO specifications (id, inventory_id, content) VALUES (2, 1, '{"ram": "32", "ssd": "512"}');
+INSERT INTO specifications (id, inventory_id, content) VALUES (3, 2, '{"ram": "16", "ssd": "512"}');
+INSERT INTO specifications (id, inventory_id, content) VALUES (4, 3, '{"ram": "32", "ssd": "512"}');
+INSERT INTO specifications (id, inventory_id, content) VALUES (5, 4, '{"ram": "8GB", "ssd": "256GB"}');
+INSERT INTO specifications (id, inventory_id, content) VALUES (6, 4, '{"ram": "16GB", "ssd": "512"}');

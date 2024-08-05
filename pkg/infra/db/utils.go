@@ -3,7 +3,7 @@ package db
 
 import (
 	"errors"
-	"swclabs/swipecore/pkg/utils"
+	"swclabs/swix/pkg/utils"
 
 	"github.com/golang-migrate/migrate/v4"
 )

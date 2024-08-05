@@ -3,8 +3,8 @@ package main
 
 import (
 	"log"
-	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/mod/base"
+	"swclabs/swix/boot"
+	"swclabs/swix/internal/mod/base"
 )
 
 func main() {

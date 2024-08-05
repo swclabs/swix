@@ -2,12 +2,12 @@
 package service
 
 import (
-	"swclabs/swipecore/internal/core/service/article"
-	"swclabs/swipecore/internal/core/service/base"
-	"swclabs/swipecore/internal/core/service/classify"
-	"swclabs/swipecore/internal/core/service/manager"
-	"swclabs/swipecore/internal/core/service/products"
-	"swclabs/swipecore/internal/core/service/purchase"
+	"swclabs/swix/internal/core/service/article"
+	"swclabs/swix/internal/core/service/base"
+	"swclabs/swix/internal/core/service/classify"
+	"swclabs/swix/internal/core/service/manager"
+	"swclabs/swix/internal/core/service/products"
+	"swclabs/swix/internal/core/service/purchase"
 
 	"go.uber.org/fx"
 )

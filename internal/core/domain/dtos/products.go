@@ -12,8 +12,8 @@ type ProductRequest struct {
 	Price       string       `json:"price" validate:"required"`
 	Description string       `json:"description" validate:"required"`
 	Name        string       `json:"name" validate:"required"`
-	SupplierID  string       `json:"supplier_id" validate:"number,required"`
-	CategoryID  string       `json:"category_id" validate:"number,required"`
+	SupplierID  int64        `json:"supplier_id" validate:"number,required"`
+	CategoryID  int64        `json:"category_id" validate:"number,required"`
 	Status      string       `json:"status"`
 }
 
@@ -23,8 +23,8 @@ type Product struct {
 	Price       string      `json:"price" validate:"required"`
 	Description string      `json:"description" validate:"required"`
 	Name        string      `json:"name" validate:"required"`
-	SupplierID  string      `json:"supplier_id" validate:"number,required"`
-	CategoryID  string      `json:"category_id" validate:"number,required"`
+	SupplierID  int64       `json:"supplier_id" validate:"number,required"`
+	CategoryID  int64       `json:"category_id" validate:"number,required"`
 	Status      string      `json:"status"`
 }
 
@@ -42,8 +42,14 @@ type ProductResponse struct {
 
 // UpdateProductInfo request, response
 type UpdateProductInfo struct {
-	Product
-	ID int64 `json:"id" validate:"required"`
+	ID          int64        `json:"id" validate:"number,required"`
+	Price       string       `json:"price"`
+	Description string       `json:"description"`
+	Name        string       `json:"name"`
+	SupplierID  int64        `json:"supplier_id" validate:"number,omitempty"`
+	CategoryID  int64        `json:"category_id" validate:"number,omitempty"`
+	Status      string       `json:"status"`
+	Specs       ProductSpecs `json:"specs"`
 }
 
 // CreateProduct response, request
@@ -124,6 +130,7 @@ type ProductView struct {
 	Specs    interface{} `json:"specs"`
 }
 
+// Specifications request, response
 type Specifications struct {
 	InventoryID int64  `json:"inventory_id" validate:"number,required"`
 	RAM         string `json:"ram" validate:"number,required"`

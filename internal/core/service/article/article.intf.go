@@ -3,7 +3,7 @@ package article
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swipecore/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/dtos"
 )
 
 // IArticle : Module for managing article.

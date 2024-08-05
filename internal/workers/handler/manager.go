@@ -4,10 +4,10 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/service/manager"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/service/manager"
 
-	"swclabs/swipecore/pkg/lib/worker"
+	"swclabs/swix/pkg/lib/worker"
 
 	"github.com/hibiken/asynq"
 )

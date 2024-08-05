@@ -2,17 +2,17 @@
 package repository
 
 import (
-	"swclabs/swipecore/internal/core/repository/accounts"
-	"swclabs/swipecore/internal/core/repository/addresses"
-	"swclabs/swipecore/internal/core/repository/carts"
-	"swclabs/swipecore/internal/core/repository/categories"
-	"swclabs/swipecore/internal/core/repository/collections"
-	"swclabs/swipecore/internal/core/repository/inventories"
-	"swclabs/swipecore/internal/core/repository/orders"
-	"swclabs/swipecore/internal/core/repository/products"
-	"swclabs/swipecore/internal/core/repository/specifications"
-	"swclabs/swipecore/internal/core/repository/suppliers"
-	"swclabs/swipecore/internal/core/repository/users"
+	"swclabs/swix/internal/core/repository/accounts"
+	"swclabs/swix/internal/core/repository/addresses"
+	"swclabs/swix/internal/core/repository/carts"
+	"swclabs/swix/internal/core/repository/categories"
+	"swclabs/swix/internal/core/repository/collections"
+	"swclabs/swix/internal/core/repository/inventories"
+	"swclabs/swix/internal/core/repository/orders"
+	"swclabs/swix/internal/core/repository/products"
+	"swclabs/swix/internal/core/repository/specifications"
+	"swclabs/swix/internal/core/repository/suppliers"
+	"swclabs/swix/internal/core/repository/users"
 
 	"go.uber.org/fx"
 )

@@ -4,8 +4,8 @@
 package router
 
 import (
-	"swclabs/swipecore/internal/webapi/controller"
-	"swclabs/swipecore/internal/webapi/middleware"
+	"swclabs/swix/internal/webapi/controller"
+	"swclabs/swix/internal/webapi/middleware"
 
 	"github.com/labstack/echo/v4"
 )

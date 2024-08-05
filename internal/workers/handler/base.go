@@ -5,9 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"swclabs/swipecore/internal/core/service/base"
+	"swclabs/swix/internal/core/service/base"
 
-	"swclabs/swipecore/pkg/lib/worker"
+	"swclabs/swix/pkg/lib/worker"
 
 	"github.com/hibiken/asynq"
 )

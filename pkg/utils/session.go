@@ -4,7 +4,7 @@ package utils
 import (
 	"sync"
 
-	"swclabs/swipecore/internal/config"
+	"swclabs/swix/internal/config"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"

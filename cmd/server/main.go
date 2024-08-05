@@ -6,10 +6,10 @@
 package main
 
 import (
-	"swclabs/swipecore/boot"
-	_ "swclabs/swipecore/boot/init"
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/webapi"
+	"swclabs/swix/boot"
+	_ "swclabs/swix/boot/init"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/internal/webapi"
 )
 
 func main() {

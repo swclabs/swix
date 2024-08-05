@@ -1,4 +1,4 @@
-module swclabs/swipecore
+module swclabs/swix
 
 go 1.22.5
 

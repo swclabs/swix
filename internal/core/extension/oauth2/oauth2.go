@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/pkg/utils"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/pkg/utils"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/labstack/echo/v4"

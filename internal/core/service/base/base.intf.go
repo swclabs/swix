@@ -2,7 +2,7 @@ package base
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/dtos"
 )
 
 // IService : base utility methods for the service.

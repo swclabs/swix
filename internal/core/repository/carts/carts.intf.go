@@ -2,7 +2,7 @@ package carts
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/entity"
 )
 
 // ICartRepository implement all method of Carts To access database

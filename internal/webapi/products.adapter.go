@@ -3,8 +3,8 @@
 package webapi
 
 import (
-	"swclabs/swipecore/internal/types"
-	"swclabs/swipecore/internal/webapi/router"
+	"swclabs/swix/internal/types"
+	"swclabs/swix/internal/webapi/router"
 )
 
 type _ProductsAdapter struct {

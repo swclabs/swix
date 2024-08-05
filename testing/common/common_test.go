@@ -3,10 +3,10 @@ package test
 import (
 	"fmt"
 	"maps"
-	"swclabs/swipecore/pkg/lib/crypto"
+	"swclabs/swix/pkg/lib/crypto"
 	"testing"
 
-	"swclabs/swipecore/pkg/utils"
+	"swclabs/swix/pkg/utils"
 )
 
 func TestHash(t *testing.T) {

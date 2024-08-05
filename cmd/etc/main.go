@@ -3,7 +3,7 @@ package main
 
 import (
 	"fmt"
-	"swclabs/swipecore/pkg/lib/logger"
+	"swclabs/swix/pkg/lib/logger"
 	"time"
 
 	"go.uber.org/zap"

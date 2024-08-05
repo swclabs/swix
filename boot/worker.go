@@ -3,8 +3,8 @@ package boot
 
 import (
 	"strconv"
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/types"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/internal/types"
 )
 
 /*
@@ -12,7 +12,7 @@ import (
  *	package main
  *	import (
  *		"log"
- *		"swclabs/swipecore/boot"
+ *		"swclabs/swix/boot"
  *  )
  * 	func main() {
  *		w := boot.NewWorker()

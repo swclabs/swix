@@ -2,7 +2,7 @@ package accounts
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/entity"
 )
 
 // IAccountRepository implements all methods of Account to access the database.

@@ -49,23 +49,23 @@ const (
 							ELSE description
 						END,
 			supplier_id = CASE
-							WHEN $4 <> '' THEN $4
+							WHEN $4 <> 0 THEN $4
 							ELSE supplier_id
 						END,
 			category_id = CASE
-							WHEN $5 <> '' THEN $5
+							WHEN $5 <> 0 THEN $5
 							ELSE category_id
 						END,
-			spec = CASE
+			status = CASE
 						WHEN $6 <> '' THEN $6
-						ELSE spec
-					END,
-			satus = CASE
-						WHEN $7 <> '' THEN $7
 						ELSE status
 					END,
-			created = now() AT TIME ZONE 'utc',
-		WHERE id = $7;
+			specs = CASE
+						WHEN $7 <> '' THEN $7::jsonb
+						ELSE specs
+					END,
+			created = now() AT TIME ZONE 'utc'
+		WHERE id = $8;
 	`
 	searchByKeyword = `
 		SELECT *

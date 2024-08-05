@@ -2,7 +2,7 @@ package collections
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/entity"
 )
 
 // ICollections Bind form json data to structure data

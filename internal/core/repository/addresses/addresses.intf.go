@@ -2,7 +2,7 @@ package addresses
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/entity"
 )
 
 // IAddressRepository implements all methods to access the Addresses data in the database.

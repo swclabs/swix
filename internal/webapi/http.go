@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/webapi/middleware"
-	"swclabs/swipecore/internal/webapi/router"
-	"swclabs/swipecore/pkg/infra/sentry"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/internal/webapi/middleware"
+	"swclabs/swix/internal/webapi/router"
+	"swclabs/swix/pkg/infra/sentry"
 
 	"github.com/labstack/echo/v4"
 )

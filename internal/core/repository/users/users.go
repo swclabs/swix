@@ -5,10 +5,10 @@ import (
 	"context"
 	"errors"
 
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/internal/core/domain/model"
-	"swclabs/swipecore/pkg/infra/cache"
-	"swclabs/swipecore/pkg/infra/db"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
+	"swclabs/swix/pkg/infra/cache"
+	"swclabs/swix/pkg/infra/db"
 )
 
 // Users repository implementation

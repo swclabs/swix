@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"swclabs/swipecore/internal/config"
+	"swclabs/swix/internal/config"
 
 	"github.com/golang-jwt/jwt/v5"
 )

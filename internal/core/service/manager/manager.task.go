@@ -3,12 +3,12 @@ package manager
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/core/domain/dtos"
-	"swclabs/swipecore/internal/core/domain/entity"
-	"swclabs/swipecore/internal/core/domain/model"
-	"swclabs/swipecore/internal/workers/queue"
-	"swclabs/swipecore/pkg/lib/worker"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
+	"swclabs/swix/internal/workers/queue"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 var _ IManager = (*Task)(nil)

@@ -2,10 +2,10 @@
 package workers
 
 import (
-	"swclabs/swipecore/internal/workers/handler"
-	"swclabs/swipecore/internal/workers/queue"
-	"swclabs/swipecore/internal/workers/router"
-	"swclabs/swipecore/pkg/lib/worker"
+	"swclabs/swix/internal/workers/handler"
+	"swclabs/swix/internal/workers/queue"
+	"swclabs/swix/internal/workers/router"
+	"swclabs/swix/pkg/lib/worker"
 
 	"go.uber.org/fx"
 )

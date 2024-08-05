@@ -366,7 +366,7 @@ definitions:
   dtos.ProductRequest:
     properties:
       category_id:
-        type: string
+        type: integer
       description:
         type: string
       name:
@@ -378,7 +378,7 @@ definitions:
       status:
         type: string
       supplier_id:
-        type: string
+        type: integer
     required:
     - category_id
     - description
@@ -525,7 +525,7 @@ definitions:
   dtos.UpdateProductInfo:
     properties:
       category_id:
-        type: string
+        type: integer
       description:
         type: string
       id:
@@ -534,18 +534,14 @@ definitions:
         type: string
       price:
         type: string
-      specs: {}
+      specs:
+        $ref: '#/definitions/dtos.ProductSpecs'
       status:
         type: string
       supplier_id:
-        type: string
+        type: integer
     required:
-    - category_id
-    - description
     - id
-    - name
-    - price
-    - supplier_id
     type: object
   dtos.UploadArticle:
     properties:

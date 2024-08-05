@@ -3,7 +3,7 @@ package purchase
 
 import (
 	"context"
-	"swclabs/swipecore/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/dtos"
 )
 
 // IPurchaseService : Module for Purchasing.

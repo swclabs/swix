@@ -13,15 +13,15 @@ import (
 	"log"
 	"os"
 	"sort"
-	"swclabs/swipecore/boot"
-	"swclabs/swipecore/internal/config"
-	"swclabs/swipecore/internal/webapi"
-	"swclabs/swipecore/internal/workers"
+	"swclabs/swix/boot"
+	"swclabs/swix/internal/config"
+	"swclabs/swix/internal/webapi"
+	"swclabs/swix/internal/workers"
 
 	"github.com/urfave/cli/v2"
 
-	_ "swclabs/swipecore/boot/init"
-	_ "swclabs/swipecore/docs"
+	_ "swclabs/swix/boot/init"
+	_ "swclabs/swix/docs"
 )
 
 var command = []*cli.Command{
