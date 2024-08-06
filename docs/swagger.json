@@ -894,7 +894,7 @@
                 ],
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "number",
                         "description": "user id",
                         "name": "uid",
                         "in": "query",
@@ -955,15 +955,8 @@
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "user id",
-                        "name": "uid",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "inventories id",
-                        "name": "wid",
+                        "description": "cart id",
+                        "name": "id",
                         "in": "query",
                         "required": true
                     }
@@ -1261,6 +1254,9 @@
                 "quantity": {
                     "type": "integer"
                 },
+                "spec_id": {
+                    "type": "integer"
+                },
                 "user_id": {
                     "type": "integer"
                 }
@@ -1274,6 +1270,9 @@
                 },
                 "category": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "img": {
                     "type": "string"
@@ -1502,6 +1501,9 @@
         "dtos.InvSpecification": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "integer"
+                },
                 "ram": {
                     "type": "string"
                 },

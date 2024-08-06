@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/purchase"
 	"swclabs/swix/pkg/lib/valid"
@@ -71,6 +72,11 @@ func (purchase *Purchase) GetOrders(c echo.Context) error {
 
 	orders, err := purchase.services.GetOrdersByUserID(c.Request().Context(), userID, int(limit))
 	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -100,6 +106,11 @@ func (purchase *Purchase) CreateOrder(c echo.Context) error {
 	}
 	msg, err := purchase.services.CreateOrders(c.Request().Context(), orderReq)
 	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -130,12 +141,17 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 		})
 	}
 	if err := purchase.services.AddToCart(c.Request().Context(), cartReq); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	return c.JSON(http.StatusCreated, dtos.OK{
-		Msg: "your item has been update successfully",
+		Msg: "your item has been added to cart successfully",
 	})
 }
 
@@ -144,7 +160,7 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param uid query string true "user id"
+// @Param uid query number true "user id"
 // @Success 200 {object} dtos.CartSlices
 // @Router /purchase/carts [GET]
 func (purchase *Purchase) GetCarts(c echo.Context) error {
@@ -162,6 +178,11 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 	}
 	items, err := purchase.services.GetCart(c.Request().Context(), userID, 10)
 	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -174,39 +195,23 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param uid query int true "user id"
-// @Param wid query int true "inventories id"
+// @Param id query int true "cart id"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/carts [DELETE]
 func (purchase *Purchase) DeleteItem(c echo.Context) error {
-	var (
-		ids  = make(map[string]string)
-		iIDs = make(map[string]int64)
-	)
-	const (
-		uid = "uid"
-		wid = "wid"
-	)
-	ids[uid] = c.QueryParam(uid)
-	ids[wid] = c.QueryParam(wid)
-
-	for key, param := range ids {
-		if param == "" {
-			return c.JSON(http.StatusBadRequest, dtos.Error{
-				Msg: fmt.Sprintf("missing param '%s' required", key),
-			})
-		}
-		id, err := strconv.ParseInt(param, 10, 64)
-		if err != nil {
-			return c.JSON(http.StatusBadRequest, dtos.Error{
-				Msg: fmt.Sprintf(" param '%s' must be integer", key),
-			})
-		}
-		iIDs[key] = id
+	cID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "'id' must be a positive integer",
+		})
 	}
-
-	if err := purchase.services.
-		DeleteItemFromCart(c.Request().Context(), iIDs[uid], iIDs[wid]); err != nil {
+	if err := purchase.
+		services.DeleteItemFromCart(c.Request().Context(), cID); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})

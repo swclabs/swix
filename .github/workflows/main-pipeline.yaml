@@ -3,10 +3,10 @@ name: tag docker image with Git
 on:
   push:
     branches:
-      - main
+      - staging
 
 env:
-  IMAGE_NAME: swipe-api
+  IMAGE_NAME: swix
 
 jobs:
   build:
@@ -87,6 +87,23 @@ jobs:
 
       - name: Unit test - products
         run: bash hack/swipe run -t products
+
+  test-article:
+    needs: [build]
+    name: unit test article module
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.21
+
+      - name: Unit test - article
+        run: bash hack/swipe run -t article
 
   build-docker:
     needs: [test-common, test-classify, test-products]

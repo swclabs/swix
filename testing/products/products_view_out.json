@@ -1,6 +1,6 @@
 {
     "level": "info",
-    "time": 1722766439.640682,
+    "time": 1722933848.7555747,
     "message": "Response body",
     "body": [
         {
@@ -9,6 +9,7 @@
             "price": "1.000.000 - 2.000.000",
             "desc": "iPhone 12",
             "image": "https://example.com/iphone-12.jpg",
+            "category": "phone",
             "specs": {
                 "display": "Super Retina XDR display",
                 "screen": "6.1 inch"
@@ -20,6 +21,7 @@
             "price": "2.000.000 - 3.000.000",
             "desc": "iPhone 12 Pro",
             "image": "https://example.com/iphone-12-pro.jpg",
+            "category": "phone",
             "specs": {
                 "display": "Super Retina XDR display",
                 "screen": "6.7 inch"
@@ -31,6 +33,7 @@
             "price": "1.000.000 - 2.000.000",
             "desc": "iPhone 12 Mini",
             "image": "https://example.com/iphone-12-mini.jpg",
+            "category": "phone",
             "specs": {
                 "display": "Super Retina XDR display",
                 "screen": "5.4 inch"

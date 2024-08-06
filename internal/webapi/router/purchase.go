@@ -30,6 +30,7 @@ func NewPurchase(controllers controller.IPurchase) IPurchase {
 func (p *Purchase) Routers(e *echo.Echo) {
 	e.POST("/purchase/carts", p.controllers.AddToCarts)
 	e.GET("/purchase/carts", p.controllers.GetCarts)
+	e.DELETE("/purchase/carts/:id", p.controllers.DeleteItem)
 
 	e.GET("/purchase/orders", p.controllers.GetOrders)
 	e.POST("/purchase/orders", p.controllers.CreateOrder)

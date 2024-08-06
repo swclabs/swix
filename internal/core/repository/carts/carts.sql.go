@@ -2,8 +2,10 @@ package carts
 
 const (
 	insertItemToCart = `
-		INSERT INTO carts (user_id, inventory_id, quantity)
-		VALUES ($1, $2, $3);
+		INSERT INTO carts (user_id, inventory_id, quantity, spec_id)
+		VALUES ($1, $2, $3, $4)
+		ON CONFLICT (inventory_id, user_id, spec_id)
+		DO UPDATE SET quantity = carts.quantity + EXCLUDED.quantity;
 	`
 
 	selectByUserID = `
@@ -14,6 +16,6 @@ const (
 
 	deleteItem = `
 		DELETE FROM carts 
-		WHERE users_id = $1 AND inventory_id = $2
+		WHERE id = $1;
 	`
 )

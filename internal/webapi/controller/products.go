@@ -2,8 +2,10 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/enum"
 	"swclabs/swix/internal/core/service/products"
@@ -64,6 +66,11 @@ func (p *Products) InsertInvSpecs(c echo.Context) error {
 		})
 	}
 	if err := p.Services.InsertSpecs(c.Request().Context(), invSpec); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -90,6 +97,11 @@ func (p *Products) GetProductView(c echo.Context) error {
 	}
 	product, err := p.Services.ViewDataOf(c.Request().Context(), types, 0)
 	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -143,6 +155,11 @@ func (p *Products) UpdateInv(c echo.Context) error {
 		})
 	}
 	if err := p.Services.UpdateInv(c.Request().Context(), inventory); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -176,6 +193,11 @@ func (p *Products) UploadInvImage(c echo.Context) error {
 		})
 	}
 	if err := p.Services.UploadInvStockImage(c.Request().Context(), id, files); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -207,6 +229,11 @@ func (p *Products) DeleteInv(c echo.Context) error {
 		})
 	}
 	if err := p.Services.DeleteInvByID(c.Request().Context(), id); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -240,6 +267,11 @@ func (p *Products) GetStock(c echo.Context) error {
 	}
 	stock, err := p.Services.GetAllInvStock(c.Request().Context(), page, limit)
 	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -268,6 +300,11 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 		})
 	}
 	if err := p.Services.UpdateProductInfo(c.Request().Context(), payload); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -295,6 +332,11 @@ func (p *Products) GetInvDetails(c echo.Context) error {
 
 	product, err := p.Services.GetInvByID(c.Request().Context(), int64(ID))
 	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -319,6 +361,11 @@ func (p *Products) GetProductLimit(c echo.Context) error {
 	}
 	prd, err := p.Services.GetProductsLimit(c.Request().Context(), _limit)
 	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -350,6 +397,11 @@ func (p *Products) DeleteProduct(c echo.Context) error {
 		})
 	}
 	if err := p.Services.DeleteProductByID(c.Request().Context(), id); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -386,6 +438,11 @@ func (p *Products) UploadProductImage(c echo.Context) error {
 	}
 	// call services
 	if err := p.Services.UploadProductImage(c.Request().Context(), id, files); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -426,15 +483,20 @@ func (p *Products) CreateProduct(c echo.Context) error {
 		CategoryID:  productReq.CategoryID,
 		Status:      productReq.Status,
 	}
-	id, err := p.Services.CreateProduct(c.Request().Context(), product)
+	ID, err := p.Services.CreateProduct(c.Request().Context(), product)
 	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	return c.JSON(http.StatusCreated, dtos.CreateProduct{
 		Msg: "upload product successfully",
-		ID:  id,
+		ID:  ID,
 	})
 }
 
@@ -458,18 +520,22 @@ func (p *Products) AddInv(c echo.Context) error {
 			Msg: validate.Error(),
 		})
 	}
-	if err := p.Services.InsertInv(c.Request().Context(),
-		dtos.Inventory{
-			ProductID:    req.ProductID,
-			Price:        req.Price,
-			Available:    req.Available,
-			CurrencyCode: req.CurrencyCode,
-			ColorImg:     req.ColorImg,
-			Color:        req.Color,
-			Status:       req.Status,
-			Image:        req.Image,
-			Specs:        req.Specs,
-		}); err != nil {
+	if err := p.Services.InsertInv(c.Request().Context(), dtos.Inventory{
+		ProductID:    req.ProductID,
+		Price:        req.Price,
+		Available:    req.Available,
+		CurrencyCode: req.CurrencyCode,
+		ColorImg:     req.ColorImg,
+		Color:        req.Color,
+		Status:       req.Status,
+		Image:        req.Image,
+		Specs:        req.Specs,
+	}); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})

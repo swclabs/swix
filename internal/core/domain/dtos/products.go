@@ -60,6 +60,7 @@ type CreateProduct struct {
 
 // InvSpecification request, response
 type InvSpecification struct {
+	ID  int64  `json:"id"`
 	RAM string `json:"ram"`
 	SSD string `json:"ssd"`
 }

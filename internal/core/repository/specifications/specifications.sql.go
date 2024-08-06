@@ -11,4 +11,10 @@ const (
 		INSERT INTO specifications (inventory_id, content)
 		VALUES ($1, $2)
 	`
+
+	getByID = `
+		SELECT *
+		FROM specifications
+		WHERE id = $1;
+	`
 )

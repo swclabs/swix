@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mime/multipart"
+	"net/http"
 	"strconv"
 	"strings"
 	"swclabs/swix/internal/core/domain/dtos"
@@ -65,10 +66,10 @@ func (s *ProductService) InsertSpecs(ctx context.Context, specification dtos.Spe
 	}
 	var types enum.Category
 	if err := types.Load(category.Name); err != nil {
-		return err
+		return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 	}
 	if types&enum.ElectronicDevice == 0 {
-		return fmt.Errorf("category not support specification")
+		return fmt.Errorf("[code %d] category not support specification", http.StatusBadRequest)
 	}
 	content, _ := json.Marshal(dtos.InvSpecification{
 		RAM: specification.RAM,
@@ -99,7 +100,7 @@ func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category, of
 		if p.Specs != "" && types&enum.ElectronicDevice != 0 {
 			var specs dtos.ProductSpecs
 			if err := json.Unmarshal([]byte(p.Specs), &specs); err != nil {
-				return nil, err
+				return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 			}
 			_view.Specs = specs
 		}
@@ -132,18 +133,18 @@ func (s *ProductService) GetInvByID(ctx context.Context, inventoryID int64) (*dt
 			Image:        strings.Split(stock.Image, ","),
 			Specs:        nil,
 		}
-		invID, _ = strconv.ParseInt(result.ProductID, 10, 64)
-		specs    []dtos.InvSpecification
+		specs []dtos.InvSpecification
 	)
-	specOfproduct, err := s.Specs.GetByInventoryID(ctx, invID)
+	specOfproduct, err := s.Specs.GetByInventoryID(ctx, inventoryID)
 	if err != nil {
 		return nil, err
 	}
 	for _, spec := range specOfproduct {
 		var _spec dtos.InvSpecification
 		if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 		}
+		_spec.ID = spec.ID
 		specs = append(specs, _spec)
 	}
 	result.Specs = specs
@@ -201,7 +202,7 @@ func (s *ProductService) ProductDetailOf(ctx context.Context, productID int64) (
 		for _, spec := range specOfproduct {
 			var _spec dtos.InvSpecification
 			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-				return nil, err
+				return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 			}
 			specs = append(specs, _spec)
 		}
@@ -261,7 +262,7 @@ func (s *ProductService) UpdateInv(ctx context.Context, inventory dtos.InvUpdate
 // UploadInvStockImage implements IProductService.
 func (s *ProductService) UploadInvStockImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
-		return fmt.Errorf("missing image file")
+		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
 	for _, fileheader := range fileHeader {
 		file, err := fileheader.Open()
@@ -389,7 +390,7 @@ func (s *ProductService) UpdateProductInfo(ctx context.Context, product dtos.Upd
 		}
 		var types enum.Category
 		if err := types.Load(_category.Name); err != nil {
-			return fmt.Errorf("category invalid %v", err)
+			return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 		}
 	}
 	var (
@@ -417,7 +418,7 @@ func (s *ProductService) UpdateProductInfo(ctx context.Context, product dtos.Upd
 // UploadProductImage implements IProductService.
 func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
-		return fmt.Errorf("missing image file")
+		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
 	for _, fileheader := range fileHeader {
 		file, err := fileheader.Open()
@@ -461,7 +462,7 @@ func (s *ProductService) CreateProduct(ctx context.Context, products dtos.Produc
 	if products.Specs != nil && types&enum.ElectronicDevice != 0 {
 		var specs, ok = products.Specs.(dtos.ProductSpecs)
 		if !ok {
-			return -1, fmt.Errorf("invalid specifications")
+			return -1, fmt.Errorf("[code: %d] invalid specifications", http.StatusBadRequest)
 		}
 		specsByte, _ := json.Marshal(specs)
 		prd.Specs = string(specsByte)
@@ -502,7 +503,7 @@ func (s *ProductService) InsertInv(ctx context.Context, product dtos.Inventory) 
 		return err
 	}
 	if err := types.Load(category.Name); err != nil {
-		return err
+		return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 	}
 	invID, err := s.Inventory.InsertProduct(ctx, inventory)
 	if err != nil {
@@ -547,7 +548,7 @@ func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]dto
 			return nil, err
 		}
 		if err := types.Load(category.Name); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 		}
 		product.Category = category.Name
 		productResponse = append(productResponse, product)
