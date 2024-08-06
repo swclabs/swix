@@ -1,14 +1,15 @@
 {
     "level": "info",
-    "time": 1722765993.6562812,
+    "time": 1722933848.754545,
     "message": "Response body",
     "body": {
-        "id": "1",
+        "id": 1,
         "product_name": "iPhone 12",
         "product_id": "1",
         "price": "10000",
         "available": "1000",
         "currency_code": "VND",
+        "category": "",
         "color_img": "https://example.com/black-titanium.jpg",
         "color": "Black Titanium",
         "status": "active",
@@ -18,6 +19,7 @@
         ],
         "specs": [
             {
+                "id": 1,
                 "ram": "8GB",
                 "ssd": "256GB"
             }

@@ -901,7 +901,7 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "number",
                         "description": "user id",
                         "name": "uid",
                         "in": "query",
@@ -962,15 +962,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "user id",
-                        "name": "uid",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "inventories id",
-                        "name": "wid",
+                        "description": "cart id",
+                        "name": "id",
                         "in": "query",
                         "required": true
                     }
@@ -1268,6 +1261,9 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer"
                 },
+                "spec_id": {
+                    "type": "integer"
+                },
                 "user_id": {
                     "type": "integer"
                 }
@@ -1281,6 +1277,9 @@ const docTemplate = `{
                 },
                 "category": {
                     "type": "string"
+                },
+                "id": {
+                    "type": "integer"
                 },
                 "img": {
                     "type": "string"
@@ -1509,6 +1508,9 @@ const docTemplate = `{
         "dtos.InvSpecification": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "integer"
+                },
                 "ram": {
                     "type": "string"
                 },

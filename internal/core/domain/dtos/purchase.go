@@ -2,6 +2,7 @@ package dtos
 
 // CartSchema schema request, response
 type CartSchema struct {
+	ID          int64  `json:"id"`
 	Img         string `json:"img"`
 	ProductName string `json:"product_name"`
 	Amount      string `json:"amount" db:"amount"`
@@ -20,6 +21,7 @@ type CartInsert struct {
 	UserID      int64 `json:"user_id" validate:"required"`
 	InventoryID int64 `json:"inventory_id" validate:"required"`
 	Quantity    int64 `json:"quantity" validate:"required"`
+	SpecID      int64 `json:"spec_id"`
 }
 
 // ProductOrderSchema is the schema for product in order

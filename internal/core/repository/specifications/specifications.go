@@ -20,6 +20,19 @@ type Specifications struct {
 	db db.IDatabase
 }
 
+// GetByID implements ISpecifications.
+func (s *Specifications) GetByID(ctx context.Context, ID int64) (*entity.Specifications, error) {
+	row, err := s.db.Query(ctx, getByID, ID)
+	if err != nil {
+		return nil, err
+	}
+	specs, err := db.CollectOneRow[entity.Specifications](row)
+	if err != nil {
+		return nil, err
+	}
+	return &specs, nil
+}
+
 // GetByInventoryID implements ISpecifications.
 func (s *Specifications) GetByInventoryID(ctx context.Context, inventoryID int64) ([]entity.Specifications, error) {
 	rows, err := s.db.Query(ctx, getByInventoryID, inventoryID)

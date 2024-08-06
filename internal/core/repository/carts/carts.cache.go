@@ -26,11 +26,11 @@ func (c *_cache) GetCartByUserID(ctx context.Context, userID int64, limit int) (
 }
 
 // Insert implements ICartRepository.
-func (c *_cache) Insert(ctx context.Context, userID int64, inventoryID int64, quantity int64) error {
-	return c.cart.Insert(ctx, userID, inventoryID, quantity)
+func (c *_cache) Insert(ctx context.Context, cart entity.Carts) error {
+	return c.cart.Insert(ctx, cart)
 }
 
 // RemoveItem implements ICartRepository.
-func (c *_cache) RemoveItem(ctx context.Context, inventoryID int64, userID int64) error {
-	return c.cart.RemoveItem(ctx, inventoryID, userID)
+func (c *_cache) RemoveItem(ctx context.Context, ID int64) error {
+	return c.cart.RemoveItem(ctx, ID)
 }

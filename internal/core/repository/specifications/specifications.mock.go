@@ -14,6 +14,11 @@ type Mock struct {
 	mock.Mock
 }
 
+// GetByID implements ISpecifications.
+func (m *Mock) GetByID(ctx context.Context, _ int64) (*entity.Specifications, error) {
+	panic("unimplemented")
+}
+
 // GetByInventoryID implements ISpecifications.
 func (m *Mock) GetByInventoryID(ctx context.Context, inventoryID int64) ([]entity.Specifications, error) {
 	args := m.Called(ctx, inventoryID)

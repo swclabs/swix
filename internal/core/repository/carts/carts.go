@@ -41,15 +41,13 @@ func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) ([
 }
 
 // Insert implements domain.ICartRepository.
-func (c *Carts) Insert(ctx context.Context, userID int64, inventoryID int64, quantity int64) error {
+func (c *Carts) Insert(ctx context.Context, cart entity.Carts) error {
 	return c.db.SafeWrite(ctx, insertItemToCart,
-		userID, inventoryID, quantity,
+		cart.UserID, cart.InventoryID, cart.Quantity, cart.SpecID,
 	)
 }
 
 // RemoveItem implements domain.ICartRepository.
-func (c *Carts) RemoveItem(ctx context.Context, inventoryID int64, userID int64) error {
-	return c.db.SafeWrite(ctx, deleteItem,
-		userID, inventoryID,
-	)
+func (c *Carts) RemoveItem(ctx context.Context, ID int64) error {
+	return c.db.SafeWrite(ctx, deleteItem, ID)
 }

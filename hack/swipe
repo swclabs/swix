@@ -94,7 +94,7 @@ function run_command() {
     }
 
     test(){
-        white_list=("common" "classify" "products")
+        white_list=("common" "classify" "products" "article")
         input_value="$TEST_MODULE"
 
         FOUND=0
@@ -110,6 +110,7 @@ function run_command() {
             echo "  common"
             echo "  article"
             echo "  products"
+            echo "  classify"
             exit 1
         fi
 

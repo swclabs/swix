@@ -71,7 +71,9 @@ CREATE TABLE "carts" (
   "id" bigserial PRIMARY KEY,
   "user_id" bigint NOT NULL,
   "inventory_id" bigint NOT NULL,
-  "quantity" bigint NOT NULL
+  "quantity" bigint NOT NULL,
+  "spec_id" bigint,
+  CONSTRAINT unique_inventory UNIQUE (inventory_id, user_id, spec_id)
 );
 
 CREATE TABLE "orders" (

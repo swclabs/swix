@@ -43,6 +43,8 @@ definitions:
         type: integer
       quantity:
         type: integer
+      spec_id:
+        type: integer
       user_id:
         type: integer
     required:
@@ -56,6 +58,8 @@ definitions:
         type: string
       category:
         type: string
+      id:
+        type: integer
       img:
         type: string
       product_name:
@@ -206,6 +210,8 @@ definitions:
     type: object
   dtos.InvSpecification:
     properties:
+      id:
+        type: integer
       ram:
         type: string
       ssd:
@@ -1205,14 +1211,9 @@ paths:
       - application/json
       description: delete item from carts
       parameters:
-      - description: user id
+      - description: cart id
         in: query
-        name: uid
-        required: true
-        type: integer
-      - description: inventories id
-        in: query
-        name: wid
+        name: id
         required: true
         type: integer
       produces:
@@ -1233,7 +1234,7 @@ paths:
         in: query
         name: uid
         required: true
-        type: string
+        type: number
       produces:
       - application/json
       responses:

@@ -27,6 +27,7 @@ var e = echo.New()
 func TestGetInventory(t *testing.T) {
 	var (
 		spec = dtos.InvSpecification{
+			ID:  1,
 			RAM: "8GB",
 			SSD: "256GB",
 		}
