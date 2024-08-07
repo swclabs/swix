@@ -32,6 +32,6 @@ func (p *Article) Routers(e *echo.Echo) {
 	e.POST("/collections", p.controller.UploadArticle)
 	e.PUT("/collections/img", p.controller.UpdateCollectionsImage)
 
-	e.GET("/collections/headline", p.controller.GetSlicesOfHeadlineBanner)
-	e.POST("/collections/headline", p.controller.UploadHeadlineBanner)
+	e.GET("/collections/message", p.controller.GetMessage)
+	e.POST("/collections/message", p.controller.UploadMessage)
 }

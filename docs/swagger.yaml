@@ -76,13 +76,6 @@ definitions:
       user_id:
         type: integer
     type: object
-  dtos.CollectionUpload:
-    properties:
-      id:
-        type: integer
-      msg:
-        type: string
-    type: object
   dtos.CreateOrderSchema:
     properties:
       product:
@@ -137,45 +130,6 @@ definitions:
   dtos.Error:
     properties:
       msg:
-        type: string
-    type: object
-  dtos.HeadlineBanner:
-    properties:
-      body:
-        $ref: '#/definitions/dtos.HeadlineBannerBody'
-      created:
-        type: string
-      position:
-        type: string
-    required:
-    - body
-    - position
-    type: object
-  dtos.HeadlineBannerBody:
-    properties:
-      headline:
-        type: string
-    required:
-    - headline
-    type: object
-  dtos.HeadlineBannerSlicesBody:
-    properties:
-      created:
-        type: string
-      headline:
-        type: string
-      id:
-        type: integer
-    required:
-    - headline
-    type: object
-  dtos.HeadlineBanners:
-    properties:
-      headlines:
-        items:
-          $ref: '#/definitions/dtos.HeadlineBannerSlicesBody'
-        type: array
-      position:
         type: string
     type: object
   dtos.InvDetail:
@@ -305,6 +259,18 @@ definitions:
     - email
     - success
     - token
+    type: object
+  dtos.Message:
+    properties:
+      content:
+        items:
+          type: string
+        type: array
+      position:
+        type: string
+    required:
+    - content
+    - position
     type: object
   dtos.OK:
     properties:
@@ -799,52 +765,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dtos.CollectionUpload'
-      tags:
-      - collections
-  /collections/headline:
-    get:
-      consumes:
-      - application/json
-      description: get list of headline banner
-      parameters:
-      - description: position of collections
-        in: query
-        name: position
-        required: true
-        type: string
-      - description: limit headline of collections
-        in: query
-        name: limit
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.HeadlineBanners'
-      tags:
-      - collections
-    post:
-      consumes:
-      - application/json
-      description: create headline banner into collections
-      parameters:
-      - description: headline banner data request
-        in: body
-        name: banner
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.HeadlineBanner'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/dtos.OK'
+            $ref: '#/definitions/dtos.Message'
       tags:
       - collections
   /collections/img:
@@ -868,6 +789,51 @@ paths:
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - collections
+  /collections/message:
+    get:
+      consumes:
+      - application/json
+      description: get list of headline banner
+      parameters:
+      - description: position of collections
+        in: query
+        name: position
+        required: true
+        type: string
+      - description: limit headline of collections
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Message'
+      tags:
+      - collections
+    post:
+      consumes:
+      - application/json
+      description: create headline banner into collections
+      parameters:
+      - description: headline banner data request
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.Message'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:

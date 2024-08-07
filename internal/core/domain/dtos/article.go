@@ -6,29 +6,17 @@ type CollectionUpload struct {
 	ID  int64  `json:"id"`
 }
 
-// HeadlineBannerBody request, response
-type HeadlineBannerBody struct {
-	Headline string `json:"headline" validate:"required"`
+type Headline struct {
+	Content []string `json:"content"`
 }
 
-// HeadlineBannerSlicesBody request, response
-type HeadlineBannerSlicesBody struct {
-	HeadlineBannerBody
-	ID      int64  `json:"id"`
-	Created string `json:"created"`
+type HeadlineContent struct {
+	Content string `json:"content"`
 }
 
-// HeadlineBanner user body request & response
-type HeadlineBanner struct {
-	Position string             `json:"position" validate:"required"`
-	Created  string             `json:"created"`
-	Body     HeadlineBannerBody `json:"body" validate:"required"`
-}
-
-// HeadlineBanners response slices
-type HeadlineBanners struct {
-	Position  string                     `json:"position"`
-	Headlines []HeadlineBannerSlicesBody `json:"headlines"`
+type Message struct {
+	Position string   `json:"position" validate:"required"`
+	Content  []string `json:"content" validate:"required"`
 }
 
 // CardContent used to bind from json mapping to structure

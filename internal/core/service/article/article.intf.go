@@ -29,16 +29,16 @@ type IArticle interface {
 	// Returns an error if any issues occur during the upload process.
 	GetCarousels(ctx context.Context, position string, limit int) (*dtos.Article, error)
 
-	// UploadHeadlineBanner uploads a new headline banner.
+	// UploadMessage uploads a new message.
 	// ctx is the context to manage the request's lifecycle.
-	// banner contains the headline banner details to be uploaded.
+	// message contains the message details to be uploaded.
 	// Returns an error if any issues occur during the upload process.
-	UploadHeadlineBanner(ctx context.Context, banner dtos.HeadlineBanner) error
+	UploadMessage(ctx context.Context, message dtos.Message) error
 
-	// SliceOfHeadlineBanner return a slices of headline banner.
+	// GetMessage return a message.
 	// ctx is the context to manage the request's lifecycle.
-	// position contains the position of headline banner to be returns.
-	// limit is the maximum number of headline banner to retrieve.
-	// Returns an error if any issues occur during the upload process.
-	SliceOfHeadlineBanner(ctx context.Context, position string, limit int) (*dtos.HeadlineBanners, error)
+	// position contains the position of the message to be returns.
+	// limit is the maximum number of message to retrieve.
+	// Returns a message and an error if any issues occur during the upload process.
+	GetMessage(ctx context.Context, position string, limit int) (*dtos.Message, error)
 }
