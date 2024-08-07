@@ -17,8 +17,8 @@ type IArticle interface {
 	UpdateCollectionsImage(c echo.Context) error
 	GetArticleData(c echo.Context) error
 
-	UploadHeadlineBanner(c echo.Context) error
-	GetSlicesOfHeadlineBanner(c echo.Context) error
+	UploadMessage(c echo.Context) error
+	GetMessage(c echo.Context) error
 }
 
 // Article struct implementation of IArticle
@@ -40,9 +40,9 @@ func NewArticle(service article.IArticle) IArticle {
 // @Produce json
 // @Param position query string true "position of collections"
 // @Param limit query int true "limit headline of collections"
-// @Success 200 {object} dtos.HeadlineBanners
-// @Router /collections/headline [GET]
-func (p *Article) GetSlicesOfHeadlineBanner(c echo.Context) error {
+// @Success 200 {object} dtos.Message
+// @Router /collections/message [GET]
+func (p *Article) GetMessage(c echo.Context) error {
 	var (
 		pos    = c.QueryParam("position")
 		sLimit = c.QueryParam("limit")
@@ -53,7 +53,7 @@ func (p *Article) GetSlicesOfHeadlineBanner(c echo.Context) error {
 			Msg: "position and limit are required. limit must be a number",
 		})
 	}
-	headlines, err := p.Services.SliceOfHeadlineBanner(c.Request().Context(), pos, limit)
+	headlines, err := p.Services.GetMessage(c.Request().Context(), pos, limit)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -67,11 +67,11 @@ func (p *Article) GetSlicesOfHeadlineBanner(c echo.Context) error {
 // @Tags collections
 // @Accept json
 // @Produce json
-// @Param banner body dtos.HeadlineBanner true "headline banner data request"
+// @Param banner body dtos.Message true "headline banner data request"
 // @Success 201 {object} dtos.OK
-// @Router /collections/headline [POST]
-func (p *Article) UploadHeadlineBanner(c echo.Context) error {
-	var banner dtos.HeadlineBanner
+// @Router /collections/message [POST]
+func (p *Article) UploadMessage(c echo.Context) error {
+	var banner dtos.Message
 	if err := c.Bind(&banner); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -82,7 +82,7 @@ func (p *Article) UploadHeadlineBanner(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if err := p.Services.UploadHeadlineBanner(c.Request().Context(), banner); err != nil {
+	if err := p.Services.UploadMessage(c.Request().Context(), banner); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -98,7 +98,7 @@ func (p *Article) UploadHeadlineBanner(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param collection body dtos.UploadArticle true "collections Request"
-// @Success 201 {object} dtos.CollectionUpload
+// @Success 201 {object} dtos.Message
 // @Router /collections [POST]
 func (p *Article) UploadArticle(c echo.Context) error {
 	var cardBanner dtos.UploadArticle

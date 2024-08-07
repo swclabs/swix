@@ -11,16 +11,7 @@ import (
 	"swclabs/swix/internal/core/repository/collections"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
-	"swclabs/swix/pkg/lib/errors"
-	"swclabs/swix/pkg/utils"
-	"time"
 )
-
-// Article struct for article service
-type Article struct {
-	Blob        blob.IBlobStorage
-	Collections collections.ICollections
-}
 
 // New creates a new Article object
 func New(
@@ -33,44 +24,46 @@ func New(
 	}
 }
 
-// SliceOfHeadlineBanner implements IArticle.
-func (p *Article) SliceOfHeadlineBanner(
-	ctx context.Context, position string, limit int) (*dtos.HeadlineBanners, error) {
-
-	_collections, err := p.Collections.GetMany(ctx, position, limit)
-	if err != nil {
-		return nil, errors.Service("get collections", err)
-	}
-
-	var headlineBanners dtos.HeadlineBanners
-	headlineBanners.Position = position
-	for _, collection := range _collections {
-		var body dtos.HeadlineBannerBody
-		if err := json.Unmarshal([]byte(collection.Body), &body); err != nil {
-			return nil, err
-		}
-		headlineBanners.Headlines = append(headlineBanners.Headlines,
-			dtos.HeadlineBannerSlicesBody{
-				HeadlineBannerBody: body,
-				ID:                 collection.ID,
-				Created:            utils.HanoiTimezone(collection.Created),
-			})
-	}
-	return &headlineBanners, nil
+// Article struct for article service
+type Article struct {
+	Blob        blob.IBlobStorage
+	Collections collections.ICollections
 }
 
-// UploadHeadlineBanner implements IArticle.
-func (p *Article) UploadHeadlineBanner(ctx context.Context, banner dtos.HeadlineBanner) error {
-	body, err := json.Marshal(banner.Body)
+// GetMessage implements IArticle.
+func (p *Article) GetMessage(ctx context.Context, position string, limit int) (*dtos.Message, error) {
+	collecs, err := p.Collections.GetMany(ctx, position, limit)
 	if err != nil {
-		return err
+		return nil, err
 	}
+	var msg = dtos.Message{
+		Position: position,
+	}
+	for _, collect := range collecs {
+		var content dtos.HeadlineContent
+		if err := json.Unmarshal([]byte(collect.Body), &content); err != nil {
+			return nil, err
+		}
+		msg.Content = append(msg.Content, content.Content)
+	}
+	return &msg, nil
+}
 
-	return p.Collections.AddHeadlineBanner(ctx, entity.Collection{
-		Position: banner.Position,
-		Created:  time.Now().UTC(),
-		Body:     string(body),
-	})
+// UploadMessage implements IArticle.
+func (p *Article) UploadMessage(ctx context.Context, message dtos.Message) error {
+	for _, msg := range message.Content {
+		json, _ := json.Marshal(dtos.HeadlineContent{
+			Content: msg,
+		})
+		_, err := p.Collections.Create(ctx, entity.Collection{
+			Position: message.Position,
+			Body:     string(json),
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // GetCarousels implements IArticle.
@@ -82,23 +75,6 @@ func (p *Article) GetCarousels(ctx context.Context, position string, limit int) 
 	if len(collectionSlice) == 0 {
 		return nil, fmt.Errorf("no collection found")
 	}
-
-	//var _collections dtos.Collections
-	//_collections.Position = collectionSlice[0].Position
-	//_collections.Headline = collectionSlice[0].Headline
-
-	//for _, _collection := range collectionSlice {
-	//	var body dtos.CollectionBody
-	//	if err := json.Unmarshal([]byte(_collection.Body), &body); err != nil {
-	//		return nil, err
-	//	}
-	//	_collections.CardBanner = append(_collections.CardBanner,
-	//		dtos.CollectionSliceBody{
-	//			CollectionBody: body,
-	//			ID:             _collection.ID,
-	//			Created:        utils.HanoiTimezone(_collection.Created),
-	//		})
-	//}
 
 	var carousels dtos.Article
 	carousels.Headline = collectionSlice[0].Headline
@@ -129,7 +105,6 @@ func (p *Article) UploadArticle(ctx context.Context, article dtos.UploadArticle)
 			Position: article.Position,
 			Headline: article.Headline,
 			Body:     string(body),
-			Created:  time.Now().UTC(),
 		})
 		if err != nil {
 			err = tx.Rollback(ctx)

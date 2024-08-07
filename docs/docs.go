@@ -259,76 +259,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.CollectionUpload"
-                        }
-                    }
-                }
-            }
-        },
-        "/collections/headline": {
-            "get": {
-                "description": "get list of headline banner",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "position of collections",
-                        "name": "position",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "limit headline of collections",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.HeadlineBanners"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create headline banner into collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "description": "headline banner data request",
-                        "name": "banner",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.HeadlineBanner"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
+                            "$ref": "#/definitions/dtos.Message"
                         }
                     }
                 }
@@ -365,6 +296,75 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/message": {
+            "get": {
+                "description": "get list of headline banner",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position of collections",
+                        "name": "position",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "limit headline of collections",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Message"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create headline banner into collections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "description": "headline banner data request",
+                        "name": "banner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/dtos.OK"
                         }
@@ -1306,17 +1306,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.CollectionUpload": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "msg": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.CreateOrderSchema": {
             "type": "object",
             "properties": {
@@ -1397,66 +1386,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "msg": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.HeadlineBanner": {
-            "type": "object",
-            "required": [
-                "body",
-                "position"
-            ],
-            "properties": {
-                "body": {
-                    "$ref": "#/definitions/dtos.HeadlineBannerBody"
-                },
-                "created": {
-                    "type": "string"
-                },
-                "position": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.HeadlineBannerBody": {
-            "type": "object",
-            "required": [
-                "headline"
-            ],
-            "properties": {
-                "headline": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.HeadlineBannerSlicesBody": {
-            "type": "object",
-            "required": [
-                "headline"
-            ],
-            "properties": {
-                "created": {
-                    "type": "string"
-                },
-                "headline": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                }
-            }
-        },
-        "dtos.HeadlineBanners": {
-            "type": "object",
-            "properties": {
-                "headlines": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.HeadlineBannerSlicesBody"
-                    }
-                },
-                "position": {
                     "type": "string"
                 }
             }
@@ -1648,6 +1577,24 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Message": {
+            "type": "object",
+            "required": [
+                "content",
+                "position"
+            ],
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "position": {
                     "type": "string"
                 }
             }
