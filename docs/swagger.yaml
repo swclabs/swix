@@ -1272,6 +1272,28 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - purchase
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: get product
+      parameters:
+      - description: keyword
+        in: query
+        name: keyword
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ProductResponse'
+            type: array
+      tags:
+      - search
   /suppliers:
     get:
       consumes:

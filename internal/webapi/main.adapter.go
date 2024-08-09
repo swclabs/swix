@@ -3,17 +3,18 @@ package webapi
 import (
 	"swclabs/swix/internal/types"
 	"swclabs/swix/internal/webapi/router"
+	"swclabs/swix/internal/webapi/server"
 )
 
 type _Adapter struct {
-	server IServer
+	server server.IServer
 }
 
 var _ types.IAdapter = (*_Adapter)(nil)
 
 // NewAdapter returns a new adapter wrapping around the given server
 func NewAdapter(
-	server IServer,
+	server server.IServer,
 	products router.IProducts,
 	manager router.IManager,
 	article router.IArticle,

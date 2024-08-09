@@ -12,6 +12,13 @@ import (
 	"github.com/hibiken/asynq"
 )
 
+// IBase is an interface for Base.
+type IBase interface {
+	HandleHealthCheck() (taskName string, fn worker.HandleFunc)
+}
+
+var _ IBase = (*Base)(nil)
+
 // Base struct define the base object
 type Base struct {
 	base.Task               // embedded delay function here
@@ -19,7 +26,7 @@ type Base struct {
 }
 
 // NewBaseConsume creates a new base object
-func NewBaseConsume(_base base.IService) *Base {
+func NewBaseConsume(_base base.IService) IBase {
 	return &Base{
 		handler: _base,
 	}

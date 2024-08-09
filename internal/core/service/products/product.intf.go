@@ -105,5 +105,9 @@ type IProductService interface {
 	// Returns a slice of ProductView objects and an error if any issues occur during the retrieval process.
 	ViewDataOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductView, error)
 
+	// InsertSpecs inserts specifications for an inventory.
+	// ctx is the context to manage the request's lifecycle.
+	// specification contains the specifications to be added.
+	// Returns an error if any issues occur during the insertion process.
 	InsertSpecs(ctx context.Context, specification dtos.Specifications) error
 }

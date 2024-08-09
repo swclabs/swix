@@ -12,6 +12,13 @@ import (
 	"github.com/hibiken/asynq"
 )
 
+// IManager is an interface for Manager
+type IManager interface {
+	HandleSignUp() (string, worker.HandleFunc)
+	HandleOAuth2SaveUser() (string, worker.HandleFunc)
+	HandleUpdateUserInfo() (string, worker.HandleFunc)
+}
+
 // Manager struct define the Manager object
 type Manager struct {
 	manager.Task
@@ -19,7 +26,7 @@ type Manager struct {
 }
 
 // NewManagerConsume creates a new Manager object
-func NewManagerConsume(handler manager.IManager) *Manager {
+func NewManagerConsume(handler manager.IManager) IManager {
 	return &Manager{
 		handler: handler,
 	}

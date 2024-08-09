@@ -71,8 +71,8 @@ const (
 		SELECT *
 		FROM products
 		WHERE
-			name ILIKE '%$1%' or 
-			description ILIKE '%$1%';
+			name ILIKE '%' || $1 || '%' or 
+			description ILIKE '%' || $1 || '%';
 	
 	`
 

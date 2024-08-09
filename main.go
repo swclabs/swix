@@ -19,6 +19,7 @@ import (
 	"swclabs/swix/internal/webapi"
 	"swclabs/swix/internal/webapi/controller"
 	"swclabs/swix/internal/webapi/router"
+	"swclabs/swix/internal/webapi/server"
 )
 
 // @title Swipe Public API v0.0.1
@@ -32,7 +33,7 @@ func main() {
 		baseController = controller.New(baseService)
 		baseRouter     = router.New(baseController)
 
-		httpServer = webapi.NewServer(baseRouter)
+		httpServer = server.New(baseRouter)
 		adapt      = webapi.NewBaseAdapter(httpServer)
 		server     = boot.NewServer()
 	)

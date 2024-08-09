@@ -30,6 +30,9 @@ func NewProducts(controllers controller.IProducts) IProducts {
 
 // Routers define route endpoints
 func (r *Products) Routers(e *echo.Echo) {
+	// endpoint for search
+	e.GET("/search", r.controller.Search)
+
 	// endpoint for products
 	e.GET("/products", r.controller.GetProductLimit)
 	e.POST("/products", r.controller.CreateProduct)
