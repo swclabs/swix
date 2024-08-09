@@ -317,6 +317,7 @@ func (s *ProductService) GetAllInvStock(ctx context.Context, page int, limit int
 			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
 				return nil, err
 			}
+			_spec.ID = spec.ID
 			specs = append(specs, _spec)
 		}
 		product, err := s.Products.GetByID(ctx, inv.ProductID)
@@ -361,7 +362,7 @@ func (s *ProductService) Search(ctx context.Context, keyword string) ([]dtos.Pro
 	if err != nil {
 		return nil, errors.Service("keyword error", err)
 	}
-	var productSchema []dtos.ProductResponse
+	var productSchema = []dtos.ProductResponse{}
 	for _, p := range _products {
 		category, err := s.Category.GetByID(ctx, p.CategoryID)
 		if err != nil {

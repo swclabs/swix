@@ -30,21 +30,21 @@ func NewManager(controllers controller.IManager) IManager {
 // Routers define route endpoint
 func (account *Manager) Routers(e *echo.Echo) {
 	// endpoint for users
+	e.GET("/users", account.controller.GetMe, middleware.SessionProtected)
+	e.PUT("/users", account.controller.UpdateUserInfo)
 	user := e.Group("/users")
-	user.GET("", account.controller.GetMe, middleware.SessionProtected)
-	user.PUT("", account.controller.UpdateUserInfo)
 	user.PUT("/image", account.controller.UpdateUserImage, middleware.SessionProtected)
 
 	// endpoint for authentication
+	e.POST("/auth", account.controller.Auth)
 	auth := e.Group("/auth")
-	auth.POST("", account.controller.Auth)
 	auth.GET("/email", account.controller.CheckLoginEmail)
 	auth.POST("/signup", account.controller.SignUp)
 	auth.POST("/login", account.controller.Login)
 	auth.GET("/logout", account.controller.Logout)
 
 	// endpoint for oauth2 service
+	e.GET("/callback", controller.Auth0Callback)
 	auth0 := e.Group("/oauth2")
 	auth0.GET("/login", controller.Auth0Login)
-	e.GET("/callback", controller.Auth0Callback)
 }

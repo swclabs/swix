@@ -45,6 +45,7 @@ func (cli *Client) Exec(queue string, task *asynq.Task) error {
 	_, err := client.Enqueue(
 		task,               // task payload
 		asynq.Queue(queue), // set queue for task
+		asynq.Retention(time.Duration(time.Second*15)), // store tasks when finished
 	)
 	if err != nil {
 		return err

@@ -30,7 +30,7 @@ var command = []*cli.Command{
 			if config.StageStatus == "prod" {
 				boot.PrepareFor(boot.Worker | boot.ProdMode)
 			} else {
-				boot.PrepareFor(boot.Worker | boot.ProdMode)
+				boot.PrepareFor(boot.Worker | boot.DebugMode)
 			}
 			app := boot.NewApp(boot.NewWorker, workers.NewAdapter)
 			app.Run()

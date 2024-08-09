@@ -21,8 +21,8 @@ var (
 	// OrderQueue define order queue
 	OrderQueue = "order"
 
-	// Purchase define purchase queue
-	Purchase = "purchase"
+	// CartQueue define cart queue
+	CartQueue = "cart"
 )
 
 var _ = initQueue()
@@ -34,7 +34,7 @@ func initQueue() error {
 		&LowQueue,
 
 		&OrderQueue,
-		&Purchase,
+		&CartQueue,
 	}
 
 	if config.StageStatus != "prod" {
@@ -48,8 +48,10 @@ func initQueue() error {
 // New return worker priority
 func New() worker.Priority {
 	return worker.Priority{
-		CriticalQueue: 6, // processed 60% of the time
-		DefaultQueue:  3, // processed 30% of the time
-		LowQueue:      1, // processed 10% of the time
+		// CriticalQueue: 6, // processed 60% of the time
+		// DefaultQueue:  3, // processed 30% of the time
+		// LowQueue:      1, // processed 10% of the time
+		CriticalQueue: 5, // processed 50% of the time
+		CartQueue:     5, // processed 50% of the time
 	}
 }
