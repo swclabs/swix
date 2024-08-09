@@ -3,7 +3,6 @@ package sentry
 
 import (
 	"fmt"
-
 	"swclabs/swix/internal/config"
 
 	"github.com/getsentry/sentry-go"

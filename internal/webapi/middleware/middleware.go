@@ -4,8 +4,8 @@ package middleware
 import (
 	"net/http"
 	"os"
-
 	"swclabs/swix/internal/config"
+
 	"swclabs/swix/pkg/utils"
 
 	sentryecho "github.com/getsentry/sentry-go/echo"

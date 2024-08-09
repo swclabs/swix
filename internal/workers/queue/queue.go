@@ -37,7 +37,7 @@ func initQueue() error {
 		&CartQueue,
 	}
 
-	if config.StageStatus != "prod" {
+	if config.StageStatus == "dev" {
 		for _, queue := range queues {
 			*queue = *queue + "_dev"
 		}

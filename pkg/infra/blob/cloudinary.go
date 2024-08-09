@@ -5,9 +5,9 @@ import (
 	"context"
 	"fmt"
 	"mime/multipart"
+	"swclabs/swix/internal/config"
 	"sync"
 
-	"swclabs/swix/internal/config"
 	"swclabs/swix/pkg/lib/logger"
 
 	"github.com/cloudinary/cloudinary-go/v2"

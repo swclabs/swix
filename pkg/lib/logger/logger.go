@@ -107,7 +107,7 @@ func Write(file io.Writer) *zap.Logger {
 	return zap.New(core)
 }
 
-// GRPCLogger is middleware for grpc server
+// GRPCLogger is middleware for rpc server
 func GRPCLogger(
 	ctx context.Context,
 	req interface{},
@@ -135,7 +135,7 @@ func GRPCLogger(
 	return result, errHandle
 }
 
-// GRPCServerINFO logs grpc server info
+// GRPCServerINFO logs rpc server info
 func GRPCServerINFO(serverName, address string) {
 	Info(fmt.Sprintf("[%s] server listening on: %s", Cyan.Add(serverName), Magenta.Add(address)))
 }

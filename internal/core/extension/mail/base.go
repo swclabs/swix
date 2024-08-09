@@ -3,9 +3,9 @@ package mail
 
 import (
 	"context"
+	"swclabs/swix/internal/config"
 	"swclabs/swix/pkg/lib/mailer"
 
-	"swclabs/swix/internal/config"
 	"swclabs/swix/pkg/components"
 
 	"github.com/a-h/templ"

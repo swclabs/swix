@@ -4,11 +4,11 @@ package db
 import (
 	"context"
 	"fmt"
+	"swclabs/swix/internal/config"
 	"sync"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"swclabs/swix/internal/config"
 	"swclabs/swix/pkg/lib/logger"
 
 	"go.uber.org/fx"
