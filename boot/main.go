@@ -70,9 +70,9 @@ type IServer interface {
 }
 
 // NewApp used to create Fx Application
-func NewApp(serverConstructor func() IServer, adapterConstructors ...interface{}) *fx.App {
+func NewApp(flag int, serverConstructor func() IServer, adapterConstructors ...interface{}) *fx.App {
 	return fx.New(
-		fxModule(),
+		fxModule(flag),
 		fx.Provide(adapterConstructors...),
 		fx.Provide(serverConstructor),
 		fx.Invoke(Main),

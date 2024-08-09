@@ -19,12 +19,11 @@ var FxModule = fx.Options(
 	),
 	fx.Provide(
 		handler.NewBaseConsume,
-		router.NewBase,
-
 		handler.NewManagerConsume,
-		router.NewManager,
+		handler.NewPurchaseConsume,
 
-		handler.NewPurchase,
+		router.NewBase,
+		router.NewManager,
 		router.NewPurchase,
 	),
 	fx.Provide(

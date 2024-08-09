@@ -13,11 +13,10 @@ import (
 )
 
 func main() {
-	if config.StageStatus == "prod" {
-		boot.PrepareFor(boot.WebAPI | boot.ProdMode)
-	} else {
-		boot.PrepareFor(boot.WebAPI | boot.DebugMode)
+	var flag = boot.WebAPI | boot.DebugMode
+	if config.StageStatus != "dev" {
+		flag = boot.WebAPI | boot.ProdMode
 	}
-	app := boot.NewApp(boot.NewServer, webapi.NewAdapter)
+	app := boot.NewApp(flag, boot.NewServer, webapi.NewAdapter)
 	app.Run()
 }

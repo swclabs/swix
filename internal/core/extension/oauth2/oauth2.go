@@ -5,8 +5,8 @@ import (
 	"io"
 	"log"
 	"net/http"
-
 	"swclabs/swix/internal/config"
+
 	"swclabs/swix/pkg/utils"
 
 	"github.com/coreos/go-oidc/v3/oidc"

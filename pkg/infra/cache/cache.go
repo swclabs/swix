@@ -4,11 +4,11 @@ package cache
 import (
 	"context"
 	"fmt"
+	"swclabs/swix/internal/config"
 	"time"
 
 	"go.uber.org/fx"
 
-	"swclabs/swix/internal/config"
 	"swclabs/swix/pkg/lib/logger"
 
 	"github.com/redis/go-redis/v9"

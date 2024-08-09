@@ -25,35 +25,31 @@ const (
 )
 
 var (
-	_FxInfrastructure = fx.Provide(blob.New, db.New, cache.New)
-	_FxDataLayer      = fx.Options(repository.FxModule)
-	_FxBusinessLogic  = fx.Options(service.FxModule)
-	_FxPresenterLayer = fx.Provide()
-	_Logger           = fx.Provide()
+	fxInfrastructure = fx.Provide(blob.New, db.New, cache.New)
+	fxDataLayer      = fx.Options(repository.FxModule)
+	fxBusinessLogic  = fx.Options(service.FxModule)
+	fxPresenterLayer = fx.Provide()
+	fxLogger         = fx.Provide()
 )
 
-// PrepareFor enable build web api or worker consume
-func PrepareFor(flag int) {
-	if flag&WebAPI != 0 {
-		_FxPresenterLayer = webapi.FxModule
+func fxModule(flag int) fx.Option {
+	switch {
+	case flag&WebAPI != 0:
+		fxPresenterLayer = webapi.FxModule
+	case flag&Worker != 0:
+		fxPresenterLayer = workers.FxModule
 	}
-	if flag&Worker != 0 {
-		_FxPresenterLayer = workers.FxModule
+	switch {
+	case flag&DebugMode != 0:
+		fxLogger = fx.Provide()
+	case flag&ProdMode != 0:
+		fxLogger = fx.NopLogger
 	}
-	if flag&DebugMode != 0 {
-		_Logger = fx.Provide()
-	}
-	if flag&ProdMode != 0 {
-		_Logger = fx.NopLogger
-	}
-}
-
-func fxModule() fx.Option {
 	return fx.Options(
-		_FxInfrastructure,
-		_FxDataLayer,      // data layer constructor
-		_FxBusinessLogic,  // business logic constructor
-		_FxPresenterLayer, // presenter layer constructor
-		_Logger,
+		fxInfrastructure,
+		fxDataLayer,      // data layer constructor
+		fxBusinessLogic,  // business logic constructor
+		fxPresenterLayer, // presenter layer constructor
+		fxLogger,
 	)
 }
