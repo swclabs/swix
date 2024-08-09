@@ -36,3 +36,9 @@ func (c *Mock) Insert(ctx context.Context, ctg entity.Categories) error {
 	args := c.Called(ctx, ctg)
 	return args.Error(0)
 }
+
+// DeleteByID implements ICategoriesRepository.
+func (p *Mock) DeleteByID(ctx context.Context, ID int64) error {
+	args := p.Called(ctx, ID)
+	return args.Error(0)
+}
