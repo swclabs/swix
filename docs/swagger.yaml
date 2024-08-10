@@ -78,6 +78,10 @@ definitions:
     type: object
   dtos.CreateOrderSchema:
     properties:
+      address_id:
+        type: integer
+      delevery_id:
+        type: integer
       product:
         items:
           properties:
@@ -85,10 +89,20 @@ definitions:
               type: integer
             quantity:
               type: integer
+            specs_id:
+              type: integer
+          required:
+          - inventory_id
+          - quantity
           type: object
         type: array
       user_id:
         type: integer
+    required:
+    - address_id
+    - delevery_id
+    - product
+    - user_id
     type: object
   dtos.CreateProduct:
     properties:
@@ -478,17 +492,9 @@ definitions:
     type: object
   dtos.Supplier:
     properties:
-      city:
-        type: string
-      district:
-        type: string
       email:
         type: string
       name:
-        type: string
-      street:
-        type: string
-      ward:
         type: string
     required:
     - email
@@ -1239,6 +1245,11 @@ paths:
       - description: user id
         in: query
         name: uid
+        required: true
+        type: string
+      - description: limit order
+        in: query
+        name: limit
         required: true
         type: string
       produces:

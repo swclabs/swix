@@ -997,6 +997,13 @@ const docTemplate = `{
                         "name": "uid",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit order",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1342,16 +1349,35 @@ const docTemplate = `{
         },
         "dtos.CreateOrderSchema": {
             "type": "object",
+            "required": [
+                "address_id",
+                "delevery_id",
+                "product",
+                "user_id"
+            ],
             "properties": {
+                "address_id": {
+                    "type": "integer"
+                },
+                "delevery_id": {
+                    "type": "integer"
+                },
                 "product": {
                     "type": "array",
                     "items": {
                         "type": "object",
+                        "required": [
+                            "inventory_id",
+                            "quantity"
+                        ],
                         "properties": {
                             "inventory_id": {
                                 "type": "integer"
                             },
                             "quantity": {
+                                "type": "integer"
+                            },
+                            "specs_id": {
                                 "type": "integer"
                             }
                         }
@@ -1945,22 +1971,10 @@ const docTemplate = `{
                 "name"
             ],
             "properties": {
-                "city": {
-                    "type": "string"
-                },
-                "district": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "street": {
-                    "type": "string"
-                },
-                "ward": {
                     "type": "string"
                 }
             }
