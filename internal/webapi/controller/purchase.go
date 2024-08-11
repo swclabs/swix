@@ -40,6 +40,7 @@ func NewPurchase(services purchase.IPurchaseService) IPurchase {
 // @Accept json
 // @Produce json
 // @Param uid query string true "user id"
+// @Param limit query string true "limit order"
 // @Success 200 {object} []dtos.OrderSchema
 // @Router /purchase/orders [GET]
 func (p *Purchase) GetOrders(c echo.Context) error {

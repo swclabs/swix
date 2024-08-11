@@ -16,6 +16,7 @@ import (
 	"swclabs/swix/internal/core/repository/specifications"
 	"swclabs/swix/internal/core/repository/users"
 	"swclabs/swix/pkg/infra/db"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
@@ -65,7 +66,7 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 	if err != nil {
 		return nil, err
 	}
-	var orderSchema []dtos.OrderSchema
+	var orderSchema = []dtos.OrderSchema{}
 
 	for _, order := range orders {
 		// Get products by order ID
@@ -87,11 +88,12 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 		// Merge product and order schema
 		orderSchema = append(orderSchema, dtos.OrderSchema{
 			ID:        order.ID,
+			UserID:    user.ID,
+			Time:      order.Time.Format(time.RFC3339),
 			UUID:      order.UUID,
 			Status:    order.Status,
-			Products:  productSchema,
+			Items:     productSchema,
 			UserEmail: user.Email,
-			UserID:    user.ID,
 			Username:  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		})
 	}
@@ -188,6 +190,7 @@ func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrde
 	}
 	orderID, err := orderRepo.Create(ctx, entity.Orders{
 		UUID:        _uuid,
+		DeliveryID:  createOrder.DeleveryID,
 		UserID:      createOrder.UserID,
 		Status:      "pending",
 		TotalAmount: totalAmount,

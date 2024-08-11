@@ -4,7 +4,7 @@ package entity
 // Addresses Table
 type Addresses struct {
 	ID       int64  `json:"id" db:"id"`
-	UUID     string `json:"uuid" db:"uuid"`
+	UserID   int64  `json:"user_id" db:"user_id"`
 	City     string `json:"city" db:"city"`
 	Ward     string `json:"ward" db:"ward"`
 	District string `json:"district" db:"district"`

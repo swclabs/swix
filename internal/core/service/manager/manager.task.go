@@ -5,7 +5,6 @@ import (
 	"mime/multipart"
 	"swclabs/swix/internal/config"
 	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/model"
 	"swclabs/swix/internal/workers/queue"
 	"swclabs/swix/pkg/lib/worker"
@@ -69,9 +68,4 @@ func (t *Task) UserInfo(ctx context.Context, email string) (*model.Users, error)
 // UploadAvatar upload avatar to database
 func (t *Task) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
 	return t.service.UploadAvatar(email, fileHeader)
-}
-
-// UploadAddress upload address to database
-func (t *Task) UploadAddress(ctx context.Context, data entity.Addresses) error {
-	return t.service.UploadAddress(ctx, data)
 }

@@ -30,14 +30,14 @@ var _ IOrdersRepository = (*Orders)(nil)
 func (orders *Orders) InsertProduct(ctx context.Context, product entity.ProductInOrder) error {
 	return orders.db.SafeWrite(ctx, insertProductToOrder,
 		product.OrderID, product.InventoryID, product.Quantity, "VND",
-		product.TotalAmount.String(),
+		product.TotalAmount.String(), product.SpecsID,
 	)
 }
 
 // Create implements IOrdersRepository.
 func (orders *Orders) Create(ctx context.Context, order entity.Orders) (int64, error) {
 	return orders.db.SafeWriteReturn(ctx, insertOrder,
-		order.UUID, order.UserID, "active", order.TotalAmount.String(),
+		order.UUID, order.UserID, "active", order.TotalAmount.String(), order.DeliveryID,
 	)
 }
 

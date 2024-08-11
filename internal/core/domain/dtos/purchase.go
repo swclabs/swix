@@ -43,14 +43,16 @@ type OrderSchema struct {
 	UserID    int64                `json:"user_id"`
 	Username  string               `json:"user_name"`
 	UserEmail string               `json:"user_email"`
-	Products  []ProductOrderSchema `json:"products"`
+	Items      []ProductOrderSchema `json:"items"`
 }
 
 // CreateOrderSchema is the schema for creating an order request
 type CreateOrderSchema struct {
-	UserID   int64 `json:"user_id"`
-	Products []struct {
-		InventoryID int64 `json:"inventory_id"`
-		Quantity    int64 `json:"quantity"`
-	} `json:"product"`
+	UserID     int64 `json:"user_id" validate:"required"`
+	DeleveryID int64 `json:"delevery_id" validate:"required"`
+	Products   []struct {
+		InventoryID int64 `json:"inventory_id" validate:"required"`
+		Quantity    int64 `json:"quantity" validate:"required"`
+		SpecsID     int64 `json:"specs_id"`
+	} `json:"product" validate:"required"`
 }

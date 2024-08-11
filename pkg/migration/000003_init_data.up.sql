@@ -15,28 +15,12 @@ INSERT INTO categories (id, name, description) VALUES (1, 'phone', 'iPhone');
 INSERT INTO categories (id, name, description) VALUES (2, 'accessories', 'accessories');
 
 --
--- TOC entry 3418 (class 0 OID 16426)
--- Dependencies: 222
--- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: admin
---
-
-INSERT INTO addresses (id, city, ward, district, street, uuid) VALUES (1, 'Ho Chi Minh City', '14', 'D1', 'Ton Duc Thang', '2a0db3cf-90ef-4724-aea9-bdbab3023df7');
-
---
 -- TOC entry 3418 (class 0 OID 16457)
 -- Dependencies: 228
 -- Data for Name: suppliers; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
 INSERT INTO suppliers (id, name, email) VALUES (1, 'Apple', 'exam@example2.com');
-
---
--- TOC entry 3417 (class 0 OID 16523)
--- Dependencies: 242
--- Data for Name: suppliers_address; Type: TABLE DATA; Schema: public; Owner: admin
---
-
-INSERT INTO suppliers_address (suppliers_id, address_uuid) VALUES (1, '2a0db3cf-90ef-4724-aea9-bdbab3023df7');
 
 --
 -- TOC entry 3418 (class 0 OID 16447)

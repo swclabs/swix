@@ -6,6 +6,7 @@ import (
 	"swclabs/swix/internal/core/service/base"
 	"swclabs/swix/internal/core/service/classify"
 	"swclabs/swix/internal/core/service/manager"
+	"swclabs/swix/internal/core/service/paydeliver"
 	"swclabs/swix/internal/core/service/products"
 	"swclabs/swix/internal/core/service/purchase"
 
@@ -21,5 +22,6 @@ var FxModule = fx.Options(
 		article.New,
 		purchase.New,
 		classify.New,
+		paydeliver.New,
 	),
 )

@@ -1,5 +1,24 @@
 basePath: /
 definitions:
+  dtos.Address:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      id:
+        type: integer
+      street:
+        type: string
+      ward:
+        type: string
+    required:
+    - city
+    - district
+    - id
+    - street
+    - ward
+    type: object
   dtos.Article:
     properties:
       cards:
@@ -78,8 +97,6 @@ definitions:
     type: object
   dtos.CreateOrderSchema:
     properties:
-      address_id:
-        type: integer
       delevery_id:
         type: integer
       product:
@@ -99,7 +116,6 @@ definitions:
       user_id:
         type: integer
     required:
-    - address_id
     - delevery_id
     - product
     - user_id
@@ -110,6 +126,47 @@ definitions:
         type: integer
       msg:
         type: string
+    type: object
+  dtos.DeliveryAddress:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      street:
+        type: string
+      user_id:
+        type: integer
+      ward:
+        type: string
+    required:
+    - city
+    - district
+    - street
+    - user_id
+    - ward
+    type: object
+  dtos.DeliveryBody:
+    properties:
+      address_id:
+        type: integer
+      method:
+        type: string
+      note:
+        type: string
+      received_date:
+        type: string
+      sent_date:
+        type: string
+      status:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - address_id
+    - method
+    - status
+    - user_id
     type: object
   dtos.DetailColor:
     properties:
@@ -613,6 +670,50 @@ info:
   title: Swipe Public API v0.0.1
   version: 0.0.1
 paths:
+  /address:
+    get:
+      consumes:
+      - application/json
+      description: get address delivery.
+      parameters:
+      - description: user id
+        in: query
+        name: uid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Address'
+            type: array
+      tags:
+      - address
+    post:
+      consumes:
+      - application/json
+      description: create address delivery.
+      parameters:
+      - description: address request
+        in: body
+        name: addr
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.DeliveryAddress'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ProductResponse'
+            type: array
+      tags:
+      - address
   /auth/email:
     get:
       consumes:
@@ -868,6 +969,46 @@ paths:
           description: OK
       tags:
       - base
+  /delivery:
+    get:
+      consumes:
+      - application/json
+      description: get delivery info by user id.
+      parameters:
+      - description: user id
+        in: query
+        name: uid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - delivery
+    post:
+      consumes:
+      - application/json
+      description: create delivery info.
+      parameters:
+      - description: delivery info request
+        in: body
+        name: addr
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.DeliveryBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - delivery
   /inventories:
     delete:
       consumes:
