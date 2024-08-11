@@ -6,12 +6,9 @@ import (
 	"log"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repository/addresses"
 	"swclabs/swix/internal/core/repository/categories"
 	"swclabs/swix/internal/core/repository/suppliers"
 	"swclabs/swix/pkg/infra/db"
-
-	"github.com/google/uuid"
 )
 
 // New creates a new Classify object
@@ -47,39 +44,9 @@ func (c *Classify) CreateSuppliers(ctx context.Context, supplierReq dtos.Supplie
 			Name:  supplierReq.Name,
 			Email: supplierReq.Email,
 		}
-		addr = entity.Addresses{
-			City:     supplierReq.City,
-			Ward:     supplierReq.Ward,
-			District: supplierReq.District,
-			Street:   supplierReq.Street,
-		}
 		supplierRepo = suppliers.New(tx)
-		addressRepo  = addresses.New(tx)
 	)
 	if err := supplierRepo.Insert(ctx, supplier); err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-	supp, err := supplierRepo.GetByPhone(ctx, supplierReq.Email)
-	if err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-	addr.UUID = uuid.New().String()
-	if err = addressRepo.Insert(ctx, addr); err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			log.Fatal(errTx)
-		}
-		return err
-	}
-	if err := supplierRepo.InsertAddress(ctx, entity.SuppliersAddress{
-		SuppliersID: supp.ID,
-		AddressUuiD: addr.UUID,
-	}); err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}

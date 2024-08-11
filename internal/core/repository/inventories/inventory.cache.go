@@ -9,7 +9,11 @@ import (
 	"swclabs/swix/pkg/lib/crypto"
 )
 
-var _ IInventoryRepository = (*_Cache)(nil)
+var (
+	_                 IInventoryRepository = (*_Cache)(nil)
+	keyGetByID                             = "IInventoryRepository:GetByID:%d"
+	keyGetByProductID                      = "IInventoryRepository:GetByProductID:%d"
+)
 
 func useCache(cache cache.ICache, repo IInventoryRepository) IInventoryRepository {
 	return &_Cache{
@@ -28,7 +32,7 @@ func (c *_Cache) Update(ctx context.Context, inventory entity.Inventories) error
 	if err := c.inventory.Update(ctx, inventory); err != nil {
 		return err
 	}
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%d", inventory.ID))
+	key := crypto.HashOf(fmt.Sprintf(keyGetByID, inventory.ID))
 	return cache.Set(ctx, c.cache, key, inventory)
 }
 
@@ -37,7 +41,7 @@ func (c *_Cache) UploadImage(ctx context.Context, ID int, url string) error {
 	if err := c.inventory.UploadImage(ctx, ID, url); err != nil {
 		return err
 	}
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%d", ID))
+	key := crypto.HashOf(fmt.Sprintf(keyGetByID, ID))
 	return cache.Delete(ctx, c.cache, key)
 }
 
@@ -46,7 +50,7 @@ func (c *_Cache) DeleteByID(ctx context.Context, inventoryID int64) error {
 	if err := c.inventory.DeleteByID(ctx, inventoryID); err != nil {
 		return err
 	}
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%d", inventoryID))
+	key := crypto.HashOf(fmt.Sprintf(keyGetByID, inventoryID))
 	return cache.Delete(ctx, c.cache, key)
 }
 
@@ -56,7 +60,7 @@ func (c *_Cache) InsertProduct(ctx context.Context, product entity.Inventories) 
 	if err != nil {
 		return -1, err
 	}
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByProductID:%d", product.ProductID))
+	key := crypto.HashOf(fmt.Sprintf(keyGetByProductID, product.ProductID))
 	return ID, cache.Delete(ctx, c.cache, key)
 }
 
@@ -78,7 +82,7 @@ func (c *_Cache) GetLimit(ctx context.Context, limit int, offset int) ([]entity.
 
 // GetByProductID implements IInventoryRepository.
 func (c *_Cache) GetByProductID(ctx context.Context, ID int64) ([]entity.Inventories, error) {
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByProductID:%d", ID))
+	key := crypto.HashOf(fmt.Sprintf(keyGetByProductID, ID))
 	result, err := cache.GetSlice[entity.Inventories](ctx, c.cache, key)
 	if err != nil {
 		result, err = c.inventory.GetByProductID(ctx, ID)
@@ -94,7 +98,7 @@ func (c *_Cache) GetByProductID(ctx context.Context, ID int64) ([]entity.Invento
 
 // GetByID implements IInventoryRepository.
 func (c *_Cache) GetByID(ctx context.Context, inventoryID int64) (*entity.Inventories, error) {
-	key := crypto.HashOf(fmt.Sprintf("IInventoryRepository:GetByID:%d", inventoryID))
+	key := crypto.HashOf(fmt.Sprintf(keyGetByID, inventoryID))
 	result, err := cache.Get[entity.Inventories](ctx, c.cache, key)
 	if err != nil {
 		result, err = c.inventory.GetByID(ctx, inventoryID)

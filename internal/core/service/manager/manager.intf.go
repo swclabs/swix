@@ -4,7 +4,6 @@ import (
 	"context"
 	"mime/multipart"
 	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/model"
 )
 
@@ -52,10 +51,4 @@ type IManager interface {
 	// req contains the OAuth2 user information details.
 	// Returns an error if any issues occur during the save process.
 	OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) error
-
-	// UploadAddress uploads a user's address.
-	// ctx is the context to manage the request's lifecycle.
-	// data contains the address details to be uploaded.
-	// Returns an error if any issues occur during the upload process.
-	UploadAddress(ctx context.Context, data entity.Addresses) error
 }

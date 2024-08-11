@@ -30,7 +30,7 @@ CREATE TABLE "addresses" (
   "ward" varchar NOT NULL,
   "district" varchar NOT NULL,
   "street" varchar NOT NULL,
-  "uuid" varchar UNIQUE NOT NULL
+  "user_id" bigint NOT NULL
 );
 
 CREATE TABLE "comments" (
@@ -81,6 +81,7 @@ CREATE TABLE "orders" (
   "uuid" varchar NOT NULL,
   "time" timestamp default (now() at time zone 'utc'),
   "user_id" bigint NOT NULL,
+  "delivery_id" bigint NOT NULL,
   "total_amount" NUMERIC(19, 4) NOT NULL,
   "status" varchar NOT NULL
 );
@@ -89,6 +90,7 @@ CREATE TABLE "product_in_order" (
   "id" bigserial PRIMARY KEY,
   "order_id" bigint NOT NULL,
   "inventory_id" bigint NOT NULL,
+  "specs_id" bigint,
   "quantity" bigint NOT NULL,
   "total_amount" NUMERIC(19, 4) NOT NULL,
   "currency_code" varchar(3) NOT NULL
@@ -96,27 +98,13 @@ CREATE TABLE "product_in_order" (
 
 CREATE TABLE "deliveries" (
   "id" bigserial PRIMARY KEY,
-  "sent_date" timestamptz NOT NULL,
-  "received_date" timestamptz NOT NULL,
+  "user_id" bigint NOT NULL,
+  "address_id" bigint NOT NULL,
+  "sent_date" timestamptz,
+  "received_date" timestamptz,
+  "status" varchar NOT NULL,
   "method" varchar NOT NULL,
   "note" varchar
-);
-
-CREATE TABLE "receipts" (
-  "id" bigserial PRIMARY KEY,
-  "time" timestamptz NOT NULL,
-  "delivery_id" bigint NOT NULL,
-  "payment_id" bigint NOT NULL
-);
-
-CREATE TABLE "user_address" (
-  "user_id" bigint PRIMARY KEY,
-  "address_uuid" varchar NOT NULL
-);
-
-CREATE TABLE "suppliers_address" (
-  "suppliers_id" bigint PRIMARY KEY,
-  "address_uuid" varchar NOT NULL
 );
 
 CREATE TABLE "favorite_product" (

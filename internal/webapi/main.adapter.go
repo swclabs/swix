@@ -20,6 +20,7 @@ func NewAdapter(
 	article router.IArticle,
 	purchase router.IPurchase,
 	classify router.IClassify,
+	paydeli router.IPaydeliver,
 ) types.IAdapter {
 	adapter := &_Adapter{
 		server: server,
@@ -30,7 +31,7 @@ func NewAdapter(
 	adapter.server.Connect(article)
 	adapter.server.Connect(purchase)
 	adapter.server.Connect(classify)
-
+	adapter.server.Connect(paydeli)
 	return adapter
 }
 

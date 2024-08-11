@@ -28,16 +28,6 @@ func (supplier *Suppliers) Insert(ctx context.Context, supp entity.Suppliers) er
 		ctx, insertIntoSuppliers, supp.Name, supp.Email)
 }
 
-// InsertAddress implements ISuppliersRepository.
-func (supplier *Suppliers) InsertAddress(
-	ctx context.Context, addr entity.SuppliersAddress) error {
-	return supplier.db.SafeWrite(
-		ctx,
-		insertIntoSuppliersAddress,
-		addr.SuppliersID, addr.AddressUuiD,
-	)
-}
-
 // GetLimit implements ISuppliersRepository.
 func (supplier *Suppliers) GetLimit(
 	ctx context.Context, limit int) ([]entity.Suppliers, error) {
