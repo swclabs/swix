@@ -6,14 +6,17 @@ type CollectionUpload struct {
 	ID  int64  `json:"id"`
 }
 
+// Headline request, response
 type Headline struct {
 	Content []string `json:"content"`
 }
 
+// HeadlineContent request, response
 type HeadlineContent struct {
 	Content string `json:"content"`
 }
 
+// Message request, response
 type Message struct {
 	Position string   `json:"position" validate:"required"`
 	Content  []string `json:"content" validate:"required"`

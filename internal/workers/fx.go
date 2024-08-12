@@ -5,6 +5,7 @@ import (
 	"swclabs/swix/internal/workers/handler"
 	"swclabs/swix/internal/workers/queue"
 	"swclabs/swix/internal/workers/router"
+	"swclabs/swix/internal/workers/server"
 	"swclabs/swix/pkg/lib/worker"
 
 	"go.uber.org/fx"
@@ -18,12 +19,14 @@ var FxModule = fx.Options(
 	),
 	fx.Provide(
 		handler.NewBaseConsume,
-		router.NewBase,
-
 		handler.NewManagerConsume,
+		handler.NewPurchaseConsume,
+
+		router.NewBase,
 		router.NewManager,
+		router.NewPurchase,
 	),
 	fx.Provide(
-		NewWriter,
+		server.New,
 	),
 )

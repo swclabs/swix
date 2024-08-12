@@ -33,7 +33,7 @@ func NewArticle(service article.IArticle) IArticle {
 	}
 }
 
-// GetSlicesOfHeadlineBanner .
+// GetMessage .
 // @Description get list of headline banner
 // @Tags collections
 // @Accept json
@@ -62,7 +62,7 @@ func (p *Article) GetMessage(c echo.Context) error {
 	return c.JSON(http.StatusOK, headlines)
 }
 
-// UploadHeadlineBanner .
+// UploadMessage .
 // @Description create headline banner into collections
 // @Tags collections
 // @Accept json

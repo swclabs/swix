@@ -14,5 +14,6 @@ var FxModule = fx.Options(
 		NewPurchase,
 		NewManager,
 		NewClassify,
+		NewPaydeliver,
 	),
 )

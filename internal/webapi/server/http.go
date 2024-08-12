@@ -1,4 +1,4 @@
-package webapi
+package server
 
 import (
 	"errors"
@@ -19,8 +19,8 @@ type _Server struct {
 
 var _ IServer = &_Server{}
 
-// NewServer creates a new instance of the Server
-func NewServer(base router.IBase) IServer {
+// New creates a new instance of the Server
+func New(base router.IBase) IServer {
 	sentry.Init()
 	server := &_Server{
 		engine: echo.New(),

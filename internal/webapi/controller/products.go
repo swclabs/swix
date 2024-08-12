@@ -16,6 +16,8 @@ import (
 
 // IProducts interface for products controller
 type IProducts interface {
+	Search(c echo.Context) error
+
 	GetProductLimit(c echo.Context) error
 	UploadProductImage(c echo.Context) error
 	CreateProduct(c echo.Context) error
@@ -43,6 +45,35 @@ func NewProducts(services products.IProductService) IProducts {
 // Products struct implementation of IProducts
 type Products struct {
 	Services products.IProductService
+}
+
+// Search .
+// @Description get product
+// @Tags search
+// @Accept json
+// @Produce json
+// @Param keyword query string true "keyword"
+// @Success 200 {object} []dtos.ProductResponse
+// @Router /search [GET]
+func (p *Products) Search(c echo.Context) error {
+	keyword := c.QueryParam("keyword")
+	if keyword == "" {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "missing 'keyword' query parameter",
+		})
+	}
+	product, err := p.Services.Search(c.Request().Context(), keyword)
+	if err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, product)
 }
 
 // InsertInvSpecs .

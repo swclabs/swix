@@ -15,6 +15,74 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/address": {
+            "get": {
+                "description": "get address delivery.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "uid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.Address"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create address delivery.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "parameters": [
+                    {
+                        "description": "address request",
+                        "name": "addr",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.DeliveryAddress"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.ProductResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/email": {
             "get": {
                 "description": "check email address before login",
@@ -406,6 +474,68 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/delivery": {
+            "get": {
+                "description": "get delivery info by user id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "uid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create delivery info.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "description": "delivery info request",
+                        "name": "addr",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.DeliveryBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
                     }
                 }
             }
@@ -997,6 +1127,13 @@ const docTemplate = `{
                         "name": "uid",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "limit order",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1038,6 +1175,40 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/search": {
+            "get": {
+                "description": "get product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "search"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "keyword",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.ProductResponse"
+                            }
                         }
                     }
                 }
@@ -1191,6 +1362,33 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dtos.Address": {
+            "type": "object",
+            "required": [
+                "city",
+                "district",
+                "id",
+                "street",
+                "ward"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "ward": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.Article": {
             "type": "object",
             "required": [
@@ -1308,16 +1506,31 @@ const docTemplate = `{
         },
         "dtos.CreateOrderSchema": {
             "type": "object",
+            "required": [
+                "delevery_id",
+                "product",
+                "user_id"
+            ],
             "properties": {
+                "delevery_id": {
+                    "type": "integer"
+                },
                 "product": {
                     "type": "array",
                     "items": {
                         "type": "object",
+                        "required": [
+                            "inventory_id",
+                            "quantity"
+                        ],
                         "properties": {
                             "inventory_id": {
                                 "type": "integer"
                             },
                             "quantity": {
+                                "type": "integer"
+                            },
+                            "specs_id": {
                                 "type": "integer"
                             }
                         }
@@ -1336,6 +1549,65 @@ const docTemplate = `{
                 },
                 "msg": {
                     "type": "string"
+                }
+            }
+        },
+        "dtos.DeliveryAddress": {
+            "type": "object",
+            "required": [
+                "city",
+                "district",
+                "street",
+                "user_id",
+                "ward"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "ward": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.DeliveryBody": {
+            "type": "object",
+            "required": [
+                "address_id",
+                "method",
+                "status",
+                "user_id"
+            ],
+            "properties": {
+                "address_id": {
+                    "type": "integer"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "received_date": {
+                    "type": "string"
+                },
+                "sent_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -1911,22 +2183,10 @@ const docTemplate = `{
                 "name"
             ],
             "properties": {
-                "city": {
-                    "type": "string"
-                },
-                "district": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string"
-                },
-                "street": {
-                    "type": "string"
-                },
-                "ward": {
                     "type": "string"
                 }
             }

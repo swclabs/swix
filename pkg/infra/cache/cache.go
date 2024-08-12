@@ -4,11 +4,11 @@ package cache
 import (
 	"context"
 	"fmt"
+	"swclabs/swix/internal/config"
 	"time"
 
 	"go.uber.org/fx"
 
-	"swclabs/swix/internal/config"
 	"swclabs/swix/pkg/lib/logger"
 
 	"github.com/redis/go-redis/v9"
@@ -64,5 +64,5 @@ func (c *Cache) Get(ctx context.Context, key string) (string, error) {
 
 // Set implements ICache.
 func (c *Cache) Set(ctx context.Context, key string, val string) error {
-	return c.conn.Set(ctx, key, val, time.Duration(time.Minute*10)).Err()
+	return c.conn.Set(ctx, key, val, time.Duration(time.Minute*5)).Err()
 }

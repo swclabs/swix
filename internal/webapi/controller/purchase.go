@@ -40,9 +40,10 @@ func NewPurchase(services purchase.IPurchaseService) IPurchase {
 // @Accept json
 // @Produce json
 // @Param uid query string true "user id"
+// @Param limit query string true "limit order"
 // @Success 200 {object} []dtos.OrderSchema
 // @Router /purchase/orders [GET]
-func (purchase *Purchase) GetOrders(c echo.Context) error {
+func (p *Purchase) GetOrders(c echo.Context) error {
 	sUserID := c.QueryParam("uid")
 	if sUserID == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -70,7 +71,7 @@ func (purchase *Purchase) GetOrders(c echo.Context) error {
 		})
 	}
 
-	orders, err := purchase.services.GetOrdersByUserID(c.Request().Context(), userID, int(limit))
+	orders, err := p.services.GetOrdersByUserID(c.Request().Context(), userID, int(limit))
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -92,7 +93,7 @@ func (purchase *Purchase) GetOrders(c echo.Context) error {
 // @Param login body dtos.CreateOrderSchema true "order insert request"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/orders [POST]
-func (purchase *Purchase) CreateOrder(c echo.Context) error {
+func (p *Purchase) CreateOrder(c echo.Context) error {
 	var orderReq dtos.CreateOrderSchema
 	if err := c.Bind(&orderReq); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -104,7 +105,7 @@ func (purchase *Purchase) CreateOrder(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	msg, err := purchase.services.CreateOrders(c.Request().Context(), orderReq)
+	msg, err := p.services.CreateOrders(c.Request().Context(), orderReq)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -128,7 +129,7 @@ func (purchase *Purchase) CreateOrder(c echo.Context) error {
 // @Param login body dtos.CartInsert true "cart insert request"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/carts [POST]
-func (purchase *Purchase) AddToCarts(c echo.Context) error {
+func (p *Purchase) AddToCarts(c echo.Context) error {
 	var cartReq dtos.CartInsert
 	if err := c.Bind(&cartReq); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -140,7 +141,7 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if err := purchase.services.AddToCart(c.Request().Context(), cartReq); err != nil {
+	if err := p.services.AddToCart(c.Request().Context(), cartReq); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -163,7 +164,7 @@ func (purchase *Purchase) AddToCarts(c echo.Context) error {
 // @Param uid query number true "user id"
 // @Success 200 {object} dtos.CartSlices
 // @Router /purchase/carts [GET]
-func (purchase *Purchase) GetCarts(c echo.Context) error {
+func (p *Purchase) GetCarts(c echo.Context) error {
 	sUserID := c.QueryParam("uid")
 	if sUserID == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -176,7 +177,7 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 			Msg: "'uid' must be a positive integer",
 		})
 	}
-	items, err := purchase.services.GetCart(c.Request().Context(), userID, 10)
+	items, err := p.services.GetCart(c.Request().Context(), userID, 10)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -198,14 +199,14 @@ func (purchase *Purchase) GetCarts(c echo.Context) error {
 // @Param id query int true "cart id"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/carts [DELETE]
-func (purchase *Purchase) DeleteItem(c echo.Context) error {
+func (p *Purchase) DeleteItem(c echo.Context) error {
 	cID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "'id' must be a positive integer",
 		})
 	}
-	if err := purchase.
+	if err := p.
 		services.DeleteItemFromCart(c.Request().Context(), cID); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{

@@ -2,9 +2,8 @@
 package utils
 
 import (
-	"sync"
-
 	"swclabs/swix/internal/config"
+	"sync"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"

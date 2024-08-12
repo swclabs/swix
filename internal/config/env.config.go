@@ -51,7 +51,7 @@ var (
 	RedisPassword = os.Getenv("REDIS_PASSWORD")
 )
 
-// sentry environment variables
+// SentryDsn environment variables
 var (
 	SentryDsn = os.Getenv("SENTRY_DSN")
 )
@@ -70,7 +70,7 @@ var (
 	Auth0CallbackURL  = os.Getenv("AUTH0_CALLBACK_URL")
 )
 
-// Cloudinary
+// CloudinaryURL Cloudinary
 var (
 	CloudinaryURL = os.Getenv("CLOUDINARY_URL")
 )

@@ -3,7 +3,6 @@ package utils
 
 import (
 	"fmt"
-
 	"swclabs/swix/internal/config"
 )
 

@@ -14,12 +14,6 @@ type ISuppliersRepository interface {
 	// Returns an error if any issues occur during the insertion process.
 	Insert(ctx context.Context, sup entity.Suppliers) error
 
-	// InsertAddress adds a new address for a supplier to the database.
-	// ctx is the context to manage the request's lifecycle.
-	// addr is the SuppliersAddress object to be added.
-	// Returns an error if any issues occur during the insertion process.
-	InsertAddress(ctx context.Context, addr entity.SuppliersAddress) error
-
 	// GetLimit retrieves a list of suppliers with a specified limit.
 	// ctx is the context to manage the request's lifecycle.
 	// limit is the maximum number of suppliers to retrieve.

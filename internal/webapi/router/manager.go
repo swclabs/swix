@@ -30,21 +30,18 @@ func NewManager(controllers controller.IManager) IManager {
 // Routers define route endpoint
 func (account *Manager) Routers(e *echo.Echo) {
 	// endpoint for users
-	user := e.Group("/users")
-	user.GET("", account.controller.GetMe, middleware.SessionProtected)
-	user.PUT("", account.controller.UpdateUserInfo)
-	user.PUT("/image", account.controller.UpdateUserImage, middleware.SessionProtected)
+	e.GET("/users", account.controller.GetMe, middleware.SessionProtected)
+	e.PUT("/users", account.controller.UpdateUserInfo)
+	e.PUT("/users/image", account.controller.UpdateUserImage, middleware.SessionProtected)
 
 	// endpoint for authentication
-	auth := e.Group("/auth")
-	auth.POST("", account.controller.Auth)
-	auth.GET("/email", account.controller.CheckLoginEmail)
-	auth.POST("/signup", account.controller.SignUp)
-	auth.POST("/login", account.controller.Login)
-	auth.GET("/logout", account.controller.Logout)
+	e.POST("/auth", account.controller.Auth)
+	e.GET("/auth/email", account.controller.CheckLoginEmail)
+	e.POST("/auth/signup", account.controller.SignUp)
+	e.POST("/auth/login", account.controller.Login)
+	e.GET("/auth/logout", account.controller.Logout)
 
 	// endpoint for oauth2 service
-	auth0 := e.Group("/oauth2")
-	auth0.GET("/login", controller.Auth0Login)
 	e.GET("/callback", controller.Auth0Callback)
+	e.GET("/oauth2/login", controller.Auth0Login)
 }

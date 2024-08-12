@@ -27,12 +27,11 @@ var command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			if config.StageStatus == "prod" {
-				boot.PrepareFor(boot.Worker | boot.ProdMode)
-			} else {
-				boot.PrepareFor(boot.Worker | boot.ProdMode)
+			var flag = boot.WebAPI | boot.DebugMode
+			if config.StageStatus != "dev" {
+				flag = boot.WebAPI | boot.ProdMode
 			}
-			app := boot.NewApp(boot.NewWorker, workers.NewAdapter)
+			app := boot.NewApp(flag, boot.NewWorker, workers.NewAdapter)
 			app.Run()
 			return nil
 		},
@@ -42,12 +41,11 @@ var command = []*cli.Command{
 		Aliases: []string{"s"},
 		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
-			if config.StageStatus == "prod" {
-				boot.PrepareFor(boot.WebAPI | boot.ProdMode)
-			} else {
-				boot.PrepareFor(boot.WebAPI | boot.ProdMode)
+			var flag = boot.WebAPI | boot.DebugMode
+			if config.StageStatus != "dev" {
+				flag = boot.WebAPI | boot.ProdMode
 			}
-			app := boot.NewApp(boot.NewServer, webapi.NewAdapter)
+			app := boot.NewApp(flag, boot.NewServer, webapi.NewAdapter)
 			app.Run()
 			return nil
 		},

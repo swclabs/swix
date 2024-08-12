@@ -9,9 +9,3 @@ type Users struct {
 	LastName    string `json:"last_name" db:"last_name"`
 	Image       string `json:"image" db:"image"`
 }
-
-// UserAddress :Table user_address
-type UserAddress struct {
-	UserID    string `json:"user_id" db:"user_id"`
-	AddressID string `json:"address_uuid" db:"address_uuid"`
-}

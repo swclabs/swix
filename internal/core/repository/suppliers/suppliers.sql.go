@@ -6,11 +6,6 @@ const (
 		VALUES ($1, $2);
 	`
 
-	insertIntoSuppliersAddress string = `
-		INSERT INTO suppliers_address (suppliers_id, address_uuid)
-		VALUES ($1, $2);
-	`
-
 	selectSupplierByEmailLimit string = `
 		SELECT * 
 		FROM suppliers

@@ -106,8 +106,7 @@ func (manager *Manager) SignUp(ctx context.Context, req dtos.SignUpRequest) erro
 }
 
 // Login to system, return token if error not exist
-func (manager *Manager) Login(
-	ctx context.Context, req dtos.LoginRequest) (string, error) {
+func (manager *Manager) Login(ctx context.Context, req dtos.LoginRequest) (string, error) {
 	// get account form email
 	account, err := manager.Account.GetByEmail(ctx, req.Email)
 	if err != nil {
@@ -121,8 +120,7 @@ func (manager *Manager) Login(
 }
 
 // UserInfo return user information from Database
-func (manager *Manager) UserInfo(
-	ctx context.Context, email string) (*model.Users, error) {
+func (manager *Manager) UserInfo(ctx context.Context, email string) (*model.Users, error) {
 	// get user information
 	return manager.User.Info(ctx, email)
 }
@@ -139,8 +137,7 @@ func (manager *Manager) UpdateUserInfo(ctx context.Context, req dtos.UserUpdate)
 }
 
 // UploadAvatar upload image to blob storage and save img url to database
-func (manager *Manager) UploadAvatar(
-	email string, fileHeader *multipart.FileHeader) error {
+func (manager *Manager) UploadAvatar(email string, fileHeader *multipart.FileHeader) error {
 	file, err := fileHeader.Open()
 	if err != nil {
 		return err
@@ -158,8 +155,7 @@ func (manager *Manager) UploadAvatar(
 }
 
 // OAuth2SaveUser save user use oauth2 protocol
-func (manager *Manager) OAuth2SaveUser(
-	ctx context.Context, req dtos.OAuth2SaveUser) error {
+func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) error {
 	hash, err := crypto.GenPassword(utils.RandomString(18))
 	if err != nil {
 		return err
@@ -207,16 +203,10 @@ func (manager *Manager) OAuth2SaveUser(
 }
 
 // CheckLoginEmail check email already exist in database
-func (manager *Manager) CheckLoginEmail(
-	ctx context.Context, email string) error {
+func (manager *Manager) CheckLoginEmail(ctx context.Context, email string) error {
 	_, err := manager.Account.GetByEmail(ctx, email)
 	if err != nil {
 		return errors.New("account not found: " + email)
 	}
 	return nil
-}
-
-// UploadAddress update user address to database
-func (manager *Manager) UploadAddress(ctx context.Context, data entity.Addresses) error {
-	return manager.Address.Insert(ctx, data)
 }

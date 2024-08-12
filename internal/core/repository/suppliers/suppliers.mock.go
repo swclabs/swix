@@ -32,12 +32,6 @@ func (s *Mock) Insert(ctx context.Context, sup entity.Suppliers) error {
 	return args.Error(0)
 }
 
-// InsertAddress implements ISuppliersRepository.
-func (s *Mock) InsertAddress(ctx context.Context, addr entity.SuppliersAddress) error {
-	args := s.Called(ctx, addr)
-	return args.Error(0)
-}
-
 // Edit implements ISuppliersRepository.
 func (s *Mock) Edit(ctx context.Context, sup entity.Suppliers) error {
 	args := s.Called(ctx, sup)
