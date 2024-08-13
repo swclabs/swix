@@ -31,6 +31,7 @@ type DetailColor[T any] struct {
 }
 
 // ProductDetail is a type use to accept request and response
+// T is a specifcation type
 type ProductDetail[T any] struct {
 	// Name of product
 	Name string `json:"name"`
