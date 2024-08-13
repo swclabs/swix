@@ -153,11 +153,11 @@ func (s *ProductService) GetInvByID(ctx context.Context, inventoryID int64) (*dt
 }
 
 // ProductDetailOf implements IProductService.
-func (s *ProductService) ProductDetailOf(ctx context.Context, productID int64) (*dtos.ProductDetail, error) {
+func (s *ProductService) ProductDetailOf(ctx context.Context, productID int64) (*dtos.ProductDetail[dtos.DetailSpecs], error) {
 	var (
 		stocks       []dtos.Inventory
 		productSpecs dtos.ProductSpecs
-		details      dtos.ProductDetail
+		details      dtos.ProductDetail[dtos.DetailSpecs]
 	)
 
 	rawStocks, err := s.Inventory.GetByProductID(ctx, productID)
@@ -212,7 +212,7 @@ func (s *ProductService) ProductDetailOf(ctx context.Context, productID int64) (
 
 	for _, stock := range stocks {
 		var (
-			detailColor = dtos.DetailColor{
+			detailColor = dtos.DetailColor[dtos.DetailSpecs]{
 				Name:    stock.Color,
 				Img:     stock.ColorImg,
 				Product: stock.Image,

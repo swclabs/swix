@@ -12,8 +12,12 @@ type DetailSpecs struct {
 	Price string `json:"price"`
 }
 
+// DetailConnection is a type use to accept request and response
+type DetailConnection struct {
+}
+
 // DetailColor is a type use to accept request and response
-type DetailColor struct {
+type DetailColor[T any] struct {
 	// Name Nature Titanium
 	Name string `json:"name"`
 
@@ -23,11 +27,11 @@ type DetailColor struct {
 	// Img of product Nature Titanium
 	Product []string `json:"product"`
 
-	Specs []DetailSpecs `json:"specs"`
+	Specs []T `json:"specs"`
 }
 
 // ProductDetail is a type use to accept request and response
-type ProductDetail struct {
+type ProductDetail[T any] struct {
 	// Name of product
 	Name string `json:"name"`
 
@@ -41,7 +45,7 @@ type ProductDetail struct {
 	Image []string `json:"image"`
 
 	// Color of product
-	Color []DetailColor `json:"color"`
+	Color []DetailColor[T] `json:"color"`
 }
 
 // AccessoryDetail is a type use to accept request and response
