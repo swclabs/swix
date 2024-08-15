@@ -16,6 +16,7 @@ import (
 	"swclabs/swix/internal/core/repository/products"
 	"swclabs/swix/internal/core/repository/specifications"
 	"swclabs/swix/pkg/infra/blob"
+	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/errors"
 	"swclabs/swix/pkg/utils"
 
@@ -73,6 +74,7 @@ func (s *ProductService) InsertSpecWireless(ctx context.Context, specification d
 	}
 	content, _ := json.Marshal(dtos.InvWireless{
 		Connection: specification.Connection,
+		Desc:       specification.Connection,
 	})
 	return s.Specs.Insert(ctx, entity.Specifications{
 		InventoryID: specification.InventoryID,
@@ -227,37 +229,6 @@ func (s *ProductService) ProductDetail(ctx context.Context, productID int64) (*d
 	details.Image = strings.Split(rawProduct.Image, ",")
 
 	for _, stock := range rawStocks {
-		// var (
-		// 	inventory = dtos.Inventory[dtos.InvStorage]{
-		// 		ID:           stock.ID,
-		// 		Color:        stock.Color,
-		// 		Status:       stock.Status,
-		// 		ColorImg:     stock.ColorImg,
-		// 		ProductName:  rawProduct.Name,
-		// 		CurrencyCode: stock.CurrencyCode,
-		// 		Price:        stock.Price.String(),
-		// 		Image:        strings.Split(stock.Image, ","),
-		// 		ProductID:    strconv.Itoa(int(stock.ProductID)),
-		// 		Available:    strconv.Itoa(int(stock.Available)),
-		// 		Specs:        nil,
-		// 	}
-		// 	specs []dtos.InvStorage
-		// )
-		// if types&enum.ElectronicDevice != 0 {
-		// 	specOfproduct, err := s.Specs.GetByInventoryID(ctx, stock.ID)
-		// 	if err != nil {
-		// 		return nil, err
-		// 	}
-		// 	for _, spec := range specOfproduct {
-		// 		var _spec dtos.InvStorage
-		// 		if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-		// 			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-		// 		}
-		// 		specs = append(specs, _spec)
-		// 	}
-		// 	inventory.Specs = specs
-		// }
-		// stocks = append(stocks, inventory)
 		specOfproduct, err := s.Specs.GetByInventoryID(ctx, stock.ID)
 		if err != nil {
 			return nil, err
@@ -293,35 +264,6 @@ func (s *ProductService) ProductDetail(ctx context.Context, productID int64) (*d
 		detailColor.Specs = append(detailColor.Specs, detailSpec...)
 		details.Color = append(details.Color, detailColor)
 	}
-
-	// for _, stock := range stocks {
-	// 	var (
-	// 		detailColor = dtos.DetailColor[interface{}]{
-	// 			Name:    stock.Color,
-	// 			Img:     stock.ColorImg,
-	// 			Product: stock.Image,
-	// 			Specs:   nil,
-	// 		}
-	// 		detailSpec []interface{}
-	// 	)
-	// 	for _, spec := range stock.Specs {
-	// 		if types&enum.ElectronicDevice != 0 {
-	// 			detailSpec = append(detailSpec, dtos.DetailStorage{
-	// 				RAM:   spec.RAM,
-	// 				SSD:   spec.SSD,
-	// 				Price: stock.Price,
-	// 			})
-	// 		} else {
-	// 			detailSpec = append(detailSpec, dtos.DetailWireless{
-	// 				Name:  spec.Connection,
-	// 				Desc:  "",
-	// 				Price: stock.Price,
-	// 			})
-	// 		}
-	// 	}
-	// 	detailColor.Specs = append(detailColor.Specs, detailSpec...)
-	// 	details.Color = append(details.Color, detailColor)
-	// }
 	return &details, nil
 }
 
@@ -565,7 +507,7 @@ func (s *ProductService) CreateProduct(ctx context.Context, products dtos.Produc
 		Status:      products.Status,
 		Specs:       "{}",
 	}
-	if products.Specs != nil && types&enum.ElectronicDevice != 0 {
+	if products.Specs != nil {
 		var specs, ok = products.Specs.(dtos.ProductSpecs)
 		if !ok {
 			return -1, fmt.Errorf("[code: %d] invalid specifications", http.StatusBadRequest)
@@ -611,20 +553,34 @@ func (s *ProductService) InsertInv(ctx context.Context, product dtos.Inventory[i
 	if err := types.Load(category.Name); err != nil {
 		return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 	}
-	invID, err := s.Inventory.InsertProduct(ctx, inventory)
+	tx, err := db.NewTransaction(ctx)
 	if err != nil {
+		return err
+	}
+	var (
+		invRepo  = inventories.New(tx)
+		specRepo = specifications.New(tx)
+	)
+	invID, err := invRepo.InsertProduct(ctx, inventory)
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			return errTx
+		}
 		return err
 	}
 	for _, spec := range product.Specs {
 		bSpec, _ := json.Marshal(spec)
-		if err := s.Specs.Insert(ctx, entity.Specifications{
+		if err := specRepo.Insert(ctx, entity.Specifications{
 			InventoryID: invID,
 			Content:     string(bSpec),
 		}); err != nil {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				return errTx
+			}
 			return err
 		}
 	}
-	return nil
+	return tx.Commit(ctx)
 }
 
 // GetProductsLimit implements IProductService.

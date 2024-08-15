@@ -91,7 +91,7 @@ func (p *Article) GetCarousels(ctx context.Context, position string, limit int) 
 
 // UploadArticle implements IArticle.
 func (p *Article) UploadArticle(ctx context.Context, article dtos.UploadArticle) (int64, error) {
-	tx, err := db.BeginTransaction(ctx)
+	tx, err := db.NewTransaction(ctx)
 	if err != nil {
 		return -1, err
 	}
