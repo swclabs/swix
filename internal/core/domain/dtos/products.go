@@ -68,6 +68,7 @@ type InvStorage struct {
 // InvWireless request, response
 type InvWireless struct {
 	ID         int64  `json:"id"`
+	Desc       string `json:"desc"`
 	Connection string `json:"connection"`
 }
 
@@ -79,6 +80,7 @@ type StorageReq struct {
 
 // WirelessReq request, response
 type WirelessReq struct {
+	Desc       string `json:"desc"`
 	Connection string `json:"connection"`
 }
 
@@ -159,4 +161,5 @@ type Storage struct {
 type Wireless struct {
 	InventoryID int64  `json:"inventory_id" validate:"number,required"`
 	Connection  string `json:"connection" validate:"required"`
+	Desc        string `json:"desc" validate:"required"`
 }

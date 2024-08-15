@@ -35,7 +35,7 @@ func (c *Classify) CreateCategory(ctx context.Context, ctg entity.Categories) er
 
 // CreateSuppliers implements IClassify.
 func (c *Classify) CreateSuppliers(ctx context.Context, supplierReq dtos.Supplier) error {
-	tx, err := db.BeginTransaction(ctx)
+	tx, err := db.NewTransaction(ctx)
 	if err != nil {
 		return err
 	}
