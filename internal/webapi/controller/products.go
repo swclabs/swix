@@ -23,7 +23,7 @@ type IProducts interface {
 	CreateProduct(c echo.Context) error
 	DeleteProduct(c echo.Context) error
 	UpdateProductInfo(c echo.Context) error
-	GetProductDetails(c echo.Context) error
+	GetProductStorageDetails(c echo.Context) error
 	GetProductView(c echo.Context) error
 
 	GetInvDetails(c echo.Context) error
@@ -81,29 +81,62 @@ func (p *Products) Search(c echo.Context) error {
 // @Tags inventories
 // @Accept json
 // @Produce json
-// @Param specs body dtos.Specifications true "Specifications inventory Request"
-// @Success 200 {object} []dtos.OK
-// @Router /inventories/specs [POST]
+// @Param type path string true "Specification type (storage or wireless)"
+// @Param spec body dtos.Object true "Storage Specification"
+// @Success 201 {object} dtos.OK
+// @Failure 400 {object} dtos.Error "Bad Request"
+// @Failure 500 {object} dtos.Error "Internal Server Error"
+// @Router /inventories/specs/{type} [POST]
 func (p *Products) InsertInvSpecs(c echo.Context) error {
-	var invSpec dtos.Specifications
-	if err := c.Bind(&invSpec); err != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: err.Error(),
-		})
-	}
-	if _valid := valid.Validate(&invSpec); _valid != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: _valid.Error(),
-		})
-	}
-	if err := p.Services.InsertSpecs(c.Request().Context(), invSpec); err != nil {
-		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+	types := c.Param("type")
+	switch types {
+	case "storage":
+		var invSpec dtos.Storage
+		if err := c.Bind(&invSpec); err != nil {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
 			})
 		}
-		return c.JSON(http.StatusInternalServerError, dtos.Error{
-			Msg: err.Error(),
+		if _valid := valid.Validate(&invSpec); _valid != nil {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: _valid.Error(),
+			})
+		}
+		if err := p.Services.InsertSpecStorage(c.Request().Context(), invSpec); err != nil {
+			if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+				return c.JSON(http.StatusBadRequest, dtos.Error{
+					Msg: err.Error(),
+				})
+			}
+			return c.JSON(http.StatusInternalServerError, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
+	case "wireless":
+		var invSpec dtos.Wireless
+		if err := c.Bind(&invSpec); err != nil {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
+		if _valid := valid.Validate(&invSpec); _valid != nil {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: _valid.Error(),
+			})
+		}
+		if err := p.Services.InsertSpecWireless(c.Request().Context(), invSpec); err != nil {
+			if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+				return c.JSON(http.StatusBadRequest, dtos.Error{
+					Msg: err.Error(),
+				})
+			}
+			return c.JSON(http.StatusInternalServerError, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
+	default:
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "invalid type",
 		})
 	}
 	return c.JSON(http.StatusCreated, dtos.OK{
@@ -140,15 +173,15 @@ func (p *Products) GetProductView(c echo.Context) error {
 	return c.JSON(http.StatusOK, product)
 }
 
-// GetProductDetails .
+// GetProductStorageDetails .
 // @Description get product details
 // @Tags products
 // @Accept json
 // @Produce json
 // @Param id query number true "product id"
-// @Success 200 {object} dtos.ProductDetail
+// @Success 200 {object} dtos.ProductDetail[dtos.DetailStorage]
 // @Router /products/details [GET]
-func (p *Products) GetProductDetails(c echo.Context) error {
+func (p *Products) GetProductStorageDetails(c echo.Context) error {
 	ID, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -156,7 +189,7 @@ func (p *Products) GetProductDetails(c echo.Context) error {
 		})
 	}
 
-	product, err := p.Services.ProductDetailOf(c.Request().Context(), int64(ID))
+	product, err := p.Services.ProductDetail(c.Request().Context(), int64(ID))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -223,7 +256,7 @@ func (p *Products) UploadInvImage(c echo.Context) error {
 			Msg: "Invalid 'limit' query parameter",
 		})
 	}
-	if err := p.Services.UploadInvStockImage(c.Request().Context(), id, files); err != nil {
+	if err := p.Services.UploadInvImage(c.Request().Context(), id, files); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -281,7 +314,7 @@ func (p *Products) DeleteInv(c echo.Context) error {
 // @Produce json
 // @Param page query number true "page"
 // @Param limit query number true "limit"
-// @Success 200 {object} dtos.InvStock
+// @Success 200 {object} dtos.InvStock[dtos.InvStorage]
 // @Router /inventories [GET]
 func (p *Products) GetStock(c echo.Context) error {
 	page, err := strconv.Atoi(c.QueryParam("page"))
@@ -296,7 +329,7 @@ func (p *Products) GetStock(c echo.Context) error {
 			Msg: "missing 'limit' or 'limit' is not a number",
 		})
 	}
-	stock, err := p.Services.GetAllInvStock(c.Request().Context(), page, limit)
+	stock, err := p.Services.GetAllInv(c.Request().Context(), page, limit)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -351,7 +384,7 @@ func (p *Products) UpdateProductInfo(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param id query number true "inventory id"
-// @Success 200 {object} dtos.Inventory
+// @Success 200 {object} dtos.Inventory[dtos.InvStorage]
 // @Router /inventories/details [GET]
 func (p *Products) GetInvDetails(c echo.Context) error {
 	ID, err := strconv.Atoi(c.QueryParam("id"))
@@ -427,7 +460,7 @@ func (p *Products) DeleteProduct(c echo.Context) error {
 			Msg: "param 'pid' must be integer",
 		})
 	}
-	if err := p.Services.DeleteProductByID(c.Request().Context(), id); err != nil {
+	if err := p.Services.DelProductByID(c.Request().Context(), id); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -507,6 +540,7 @@ func (p *Products) CreateProduct(c echo.Context) error {
 	}
 	// call services
 	product := dtos.Product{
+		Specs:       productReq.Specs,
 		Price:       productReq.Price,
 		Description: productReq.Description,
 		Name:        productReq.Name,
@@ -536,32 +570,79 @@ func (p *Products) CreateProduct(c echo.Context) error {
 // @Tags inventories
 // @Accept json
 // @Produce json
-// @Param InvDetail body dtos.InvDetail true "Inventories Request"
+// @Param type path string true "Specification type (storage or wireless)"
+// @Param InvDetail body dtos.InvDetail[dtos.Object] true "Inventories Request"
 // @Success 201 {object} dtos.OK
-// @Router /inventories [POST]
+// @Router /inventories/{type} [POST]
 func (p *Products) AddInv(c echo.Context) error {
-	var req dtos.InvDetail
-	if err := c.Bind(&req); err != nil {
+
+	var (
+		types = c.Param("type")
+		specs []interface{}
+		inv   dtos.Inventory[interface{}]
+	)
+	switch types {
+	case "storage":
+		var req dtos.InvDetail[dtos.StorageReq]
+		if err := c.Bind(&req); err != nil {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
+		if validate := valid.Validate(&req); validate != nil {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: validate.Error(),
+			})
+		}
+		specs = make([]interface{}, len(req.Specs))
+		for i, s := range req.Specs {
+			specs[i] = s
+		}
+		inv = dtos.Inventory[interface{}]{
+			ProductID:    req.ProductID,
+			Price:        req.Price,
+			Available:    req.Available,
+			CurrencyCode: req.CurrencyCode,
+			ColorImg:     req.ColorImg,
+			Color:        req.Color,
+			Status:       req.Status,
+			Image:        req.Image,
+			Specs:        specs,
+		}
+
+	case "wireless":
+		var req dtos.InvDetail[dtos.WirelessReq]
+		if err := c.Bind(&req); err != nil {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
+		if validate := valid.Validate(&req); validate != nil {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: validate.Error(),
+			})
+		}
+		specs := make([]interface{}, len(req.Specs))
+		for i, s := range req.Specs {
+			specs[i] = s
+		}
+		inv = dtos.Inventory[interface{}]{
+			ProductID:    req.ProductID,
+			Price:        req.Price,
+			Available:    req.Available,
+			CurrencyCode: req.CurrencyCode,
+			ColorImg:     req.ColorImg,
+			Color:        req.Color,
+			Status:       req.Status,
+			Image:        req.Image,
+			Specs:        specs,
+		}
+	default:
 		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: err.Error(),
+			Msg: "invalid type",
 		})
 	}
-	if validate := valid.Validate(&req); validate != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: validate.Error(),
-		})
-	}
-	if err := p.Services.InsertInv(c.Request().Context(), dtos.Inventory{
-		ProductID:    req.ProductID,
-		Price:        req.Price,
-		Available:    req.Available,
-		CurrencyCode: req.CurrencyCode,
-		ColorImg:     req.ColorImg,
-		Color:        req.Color,
-		Status:       req.Status,
-		Image:        req.Image,
-		Specs:        req.Specs,
-	}); err != nil {
+	if err := p.Services.InsertInv(c.Request().Context(), inv); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),

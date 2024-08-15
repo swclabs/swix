@@ -2,6 +2,7 @@ package entity
 
 import "time"
 
+// Deliveries struct for delivery entity
 type Deliveries struct {
 	ID           int64     `json:"id" db:"id"`
 	AddressID    int64     `json:"address_id" db:"address_id"`

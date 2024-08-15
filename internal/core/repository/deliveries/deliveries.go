@@ -9,12 +9,14 @@ import (
 
 var _ IDelivery = (*Deliveries)(nil)
 
+// Init creates a new Deliveries object
 func Init(_ cache.ICache, db db.IDatabase) IDelivery {
 	return &Deliveries{
 		db: db,
 	}
 }
 
+// Deliveries struct for delivery repository
 type Deliveries struct {
 	db db.IDatabase
 }

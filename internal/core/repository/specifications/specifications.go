@@ -15,6 +15,13 @@ func Init(conn db.IDatabase, _ cache.ICache) ISpecifications {
 	}
 }
 
+// New creates a new Specifications object.
+func New(conn db.IDatabase) ISpecifications {
+	return &Specifications{
+		db: conn,
+	}
+}
+
 // Specifications represents the Specifications repository.
 type Specifications struct {
 	db db.IDatabase

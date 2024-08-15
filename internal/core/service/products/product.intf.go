@@ -36,13 +36,13 @@ type IProductService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// product contains the inventories product details to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertInv(ctx context.Context, product dtos.Inventory) error
+	InsertInv(ctx context.Context, product dtos.Inventory[interface{}]) error
 
-	// DeleteProductByID deletes a product from the database.
+	// DelProductByID deletes a product from the database.
 	// ctx is the context to manage the request's lifecycle.
 	// productID is the ID of the product to be deleted.
 	// Returns an error if any issues occur during the deletion process.
-	DeleteProductByID(ctx context.Context, productID int64) error
+	DelProductByID(ctx context.Context, productID int64) error
 
 	// UpdateProductInfo updates a product's information in the database.
 	// ctx is the context to manage the request's lifecycle.
@@ -62,12 +62,12 @@ type IProductService interface {
 	// Returns a slice of ProductResponse objects and an error if any issues occur during the retrieval process.
 	Search(ctx context.Context, keyword string) ([]dtos.ProductResponse, error)
 
-	// GetAllInvStock retrieves a list of all stock.
+	// GetAllInv retrieves a list of all stock.
 	// ctx is the context to manage the request's lifecycle.
 	// page is the page number.
 	// limit is the maximum number of stock to retrieve.
 	// Returns a pointer to the InvStock object and an error if any issues occur during the retrieval process.
-	GetAllInvStock(ctx context.Context, page int, limit int) (*dtos.InvStock, error)
+	GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvStock[interface{}], error)
 
 	// DeleteInvByID deletes an inventory by its ID.
 	// ctx is the context to manage the request's lifecycle.
@@ -75,11 +75,11 @@ type IProductService interface {
 	// Returns an error if any issues occur during the deletion process.
 	DeleteInvByID(ctx context.Context, inventoryID int64) error
 
-	// UploadInvStockImage uploads images for an inventory.
+	// UploadInvImage uploads images for an inventory.
 	// ctx is the context to manage the request's lifecycle.
 	// ID is the ID of the inventory.
 	// fileHeader contains the file headers of the images to be uploaded.
-	UploadInvStockImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
+	UploadInvImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
 
 	// UpdateInv updates an inventory.
 	// ctx is the context to manage the request's lifecycle.
@@ -87,17 +87,17 @@ type IProductService interface {
 	// Returns an error if any issues occur during the update process.
 	UpdateInv(ctx context.Context, inventory dtos.InvUpdate) error
 
-	// ProductDetailOf retrieves the details of a product.
+	// ProductDetail retrieves the details of a product.
 	// ctx is the context to manage the request's lifecycle.
 	// productID is the ID of the product to retrieve details for.
 	// Returns a pointer to the ProductDetail object and an error if any issues occur during the retrieval
-	ProductDetailOf(ctx context.Context, productID int64) (*dtos.ProductDetail[dtos.DetailSpecs], error)
+	ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail[interface{}], error)
 
 	// GetInvByID retrieves an inventory by its ID.
 	// ctx is the context to manage the request's lifecycle.
 	// inventoryID is the ID of the inventory to retrieve.
 	// Returns a pointer to the Inventory object and an error if any issues occur during the retrieval process.
-	GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory, error)
+	GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory[interface{}], error)
 
 	// ViewDataOf retrieves the data of a product.
 	// ctx is the context to manage the request's lifecycle.
@@ -105,9 +105,11 @@ type IProductService interface {
 	// Returns a slice of ProductView objects and an error if any issues occur during the retrieval process.
 	ViewDataOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductView, error)
 
-	// InsertSpecs inserts specifications for an inventory.
+	// InsertSpecStorage inserts specifications for an inventory.
 	// ctx is the context to manage the request's lifecycle.
 	// specification contains the specifications to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertSpecs(ctx context.Context, specification dtos.Specifications) error
+	InsertSpecStorage(ctx context.Context, specification dtos.Storage) error
+
+	InsertSpecWireless(ctx context.Context, specification dtos.Wireless) error
 }

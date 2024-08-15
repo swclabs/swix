@@ -163,7 +163,7 @@ func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*dtos.
 
 // CreateOrders implements IPurchaseService.
 func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrderSchema) (string, error) {
-	tx, err := db.BeginTransaction(ctx)
+	tx, err := db.NewTransaction(ctx)
 	if err != nil {
 		return "", err
 	}

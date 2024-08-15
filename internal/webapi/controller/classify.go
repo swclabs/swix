@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"swclabs/swix/internal/core/domain/dtos"
@@ -108,7 +109,7 @@ func (classify *Classify) InsertCategory(c echo.Context) error {
 	}
 	if err := classify.Service.CreateCategory(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
-			Msg: "category data invalid",
+			Msg: fmt.Sprintf("category data invalid, %v", err),
 		})
 	}
 	return c.JSON(http.StatusCreated, dtos.OK{

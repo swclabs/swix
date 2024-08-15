@@ -8,6 +8,7 @@ import (
 	"os"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/repository/categories"
 	"swclabs/swix/internal/core/repository/inventories"
 	productRepo "swclabs/swix/internal/core/repository/products"
 	"swclabs/swix/internal/core/repository/specifications"
@@ -26,7 +27,7 @@ func TestProductDetails(t *testing.T) {
 			Screen:  "6.1 inch",
 			Display: "Super Retina XDR display",
 		}
-		inventorySpec = dtos.InvSpecification{
+		inventorySpec = dtos.InvStorage{
 			RAM: "8GB",
 			SSD: "256GB",
 		}
@@ -35,10 +36,12 @@ func TestProductDetails(t *testing.T) {
 		inventory        inventories.Mock
 		product          productRepo.Mock
 		specs            specifications.Mock
+		category         = categories.Mock{}
 		service          = products.ProductService{
 			Inventory: &inventory,
 			Products:  &product,
 			Specs:     &specs,
+			Category:  &category,
 		}
 		controller = controller.Products{
 			Services: &service,
@@ -64,6 +67,12 @@ func TestProductDetails(t *testing.T) {
 			},
 		}, nil)
 	}
+
+	category.On("GetByID", context.Background(), int64(1)).Return(&entity.Categories{
+		ID:          "1",
+		Name:        "phone",
+		Description: "phone",
+	}, nil)
 
 	// sInventorySpec, _ := json.Marshal(inventorySpec)
 	inventory.On("GetByProductID", context.Background(), int64(1)).Return([]entity.Inventories{
@@ -113,20 +122,21 @@ func TestProductDetails(t *testing.T) {
 		},
 	}, nil)
 	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
-		Name:   "iPhone 12",
-		Image:  "/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-1-202309.jpg,/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-2-202309.jpg,/img/shop/iphone-15-pro/iphone-15-pro-finish-select.jpg",
-		Price:  "17.000.000 - 18.000.000",
-		Specs:  string(bProductSpecs),
-		Status: "active",
+		Name:       "iPhone 12",
+		Image:      "/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-1-202309.jpg,/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-2-202309.jpg,/img/shop/iphone-15-pro/iphone-15-pro-finish-select.jpg",
+		Price:      "17.000.000 - 18.000.000",
+		Specs:      string(bProductSpecs),
+		Status:     "active",
+		CategoryID: 1,
 	}, nil)
 
-	e.GET("/products/details", controller.GetProductDetails)
+	e.GET("/products/details", controller.GetProductStorageDetails)
 	req := httptest.NewRequest(http.MethodGet, "/products/details?id=1", nil)
 	rr := httptest.NewRecorder()
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body dtos.ProductDetail[dtos.DetailSpecs]
+	var body dtos.ProductDetail[dtos.DetailStorage]
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}

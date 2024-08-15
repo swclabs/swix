@@ -53,7 +53,7 @@ func New(
 
 // SignUp user to access system, return error if exist
 func (manager *Manager) SignUp(ctx context.Context, req dtos.SignUpRequest) error {
-	tx, err := db.BeginTransaction(ctx)
+	tx, err := db.NewTransaction(ctx)
 	if err != nil {
 		return err
 	}
@@ -160,7 +160,7 @@ func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveU
 	if err != nil {
 		return err
 	}
-	tx, err := db.BeginTransaction(ctx)
+	tx, err := db.NewTransaction(ctx)
 	if err != nil {
 		return err
 	}
