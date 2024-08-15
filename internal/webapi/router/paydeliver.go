@@ -11,14 +11,14 @@ type IPaydeliver interface {
 	IRouter
 }
 
-// NewManager creates a new Manager router object
+// NewPaydeliver creates a new Manager router object
 func NewPaydeliver(controllers controller.IPaydeliver) IPaydeliver {
 	return &Paydeliver{
 		controller: controllers,
 	}
 }
 
-// Manager struct	implementation of IManager
+// Paydeliver struct implementation of IManager
 type Paydeliver struct {
 	controller controller.IPaydeliver
 }

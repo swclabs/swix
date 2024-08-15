@@ -2,8 +2,8 @@ package products
 
 const (
 	insertIntoProducts string = `
-		INSERT INTO products (image, price, name, description, supplier_id, category_id, status)
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO products (image, price, name, description, supplier_id, category_id, status, specs)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 		RETURNING id;
 	`
 

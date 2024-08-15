@@ -1,5 +1,6 @@
 package dtos
 
+// DeliveryAddress request, response
 type DeliveryAddress struct {
 	UserID   int64  `json:"user_id" validate:"required"`
 	City     string `json:"city" validate:"required"`
@@ -8,6 +9,7 @@ type DeliveryAddress struct {
 	Street   string `json:"street" validate:"required"`
 }
 
+// Address request, response
 type Address struct {
 	ID       int64  `json:"id" validate:"required"`
 	City     string `json:"city" validate:"required"`
@@ -16,6 +18,7 @@ type Address struct {
 	Street   string `json:"street" validate:"required"`
 }
 
+// DeliveryBody request, response
 type DeliveryBody struct {
 	AddressID    int64  `json:"address_id" validate:"required"`
 	UserID       int64  `json:"user_id" validate:"required"`
@@ -26,6 +29,7 @@ type DeliveryBody struct {
 	ReceivedDate string `json:"received_date" validate:"date,omitempty"`
 }
 
+// Delivery request, response
 type Delivery struct {
 	ID           int64  `json:"id" db:"id"`
 	AddressID    int64  `json:"address_id" db:"address_id"`

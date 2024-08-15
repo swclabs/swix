@@ -168,7 +168,7 @@ definitions:
     - status
     - user_id
     type: object
-  dtos.DetailColor:
+  dtos.DetailColor-dtos_DetailStorage:
     properties:
       img:
         description: Img of color Nature Titanium
@@ -183,10 +183,10 @@ definitions:
         type: array
       specs:
         items:
-          $ref: '#/definitions/dtos.DetailSpecs'
+          $ref: '#/definitions/dtos.DetailStorage'
         type: array
     type: object
-  dtos.DetailSpecs:
+  dtos.DetailStorage:
     properties:
       RAM:
         description: Value 8GB
@@ -203,7 +203,7 @@ definitions:
       msg:
         type: string
     type: object
-  dtos.InvDetail:
+  dtos.InvDetail-dtos_Object:
     properties:
       available:
         type: string
@@ -223,7 +223,7 @@ definitions:
         type: string
       specs:
         items:
-          $ref: '#/definitions/dtos.InvSpecification'
+          $ref: '#/definitions/dtos.Object'
         type: array
       status:
         type: string
@@ -233,16 +233,7 @@ definitions:
     - price
     - product_id
     type: object
-  dtos.InvSpecification:
-    properties:
-      id:
-        type: integer
-      ram:
-        type: string
-      ssd:
-        type: string
-    type: object
-  dtos.InvStock:
+  dtos.InvStock-dtos_InvStorage:
     properties:
       header:
         $ref: '#/definitions/dtos.StockHeader'
@@ -252,8 +243,17 @@ definitions:
         type: integer
       stock:
         items:
-          $ref: '#/definitions/dtos.Inventory'
+          $ref: '#/definitions/dtos.Inventory-dtos_InvStorage'
         type: array
+    type: object
+  dtos.InvStorage:
+    properties:
+      id:
+        type: integer
+      ram:
+        type: string
+      ssd:
+        type: string
     type: object
   dtos.InvUpdate:
     properties:
@@ -272,7 +272,7 @@ definitions:
     required:
     - id
     type: object
-  dtos.Inventory:
+  dtos.Inventory-dtos_InvStorage:
     properties:
       available:
         type: string
@@ -298,7 +298,7 @@ definitions:
         type: string
       specs:
         items:
-          $ref: '#/definitions/dtos.InvSpecification'
+          $ref: '#/definitions/dtos.InvStorage'
         type: array
       status:
         type: string
@@ -348,11 +348,13 @@ definitions:
       msg:
         type: string
     type: object
+  dtos.Object:
+    type: object
   dtos.OrderSchema:
     properties:
       id:
         type: integer
-      products:
+      items:
         items:
           $ref: '#/definitions/dtos.ProductOrderSchema'
         type: array
@@ -369,12 +371,12 @@ definitions:
       uuid:
         type: string
     type: object
-  dtos.ProductDetail:
+  dtos.ProductDetail-dtos_DetailStorage:
     properties:
       color:
         description: Color of product
         items:
-          $ref: '#/definitions/dtos.DetailColor'
+          $ref: '#/definitions/dtos.DetailColor-dtos_DetailStorage'
         type: array
       display:
         description: Display Super AMOLED
@@ -522,19 +524,6 @@ definitions:
         items:
           $ref: '#/definitions/entity.Suppliers'
         type: array
-    type: object
-  dtos.Specifications:
-    properties:
-      inventory_id:
-        type: integer
-      ram:
-        type: string
-      ssd:
-        type: string
-    required:
-    - inventory_id
-    - ram
-    - ssd
     type: object
   dtos.StockHeader:
     properties:
@@ -1050,27 +1039,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.InvStock'
-      tags:
-      - inventories
-    post:
-      consumes:
-      - application/json
-      description: add product to inventories
-      parameters:
-      - description: Inventories Request
-        in: body
-        name: InvDetail
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.InvDetail'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/dtos.OK'
+            $ref: '#/definitions/dtos.InvStock-dtos_InvStorage'
       tags:
       - inventories
     put:
@@ -1093,6 +1062,32 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
+  /inventories/{type}:
+    post:
+      consumes:
+      - application/json
+      description: add product to inventories
+      parameters:
+      - description: Specification type (storage or wireless)
+        in: path
+        name: type
+        required: true
+        type: string
+      - description: Inventories Request
+        in: body
+        name: InvDetail
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.InvDetail-dtos_Object'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
   /inventories/details:
     get:
       consumes:
@@ -1110,7 +1105,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.Inventory'
+            $ref: '#/definitions/dtos.Inventory-dtos_InvStorage'
       tags:
       - inventories
   /inventories/image:
@@ -1133,27 +1128,38 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
-  /inventories/specs:
+  /inventories/specs/{type}:
     post:
       consumes:
       - application/json
       description: create new specification for inventory
       parameters:
-      - description: Specifications inventory Request
+      - description: Specification type (storage or wireless)
+        in: path
+        name: type
+        required: true
+        type: string
+      - description: Storage Specification
         in: body
-        name: specs
+        name: spec
         required: true
         schema:
-          $ref: '#/definitions/dtos.Specifications'
+          $ref: '#/definitions/dtos.Object'
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
-            items:
-              $ref: '#/definitions/dtos.OK'
-            type: array
+            $ref: '#/definitions/dtos.OK'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dtos.Error'
       tags:
       - inventories
   /oauth2/login:
@@ -1264,7 +1270,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.ProductDetail'
+            $ref: '#/definitions/dtos.ProductDetail-dtos_DetailStorage'
       tags:
       - products
   /products/img:

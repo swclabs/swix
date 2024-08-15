@@ -20,7 +20,7 @@ type Mock struct {
 }
 
 // GetByUserID implements IAddressRepository.
-func (a *Mock) GetByUserID(ctx context.Context, userID int64) ([]entity.Addresses, error) {
+func (a *Mock) GetByUserID(_ context.Context, _ int64) ([]entity.Addresses, error) {
 	panic("unimplemented")
 }
 

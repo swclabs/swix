@@ -26,7 +26,7 @@ var e = echo.New()
 
 func TestGetInventory(t *testing.T) {
 	var (
-		spec = dtos.InvSpecification{
+		spec = dtos.InvStorage{
 			ID:  1,
 			RAM: "8GB",
 			SSD: "256GB",
@@ -75,7 +75,7 @@ func TestGetInventory(t *testing.T) {
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body dtos.Inventory
+	var body dtos.Inventory[dtos.InvStorage]
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}

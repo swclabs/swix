@@ -20,7 +20,7 @@ func New(
 	}
 }
 
-// Classify struct for classify service
+// PaymentDelivery struct for classify service
 type PaymentDelivery struct {
 	Address  addresses.IAddressRepository
 	Delivery deliveries.IDelivery

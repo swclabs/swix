@@ -38,7 +38,7 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.POST("/products", r.controller.CreateProduct)
 	e.PUT("/products", r.controller.UpdateProductInfo)
 	e.DELETE("/products", r.controller.DeleteProduct)
-	e.GET("/products/details", r.controller.GetProductDetails)
+	e.GET("/products/details", r.controller.GetProductStorageDetails)
 	e.POST("/products/img", r.controller.UploadProductImage)
 	e.GET("/products/view", r.controller.GetProductView)
 
@@ -47,7 +47,7 @@ func (r *Products) Routers(e *echo.Echo) {
 	e.GET("/inventories/details", r.controller.GetInvDetails)
 	e.GET("/inventories", r.controller.GetStock)
 	e.PUT("/inventories", r.controller.UpdateInv)
-	e.POST("/inventories", r.controller.AddInv)
+	e.POST("/inventories/:type", r.controller.AddInv)
 	e.DELETE("/inventories", r.controller.DeleteInv)
-	e.POST("/inventories/specs", r.controller.InsertInvSpecs)
+	e.POST("/inventories/specs/:type", r.controller.InsertInvSpecs)
 }

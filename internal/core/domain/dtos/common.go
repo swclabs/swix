@@ -27,3 +27,9 @@ type OK struct {
 type Slices[T any] struct {
 	Body []T `json:"body"`
 }
+
+// Any schema for response
+type Any interface{}
+
+// Object schema for response
+type Object struct{}
