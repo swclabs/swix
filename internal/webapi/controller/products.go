@@ -540,6 +540,7 @@ func (p *Products) CreateProduct(c echo.Context) error {
 	}
 	// call services
 	product := dtos.Product{
+		Specs:       productReq.Specs,
 		Price:       productReq.Price,
 		Description: productReq.Description,
 		Name:        productReq.Name,

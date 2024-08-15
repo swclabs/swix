@@ -507,7 +507,7 @@ func (s *ProductService) CreateProduct(ctx context.Context, products dtos.Produc
 		Status:      products.Status,
 		Specs:       "{}",
 	}
-	if products.Specs != nil && types&enum.ElectronicDevice != 0 {
+	if products.Specs != nil {
 		var specs, ok = products.Specs.(dtos.ProductSpecs)
 		if !ok {
 			return -1, fmt.Errorf("[code: %d] invalid specifications", http.StatusBadRequest)
