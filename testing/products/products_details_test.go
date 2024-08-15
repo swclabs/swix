@@ -126,7 +126,7 @@ func TestProductDetails(t *testing.T) {
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body dtos.ProductDetail
+	var body dtos.ProductDetail[dtos.DetailSpecs]
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}

@@ -91,7 +91,7 @@ type IProductService interface {
 	// ctx is the context to manage the request's lifecycle.
 	// productID is the ID of the product to retrieve details for.
 	// Returns a pointer to the ProductDetail object and an error if any issues occur during the retrieval
-	ProductDetailOf(ctx context.Context, productID int64) (*dtos.ProductDetail, error)
+	ProductDetailOf(ctx context.Context, productID int64) (*dtos.ProductDetail[dtos.DetailSpecs], error)
 
 	// GetInvByID retrieves an inventory by its ID.
 	// ctx is the context to manage the request's lifecycle.
