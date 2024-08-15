@@ -1,7 +1,7 @@
 package dtos
 
-// DetailSpecs is a type use to accept request and response
-type DetailSpecs struct {
+// DetailStorage is a type use to accept request and response
+type DetailStorage struct {
 	// Value 8GB
 	RAM string `json:"RAM"`
 
@@ -12,8 +12,11 @@ type DetailSpecs struct {
 	Price string `json:"price"`
 }
 
-// DetailConnection is a type use to accept request and response
-type DetailConnection struct {
+// DetailWireless is a type use to accept request and response
+type DetailWireless struct {
+	Name  string `json:"name"`
+	Desc  string `json:"desc"`
+	Price string `json:"price"`
 }
 
 // DetailColor is a type use to accept request and response

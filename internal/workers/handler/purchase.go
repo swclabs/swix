@@ -18,7 +18,7 @@ type IPurchase interface {
 
 var _ IPurchase = (*Purchase)(nil)
 
-// NewPurchase creates a new Purchase object
+// NewPurchaseConsume creates a new Purchase object
 func NewPurchaseConsume(service purchase.IPurchaseService) IPurchase {
 	return &Purchase{service: service}
 }

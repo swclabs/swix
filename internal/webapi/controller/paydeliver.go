@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// IPaydeliver interface for paydeliver controller
 type IPaydeliver interface {
 	CreateDeliveryAddress(e echo.Context) error
 	GetDeliveryAddress(e echo.Context) error
