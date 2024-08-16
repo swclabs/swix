@@ -19,6 +19,7 @@ type IClassify interface {
 
 	GetCategories(c echo.Context) error
 	InsertCategory(c echo.Context) error
+	DeleteCategory(c echo.Context) error
 }
 
 // NewClassify creates a new Classify object
@@ -144,5 +145,30 @@ func (classify *Classify) InsertSupplier(c echo.Context) error {
 	}
 	return c.JSON(http.StatusCreated, dtos.OK{
 		Msg: "suppliers created successfully",
+	})
+}
+
+// DeleteCategory .
+// @Description delete category by ID
+// @Tags categories
+// @Accept json
+// @Produce json
+// @Param id path int true "category ID"
+// @Success 200 {object} dtos.OK
+// @Router /categories/{id} [DELETE]
+func (classify *Classify) DeleteCategory(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "invalid category ID",
+		})
+	}
+	if err := classify.Service.DelCategoryByID(c.Request().Context(), int64(id)); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.OK{
+		Msg: "category has been deleted",
 	})
 }

@@ -34,4 +34,5 @@ func (c *Classify) Routers(e *echo.Echo) {
 	// endpoint for categories
 	e.GET("/categories", c.controller.GetCategories)
 	e.POST("/categories", c.controller.InsertCategory)
+	e.DELETE("/categories", c.controller.DeleteCategory)
 }

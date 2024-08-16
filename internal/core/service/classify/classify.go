@@ -64,3 +64,8 @@ func (c *Classify) GetCategoriesLimit(ctx context.Context, limit string) ([]enti
 func (c *Classify) GetSuppliersLimit(ctx context.Context, limit int) ([]entity.Suppliers, error) {
 	return c.Supplier.GetLimit(ctx, limit)
 }
+
+// DeleteInvByID implements IProductService.
+func (c *Classify) DelCategoryByID(ctx context.Context, categoryID int64) error {
+	return c.Category.DeleteByID(ctx, categoryID)
+}
