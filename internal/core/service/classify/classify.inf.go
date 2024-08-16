@@ -31,4 +31,10 @@ type IClassify interface {
 	// supplierReq contains the supplier details to be added.
 	// Returns an error if any issues occur during the insertion process.
 	CreateSuppliers(ctx context.Context, supplierReq dtos.Supplier) error
+
+	// DeleteCategoryByID deletes a category from the database.
+	// ctx is the context to manage the request's lifecycle.
+	// categoryID is the ID of the category to be deleted.
+	// Returns an error if any issues occur during the deletion process.
+	DelCategoryByID(ctx context.Context, categoryID int64) error
 }
