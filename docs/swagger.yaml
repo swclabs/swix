@@ -1,5 +1,18 @@
 basePath: /
 definitions:
+  dtos.AccessoryDetail:
+    properties:
+      image:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      price:
+        type: string
+      status:
+        type: string
+    type: object
   dtos.Address:
     properties:
       city:
@@ -1251,6 +1264,26 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dtos.OK'
+      tags:
+      - products
+  /products/accessory:
+    get:
+      consumes:
+      - application/json
+      description: get accessory detail
+      parameters:
+      - description: id of product
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.AccessoryDetail'
       tags:
       - products
   /products/details:

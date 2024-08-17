@@ -933,6 +933,37 @@ const docTemplate = `{
                 }
             }
         },
+        "/products/accessory": {
+            "get": {
+                "description": "get accessory detail",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id of product",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.AccessoryDetail"
+                        }
+                    }
+                }
+            }
+        },
         "/products/details": {
             "get": {
                 "description": "get product details",
@@ -1387,6 +1418,26 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dtos.AccessoryDetail": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.Address": {
             "type": "object",
             "required": [

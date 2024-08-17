@@ -23,7 +23,8 @@ type IProducts interface {
 	CreateProduct(c echo.Context) error
 	DeleteProduct(c echo.Context) error
 	UpdateProductInfo(c echo.Context) error
-	GetProductStorageDetails(c echo.Context) error
+	GetProductDetails(c echo.Context) error
+	AccessoryDetail(c echo.Context) error
 	GetProductView(c echo.Context) error
 
 	GetInvDetails(c echo.Context) error
@@ -45,6 +46,31 @@ func NewProducts(services products.IProductService) IProducts {
 // Products struct implementation of IProducts
 type Products struct {
 	Services products.IProductService
+}
+
+// AccessoryDetail .
+// @Description get accessory detail
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param id query string true "id of product"
+// @Success 200 {object} dtos.AccessoryDetail
+// @Router /products/accessory [GET]
+func (p *Products) AccessoryDetail(c echo.Context) error {
+	ID, err := strconv.Atoi(c.QueryParam("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'id' query parameter",
+		})
+	}
+
+	accessory, err := p.Services.AccessoryDetail(c.Request().Context(), int64(ID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, accessory)
 }
 
 // Search .
@@ -173,7 +199,7 @@ func (p *Products) GetProductView(c echo.Context) error {
 	return c.JSON(http.StatusOK, product)
 }
 
-// GetProductStorageDetails .
+// GetProductDetails .
 // @Description get product details
 // @Tags products
 // @Accept json
@@ -181,7 +207,7 @@ func (p *Products) GetProductView(c echo.Context) error {
 // @Param id query number true "product id"
 // @Success 200 {object} dtos.ProductDetail[dtos.DetailStorage]
 // @Router /products/details [GET]
-func (p *Products) GetProductStorageDetails(c echo.Context) error {
+func (p *Products) GetProductDetails(c echo.Context) error {
 	ID, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
