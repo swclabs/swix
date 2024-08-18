@@ -23,7 +23,7 @@ const (
 		WHERE id = $1;
 	`
 
-	updateCategories = `
+	editCategories = `
 		UPDATE suppliers (name, description)
 		VALUES ($1, $2);
 	`
