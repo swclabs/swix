@@ -24,4 +24,16 @@ type ICategoriesRepository interface {
 	// ID is the ID of the category to retrieve.
 	// Returns a pointer to the Categories object and an error if any issues occur during the retrieval process.
 	GetByID(ctx context.Context, ID int64) (*entity.Categories, error)
+
+	// DeleteByID deletes a category by its ID.
+	// ctx is the context to manage the request's lifecycle.
+	// ID is the ID of the category to delete.
+	// Returns an error if any issues occur during the deletion process.
+	DeleteByID(ctx context.Context, ID int64) error
+
+	// Update updates a category's information in the database.
+	// ctx is the context to manage the request's lifecycle.
+	// category contains the updated category details.
+	// Returns an error if any issues occur during the update process.
+	Update(ctx context.Context, category entity.Categories) error
 }

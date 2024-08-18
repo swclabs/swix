@@ -17,4 +17,14 @@ const (
 		FROM categories
 		WHERE id = $1;
 	`
+
+	deleteByID = `
+		DELETE FROM categories
+		WHERE id = $1;
+	`
+
+	updateCategories = `
+		UPDATE suppliers (name, description)
+		VALUES ($1, $2);
+	`
 )

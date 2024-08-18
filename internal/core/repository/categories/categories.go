@@ -6,6 +6,7 @@ import (
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
+	"swclabs/swix/pkg/lib/errors"
 )
 
 // New creates a new Categories object
@@ -53,4 +54,19 @@ func (category *Categories) GetLimit(ctx context.Context, limit string) ([]entit
 		return nil, err
 	}
 	return categories, nil
+}
+
+// DeleteByID implements ICategoriesRepository.
+func (category *Categories) DeleteByID(ctx context.Context, ID int64) error {
+	return errors.Repository(
+		"safely write data", category.db.SafeWrite(ctx, deleteByID, ID))
+}
+
+// Update implements IProductRepository.
+func (category *Categories) Update(ctx context.Context, ctg entity.Categories) error {
+	return errors.Repository("safely write data",
+		category.db.SafeWrite(ctx, updateCategories,
+			ctg.Name, ctg.Description,
+		),
+	)
 }
