@@ -40,6 +40,6 @@ func (c *_cache) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // Update implements IProductRepository.
-func (c *_cache) Edit(ctx context.Context, product entity.Categories) error {
-	return c.category.Edit(ctx, product)
+func (c *_cache) Update(ctx context.Context, product entity.Categories) error {
+	return c.category.Update(ctx, product)
 }

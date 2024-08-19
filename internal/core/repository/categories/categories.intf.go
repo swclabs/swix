@@ -35,5 +35,5 @@ type ICategoriesRepository interface {
 	// ctx is the context to manage the request's lifecycle.
 	// category contains the updated category details.
 	// Returns an error if any issues occur during the update process.
-	Edit(ctx context.Context, category entity.Categories) error
+	Update(ctx context.Context, category entity.Categories) error
 }
