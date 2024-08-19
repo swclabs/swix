@@ -63,9 +63,9 @@ func (category *Categories) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // Update implements IProductRepository.
-func (category *Categories) Update(ctx context.Context, ctg entity.Categories) error {
+func (category *Categories) Edit(ctx context.Context, ctg entity.Categories) error {
 	return errors.Repository("safely write data",
-		category.db.SafeWrite(ctx, updateCategories,
+		category.db.SafeWrite(ctx, editCategories,
 			ctg.Name, ctg.Description,
 		),
 	)
