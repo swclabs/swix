@@ -51,6 +51,21 @@ type ProductService struct {
 	Specs     specifications.ISpecifications
 }
 
+// AccessoryDetail implements IProductService.
+func (s *ProductService) AccessoryDetail(ctx context.Context, productID int64) (*dtos.AccessoryDetail, error) {
+	product, err := s.Products.GetByID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+	var detail = dtos.AccessoryDetail{
+		Name:   product.Name,
+		Price:  product.Price,
+		Status: product.Status,
+		Image:  strings.Split(product.Image, ","),
+	}
+	return &detail, nil
+}
+
 // InsertSpecWireless implements IProductService.
 func (s *ProductService) InsertSpecWireless(ctx context.Context, specification dtos.Wireless) error {
 	inventory, err := s.Inventory.GetByID(ctx, specification.InventoryID)

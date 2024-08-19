@@ -93,6 +93,12 @@ type IProductService interface {
 	// Returns a pointer to the ProductDetail object and an error if any issues occur during the retrieval
 	ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail[interface{}], error)
 
+	// AccessoryDetail retrieves the details of an accessory product.
+	// ctx is the context to manage the request's lifecycle.
+	// productID is the ID of the product to retrieve details for.
+	// Returns a pointer to the AccessoryDetail object and an error if any issues occur during the retrieval process.
+	AccessoryDetail(ctx context.Context, productID int64) (*dtos.AccessoryDetail, error)
+
 	// GetInvByID retrieves an inventory by its ID.
 	// ctx is the context to manage the request's lifecycle.
 	// inventoryID is the ID of the inventory to retrieve.
@@ -111,5 +117,9 @@ type IProductService interface {
 	// Returns an error if any issues occur during the insertion process.
 	InsertSpecStorage(ctx context.Context, specification dtos.Storage) error
 
+	// InsertSpecWireless inserts specifications for an inventory.
+	// ctx is the context to manage the request's lifecycle.
+	// specification contains the specifications to be added.
+	// Returns an error if any issues occur during the insertion process.
 	InsertSpecWireless(ctx context.Context, specification dtos.Wireless) error
 }

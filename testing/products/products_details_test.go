@@ -130,7 +130,7 @@ func TestProductDetails(t *testing.T) {
 		CategoryID: 1,
 	}, nil)
 
-	e.GET("/products/details", controller.GetProductStorageDetails)
+	e.GET("/products/details", controller.GetProductDetails)
 	req := httptest.NewRequest(http.MethodGet, "/products/details?id=1", nil)
 	rr := httptest.NewRecorder()
 	e.ServeHTTP(rr, req)

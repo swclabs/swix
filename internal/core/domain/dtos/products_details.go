@@ -54,4 +54,8 @@ type ProductDetail[T any] struct {
 
 // AccessoryDetail is a type use to accept request and response
 type AccessoryDetail struct {
+	Name   string   `json:"name"`
+	Price  string   `json:"price"`
+	Status string   `json:"status"`
+	Image  []string `json:"image"`
 }
