@@ -66,7 +66,9 @@ func (category *Categories) DeleteByID(ctx context.Context, ID int64) error {
 func (category *Categories) Update(ctx context.Context, ctg entity.Categories) error {
 	return errors.Repository("safely write data",
 		category.db.SafeWrite(ctx, updateCategories,
-			ctg.Name, ctg.Description,
+			ctg.ID,
+			ctg.Name,
+			ctg.Description,
 		),
 	)
 }

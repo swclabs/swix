@@ -37,4 +37,10 @@ type IClassify interface {
 	// categoryID is the ID of the category to be deleted.
 	// Returns an error if any issues occur during the deletion process.
 	DelCategoryByID(ctx context.Context, categoryID int64) error
+
+	// UpdateCategoryInfo updates a category's information in the database.
+	// ctx is the context to manage the request's lifecycle.
+	// category contains the updated category details.
+	// Returns an error if any issues occur during the update process.
+	UpdateCategoryInfo(ctx context.Context, ctg dtos.UpdateCategories) error
 }

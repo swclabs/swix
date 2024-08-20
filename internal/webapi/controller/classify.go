@@ -20,6 +20,7 @@ type IClassify interface {
 	GetCategories(c echo.Context) error
 	InsertCategory(c echo.Context) error
 	DeleteCategory(c echo.Context) error
+	UpdateCategory(c echo.Context) error
 }
 
 // NewClassify creates a new Classify object
@@ -170,5 +171,42 @@ func (classify *Classify) DeleteCategory(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dtos.OK{
 		Msg: "category has been deleted",
+	})
+}
+
+// UpdateCategory .
+// @Description update category information
+// @Tags categories
+// @Accept json
+// @Category json
+// @Param id path int true "category ID"
+// @Param category body entity.Categories true "Category Request"
+// @Success 200 {object} dtos.OK
+// @Router /categories/{id} [PUT]
+func (classify *Classify) UpdateCategory(c echo.Context) error {
+	var payload dtos.UpdateCategories
+	if err := c.Bind(&payload); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if _valid := valid.Validate(&payload); _valid != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: _valid.Error(),
+		})
+	}
+
+	if err := classify.Service.UpdateCategoryInfo(c.Request().Context(), dtos.UpdateCategories{
+		ID:          payload.ID,
+		Name:        payload.Name,
+		Description: payload.Description,
+	}); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, dtos.OK{
+		Msg: "your product has been updated successfully",
 	})
 }

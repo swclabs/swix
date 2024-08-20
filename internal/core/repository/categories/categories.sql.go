@@ -24,7 +24,15 @@ const (
 	`
 
 	updateCategories = `
-		UPDATE suppliers (name, description)
-		VALUES ($1, $2);
+		UPDATE suppliers
+		SET name = CASE
+						WHEN $2 <> '' THEN $2
+						ELSE name
+					END,
+			description = CASE
+						WHEN $3 <> '' THEN $3
+						ELSE description
+					END
+		WHERE id = $1;
 	`
 )

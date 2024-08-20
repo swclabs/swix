@@ -69,3 +69,14 @@ func (c *Classify) GetSuppliersLimit(ctx context.Context, limit int) ([]entity.S
 func (c *Classify) DelCategoryByID(ctx context.Context, categoryID int64) error {
 	return c.Category.DeleteByID(ctx, categoryID)
 }
+
+func (c *Classify) UpdateCategoryInfo(ctx context.Context, category dtos.UpdateCategories) error {
+
+	_category := entity.Categories{
+		ID:          category.ID,
+		Name:        category.Name,
+		Description: category.Description,
+	}
+
+	return c.Category.Update(ctx, _category)
+}

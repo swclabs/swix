@@ -69,7 +69,7 @@ func TestProductDetails(t *testing.T) {
 	}
 
 	category.On("GetByID", context.Background(), int64(1)).Return(&entity.Categories{
-		ID:          "1",
+		ID:          int64(1),
 		Name:        "phone",
 		Description: "phone",
 	}, nil)

@@ -44,7 +44,7 @@ func (p *Mock) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // Update implements IProductRepository.
-func (p *Mock) Update(ctx context.Context, product entity.Categories) error {
-	args := p.Called(ctx, product)
+func (p *Mock) Update(ctx context.Context, category entity.Categories) error {
+	args := p.Called(ctx, category)
 	return args.Error(0)
 }
