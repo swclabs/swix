@@ -184,15 +184,25 @@ func (classify *Classify) DeleteCategory(c echo.Context) error {
 // @Success 200 {object} dtos.OK
 // @Router /categories/{id} [PUT]
 func (classify *Classify) UpdateCategory(c echo.Context) error {
-	var req entity.Categories
-	if err := c.Bind(&req); err != nil {
+	var payload dtos.UpdateCategories
+	if err := c.Bind(&payload); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	if _valid := valid.Validate(&req); _valid != nil {
+	if _valid := valid.Validate(&payload); _valid != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: _valid.Error(),
+		})
+	}
+
+	if err := classify.Service.UpdateCategoryInfo(c.Request().Context(), dtos.UpdateCategories{
+		ID:          payload.ID,
+		Name:        payload.Name,
+		Description: payload.Description,
+	}); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
 		})
 	}
 

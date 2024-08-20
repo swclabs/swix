@@ -70,7 +70,7 @@ func (c *Classify) DelCategoryByID(ctx context.Context, categoryID int64) error 
 	return c.Category.DeleteByID(ctx, categoryID)
 }
 
-func (c *Classify) UpdateCategoryInfo(ctx context.Context, category entity.Categories) error {
+func (c *Classify) UpdateCategoryInfo(ctx context.Context, category dtos.UpdateCategories) error {
 
 	_category := entity.Categories{
 		ID:          category.ID,
