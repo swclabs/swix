@@ -1,6 +1,7 @@
 module swclabs/swix
 
 go 1.22.5
+toolchain go1.23.0
 
 require (
 	github.com/a-h/templ v0.2.747
@@ -11,7 +12,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/golang-migrate/migrate/v4 v4.17.1
 	github.com/google/uuid v1.6.0
-	github.com/gorilla/sessions v1.3.0
+	github.com/gorilla/sessions v1.4.0
 	github.com/hibiken/asynq v0.24.1
 	github.com/jackc/pgx/v5 v5.6.0
 	github.com/joho/godotenv v1.5.1
