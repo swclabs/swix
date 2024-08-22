@@ -622,7 +622,7 @@ definitions:
       description:
         type: string
       id:
-        type: string
+        type: integer
       name:
         type: string
     required:
@@ -828,6 +828,49 @@ paths:
       responses:
         "201":
           description: Created
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - categories
+  /categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete category by ID
+      parameters:
+      - description: category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - categories
+    put:
+      consumes:
+      - application/json
+      description: update category information
+      parameters:
+      - description: category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category Request
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Categories'
+      responses:
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
