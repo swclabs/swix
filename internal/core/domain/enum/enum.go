@@ -8,9 +8,6 @@ import (
 // Category is an enumeration of the product categories.
 type Category int
 
-// Accessory is an enumeration of the product accessories.
-type Accessory int
-
 const (
 	// Phone is a category of the product.
 	Phone Category = 1 << iota
@@ -29,26 +26,15 @@ const (
 
 	// Accessories is a category of the product.
 	Accessories
+
+	// Watch is a category of the product
+	Watch
 )
 
-// ElectronicDevice is an enumeration of the electronic devices.
-const ElectronicDevice = Phone | Laptop | Tablet | Computer
-
+// Storage is an enumeration of the electronic devices.
 const (
-	// PhoneAccessory is an accessory of the product.
-	PhoneAccessory Accessory = iota
-
-	// TabletAccessory is an accessory of the product.
-	TabletAccessory
-
-	// LaptopAccessory is an accessory of the product.
-	LaptopAccessory
-
-	// EarphoneAccessory is an accessory of the product.
-	EarphoneAccessory
-
-	// ComputerAccessory is an accessory of the product.
-	ComputerAccessory
+	Storage   = Phone | Laptop | Tablet | Computer
+	Accessory = Accessories | Earphone
 )
 
 // String returns the string representation of the Category.
@@ -89,15 +75,4 @@ func (c *Category) Load(types string) error {
 		return fmt.Errorf("invalid category type")
 	}
 	return nil
-}
-
-// String returns the string representation of the Accessory.
-func (a Accessory) String() string {
-	return [...]string{
-		"iPhone",
-		"iPad",
-		"Macbook",
-		"AirPod",
-		"iMac",
-	}[a]
 }

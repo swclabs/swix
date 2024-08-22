@@ -38,13 +38,13 @@ func (c *Mock) Insert(ctx context.Context, ctg entity.Categories) error {
 }
 
 // DeleteByID implements ICategoriesRepository.
-func (p *Mock) DeleteByID(ctx context.Context, ID int64) error {
-	args := p.Called(ctx, ID)
+func (c *Mock) DeleteByID(ctx context.Context, ID int64) error {
+	args := c.Called(ctx, ID)
 	return args.Error(0)
 }
 
 // Update implements IProductRepository.
-func (p *Mock) Update(ctx context.Context, category entity.Categories) error {
-	args := p.Called(ctx, category)
+func (c *Mock) Update(ctx context.Context, category entity.Categories) error {
+	args := c.Called(ctx, category)
 	return args.Error(0)
 }
