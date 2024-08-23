@@ -47,3 +47,8 @@ type UploadArticle struct {
 	Position string `json:"position" validate:"required"`
 	Article
 }
+
+type Comment struct {
+	Position string   `json:"position" validate:"required"`
+	Content  []string `json:"content" validate:"required"`
+}

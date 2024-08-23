@@ -41,4 +41,11 @@ type IArticle interface {
 	// limit is the maximum number of message to retrieve.
 	// Returns a message and an error if any issues occur during the upload process.
 	GetMessage(ctx context.Context, position string, limit int) (*dtos.Message, error)
+
+	// GetComment return a comment.
+	// ctx is the context to manage the request's lifecycle.
+	// position contains the position of the comment to be returns.
+	// limit is the maximum number of comment to retrieve.
+	// Returns a comment and an error if any issues occur during the upload process.
+	GetComment(ctx context.Context, position string, limit int) (*dtos.Comment, error)
 }

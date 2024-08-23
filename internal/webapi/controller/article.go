@@ -19,6 +19,7 @@ type IArticle interface {
 
 	UploadMessage(c echo.Context) error
 	GetMessage(c echo.Context) error
+	GetComment(c echo.Context) error
 }
 
 // Article struct implementation of IArticle
@@ -190,4 +191,32 @@ func (p *Article) GetArticleData(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, *carousel)
+}
+
+// GetComment .
+// @Description get comment of collections
+// @Tags collections
+// @Accept json
+// @Produce json
+// @Param id query string true "id of collections"
+// @Success 200 {object} dtos.Comment
+// @Router /collections/comment [GET]
+func (p *Article) GetComment(c echo.Context) error {
+	var (
+		pos    = c.QueryParam("position")
+		sLimit = c.QueryParam("limit")
+	)
+	limit, err := strconv.Atoi(sLimit)
+	if pos == "" || err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "position and limit are required. limit must be a number",
+		})
+	}
+	headlines, err := p.Services.GetComment(c.Request().Context(), pos, limit)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, headlines)
 }

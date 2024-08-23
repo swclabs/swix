@@ -132,3 +132,24 @@ func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID strin
 	return p.Collections.UploadCollectionImage(
 		ctx, cardBannerID, resp.SecureURL)
 }
+
+// GetMessage implements IArticle.
+func (p *Article) GetComment(ctx context.Context, position string, limit int) (*dtos.Comment, error) {
+	collecs, err := p.Collections.GetMany(ctx, position, limit)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var cmt = dtos.Comment{
+		Position: position,
+	}
+	for _, collect := range collecs {
+		var content dtos.HeadlineContent
+		if err := json.Unmarshal([]byte(collect.Body), &content); err != nil {
+			return nil, err
+		}
+		cmt.Content = append(cmt.Content, content.Content)
+	}
+	return &cmt, nil
+}
