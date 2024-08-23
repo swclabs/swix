@@ -35,4 +35,5 @@ func (p *Article) Routers(e *echo.Echo) {
 	e.GET("/collections/message", p.controller.GetMessage)
 	e.POST("/collections/message", p.controller.UploadMessage)
 	e.GET("/collections/comment", p.controller.GetComment)
+	e.POST("/collections/comment", p.controller.UploadComment)
 }

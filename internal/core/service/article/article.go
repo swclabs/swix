@@ -135,7 +135,7 @@ func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID strin
 
 // GetMessage implements IArticle.
 func (p *Article) GetComment(ctx context.Context, position string, limit int) (*dtos.Comment, error) {
-	collecs, err := p.Collections.GetMany(ctx, position, limit)
+	collects, err := p.Collections.GetMany(ctx, position, limit)
 
 	if err != nil {
 		return nil, err
@@ -144,7 +144,7 @@ func (p *Article) GetComment(ctx context.Context, position string, limit int) (*
 	var cmt = dtos.Comment{
 		Position: position,
 	}
-	for _, collect := range collecs {
+	for _, collect := range collects {
 		var content dtos.HeadlineContent
 		if err := json.Unmarshal([]byte(collect.Body), &content); err != nil {
 			return nil, err
@@ -152,4 +152,21 @@ func (p *Article) GetComment(ctx context.Context, position string, limit int) (*
 		cmt.Content = append(cmt.Content, content.Content)
 	}
 	return &cmt, nil
+}
+
+// UploadMessage implements IArticle.
+func (p *Article) UploadComment(ctx context.Context, comment dtos.Comment) error {
+	for _, cmt := range comment.Content {
+		json, _ := json.Marshal(dtos.HeadlineContent{
+			Content: cmt,
+		})
+		_, err := p.Collections.Create(ctx, entity.Collection{
+			Position: comment.Position,
+			Body:     string(json),
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

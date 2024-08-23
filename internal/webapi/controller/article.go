@@ -20,6 +20,7 @@ type IArticle interface {
 	UploadMessage(c echo.Context) error
 	GetMessage(c echo.Context) error
 	GetComment(c echo.Context) error
+	UploadComment(c echo.Context) error
 }
 
 // Article struct implementation of IArticle
@@ -219,4 +220,34 @@ func (p *Article) GetComment(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, headlines)
+}
+
+// UploadComment .
+// @Description create comment into collections
+// @Tags collections
+// @Accept json
+// @Produce json
+// @Param banner body dtos.Comment true "comment data request"
+// @Success 201 {object} dtos.OK
+// @Router /collections/comment [POST]
+func (p *Article) UploadComment(c echo.Context) error {
+	var banner dtos.Comment
+	if err := c.Bind(&banner); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := valid.Validate(&banner); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := p.Services.UploadComment(c.Request().Context(), banner); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, dtos.OK{
+		Msg: "your headline has been created successfully",
+	})
 }
