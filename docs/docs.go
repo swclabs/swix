@@ -1105,7 +1105,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/view": {
+        "/products/{type}": {
             "get": {
                 "description": "get product view",
                 "consumes": [
@@ -1120,9 +1120,9 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "type of product",
+                        "description": "product type",
                         "name": "type",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1487,6 +1487,9 @@ const docTemplate = `{
         "dtos.AccessoryDetail": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "image": {
                     "type": "array",
                     "items": {

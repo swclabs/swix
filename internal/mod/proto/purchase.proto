@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package purchase;
-option go_package = "/purchase";
-
-service Purchase {
-    
-}

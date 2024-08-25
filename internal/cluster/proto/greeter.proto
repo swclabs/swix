@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package greeter;
+option go_package = "/greeter";
+
+import "internal/cluster/proto/greeter.type.proto";
+import "third_party/google/api/annotations.proto";
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello(MessageRequest) returns (MessageReply) {
+    option (google.api.http) = {
+      post: "/sayhello"
+      body: "body"
+    };
+  }
+  rpc HeathCheck(StringMessage) returns (StringMessage) {
+    option (google.api.http) = {
+      get: "/heathcheck"
+    };
+  }
+}

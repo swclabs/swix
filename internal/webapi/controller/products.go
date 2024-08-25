@@ -175,12 +175,12 @@ func (p *Products) InsertInvSpecs(c echo.Context) error {
 // @Tags products
 // @Accept json
 // @Produce json
-// @Param type query string true "type of product"
+// @Param type path string true "product type"
 // @Success 200 {object} []dtos.ProductView
-// @Router /products/view [GET]
+// @Router /products/{type} [GET]
 func (p *Products) GetProductView(c echo.Context) error {
 	var types enum.Category
-	if err := types.Load(c.QueryParam("type")); err != nil {
+	if err := types.Load(c.Param("type")); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
