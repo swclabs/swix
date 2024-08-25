@@ -81,8 +81,8 @@ func TestProductView(t *testing.T) {
 			},
 		},
 		nil)
-	e.GET("/products/view", controller.GetProductView)
-	req := httptest.NewRequest(http.MethodGet, "/products/view?type=phone", nil)
+	e.GET("/products/:type", controller.GetProductView)
+	req := httptest.NewRequest(http.MethodGet, "/products/phone", nil)
 	rr := httptest.NewRecorder()
 	e.ServeHTTP(rr, req)
 

@@ -1098,7 +1098,7 @@
                 }
             }
         },
-        "/products/view": {
+        "/products/{type}": {
             "get": {
                 "description": "get product view",
                 "consumes": [
@@ -1113,9 +1113,9 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "type of product",
+                        "description": "product type",
                         "name": "type",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1480,6 +1480,9 @@
         "dtos.AccessoryDetail": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "image": {
                     "type": "array",
                     "items": {
