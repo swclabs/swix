@@ -1,5 +1,4 @@
-// Package types defines the interface of gateway and grpc server.
-package types
+package nodes
 
 // IGrpcServer is the interface for gRPC server.
 type IGrpcServer interface {

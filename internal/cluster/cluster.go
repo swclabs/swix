@@ -10,7 +10,6 @@ import (
 	"swclabs/swix/internal/cluster/nodes"
 	"swclabs/swix/internal/cluster/port"
 	"swclabs/swix/internal/cluster/proto/greeter"
-	"swclabs/swix/internal/cluster/types"
 	"swclabs/swix/pkg/lib/logger"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -51,7 +50,7 @@ type ICluster interface {
 // cluster is the data type representing a cluster that contains registered services
 type cluster struct {
 	handler handler
-	node    []types.IGrpcServer
+	node    []nodes.IGrpcServer
 }
 
 // ServeMux registers services with the gateway through runtime.ServeMux
@@ -95,7 +94,7 @@ func New(
 		handler: handler{
 			port.Greeter: registerHandler(greeter.RegisterGreeterHandlerFromEndpoint),
 		},
-		node: []types.IGrpcServer{
+		node: []nodes.IGrpcServer{
 			greeterNode,
 		},
 	}
