@@ -6,7 +6,6 @@ import (
 	"net"
 	"swclabs/swix/internal/cluster/port"
 	"swclabs/swix/internal/cluster/proto/greeter"
-	"swclabs/swix/internal/cluster/types"
 	"swclabs/swix/pkg/lib/logger"
 
 	"google.golang.org/grpc"
@@ -19,7 +18,7 @@ type _Greeter struct {
 
 // IGreeter is the interface for Greeter service.
 type IGreeter interface {
-	types.IGrpcServer
+	IGrpcServer
 }
 
 // NewGreeter creates a new Greeter service.

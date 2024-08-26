@@ -34,7 +34,7 @@ func main() {
 			cluster.New,
 			cluster.NewGateway,
 			cluster.NewAdapter,
-			boot.NewGate,
+			boot.NewServer,
 		),
 		fx.Invoke(start),
 	)
