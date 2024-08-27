@@ -24,3 +24,9 @@ func (p *Mock) Insert(ctx context.Context, cmt entity.Comment) (int64, error) {
 	args := p.Called(ctx, cmt)
 	return args.Get(0).(int64), args.Error(1)
 }
+
+// GetByID implements ICommentRepository.
+func (p *Mock) GetByID(ctx context.Context, ID int64) (*entity.Comment, error) {
+	args := p.Called(ctx, ID)
+	return args.Get(0).(*entity.Comment), args.Error(1)
+}

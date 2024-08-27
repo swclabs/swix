@@ -39,3 +39,17 @@ func (comment *Comments) Insert(ctx context.Context, cmt entity.Comment) (int64,
 	}
 	return id, nil
 }
+
+// GetByID implements ICommentRepository.
+func (comment *Comments) GetByID(ctx context.Context, ID int64) (*entity.Comment, error) {
+	row, err := comment.db.Query(ctx, selectCommentByID, ID)
+
+	if err != nil {
+		return nil, err
+	}
+	result, err := db.CollectOneRow[entity.Comment](row)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
+}

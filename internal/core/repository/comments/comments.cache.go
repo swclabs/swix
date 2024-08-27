@@ -24,3 +24,8 @@ type _cache struct {
 func (c *_cache) Insert(ctx context.Context, cmt entity.Comment) (int64, error) {
 	return c.comments.Insert(ctx, cmt)
 }
+
+// GetByID implements ICommentRepository.
+func (c *_cache) GetByID(ctx context.Context, ID int64) (*entity.Comment, error) {
+	return c.comments.GetByID(ctx, ID)
+}
