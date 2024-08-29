@@ -53,3 +53,14 @@ func (comment *Comments) GetByID(ctx context.Context, ID int64) (*entity.Comment
 	}
 	return &result, nil
 }
+
+// Update implements ICommentRepository.
+func (comment *Comments) Update(ctx context.Context, cmt entity.Comment) error {
+	return comment.db.SafeWrite(ctx, updateComments,
+		cmt.ID,
+		cmt.Content,
+		cmt.Level,
+		cmt.ProductID,
+		cmt.UserID,
+	)
+}

@@ -12,4 +12,25 @@ const (
 		FROM comments
 		WHERE id = $1;
 		`
+
+	updateComments = `
+		UPDATE comments
+		SET level = CASE
+						WHEN $2 <> '' THEN $2
+						ELSE level
+					END,
+			content = CASE
+						WHEN $3 <> '' THEN $3
+						ELSE content
+					END,
+			product_id = CASE
+						WHEN $4 <> '' THEN $4
+						ELSE product_id
+					END,
+			user_id = CASE
+						WHEN $5 <> '' THEN $5
+						ELSE user_id
+					END
+		WHERE id = $1;
+		`
 )

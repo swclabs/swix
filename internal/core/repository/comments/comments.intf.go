@@ -18,4 +18,10 @@ type ICommentRepository interface {
 	// id is the ID of the comment to be retrieved
 	// Returns the comment and an error if any issues occur during the retrieval process
 	GetByID(ctx context.Context, id int64) (*entity.Comment, error)
+
+	// Update updates a comment
+	// ctx is the context to manage the request's lifecycle
+	// cmt is the comment to be updated
+	// Returns an error if any issues occur during the update process
+	Update(ctx context.Context, cmt entity.Comment) error
 }

@@ -30,3 +30,9 @@ func (p *Mock) GetByID(ctx context.Context, ID int64) (*entity.Comment, error) {
 	args := p.Called(ctx, ID)
 	return args.Get(0).(*entity.Comment), args.Error(1)
 }
+
+// Update implements ICommentRepository.
+func (p *Mock) Update(ctx context.Context, cmt entity.Comment) error {
+	args := p.Called(ctx, cmt)
+	return args.Error(0)
+}
