@@ -65,11 +65,12 @@ func (c *Classify) GetSuppliersLimit(ctx context.Context, limit int) ([]entity.S
 	return c.Supplier.GetLimit(ctx, limit)
 }
 
-// DeleteInvByID implements IProductService.
+// DelCategoryByID implements IProductService.
 func (c *Classify) DelCategoryByID(ctx context.Context, categoryID int64) error {
 	return c.Category.DeleteByID(ctx, categoryID)
 }
 
+// UpdateCategoryInfo implements IProductService.
 func (c *Classify) UpdateCategoryInfo(ctx context.Context, category dtos.UpdateCategories) error {
 
 	_category := entity.Categories{

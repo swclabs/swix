@@ -6,6 +6,7 @@ type Supplier struct {
 	Email string `json:"email" validate:"email,required"`
 }
 
+// UpdateCategories request, response
 type UpdateCategories struct {
 	ID          int64  `json:"id" db:"id"`
 	Name        string `json:"name" db:"name" validate:"required"`

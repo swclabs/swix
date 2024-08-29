@@ -264,6 +264,72 @@ const docTemplate = `{
                 }
             }
         },
+        "/categories/{id}": {
+            "put": {
+                "description": "update category information",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Category Request",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/entity.Categories"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete category by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "category ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
         "/collections": {
             "get": {
                 "description": "get collections",
@@ -1039,7 +1105,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/view": {
+        "/products/{type}": {
             "get": {
                 "description": "get product view",
                 "consumes": [
@@ -1054,9 +1120,9 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "type of product",
+                        "description": "product type",
                         "name": "type",
-                        "in": "query",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -1421,6 +1487,9 @@ const docTemplate = `{
         "dtos.AccessoryDetail": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "image": {
                     "type": "array",
                     "items": {
@@ -2347,7 +2416,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "name": {
                     "type": "string"

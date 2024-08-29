@@ -57,11 +57,23 @@ func (s *ProductService) AccessoryDetail(ctx context.Context, productID int64) (
 	if err != nil {
 		return nil, err
 	}
+	category, err := s.Category.GetByID(ctx, product.CategoryID)
+	if err != nil {
+		return nil, err
+	}
+	var types enum.Category
+	if err := types.Load(category.Name); err != nil {
+		return nil, err
+	}
+	if types&enum.Accessory == 0 {
+		return &dtos.AccessoryDetail{}, nil
+	}
 	var detail = dtos.AccessoryDetail{
-		Name:   product.Name,
-		Price:  product.Price,
-		Status: product.Status,
-		Image:  strings.Split(product.Image, ","),
+		Name:     product.Name,
+		Price:    product.Price,
+		Status:   product.Status,
+		Image:    strings.Split(product.Image, ","),
+		Category: types.String(),
 	}
 	return &detail, nil
 }
@@ -84,7 +96,7 @@ func (s *ProductService) InsertSpecWireless(ctx context.Context, specification d
 	if err := types.Load(category.Name); err != nil {
 		return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 	}
-	if types&enum.ElectronicDevice != 0 {
+	if types&enum.Storage != 0 {
 		return fmt.Errorf("[code %d] category not support specification", http.StatusBadRequest)
 	}
 	content, _ := json.Marshal(dtos.InvWireless{
@@ -115,7 +127,7 @@ func (s *ProductService) InsertSpecStorage(ctx context.Context, specification dt
 	if err := types.Load(category.Name); err != nil {
 		return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 	}
-	if types&enum.ElectronicDevice == 0 {
+	if types&enum.Storage == 0 {
 		return fmt.Errorf("[code %d] category not support specification", http.StatusBadRequest)
 	}
 	content, _ := json.Marshal(dtos.InvStorage{
@@ -144,7 +156,7 @@ func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category, of
 			Image:    p.Image,
 			Category: p.CategoryName,
 		}
-		if p.Specs != "" && types&enum.ElectronicDevice != 0 {
+		if p.Specs != "" && types&enum.Storage != 0 {
 			var specs dtos.ProductSpecs
 			if err := json.Unmarshal([]byte(p.Specs), &specs); err != nil {
 				return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
@@ -190,7 +202,7 @@ func (s *ProductService) GetInvByID(ctx context.Context, inventoryID int64) (*dt
 		return nil, err
 	}
 	for _, spec := range specOfproduct {
-		if types&enum.ElectronicDevice != 0 {
+		if types&enum.Storage != 0 {
 			var _spec dtos.InvStorage
 			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
 				return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
@@ -233,11 +245,12 @@ func (s *ProductService) ProductDetail(ctx context.Context, productID int64) (*d
 	if err := types.Load(category.Name); err != nil {
 		return nil, err
 	}
-
+	if types&enum.Storage == 0 {
+		return &details, nil
+	}
 	if err := json.Unmarshal([]byte(rawProduct.Specs), &productSpecs); err != nil {
 		return nil, err
 	}
-
 	details.Name = rawProduct.Name
 	details.Screen = productSpecs.Screen
 	details.Display = productSpecs.Display
@@ -258,7 +271,7 @@ func (s *ProductService) ProductDetail(ctx context.Context, productID int64) (*d
 			detailSpec []interface{}
 		)
 		for _, spec := range specOfproduct {
-			if types&enum.ElectronicDevice != 0 {
+			if types&enum.Storage != 0 {
 				var storage dtos.InvStorage
 				_ = json.Unmarshal([]byte(spec.Content), &storage)
 				detailSpec = append(detailSpec, dtos.DetailStorage{
@@ -387,7 +400,7 @@ func (s *ProductService) GetAllInv(ctx context.Context, page int, limit int) (*d
 			return nil, err
 		}
 		for _, spec := range specOfproduct {
-			if types&enum.ElectronicDevice != 0 {
+			if types&enum.Storage != 0 {
 				var _spec dtos.InvStorage
 				if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
 					return nil, err

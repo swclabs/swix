@@ -139,3 +139,27 @@ func GRPCLogger(
 func GRPCServerINFO(serverName, address string) {
 	Info(fmt.Sprintf("[%s] server listening on: %s", Cyan.Add(serverName), Magenta.Add(address)))
 }
+
+// Logger is middleware for grpc server
+func Logger(
+	ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	logger, err := zap.NewProduction()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := logger.Sync(); err != nil {
+			return // ignore error
+		}
+	}()
+	statusCode := codes.Unknown
+	result, errHandle := handler(ctx, req)
+	if st, ok := status.FromError(errHandle); ok {
+		statusCode = st.Code()
+	}
+	logger.Info(
+		fmt.Sprintf("CALL %s", info.FullMethod),
+		zap.String("status_code", statusCode.String()),
+	)
+	return result, errHandle
+}
