@@ -204,17 +204,10 @@ func (p *Article) GetArticleData(c echo.Context) error {
 // @Router /collections/comment [GET]
 func (p *Article) GetComment(c echo.Context) error {
 	var (
-		// pos    = c.QueryParam("position")
-		level = c.QueryParam("level")
-		id    = c.QueryParam("id")
+		product_id = c.QueryParam("product_id ") // "comment/?product_id=1"
 	)
 
-	// if level == "" || err != nil {
-	// 	return c.JSON(http.StatusBadRequest, dtos.Error{
-	// 		Msg: "position and limit are required. limit must be a number",
-	// 	})
-	// }
-	idInt, err := strconv.ParseInt(id, 10, 64)
+	id, err := strconv.ParseInt(product_id, 10, 64)
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -222,7 +215,7 @@ func (p *Article) GetComment(c echo.Context) error {
 		})
 	}
 
-	comments, err := p.Services.GetComment(c.Request().Context(), level, idInt)
+	comments, err := p.Services.GetComment(c.Request().Context(), id)
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{

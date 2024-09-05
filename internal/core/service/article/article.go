@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"mime/multipart"
-	"strconv"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repository/collections"
@@ -138,40 +137,61 @@ func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID strin
 
 // GetComment implements IArticle.
 //
-//	{
-//		"id": "11446498",
-//		"level": "1",
-//		"created_at": "2012-12-12T10:53:43-08:00",
-//		"created_by": {
-//		  "username": "11446498",
-//		  "user_id": "11446498",
-//		},
-//		"product": {
-//		  "product_id": "11446498",
-//		},
-//		"content": "@Aaron Levie these tigers are cool!",
-//	  }
-func (p *Article) GetComment(ctx context.Context, level string, ID int64) (*dtos.Comment, error) {
-	id, err := p.Comments.GetByID(ctx, ID)
+//		{
+//			"id": "11446498",
+//			"level": "0", // level of comment, [0] is parent, [1] is child
+//	     	"parent_id": "11446498", // parent id of comment
+//			"created_at": "2012-12-12T10:53:43-08:00",
+//			"username": "11446498",
+//			"user_id": "11446498",
+//			"product_id": "11446498",
+//			"content": "@Aaron Levie these tigers are cool!",
+//		  }
+func (p *Article) GetComment(ctx context.Context, productID int64) (*dtos.Comment, error) {
+	// id, err := p.Comments.GetByID(ctx, ID)
+
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// levelInt, err := strconv.ParseInt(level, 10, 64)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// comments, err := p.Comments.GetByProductID(ctx, id.ProductID)
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	// for _, cmt := range comments {
+	// 	if cmt.Level == levelInt {
+	// 		return &dtos.Comment{
+	// 			Level: cmt.Level,
+	// 		}, nil
+	// 	}
+	// }
+
+	// return nil, fmt.Errorf("comment not found")
+	comments, err := p.Comments.GetByProductID(ctx, productID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	levelInt, err := strconv.ParseInt(level, 10, 64)
-	if err != nil {
-		return nil, err
-	}
-
-	comments, err := p.Comments.GetByProductID(ctx, id.ProductID)
-	if err != nil {
-		return nil, err
-	}
+	// Check if level = 0 then return parent_id="null"
+	// Check if level = 1 then return parent_id
 
 	for _, cmt := range comments {
-		if cmt.Level == levelInt {
+		if cmt.Level == 0 {
 			return &dtos.Comment{
 				Level: cmt.Level,
+			}, nil
+		}
+		if cmt.Level == 1 {
+			return &dtos.Comment{
+				Level:    cmt.Level,
+				ParentID: cmt.ParentID,
 			}, nil
 		}
 	}
