@@ -6,9 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"mime/multipart"
+	"strconv"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repository/collections"
+	"swclabs/swix/internal/core/repository/comments"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
 )
@@ -28,6 +30,7 @@ func New(
 type Article struct {
 	Blob        blob.IBlobStorage
 	Collections collections.ICollections
+	Comments    comments.ICommentRepository
 }
 
 // GetMessage implements IArticle.
@@ -133,40 +136,36 @@ func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID strin
 		ctx, cardBannerID, resp.SecureURL)
 }
 
-// GetMessage implements IArticle.
-func (p *Article) GetComment(ctx context.Context, position string, limit int) (*dtos.Comment, error) {
-	collects, err := p.Collections.GetMany(ctx, position, limit)
+// GetComment implements IArticle.
+func (p *Article) GetComment(ctx context.Context, level string, ID int64) (*dtos.Comment, error) {
+	id, err := p.Comments.GetByID(ctx, ID)
 
 	if err != nil {
 		return nil, err
 	}
 
-	var cmt = dtos.Comment{
-		Position: position,
+	levelInt, err := strconv.ParseInt(level, 10, 64)
+	if err != nil {
+		return nil, err
 	}
-	for _, collect := range collects {
-		var content dtos.HeadlineContent
-		if err := json.Unmarshal([]byte(collect.Body), &content); err != nil {
-			return nil, err
+
+	comments, err := p.Comments.GetByProductID(ctx, id.ProductID)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, cmt := range comments {
+		if cmt.Level == levelInt {
+			return &dtos.Comment{
+				Level: cmt.Level,
+			}, nil
 		}
-		cmt.Content = append(cmt.Content, content.Content)
 	}
-	return &cmt, nil
+
+	return nil, fmt.Errorf("comment not found")
 }
 
-// UploadMessage implements IArticle.
+// UploadComment implements IArticle.
 func (p *Article) UploadComment(ctx context.Context, comment dtos.Comment) error {
-	for _, cmt := range comment.Content {
-		json, _ := json.Marshal(dtos.HeadlineContent{
-			Content: cmt,
-		})
-		_, err := p.Collections.Create(ctx, entity.Collection{
-			Position: comment.Position,
-			Body:     string(json),
-		})
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }

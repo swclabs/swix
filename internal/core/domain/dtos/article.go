@@ -49,6 +49,11 @@ type UploadArticle struct {
 }
 
 type Comment struct {
-	Position string   `json:"position" validate:"required"`
-	Content  []string `json:"content" validate:"required"`
+	// Position string   `json:"position" validate:"required"`
+	Content []string `json:"content" validate:"required"`
+	Name    string   `json:"name" validate:"required"`
+	Level   int64    `json:"level" validate:"required"`
+	Rating  int64    `json:"rating" validate:"required"`
+	Like    int64    `json:"like" validate:"required"`
+	Dislike int64    `json:"dislike" validate:"required"`
 }

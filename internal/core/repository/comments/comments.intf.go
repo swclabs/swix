@@ -24,4 +24,10 @@ type ICommentRepository interface {
 	// cmt is the comment to be updated
 	// Returns an error if any issues occur during the update process
 	Update(ctx context.Context, cmt entity.Comment) error
+
+	// GetByProductID retrieves all comments for a product
+	// ctx is the context to manage the request's lifecycle
+	// productID is the ID of the product whose comments are to be retrieved
+	// Returns the comments and an error if any issues occur during the retrieval process
+	GetByProductID(ctx context.Context, productID int64) ([]entity.Comment, error)
 }

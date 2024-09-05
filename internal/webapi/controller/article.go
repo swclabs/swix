@@ -204,22 +204,32 @@ func (p *Article) GetArticleData(c echo.Context) error {
 // @Router /collections/comment [GET]
 func (p *Article) GetComment(c echo.Context) error {
 	var (
-		pos    = c.QueryParam("position")
-		sLimit = c.QueryParam("limit")
+		// pos    = c.QueryParam("position")
+		level = c.QueryParam("level")
+		id    = c.QueryParam("id")
 	)
-	limit, err := strconv.Atoi(sLimit)
-	if pos == "" || err != nil {
+
+	// if level == "" || err != nil {
+	// 	return c.JSON(http.StatusBadRequest, dtos.Error{
+	// 		Msg: "position and limit are required. limit must be a number",
+	// 	})
+	// }
+	idInt, err := strconv.ParseInt(id, 10, 64)
+
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "position and limit are required. limit must be a number",
+			Msg: err.Error(),
 		})
 	}
-	headlines, err := p.Services.GetComment(c.Request().Context(), pos, limit)
+
+	comments, err := p.Services.GetComment(c.Request().Context(), level, idInt)
+
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, headlines)
+	return c.JSON(http.StatusOK, comments)
 }
 
 // UploadComment .

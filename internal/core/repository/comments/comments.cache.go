@@ -34,3 +34,8 @@ func (c *_cache) GetByID(ctx context.Context, ID int64) (*entity.Comment, error)
 func (c *_cache) Update(ctx context.Context, cmt entity.Comment) error {
 	return c.comments.Update(ctx, cmt)
 }
+
+// GetByProductID implements ICommentRepository.
+func (c *_cache) GetByProductID(ctx context.Context, productID int64) ([]entity.Comment, error) {
+	return c.comments.GetByProductID(ctx, productID)
+}

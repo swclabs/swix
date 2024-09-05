@@ -64,3 +64,16 @@ func (comment *Comments) Update(ctx context.Context, cmt entity.Comment) error {
 		cmt.UserID,
 	)
 }
+
+// GetCommentsByProductID implements ICommentRepository.
+func (comment *Comments) GetByProductID(ctx context.Context, productID int64) ([]entity.Comment, error) {
+	rows, err := comment.db.Query(ctx, selectCommentsByProductID, productID)
+	if err != nil {
+		return nil, err
+	}
+	comments, err := db.CollectRows[entity.Comment](rows)
+	if err != nil {
+		return nil, err
+	}
+	return comments, nil
+}

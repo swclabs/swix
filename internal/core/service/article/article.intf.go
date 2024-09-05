@@ -47,7 +47,7 @@ type IArticle interface {
 	// position contains the position of the comment to be returns.
 	// limit is the maximum number of comment to retrieve.
 	// Returns a comment and an error if any issues occur during the upload process.
-	GetComment(ctx context.Context, position string, limit int) (*dtos.Comment, error)
+	GetComment(ctx context.Context, level string, ID int64) (*dtos.Comment, error)
 
 	// UploadComment uploads a new comment.
 	// ctx is the context to manage the request's lifecycle.
