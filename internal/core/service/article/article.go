@@ -137,6 +137,20 @@ func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID strin
 }
 
 // GetComment implements IArticle.
+//
+//	{
+//		"id": "11446498",
+//		"level": "1",
+//		"created_at": "2012-12-12T10:53:43-08:00",
+//		"created_by": {
+//		  "username": "11446498",
+//		  "user_id": "11446498",
+//		},
+//		"product": {
+//		  "product_id": "11446498",
+//		},
+//		"content": "@Aaron Levie these tigers are cool!",
+//	  }
 func (p *Article) GetComment(ctx context.Context, level string, ID int64) (*dtos.Comment, error) {
 	id, err := p.Comments.GetByID(ctx, ID)
 

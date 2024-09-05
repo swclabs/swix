@@ -21,21 +21,21 @@ type _cache struct {
 }
 
 // Insert implements ICommentRepository.
-func (c *_cache) Insert(ctx context.Context, cmt entity.Comment) (int64, error) {
+func (c *_cache) Insert(ctx context.Context, cmt entity.Comments) (int64, error) {
 	return c.comments.Insert(ctx, cmt)
 }
 
 // GetByID implements ICommentRepository.
-func (c *_cache) GetByID(ctx context.Context, ID int64) (*entity.Comment, error) {
+func (c *_cache) GetByID(ctx context.Context, ID int64) (*entity.Comments, error) {
 	return c.comments.GetByID(ctx, ID)
 }
 
 // Update implements ICommentRepository.
-func (c *_cache) Update(ctx context.Context, cmt entity.Comment) error {
+func (c *_cache) Update(ctx context.Context, cmt entity.Comments) error {
 	return c.comments.Update(ctx, cmt)
 }
 
 // GetByProductID implements ICommentRepository.
-func (c *_cache) GetByProductID(ctx context.Context, productID int64) ([]entity.Comment, error) {
+func (c *_cache) GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error) {
 	return c.comments.GetByProductID(ctx, productID)
 }
