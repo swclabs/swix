@@ -32,6 +32,7 @@ func (comment *Comments) Insert(ctx context.Context, cmt entity.Comments) (int64
 		cmt.Content,
 		cmt.UserID,
 		cmt.ProductID,
+		cmt.ParentID,
 	)
 
 	if err != nil {

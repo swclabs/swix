@@ -234,23 +234,23 @@ func (p *Article) GetComment(c echo.Context) error {
 // @Success 201 {object} dtos.OK
 // @Router /collections/comment [POST]
 func (p *Article) UploadComment(c echo.Context) error {
-	var banner dtos.Comment
-	if err := c.Bind(&banner); err != nil {
+	var cmt dtos.Comment
+	if err := c.Bind(&cmt); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	if err := valid.Validate(&banner); err != nil {
+	if err := valid.Validate(&cmt); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	if err := p.Services.UploadComment(c.Request().Context(), banner); err != nil {
+	if err := p.Services.UploadComment(c.Request().Context(), cmt); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 	return c.JSON(http.StatusCreated, dtos.OK{
-		Msg: "your headline has been created successfully",
+		Msg: "your comment has been uploaded successfully",
 	})
 }

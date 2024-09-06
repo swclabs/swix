@@ -201,5 +201,19 @@ func (p *Article) GetComment(ctx context.Context, productID int64) (*dtos.Commen
 
 // UploadComment implements IArticle.
 func (p *Article) UploadComment(ctx context.Context, comment dtos.Comment) error {
+	for _, cmt := range comment.Content {
+
+		_, err := p.Comments.Insert(ctx, entity.Comments{
+			Level:     comment.Level,
+			Content:   cmt,
+			UserID:    comment.UserID,
+			ProductID: comment.ProductID,
+		})
+
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

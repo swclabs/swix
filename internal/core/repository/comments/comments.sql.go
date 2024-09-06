@@ -2,8 +2,8 @@ package comments
 
 const (
 	insertIntoComments string = `
-		INSERT INTO comments (level, content, product_id, user_id)
-		VALUES ($1, $2, $3, $4)
+		INSERT INTO comments (level, content, product_id, user_id, parent_id, created)
+		VALUES ($1, $2, $3, $4, $5, NOW())
 		RETURNING id;	
 	`
 
