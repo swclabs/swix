@@ -12,6 +12,7 @@ import (
 	"swclabs/swix/internal/core/repository/comments"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
+	"time"
 )
 
 // New creates a new Article object
@@ -208,6 +209,8 @@ func (p *Article) UploadComment(ctx context.Context, comment dtos.Comment) error
 			Content:   cmt,
 			UserID:    comment.UserID,
 			ProductID: comment.ProductID,
+			ParentID:  comment.ParentID,
+			Created:   time.Now(),
 		})
 
 		if err != nil {
