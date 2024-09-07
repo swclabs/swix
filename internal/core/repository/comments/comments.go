@@ -42,11 +42,10 @@ func (comment *Comments) Insert(ctx context.Context, cmt entity.Comments) (int64
 }
 
 // GetByID implements ICommentRepository.
-func (comment *Comments) GetByID(ctx context.Context, productID int64) (*entity.Comments, error) {
-	row, err := comment.db.Query(ctx, selectByID, productID)
+func (comment *Comments) GetByID(ctx context.Context, ID int64) (*entity.Comments, error) {
+	row, err := comment.db.Query(ctx, selectByID, ID)
 
 	if err != nil {
-		// return nil, err
 		return nil, errors.Repository("query", err)
 	}
 
@@ -69,17 +68,18 @@ func (comment *Comments) Update(ctx context.Context, cmt entity.Comments) error 
 }
 
 // GetCommentsByProductID implements ICommentRepository.
-// func (comment *Comments) GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error) {
-// 	rows, err := comment.db.Query(ctx, selectCommentsByProductID, productID)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	comments, err := db.CollectRows[entity.Comments](rows)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return comments, nil
-// }
+func (comment *Comments) GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error) {
+	rows, err := comment.db.Query(ctx, selectCommentsByProductID, productID)
+	if err != nil {
+		// return nil, err
+		return nil, errors.Repository("500", err)
+	}
+	comments, err := db.CollectRows[entity.Comments](rows)
+	if err != nil {
+		return nil, errors.Repository("500", err)
+	}
+	return comments, nil
+}
 
 func (comment *Comments) DeleteByID(ctx context.Context, ID int64) error {
 	return errors.Repository("safely write data",

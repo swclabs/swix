@@ -36,9 +36,9 @@ func (c *_cache) Update(ctx context.Context, cmt entity.Comments) error {
 }
 
 // GetByProductID implements ICommentRepository.
-// func (c *_cache) GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error) {
-// 	return c.comments.GetByProductID(ctx, productID)
-// }
+func (c *_cache) GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error) {
+	return c.comments.GetByProductID(ctx, productID)
+}
 
 // Delete implements ICommentRepository.
 func (c *_cache) DeleteByID(ctx context.Context, ID int64) error {

@@ -13,6 +13,12 @@ const (
 		WHERE id = $1;
 	`
 
+	selectCommentsByProductID string = `
+		SELECT *
+		FROM comments
+		WHERE product_id = $1;
+	`
+
 	deleteByID string = `
 		DELETE FROM comments
 		WHERE id = $1;
