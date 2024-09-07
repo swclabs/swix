@@ -29,5 +29,11 @@ type ICommentRepository interface {
 	// ctx is the context to manage the request's lifecycle
 	// productID is the ID of the product whose comments are to be retrieved
 	// Returns the comments and an error if any issues occur during the retrieval process
-	GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error)
+	// GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error)
+
+	// Delete deletes a comment
+	// ctx is the context to manage the request's lifecycle
+	// id is the ID of the comment to be deleted
+	// Returns an error if any issues occur during the deletion process
+	DeleteByID(ctx context.Context, id int64) error
 }

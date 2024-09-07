@@ -7,17 +7,16 @@ const (
 		RETURNING id;	
 	`
 
-	selectCommentByID string = `
+	selectByID string = `
 		SELECT *
 		FROM comments
 		WHERE id = $1;
-		`
+	`
 
-	selectCommentsByProductID string = `
-		SELECT *
-		FROM comments
-		WHERE product_id = $1;
-		`
+	deleteByID string = `
+		DELETE FROM comments
+		WHERE id = $1;
+	`
 
 	updateComments = `
 		UPDATE comments

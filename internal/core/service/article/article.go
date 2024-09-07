@@ -149,31 +149,6 @@ func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID strin
 //			"content": "@Aaron Levie these tigers are cool!",
 //		  }
 func (p *Article) GetComment(ctx context.Context, productID int64) (*dtos.Comment, error) {
-	// id, err := p.Comments.GetByID(ctx, ID)
-
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// levelInt, err := strconv.ParseInt(level, 10, 64)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// comments, err := p.Comments.GetByProductID(ctx, id.ProductID)
-	// if err != nil {
-	// 	return nil, err
-	// }
-
-	// for _, cmt := range comments {
-	// 	if cmt.Level == levelInt {
-	// 		return &dtos.Comment{
-	// 			Level: cmt.Level,
-	// 		}, nil
-	// 	}
-	// }
-
-	// return nil, fmt.Errorf("comment not found")
 	comments, err := p.Comments.GetByProductID(ctx, productID)
 
 	if err != nil {
