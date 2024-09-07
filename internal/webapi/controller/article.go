@@ -195,27 +195,35 @@ func (p *Article) GetArticleData(c echo.Context) error {
 }
 
 // GetComment .
-// @Description get comment of collections
+// @Description get all comments of product
 // @Tags collections
 // @Accept json
 // @Produce json
-// @Param id query string true "id of collections"
+// @Param id query string true "id of products"
 // @Success 200 {object} dtos.Comment
-// @Router /collections/comment [GET]
+// @Router /comment [GET]
 func (p *Article) GetComment(c echo.Context) error {
-	var (
-		product_id = c.QueryParam("product_id ") // "comment/?product_id=1"
-	)
+	// var (
+	// 	product_id = c.QueryParam("product_id") // "comment/?product_id=1"
+	// )
 
-	id, err := strconv.ParseInt(product_id, 10, 64)
+	// id, err := strconv.ParseInt(product_id, 10, 64)
+
+	// if err != nil {
+	// 	return c.JSON(http.StatusBadRequest, dtos.Error{
+	// 		Msg: err.Error(),
+	// 	})
+	// }
+
+	product_id, err := strconv.Atoi(c.QueryParam("product_id"))
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: err.Error(),
+			Msg: "Invalid product id",
 		})
 	}
 
-	comments, err := p.Services.GetComment(c.Request().Context(), id)
+	comments, err := p.Services.GetComment(c.Request().Context(), int64(product_id))
 
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
@@ -226,13 +234,13 @@ func (p *Article) GetComment(c echo.Context) error {
 }
 
 // UploadComment .
-// @Description create comment into collections
+// @Description create comment into products
 // @Tags collections
 // @Accept json
 // @Produce json
 // @Param banner body dtos.Comment true "comment data request"
 // @Success 201 {object} dtos.OK
-// @Router /collections/comment [POST]
+// @Router /comment [POST]
 func (p *Article) UploadComment(c echo.Context) error {
 	var cmt dtos.Comment
 	if err := c.Bind(&cmt); err != nil {
