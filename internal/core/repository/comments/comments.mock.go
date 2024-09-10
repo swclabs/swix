@@ -38,8 +38,8 @@ func (p *Mock) Update(ctx context.Context, cmt entity.Comments) error {
 }
 
 // GetByProductID implements ICommentRepository.
-func (p *Mock) GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error) {
-	args := p.Called(ctx, productID)
+func (p *Mock) GetByProductID(ctx context.Context, ID int64) ([]entity.Comments, error) {
+	args := p.Called(ctx, ID)
 	return args.Get(0).([]entity.Comments), args.Error(1)
 }
 
