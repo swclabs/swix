@@ -199,22 +199,10 @@ func (p *Article) GetArticleData(c echo.Context) error {
 // @Tags collections
 // @Accept json
 // @Produce json
-// @Param id query string true "id of products"
+// @Param product_id query string true "id of products"
 // @Success 200 {object} dtos.Comment
 // @Router /comment [GET]
 func (p *Article) GetComment(c echo.Context) error {
-	// var (
-	// 	product_id = c.QueryParam("product_id") // "comment/?product_id=1"
-	// )
-
-	// id, err := strconv.ParseInt(product_id, 10, 64)
-
-	// if err != nil {
-	// 	return c.JSON(http.StatusBadRequest, dtos.Error{
-	// 		Msg: err.Error(),
-	// 	})
-	// }
-
 	product_id, err := strconv.Atoi(c.QueryParam("product_id"))
 
 	if err != nil {

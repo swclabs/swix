@@ -12,7 +12,6 @@ import (
 	"swclabs/swix/internal/core/repository/comments"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
-	"time"
 )
 
 // New creates a new Article object
@@ -148,31 +147,44 @@ func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID strin
 //			"product_id": "11446498",
 //			"content": "@Aaron Levie these tigers are cool!",
 //		  }
-func (p *Article) GetComment(ctx context.Context, productID int64) (*dtos.Comment, error) {
+func (p *Article) GetComment(ctx context.Context, productID int64) ([]dtos.Comment, error) {
 	comments, err := p.Comments.GetByProductID(ctx, productID)
-
 	if err != nil {
 		return nil, err
 	}
 
-	// Check if level = 0 then return parent_id="null"
-	// Check if level = 1 then return parent_id
-
+	var comment = []dtos.Comment{}
 	for _, cmt := range comments {
+
+		var (
+			level    int64
+			parentID int64
+		)
 		if cmt.Level == 0 {
-			return &dtos.Comment{
-				Level: cmt.Level,
-			}, nil
+			// Add your code here
+			level = cmt.Level
+			parentID = 0
 		}
 		if cmt.Level == 1 {
-			return &dtos.Comment{
-				Level:    cmt.Level,
-				ParentID: cmt.ParentID,
-			}, nil
+			// Add your code here
+			level = cmt.Level
+			parentID = cmt.ParentID
 		}
+		comment = append(comment, dtos.Comment{
+			ID:      cmt.ID,
+			Level:   level,
+			Content: []string{cmt.Content},
+			// Username: cmt.Username,
+			UserID:    cmt.UserID,
+			ProductID: cmt.ProductID,
+			ParentID:  parentID,
+			Liked:     cmt.Liked,
+			Disliked:  cmt.Disliked,
+			// Add other fields here if needed
+		})
 	}
 
-	return nil, fmt.Errorf("comment not found")
+	return comment, nil
 }
 
 // UploadComment implements IArticle.
@@ -185,7 +197,9 @@ func (p *Article) UploadComment(ctx context.Context, comment dtos.Comment) error
 			UserID:    comment.UserID,
 			ProductID: comment.ProductID,
 			ParentID:  comment.ParentID,
-			Created:   time.Now(),
+			Rating:    comment.Rating,
+			Liked:     comment.Liked,
+			Disliked:  comment.Disliked,
 		})
 
 		if err != nil {

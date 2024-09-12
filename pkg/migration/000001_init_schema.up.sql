@@ -39,7 +39,9 @@ CREATE TABLE "comments" (
   "content" varchar NOT NULL,
   "user_id" bigint NOT NULL,
   "product_id" bigint NOT NULL,
-  "rating" int
+  "rating" int,
+  "liked" int,
+  "disliked" int
 );
 
 CREATE TABLE "products" (
