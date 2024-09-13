@@ -196,7 +196,7 @@ func (p *Article) GetArticleData(c echo.Context) error {
 
 // GetComment .
 // @Description get all comments of product
-// @Tags collections
+// @Tags comments
 // @Accept json
 // @Produce json
 // @Param product_id query string true "id of products"
@@ -204,15 +204,13 @@ func (p *Article) GetArticleData(c echo.Context) error {
 // @Router /comment [GET]
 func (p *Article) GetComment(c echo.Context) error {
 	product_id, err := strconv.Atoi(c.QueryParam("product_id"))
-
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "Invalid product id",
+			Msg: "Missing 'product_id' required",
 		})
 	}
 
 	comments, err := p.Services.GetComment(c.Request().Context(), int64(product_id))
-
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),

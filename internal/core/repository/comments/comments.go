@@ -71,12 +71,13 @@ func (comment *Comments) Update(ctx context.Context, cmt entity.Comments) error 
 func (comment *Comments) GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error) {
 	rows, err := comment.db.Query(ctx, selectCommentsByProductID, productID)
 	if err != nil {
-		// return nil, err
-		return nil, errors.Repository("500", err)
+		return nil, err
+		// return nil, errors.Repository("500", err)
 	}
 	comments, err := db.CollectRows[entity.Comments](rows)
 	if err != nil {
-		return nil, errors.Repository("500", err)
+		// return nil, errors.Repository("500", err)
+		return nil, err
 	}
 	return comments, nil
 }
