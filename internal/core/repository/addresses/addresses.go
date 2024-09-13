@@ -9,7 +9,7 @@ import (
 )
 
 // New creates a new Addresses object
-func New(conn db.IDatabase) IAddressRepository {
+func New(conn db.IDatabase) IAddress {
 	return &Addresses{
 		db: conn,
 	}
@@ -34,7 +34,7 @@ func (addr *Addresses) GetByUserID(ctx context.Context, userID int64) ([]entity.
 }
 
 // Init initializes the Addresses object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) IAddressRepository {
+func Init(conn db.IDatabase, cache cache.ICache) IAddress {
 	return useCache(cache, New(conn))
 }
 

@@ -12,7 +12,7 @@ func NewAddressesMock() *Mock {
 	return &Mock{}
 }
 
-var _ IAddressRepository = (*Mock)(nil)
+var _ IAddress = (*Mock)(nil)
 
 // Mock is a mock type for IAddressRepository.
 type Mock struct {

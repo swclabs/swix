@@ -5,8 +5,8 @@ import (
 	"swclabs/swix/internal/core/domain/entity"
 )
 
-// IOrdersRepository interface for orders repository
-type IOrdersRepository interface {
+// IOrders interface for orders repository
+type IOrders interface {
 	Create(ctx context.Context, order entity.Orders) (int64, error)
 	Get(ctx context.Context, userID int64, limit int) ([]entity.Orders, error)
 

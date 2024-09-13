@@ -8,12 +8,12 @@ import (
 
 type _cache struct {
 	cache   cache.ICache
-	account IAccountRepository
+	account IAccounts
 }
 
-var _ IAccountRepository = (*_cache)(nil)
+var _ IAccounts = (*_cache)(nil)
 
-func useCache(cache cache.ICache, repo IAccountRepository) IAccountRepository {
+func useCache(cache cache.ICache, repo IAccounts) IAccounts {
 	return &_cache{
 		cache:   cache,
 		account: repo,

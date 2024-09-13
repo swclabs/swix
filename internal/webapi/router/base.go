@@ -7,27 +7,27 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-// IBase interface for router objects
-type IBase interface {
+// IBaseRouter interface for router objects
+type IBaseRouter interface {
 	IRouter
 }
 
 // New creates a new Base object
-func New(controller controller.IBase) IBase {
-	return &Base{
+func New(controller controller.IBaseController) IBaseRouter {
+	return &BaseRouter{
 		controllers: controller,
 	}
 }
 
-var _ IBase = (*Base)(nil)
+var _ IBaseRouter = (*BaseRouter)(nil)
 
-// Base struct define the Base object
-type Base struct {
-	controllers controller.IBase
+// BaseRouter struct define the BaseRouter object
+type BaseRouter struct {
+	controllers controller.IBaseController
 }
 
 // Routers implements IBase.
-func (b *Base) Routers(e *echo.Echo) {
+func (b *BaseRouter) Routers(e *echo.Echo) {
 	e.GET("/docs/*any", echoSwagger.WrapHandler)
 
 	// endpoint for common home page

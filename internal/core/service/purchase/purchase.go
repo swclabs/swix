@@ -24,14 +24,14 @@ import (
 
 // New creates a new Purchase object
 func New(
-	order orders.IOrdersRepository,
-	cart carts.ICartRepository,
-	user users.IUserRepository,
+	order orders.IOrders,
+	cart carts.ICarts,
+	user users.IUsers,
 	spec specifications.ISpecifications,
-	inv inventories.IInventoryRepository,
-	product products.IProductRepository,
-	category categories.ICategoriesRepository,
-) IPurchaseService {
+	inv inventories.IInventories,
+	product products.IProducts,
+	category categories.ICategories,
+) IPurchase {
 	return &Purchase{
 		Cart:      cart,
 		Order:     order,
@@ -45,13 +45,13 @@ func New(
 
 // Purchase struct for purchase service
 type Purchase struct {
-	Order     orders.IOrdersRepository
-	Cart      carts.ICartRepository
-	User      users.IUserRepository
+	Order     orders.IOrders
+	Cart      carts.ICarts
+	User      users.IUsers
 	Spec      specifications.ISpecifications
-	Category  categories.ICategoriesRepository
-	Product   products.IProductRepository
-	Inventory inventories.IInventoryRepository
+	Category  categories.ICategories
+	Product   products.IProducts
+	Inventory inventories.IInventories
 }
 
 // GetOrdersByUserID implements IPurchaseService.

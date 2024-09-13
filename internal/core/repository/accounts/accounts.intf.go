@@ -5,8 +5,8 @@ import (
 	"swclabs/swix/internal/core/domain/entity"
 )
 
-// IAccountRepository implements all methods of Account to access the database.
-type IAccountRepository interface {
+// IAccounts implements all methods of Account to access the database.
+type IAccounts interface {
 	// GetByEmail retrieves an account by email.
 	// ctx is the context to manage the request's lifecycle.
 	// email is the email address to search for.

@@ -9,12 +9,12 @@ import (
 
 type _cache struct {
 	cache cache.ICache
-	user  IUserRepository
+	user  IUsers
 }
 
-var _ IUserRepository = (*_cache)(nil)
+var _ IUsers = (*_cache)(nil)
 
-func useCache(cache cache.ICache, repo IUserRepository) IUserRepository {
+func useCache(cache cache.ICache, repo IUsers) IUsers {
 	return &_cache{
 		user:  repo,
 		cache: cache,

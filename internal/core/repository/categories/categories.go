@@ -10,12 +10,12 @@ import (
 )
 
 // New creates a new Categories object
-func New(conn db.IDatabase) ICategoriesRepository {
+func New(conn db.IDatabase) ICategories {
 	return &Categories{db: conn}
 }
 
 // Init initializes the Categories object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) ICategoriesRepository {
+func Init(conn db.IDatabase, cache cache.ICache) ICategories {
 	return useCache(cache, New(conn))
 }
 

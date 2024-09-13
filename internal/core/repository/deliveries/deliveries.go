@@ -7,10 +7,10 @@ import (
 	"swclabs/swix/pkg/infra/db"
 )
 
-var _ IDelivery = (*Deliveries)(nil)
+var _ IDeliveries = (*Deliveries)(nil)
 
 // Init creates a new Deliveries object
-func Init(_ cache.ICache, db db.IDatabase) IDelivery {
+func Init(_ cache.ICache, db db.IDatabase) IDeliveries {
 	return &Deliveries{
 		db: db,
 	}

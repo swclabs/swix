@@ -6,9 +6,9 @@ import (
 	"swclabs/swix/pkg/infra/cache"
 )
 
-var _ IAddressRepository = (*_cache)(nil)
+var _ IAddress = (*_cache)(nil)
 
-func useCache(cache cache.ICache, repo IAddressRepository) IAddressRepository {
+func useCache(cache cache.ICache, repo IAddress) IAddress {
 	return &_cache{
 		address: repo,
 		cache:   cache,
@@ -17,7 +17,7 @@ func useCache(cache cache.ICache, repo IAddressRepository) IAddressRepository {
 
 type _cache struct {
 	cache   cache.ICache
-	address IAddressRepository
+	address IAddress
 }
 
 // GetByUserID implements IAddressRepository.

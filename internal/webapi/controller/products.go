@@ -37,7 +37,7 @@ type IProducts interface {
 }
 
 // NewProducts creates a new Products object
-func NewProducts(services products.IProductService) IProducts {
+func NewProducts(services products.IProducts) IProducts {
 	return &Products{
 		Services: services,
 	}
@@ -45,7 +45,7 @@ func NewProducts(services products.IProductService) IProducts {
 
 // Products struct implementation of IProducts
 type Products struct {
-	Services products.IProductService
+	Services products.IProducts
 }
 
 // AccessoryDetail .

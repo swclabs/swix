@@ -20,7 +20,7 @@ type _Server struct {
 var _ IServer = &_Server{}
 
 // New creates a new instance of the Server
-func New(base router.IBase) IServer {
+func New(base router.IBaseRouter) IServer {
 	sentry.Init()
 	server := &_Server{
 		engine: echo.New(),

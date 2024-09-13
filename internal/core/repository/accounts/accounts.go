@@ -17,12 +17,12 @@ type Accounts struct {
 }
 
 // New creates a new Accounts object
-func New(conn db.IDatabase) IAccountRepository {
+func New(conn db.IDatabase) IAccounts {
 	return &Accounts{conn}
 }
 
 // Init initializes the Accounts object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) IAccountRepository {
+func Init(conn db.IDatabase, cache cache.ICache) IAccounts {
 	return useCache(cache, &Accounts{db: conn})
 }
 

@@ -24,13 +24,13 @@ type IPurchase interface {
 
 // Purchase struct implementation of IPurchase
 type Purchase struct {
-	services purchase.IPurchaseService
+	services purchase.IPurchase
 }
 
 var _ IPurchase = (*Purchase)(nil)
 
 // NewPurchase creates a new Purchase object
-func NewPurchase(services purchase.IPurchaseService) IPurchase {
+func NewPurchase(services purchase.IPurchase) IPurchase {
 	return &Purchase{services: services}
 }
 

@@ -11,8 +11,8 @@ import (
 
 // New creates a new Classify object
 func New(
-	addr addresses.IAddressRepository,
-	del deliveries.IDelivery,
+	addr addresses.IAddress,
+	del deliveries.IDeliveries,
 ) IPaymentDelivery {
 	return &PaymentDelivery{
 		Address:  addr,
@@ -22,8 +22,8 @@ func New(
 
 // PaymentDelivery struct for classify service
 type PaymentDelivery struct {
-	Address  addresses.IAddressRepository
-	Delivery deliveries.IDelivery
+	Address  addresses.IAddress
+	Delivery deliveries.IDeliveries
 }
 
 // CreateDelivery implements IPaymentDelivery.

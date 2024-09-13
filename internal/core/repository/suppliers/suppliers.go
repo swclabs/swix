@@ -13,12 +13,12 @@ type Suppliers struct {
 }
 
 // New creates a new Suppliers object.
-func New(conn db.IDatabase) ISuppliersRepository {
+func New(conn db.IDatabase) ISuppliers {
 	return &Suppliers{db: conn}
 }
 
 // Init initializes the Suppliers object with database and redis connection.
-func Init(conn db.IDatabase, cache cache.ICache) ISuppliersRepository {
+func Init(conn db.IDatabase, cache cache.ICache) ISuppliers {
 	return useCache(cache, New(conn))
 }
 

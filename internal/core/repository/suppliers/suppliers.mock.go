@@ -12,7 +12,7 @@ type Mock struct {
 	mock.Mock
 }
 
-var _ ISuppliersRepository = (*Mock)(nil)
+var _ ISuppliers = (*Mock)(nil)
 
 // GetByPhone implements ISuppliersRepository.
 func (s *Mock) GetByPhone(ctx context.Context, email string) (*entity.Suppliers, error) {

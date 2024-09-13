@@ -8,17 +8,17 @@ import (
 	"swclabs/swix/pkg/lib/errors"
 )
 
-var _ IInventoryRepository = (*Inventory)(nil)
+var _ IInventories = (*Inventory)(nil)
 
 // New creates a new Inventory object.
-func New(conn db.IDatabase) IInventoryRepository {
+func New(conn db.IDatabase) IInventories {
 	return &Inventory{
 		db: conn,
 	}
 }
 
 // Init initializes the Inventory object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) IInventoryRepository {
+func Init(conn db.IDatabase, cache cache.ICache) IInventories {
 	return useCache(cache, &Inventory{db: conn})
 }
 

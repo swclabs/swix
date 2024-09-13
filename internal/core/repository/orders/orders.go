@@ -13,18 +13,18 @@ type Orders struct {
 }
 
 // New creates a new Orders object
-func New(conn db.IDatabase) IOrdersRepository {
+func New(conn db.IDatabase) IOrders {
 	return &Orders{
 		db: conn,
 	}
 }
 
 // Init initializes the Orders object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) IOrdersRepository {
+func Init(conn db.IDatabase, cache cache.ICache) IOrders {
 	return useCache(cache, New(conn))
 }
 
-var _ IOrdersRepository = (*Orders)(nil)
+var _ IOrders = (*Orders)(nil)
 
 // InsertProduct implements IOrdersRepository.
 func (orders *Orders) InsertProduct(ctx context.Context, product entity.ProductInOrder) error {

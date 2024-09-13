@@ -10,12 +10,12 @@ import (
 )
 
 var (
-	_                 IInventoryRepository = (*_Cache)(nil)
-	keyGetByID                             = "IInventoryRepository:GetByID:%d"
-	keyGetByProductID                      = "IInventoryRepository:GetByProductID:%d"
+	_                 IInventories = (*_Cache)(nil)
+	keyGetByID                     = "IInventoryRepository:GetByID:%d"
+	keyGetByProductID              = "IInventoryRepository:GetByProductID:%d"
 )
 
-func useCache(cache cache.ICache, repo IInventoryRepository) IInventoryRepository {
+func useCache(cache cache.ICache, repo IInventories) IInventories {
 	return &_Cache{
 		inventory: repo,
 		cache:     cache,
@@ -24,7 +24,7 @@ func useCache(cache cache.ICache, repo IInventoryRepository) IInventoryRepositor
 
 type _Cache struct {
 	cache     cache.ICache
-	inventory IInventoryRepository
+	inventory IInventories
 }
 
 // Update implements IInventoryRepository.

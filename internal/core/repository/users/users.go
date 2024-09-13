@@ -16,16 +16,16 @@ type Users struct {
 }
 
 // New creates a new instance of IUserRepository.
-func New(conn db.IDatabase) IUserRepository {
+func New(conn db.IDatabase) IUsers {
 	return &Users{conn}
 }
 
 // Init initializes the Users object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) IUserRepository {
+func Init(conn db.IDatabase, cache cache.ICache) IUsers {
 	return useCache(cache, New(conn))
 }
 
-var _ IUserRepository = (*Users)(nil)
+var _ IUsers = (*Users)(nil)
 
 // GetByID implements IUserRepository.
 func (usr *Users) GetByID(ctx context.Context, id int64) (*entity.Users, error) {

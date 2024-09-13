@@ -13,17 +13,17 @@ type Carts struct {
 	db db.IDatabase
 }
 
-var _ ICartRepository = (*Carts)(nil)
+var _ ICarts = (*Carts)(nil)
 
 // New creates a new Carts object
-func New(connection db.IDatabase) ICartRepository {
+func New(connection db.IDatabase) ICarts {
 	return &Carts{
 		db: connection,
 	}
 }
 
 // Init initializes the Carts object with database and redis connection
-func Init(connection db.IDatabase, cache cache.ICache) ICartRepository {
+func Init(connection db.IDatabase, cache cache.ICache) ICarts {
 	return useCache(cache, New(connection))
 }
 

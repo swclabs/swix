@@ -18,15 +18,15 @@ type IPurchase interface {
 
 var _ IPurchase = (*Purchase)(nil)
 
-// NewPurchaseConsume creates a new Purchase object
-func NewPurchaseConsume(service purchase.IPurchaseService) IPurchase {
+// NewPurchase creates a new Purchase object
+func NewPurchase(service purchase.IPurchase) IPurchase {
 	return &Purchase{service: service}
 }
 
 // Purchase is a struct for Purchase.
 type Purchase struct {
 	purchase.Task
-	service purchase.IPurchaseService
+	service purchase.IPurchase
 }
 
 // HandleAddToCart implements IPurchase.

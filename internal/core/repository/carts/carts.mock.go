@@ -13,7 +13,7 @@ type Mock struct {
 	mock.Mock
 }
 
-var _ ICartRepository = (*Mock)(nil)
+var _ ICarts = (*Mock)(nil)
 
 // NewCartsMock returns a new Mock object
 func NewCartsMock() *Mock {

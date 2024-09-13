@@ -8,17 +8,17 @@ import (
 
 type _cache struct {
 	cache cache.ICache
-	cart  ICartRepository
+	cart  ICarts
 }
 
-func useCache(cache cache.ICache, repo ICartRepository) ICartRepository {
+func useCache(cache cache.ICache, repo ICarts) ICarts {
 	return &_cache{
 		cache: cache,
 		cart:  repo,
 	}
 }
 
-var _ ICartRepository = (*_cache)(nil)
+var _ ICarts = (*_cache)(nil)
 
 // GetCartByUserID implements ICartRepository.
 func (c *_cache) GetCartByUserID(ctx context.Context, userID int64, limit int) ([]entity.Carts, error) {

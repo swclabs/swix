@@ -9,7 +9,7 @@ import (
 	"swclabs/swix/pkg/lib/crypto"
 )
 
-func useCache(cache cache.ICache, orders IOrdersRepository) IOrdersRepository {
+func useCache(cache cache.ICache, orders IOrders) IOrders {
 	return &_Cache{
 		cache:  cache,
 		orders: orders,
@@ -18,7 +18,7 @@ func useCache(cache cache.ICache, orders IOrdersRepository) IOrdersRepository {
 
 type _Cache struct {
 	cache  cache.ICache
-	orders IOrdersRepository
+	orders IOrders
 }
 
 // Create implements IOrdersRepository.

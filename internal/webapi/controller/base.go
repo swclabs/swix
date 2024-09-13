@@ -11,20 +11,20 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// IBase interface for base controller
-type IBase interface {
+// IBaseController interface for base controller
+type IBaseController interface {
 	HealthCheck(c echo.Context) error
 	WorkerCheck(c echo.Context) error
 }
 
-// Base struct implementation of IBase
-type Base struct {
+// BaseController struct implementation of IBase
+type BaseController struct {
 	service base.IService
 }
 
 // New creates a new Base object
-func New(services base.IService) IBase {
-	return &Base{
+func New(services base.IService) IBaseController {
+	return &BaseController{
 		service: services,
 	}
 }
@@ -36,7 +36,7 @@ func New(services base.IService) IBase {
 // @Produce json
 // @Success 200
 // @Router /common/healthcheck [GET]
-func (b *Base) HealthCheck(c echo.Context) error {
+func (b *BaseController) HealthCheck(c echo.Context) error {
 	return c.JSON(200, b.service.HealthCheck(c.Request().Context()))
 }
 
@@ -47,7 +47,7 @@ func (b *Base) HealthCheck(c echo.Context) error {
 // @Produce json
 // @Success 200
 // @Router /common/worker [GET]
-func (b *Base) WorkerCheck(c echo.Context) error {
+func (b *BaseController) WorkerCheck(c echo.Context) error {
 	results, err := base.UseTask(b.service).WorkerCheckResult(c.Request().Context(), 10)
 	if err != nil {
 		return c.JSON(400, dtos.Error{

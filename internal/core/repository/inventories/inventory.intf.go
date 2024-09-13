@@ -5,8 +5,8 @@ import (
 	"swclabs/swix/internal/core/domain/entity"
 )
 
-// IInventoryRepository represents the interface for Inventory repository.
-type IInventoryRepository interface {
+// IInventories represents the interface for Inventory repository.
+type IInventories interface {
 	// InsertProduct inserts a product to the inventory.
 	InsertProduct(ctx context.Context, product entity.Inventories) (int64, error)
 

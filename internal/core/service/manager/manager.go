@@ -29,9 +29,9 @@ import (
 // Manager implement IManager
 type Manager struct {
 	Blob    blob.IBlobStorage
-	User    users.IUserRepository
-	Account accounts.IAccountRepository
-	Address addresses.IAddressRepository
+	User    users.IUsers
+	Account accounts.IAccounts
+	Address addresses.IAddress
 }
 
 var _ IManager = (*Manager)(nil)
@@ -39,9 +39,9 @@ var _ IManager = (*Manager)(nil)
 // New create new Manager object
 func New(
 	blob blob.IBlobStorage,
-	user users.IUserRepository,
-	account accounts.IAccountRepository,
-	address addresses.IAddressRepository,
+	user users.IUsers,
+	account accounts.IAccounts,
+	address addresses.IAddress,
 ) IManager {
 	return &Manager{
 		Blob:    blob,

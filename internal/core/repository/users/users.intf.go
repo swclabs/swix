@@ -6,9 +6,9 @@ import (
 	"swclabs/swix/internal/core/domain/model"
 )
 
-// IUserRepository Users Repository interface
+// IUsers Users Repository interface
 // implement at /internal/repository/users.go
-type IUserRepository interface {
+type IUsers interface {
 
 	// GetByEmail retrieves a Users based on email address.
 	GetByEmail(ctx context.Context, email string) (*entity.Users, error)

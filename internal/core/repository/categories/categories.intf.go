@@ -5,8 +5,8 @@ import (
 	"swclabs/swix/internal/core/domain/entity"
 )
 
-// ICategoriesRepository defines methods to interact with category (Categories) data.
-type ICategoriesRepository interface {
+// ICategories defines methods to interact with category (Categories) data.
+type ICategories interface {
 	// Insert adds a new category to the database.
 	// ctx is the context to manage the request's lifecycle.
 	// ctg is a pointer to the Categories object to be added.

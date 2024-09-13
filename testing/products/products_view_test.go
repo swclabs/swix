@@ -21,7 +21,7 @@ import (
 func TestProductView(t *testing.T) {
 	var (
 		product productRepo.Mock
-		service = products.ProductService{
+		service = products.Products{
 			Products: &product,
 		}
 		controller = controller.Products{
@@ -108,7 +108,7 @@ func TestProductView(t *testing.T) {
 func TestProductViewAccessory(t *testing.T) {
 	var (
 		product productRepo.Mock
-		service = products.ProductService{
+		service = products.Products{
 			Products: &product,
 		}
 		controller = controller.Products{

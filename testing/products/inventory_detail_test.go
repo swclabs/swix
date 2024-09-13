@@ -35,7 +35,7 @@ func TestGetInventory(t *testing.T) {
 		inventory inventories.Mock
 		product   productRepo.Mock
 		specs     specifications.Mock
-		service   = products.ProductService{
+		service   = products.Products{
 			Inventory: &inventory,
 			Products:  &product,
 			Specs:     &specs,

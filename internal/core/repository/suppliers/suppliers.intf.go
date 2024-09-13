@@ -5,8 +5,8 @@ import (
 	"swclabs/swix/internal/core/domain/entity"
 )
 
-// ISuppliersRepository implements all methods to access and manage supplier data in the database.
-type ISuppliersRepository interface {
+// ISuppliers implements all methods to access and manage supplier data in the database.
+type ISuppliers interface {
 	// Insert adds a new supplier and their address to the database.
 	// ctx is the context to manage the request's lifecycle.
 	// sup is the Suppliers object to be added.

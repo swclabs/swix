@@ -37,7 +37,7 @@ func TestProductDetails(t *testing.T) {
 		product          productRepo.Mock
 		specs            specifications.Mock
 		category         = categories.Mock{}
-		service          = products.ProductService{
+		service          = products.Products{
 			Inventory: &inventory,
 			Products:  &product,
 			Specs:     &specs,

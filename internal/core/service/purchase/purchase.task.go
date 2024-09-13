@@ -9,10 +9,10 @@ import (
 	"swclabs/swix/pkg/lib/worker"
 )
 
-var _ IPurchaseService = (*Task)(nil)
+var _ IPurchase = (*Task)(nil)
 
 // UseTask use task for purchase service
-func UseTask(service IPurchaseService) IPurchaseService {
+func UseTask(service IPurchase) IPurchase {
 	return &Task{
 		service: service,
 		worker:  worker.NewClient(config.RedisHost, config.RedisPort, config.RedisPassword),
@@ -22,7 +22,7 @@ func UseTask(service IPurchaseService) IPurchaseService {
 // Task struct for purchase service
 type Task struct {
 	worker  worker.IWorkerClient
-	service IPurchaseService
+	service IPurchase
 }
 
 // AddToCart implements IPurchaseService.

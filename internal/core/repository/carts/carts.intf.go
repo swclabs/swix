@@ -5,8 +5,8 @@ import (
 	"swclabs/swix/internal/core/domain/entity"
 )
 
-// ICartRepository implement all method of Carts To access database
-type ICartRepository interface {
+// ICarts implement all method of Carts To access database
+type ICarts interface {
 	// Insert Products to database by productID
 	Insert(ctx context.Context, cart entity.Carts) error
 	// GetCartByUserID is a method get CartSlices from database by userId

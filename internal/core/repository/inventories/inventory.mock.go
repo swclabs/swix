@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-var _ IInventoryRepository = (*Mock)(nil)
+var _ IInventories = (*Mock)(nil)
 
 // Mock represents a mock for IInventoryRepository.
 type Mock struct {

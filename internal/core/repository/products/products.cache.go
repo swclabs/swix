@@ -8,9 +8,9 @@ import (
 	"swclabs/swix/pkg/infra/cache"
 )
 
-var _ IProductRepository = (*_cache)(nil)
+var _ IProducts = (*_cache)(nil)
 
-func useCache(cache cache.ICache, product IProductRepository) IProductRepository {
+func useCache(cache cache.ICache, product IProducts) IProducts {
 	return &_cache{
 		products: product,
 		cache:    cache,
@@ -19,7 +19,7 @@ func useCache(cache cache.ICache, product IProductRepository) IProductRepository
 
 type _cache struct {
 	cache    cache.ICache
-	products IProductRepository
+	products IProducts
 }
 
 // GetByCategory implements IProductRepository.

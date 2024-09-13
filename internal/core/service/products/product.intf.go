@@ -9,9 +9,9 @@ import (
 	"swclabs/swix/internal/core/domain/enum"
 )
 
-// IProductService : Module for Product interactions.
+// IProducts : Module for Product interactions.
 // Actor: Admin & Customer (Users)
-type IProductService interface {
+type IProducts interface {
 
 	// GetProductsLimit retrieves a list of products with a specified limit.
 	// ctx is the context to manage the request's lifecycle.

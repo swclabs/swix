@@ -11,17 +11,17 @@ import (
 	"swclabs/swix/pkg/lib/errors"
 )
 
-var _ IProductRepository = (*Products)(nil)
+var _ IProducts = (*Products)(nil)
 
 // New creates a new Products object
-func New(conn db.IDatabase) IProductRepository {
+func New(conn db.IDatabase) IProducts {
 	return &Products{
 		db: conn,
 	}
 }
 
 // Init initializes the Products object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) IProductRepository {
+func Init(conn db.IDatabase, cache cache.ICache) IProducts {
 	return useCache(cache, New(conn))
 }
 

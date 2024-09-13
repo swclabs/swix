@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-var _ IProductRepository = (*Mock)(nil)
+var _ IProducts = (*Mock)(nil)
 
 // NewProductsMock creates a new Mock.
 func NewProductsMock() *Mock {

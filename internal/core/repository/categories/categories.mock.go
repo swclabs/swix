@@ -12,7 +12,7 @@ type Mock struct {
 	mock.Mock
 }
 
-var _ ICategoriesRepository = (*Mock)(nil)
+var _ ICategories = (*Mock)(nil)
 
 // NewCategoriesMock creates a new mock object.
 func NewCategoriesMock() *Mock {

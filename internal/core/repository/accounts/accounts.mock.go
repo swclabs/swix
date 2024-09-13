@@ -12,7 +12,7 @@ type Mock struct {
 	mock.Mock
 }
 
-var _ IAccountRepository = (*Mock)(nil)
+var _ IAccounts = (*Mock)(nil)
 
 // NewAccountsMock returns a new Mock object
 func NewAccountsMock() *Mock {

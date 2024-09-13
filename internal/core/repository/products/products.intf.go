@@ -7,8 +7,8 @@ import (
 	"swclabs/swix/internal/core/domain/model"
 )
 
-// IProductRepository defines methods to interact with product (Products) data.
-type IProductRepository interface {
+// IProducts defines methods to interact with product (Products) data.
+type IProducts interface {
 	// Insert adds a new product to the database.
 	// ctx is the context to manage the request's lifecycle.
 	// prd is a pointer to the Products object to be added.

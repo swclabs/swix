@@ -12,7 +12,7 @@ type IBase interface {
 }
 
 // NewBase creates a new Base object
-func NewBase(handler handler.IBase) IBase {
+func NewBase(handler handler.IBaseHandler) IBase {
 	return &Base{
 		handlers: handler,
 	}
@@ -20,7 +20,7 @@ func NewBase(handler handler.IBase) IBase {
 
 // Base struct define the Base object
 type Base struct {
-	handlers handler.IBase
+	handlers handler.IBaseHandler
 }
 
 // Register register the queue

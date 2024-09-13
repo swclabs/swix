@@ -12,28 +12,28 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-// IBase is an interface for Base.
-type IBase interface {
+// IBaseHandler is an interface for Base.
+type IBaseHandler interface {
 	HandleHealthCheck() (taskName string, fn worker.HandleFunc)
 }
 
-var _ IBase = (*Base)(nil)
+var _ IBaseHandler = (*BaseHandler)(nil)
 
-// Base struct define the base object
-type Base struct {
+// BaseHandler struct define the base object
+type BaseHandler struct {
 	base.Task               // embedded delay function here
 	handler   base.IService // create handler for services
 }
 
-// NewBaseConsume creates a new base object
-func NewBaseConsume(_base base.IService) IBase {
-	return &Base{
+// NewBase creates a new base object
+func NewBase(_base base.IService) IBaseHandler {
+	return &BaseHandler{
 		handler: _base,
 	}
 }
 
 // HandleHealthCheck handle health check
-func (base *Base) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
+func (base *BaseHandler) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
 	// get task name from delay function
 	taskName = worker.GetTaskName(base.WorkerCheckResult)
 	// implement handler function base on delay function

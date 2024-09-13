@@ -8,12 +8,12 @@ import (
 
 type _cache struct {
 	cache    cache.ICache
-	category ICategoriesRepository
+	category ICategories
 }
 
-var _ ICategoriesRepository = (*_cache)(nil)
+var _ ICategories = (*_cache)(nil)
 
-func useCache(cache cache.ICache, repo ICategoriesRepository) ICategoriesRepository {
+func useCache(cache cache.ICache, repo ICategories) ICategories {
 	return &_cache{
 		category: repo,
 		cache:    cache,

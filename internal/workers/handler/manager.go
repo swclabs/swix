@@ -25,8 +25,8 @@ type Manager struct {
 	handler manager.IManager
 }
 
-// NewManagerConsume creates a new Manager object
-func NewManagerConsume(handler manager.IManager) IManager {
+// NewManager creates a new Manager object
+func NewManager(handler manager.IManager) IManager {
 	return &Manager{
 		handler: handler,
 	}

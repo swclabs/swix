@@ -14,7 +14,7 @@
 // │        │  │                │  │                │       │                │
 // └────────┘  └────────────────┘  └────────────────┘       └────────────────┘
 // The outer layer is the Adapter (types.Adapter), implemented in the
-// main.adapter.go.We use the IServer in the boot directory to connect
+// main.adapter.go We use the IServer in the boot directory to connect
 // with the IServer of the webapi and worker directory through the
 // Adapter interface.
 
