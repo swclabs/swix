@@ -6,8 +6,8 @@ import (
 	"log"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repository/categories"
-	"swclabs/swix/internal/core/repository/suppliers"
+	"swclabs/swix/internal/core/repos/categories"
+	"swclabs/swix/internal/core/repos/suppliers"
 	"swclabs/swix/pkg/infra/db"
 )
 

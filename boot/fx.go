@@ -2,9 +2,9 @@
 package boot
 
 import (
-	"swclabs/swix/internal/core/repository"
+	"swclabs/swix/internal/apis"
+	"swclabs/swix/internal/core/repos"
 	"swclabs/swix/internal/core/service"
-	"swclabs/swix/internal/webapi"
 	"swclabs/swix/internal/workers"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/cache"
@@ -14,8 +14,8 @@ import (
 )
 
 const (
-	// WebAPI flag build web api
-	WebAPI = 1 << iota
+	// APIs flag build web api
+	APIs = 1 << iota
 	// Worker flag build worker
 	Worker
 	// ProdMode build with production mode
@@ -26,7 +26,7 @@ const (
 
 var (
 	fxInfrastructure = fx.Provide(blob.New, db.New, cache.New)
-	fxDataLayer      = fx.Options(repository.FxModule)
+	fxDataLayer      = fx.Options(repos.FxModule)
 	fxBusinessLogic  = fx.Options(service.FxModule)
 	fxPresenterLayer = fx.Provide()
 	fxLogger         = fx.Provide()
@@ -34,8 +34,8 @@ var (
 
 func fxModule(flag int) fx.Option {
 	switch {
-	case flag&WebAPI != 0:
-		fxPresenterLayer = webapi.FxModule
+	case flag&APIs != 0:
+		fxPresenterLayer = apis.FxModule
 	case flag&Worker != 0:
 		fxPresenterLayer = workers.FxModule
 	}

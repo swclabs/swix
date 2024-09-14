@@ -4,8 +4,8 @@ import (
 	"context"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repository/addresses"
-	"swclabs/swix/internal/core/repository/deliveries"
+	"swclabs/swix/internal/core/repos/addresses"
+	"swclabs/swix/internal/core/repos/deliveries"
 	"time"
 )
 

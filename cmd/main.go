@@ -12,8 +12,8 @@ import (
 	"log"
 	"os"
 	"sort"
+	"swclabs/swix/internal/apis"
 	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/webapi"
 	"swclabs/swix/internal/workers"
 
 	"swclabs/swix/boot"
@@ -27,9 +27,9 @@ var command = []*cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "run worker handle tasks in queue",
 		Action: func(_ *cli.Context) error {
-			var flag = boot.WebAPI | boot.DebugMode
+			var flag = boot.APIs | boot.DebugMode
 			if config.StageStatus != "dev" {
-				flag = boot.WebAPI | boot.ProdMode
+				flag = boot.APIs | boot.ProdMode
 			}
 			app := boot.NewApp(flag, boot.NewWorker, workers.NewAdapter)
 			app.Run()
@@ -41,11 +41,11 @@ var command = []*cli.Command{
 		Aliases: []string{"s"},
 		Usage:   "run api server",
 		Action: func(_ *cli.Context) error {
-			var flag = boot.WebAPI | boot.DebugMode
+			var flag = boot.APIs | boot.DebugMode
 			if config.StageStatus != "dev" {
-				flag = boot.WebAPI | boot.ProdMode
+				flag = boot.APIs | boot.ProdMode
 			}
-			app := boot.NewApp(flag, boot.NewServer, webapi.NewAdapter)
+			app := boot.NewApp(flag, boot.NewServer, apis.NewAdapter)
 			app.Run()
 			return nil
 		},

@@ -1,7 +1,7 @@
 package article
 
 import (
-	"swclabs/swix/internal/core/repository/collections"
+	"swclabs/swix/internal/core/repos/collections"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
 

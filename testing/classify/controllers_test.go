@@ -4,10 +4,10 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"swclabs/swix/internal/apis/controller"
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repository/suppliers"
+	"swclabs/swix/internal/core/repos/suppliers"
 	"swclabs/swix/internal/core/service/classify"
-	"swclabs/swix/internal/webapi/controller"
 	"testing"
 
 	"github.com/labstack/echo/v4"
@@ -17,7 +17,7 @@ import (
 var e = echo.New()
 
 func TestGetSuppliers(t *testing.T) {
-	// repository layers
+	// repos layers
 	repos := suppliers.Mock{}
 	repos.On("GetLimit", context.Background(), 10).Return([]entity.Suppliers{
 		{

@@ -36,7 +36,7 @@ func NewServerWithAddress(address string) IServer {
 //			baseController = controller.New(baseService)
 //			baseRouter     = router.New(baseController)
 //			httpServer = server.New(baseRouter)
-//			adapt      = webapi.NewBaseAdapter(httpServer)
+//			adapt      = apis.NewBaseAdapter(httpServer)
 //			server     = boot.NewServer()
 //
 //		)
