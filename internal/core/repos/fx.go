@@ -7,6 +7,7 @@ import (
 	"swclabs/swix/internal/core/repos/carts"
 	"swclabs/swix/internal/core/repos/categories"
 	"swclabs/swix/internal/core/repos/collections"
+	"swclabs/swix/internal/core/repos/comments"
 	"swclabs/swix/internal/core/repos/deliveries"
 	"swclabs/swix/internal/core/repos/inventories"
 	"swclabs/swix/internal/core/repos/orders"
@@ -33,5 +34,6 @@ var FxModule = fx.Options(
 		carts.Init,
 		specifications.Init,
 		deliveries.Init,
+		comments.Init,
 	),
 )

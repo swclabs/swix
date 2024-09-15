@@ -9,6 +9,7 @@ import (
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repos/collections"
+	"swclabs/swix/internal/core/repos/comments"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
 )
@@ -17,10 +18,12 @@ import (
 func New(
 	blob blob.IBlobStorage,
 	collection collections.ICollections,
+	cmt comments.ICommentRepository,
 ) IArticle {
 	return &Article{
 		Blob:        blob,
 		Collections: collection,
+		Comments:    cmt,
 	}
 }
 
@@ -28,6 +31,7 @@ func New(
 type Article struct {
 	Blob        blob.IBlobStorage
 	Collections collections.ICollections
+	Comments    comments.ICommentRepository
 }
 
 // GetMessage implements IArticle.
@@ -131,4 +135,79 @@ func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID strin
 	}
 	return p.Collections.UploadCollectionImage(
 		ctx, cardBannerID, resp.SecureURL)
+}
+
+// GetComment implements IArticle.
+//
+//		{
+//			"id": "11446498",
+//			"level": "0", // level of comment, [0] is parent, [1] is child
+//	     	"parent_id": "11446498", // parent id of comment
+//			"created_at": "2012-12-12T10:53:43-08:00",
+//			"username": "11446498",
+//			"user_id": "11446498",
+//			"product_id": "11446498",
+//			"content": "@Aaron Levie these tigers are cool!",
+//		  }
+func (p *Article) GetComment(ctx context.Context, productID int64) ([]dtos.Comment, error) {
+	comments, err := p.Comments.GetByProductID(ctx, productID)
+	if err != nil {
+		return nil, err
+	}
+
+	var comment = []dtos.Comment{}
+	for _, cmt := range comments {
+
+		var (
+			level    int64
+			parentID int64
+		)
+		if cmt.Level == 0 {
+			// Add your code here
+			level = cmt.Level
+			parentID = 0
+		}
+		if cmt.Level == 1 {
+			// Add your code here
+			level = cmt.Level
+			parentID = cmt.ParentID
+		}
+		comment = append(comment, dtos.Comment{
+			ID:      cmt.ID,
+			Level:   level,
+			Content: []string{cmt.Content},
+			// Username: cmt.Username,
+			UserID:    cmt.UserID,
+			ProductID: cmt.ProductID,
+			ParentID:  parentID,
+			Liked:     cmt.Liked,
+			Disliked:  cmt.Disliked,
+			// Add other fields here if needed
+		})
+	}
+
+	return comment, nil
+}
+
+// UploadComment implements IArticle.
+func (p *Article) UploadComment(ctx context.Context, comment dtos.Comment) error {
+	for _, cmt := range comment.Content {
+
+		_, err := p.Comments.Insert(ctx, entity.Comments{
+			Level:     comment.Level,
+			Content:   cmt,
+			UserID:    comment.UserID,
+			ProductID: comment.ProductID,
+			ParentID:  comment.ParentID,
+			Rating:    comment.Rating,
+			Liked:     comment.Liked,
+			Disliked:  comment.Disliked,
+		})
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

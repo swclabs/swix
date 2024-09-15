@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+source .env
+CMD=$1
+if [[ -n "$CMD" ]]; then
+    if [ $CMD = "up" ]; then
+        migrate -database "postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?sslmode=$DB_SSL_MODE" -path pkg/sql up
+        exit 0
+    fi
+    if [ $CMD = "down" ]; then
+        migrate -database "postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?sslmode=$DB_SSL_MODE" -path pkg/sql down
+        exit 0
+    fi
+    echo "unknown command"
+    exit 1
+
+fi
+echo ".sql file name is required"
+exit 1

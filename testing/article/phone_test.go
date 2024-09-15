@@ -22,7 +22,7 @@ import (
 func TestPhoneCarousel(t *testing.T) {
 	var (
 		repos      = collections.Mock{}
-		service    = article.New(nil, &repos)
+		service    = article.New(nil, &repos, nil)
 		controller = controller.NewArticle(service)
 		e          = echo.New()
 

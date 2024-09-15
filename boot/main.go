@@ -56,7 +56,6 @@ import (
 	"context"
 	"log"
 	"swclabs/swix/internal/types"
-	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/logger"
 
 	"go.uber.org/fx"
@@ -95,9 +94,6 @@ func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(_ context.Context) error {
 			logger.Info("Server starting")
-			if err := db.MigrateUp(); err != nil {
-				return err
-			}
 			go func() {
 				log.Fatal(server.Connect(adapter))
 			}()
