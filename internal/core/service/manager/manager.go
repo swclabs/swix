@@ -17,9 +17,9 @@ import (
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/model"
-	"swclabs/swix/internal/core/repository/accounts"
-	"swclabs/swix/internal/core/repository/addresses"
-	"swclabs/swix/internal/core/repository/users"
+	"swclabs/swix/internal/core/repos/accounts"
+	"swclabs/swix/internal/core/repos/addresses"
+	"swclabs/swix/internal/core/repos/users"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/crypto"
@@ -29,9 +29,9 @@ import (
 // Manager implement IManager
 type Manager struct {
 	Blob    blob.IBlobStorage
-	User    users.IUserRepository
-	Account accounts.IAccountRepository
-	Address addresses.IAddressRepository
+	User    users.IUsers
+	Account accounts.IAccounts
+	Address addresses.IAddress
 }
 
 var _ IManager = (*Manager)(nil)
@@ -39,9 +39,9 @@ var _ IManager = (*Manager)(nil)
 // New create new Manager object
 func New(
 	blob blob.IBlobStorage,
-	user users.IUserRepository,
-	account accounts.IAccountRepository,
-	address addresses.IAddressRepository,
+	user users.IUsers,
+	account accounts.IAccounts,
+	address addresses.IAddress,
 ) IManager {
 	return &Manager{
 		Blob:    blob,
@@ -127,7 +127,7 @@ func (manager *Manager) UserInfo(ctx context.Context, email string) (*model.User
 
 // UpdateUserInfo update user information to database
 func (manager *Manager) UpdateUserInfo(ctx context.Context, req dtos.UserUpdate) error {
-	// call repository layer
+	// call repos layer
 	return manager.User.Save(ctx, entity.Users{
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
@@ -147,7 +147,7 @@ func (manager *Manager) UploadAvatar(email string, fileHeader *multipart.FileHea
 	if err != nil {
 		log.Fatal(err)
 	}
-	// call repository layer to save user
+	// call repos layer to save user
 	return manager.User.Save(context.TODO(), entity.Users{
 		Email: email,
 		Image: resp.SecureURL,

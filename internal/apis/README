@@ -1,0 +1,17 @@
+a: Duc Hung Ho @kyeranyo
+e: <hunghd.dev@gmail.com>
+
+The apis package implements APIs following the restful API standard.
+
+The directory includes the following folders:
+
+- controller: handles routing to corresponding services
+- middleware: defines middleware for the API
+- router: routes endpoints to corresponding controllers
+
+With the `IServer` object, we initialize the engine with the core framework
+echo to connect the routers using the `Connect` method.
+
+The outer layer is the Adapter (`types.Adapter`), implemented in the
+`main.adapter.go`.We use the `IServer` in the `boot` directory to connect
+with the `IServer` of the `apis` directory through the Adapter interface.

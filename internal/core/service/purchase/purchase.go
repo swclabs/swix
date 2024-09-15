@@ -8,13 +8,13 @@ import (
 	"strings"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repository/carts"
-	"swclabs/swix/internal/core/repository/categories"
-	"swclabs/swix/internal/core/repository/inventories"
-	"swclabs/swix/internal/core/repository/orders"
-	"swclabs/swix/internal/core/repository/products"
-	"swclabs/swix/internal/core/repository/specifications"
-	"swclabs/swix/internal/core/repository/users"
+	"swclabs/swix/internal/core/repos/carts"
+	"swclabs/swix/internal/core/repos/categories"
+	"swclabs/swix/internal/core/repos/inventories"
+	"swclabs/swix/internal/core/repos/orders"
+	"swclabs/swix/internal/core/repos/products"
+	"swclabs/swix/internal/core/repos/specifications"
+	"swclabs/swix/internal/core/repos/users"
 	"swclabs/swix/pkg/infra/db"
 	"time"
 
@@ -24,14 +24,14 @@ import (
 
 // New creates a new Purchase object
 func New(
-	order orders.IOrdersRepository,
-	cart carts.ICartRepository,
-	user users.IUserRepository,
+	order orders.IOrders,
+	cart carts.ICarts,
+	user users.IUsers,
 	spec specifications.ISpecifications,
-	inv inventories.IInventoryRepository,
-	product products.IProductRepository,
-	category categories.ICategoriesRepository,
-) IPurchaseService {
+	inv inventories.IInventories,
+	product products.IProducts,
+	category categories.ICategories,
+) IPurchase {
 	return &Purchase{
 		Cart:      cart,
 		Order:     order,
@@ -45,13 +45,13 @@ func New(
 
 // Purchase struct for purchase service
 type Purchase struct {
-	Order     orders.IOrdersRepository
-	Cart      carts.ICartRepository
-	User      users.IUserRepository
+	Order     orders.IOrders
+	Cart      carts.ICarts
+	User      users.IUsers
 	Spec      specifications.ISpecifications
-	Category  categories.ICategoriesRepository
-	Product   products.IProductRepository
-	Inventory inventories.IInventoryRepository
+	Category  categories.ICategories
+	Product   products.IProducts
+	Inventory inventories.IInventories
 }
 
 // GetOrdersByUserID implements IPurchaseService.

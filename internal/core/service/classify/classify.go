@@ -6,15 +6,15 @@ import (
 	"log"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repository/categories"
-	"swclabs/swix/internal/core/repository/suppliers"
+	"swclabs/swix/internal/core/repos/categories"
+	"swclabs/swix/internal/core/repos/suppliers"
 	"swclabs/swix/pkg/infra/db"
 )
 
 // New creates a new Classify object
 func New(
-	category categories.ICategoriesRepository,
-	supplier suppliers.ISuppliersRepository,
+	category categories.ICategories,
+	supplier suppliers.ISuppliers,
 ) IClassify {
 	return &Classify{
 		Category: category,
@@ -24,8 +24,8 @@ func New(
 
 // Classify struct for classify service
 type Classify struct {
-	Category categories.ICategoriesRepository
-	Supplier suppliers.ISuppliersRepository
+	Category categories.ICategories
+	Supplier suppliers.ISuppliers
 }
 
 // CreateCategory implements IClassify.

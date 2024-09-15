@@ -14,9 +14,9 @@ import (
 )
 
 func main() {
-	var flag = boot.WebAPI | boot.DebugMode
+	var flag = boot.APIs | boot.DebugMode
 	if config.StageStatus != "dev" {
-		flag = boot.WebAPI | boot.ProdMode
+		flag = boot.APIs | boot.ProdMode
 	}
 	app := boot.NewApp(flag, boot.NewWorker, workers.NewAdapter)
 	app.Run()

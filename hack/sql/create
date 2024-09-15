@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+TABLE=$1
+if [[ -n "$TABLE" ]]; then
+    migrate create -ext sql -dir pkg/sql -seq $TABLE
+    exit 0
+fi
+echo ".sql file name is required"
+exit 1

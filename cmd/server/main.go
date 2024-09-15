@@ -8,15 +8,15 @@ package main
 import (
 	"swclabs/swix/boot"
 	_ "swclabs/swix/boot/init"
+	"swclabs/swix/internal/apis"
 	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/webapi"
 )
 
 func main() {
-	var flag = boot.WebAPI | boot.DebugMode
+	var flag = boot.APIs | boot.DebugMode
 	if config.StageStatus != "dev" {
-		flag = boot.WebAPI | boot.ProdMode
+		flag = boot.APIs | boot.ProdMode
 	}
-	app := boot.NewApp(flag, boot.NewServer, webapi.NewAdapter)
+	app := boot.NewApp(flag, boot.NewServer, apis.NewAdapter)
 	app.Run()
 }

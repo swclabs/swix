@@ -8,8 +8,8 @@ import (
 	"mime/multipart"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repository/collections"
-	"swclabs/swix/internal/core/repository/comments"
+	"swclabs/swix/internal/core/repos/collections"
+	"swclabs/swix/internal/core/repos/comments"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
 )

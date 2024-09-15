@@ -25,7 +25,7 @@ package main
 import (
 	"log"
 	"swclabs/swix/boot"
-	"swclabs/swix/internal/webapipipipi"
+	"swclabs/swix/internal/apis"
 	"swclabs/swix/internal/types"
 
 	"go.uber.org/fx"
@@ -41,7 +41,7 @@ func main() {
 	app := fx.New(
 		boot.FxModule(),
 		fx.Provide(
-			webapi.NewAdapter,
+			apis.NewAdapter,
 			boot.NewServer,
 		),
 		fx.Invoke(boot.Main),
@@ -56,7 +56,6 @@ import (
 	"context"
 	"log"
 	"swclabs/swix/internal/types"
-	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/logger"
 
 	"go.uber.org/fx"
@@ -64,7 +63,7 @@ import (
 	_ "swclabs/swix/boot/init" // init package deps, like docs, migration
 )
 
-// IServer connect and run via adapter (webapi, worker, rpc)
+// IServer connect and run via adapter (apis, worker, rpc)
 type IServer interface {
 	Connect(adapter types.IAdapter) error
 }
@@ -85,7 +84,7 @@ func NewApp(flag int, serverConstructor func() IServer, adapterConstructors ...i
 //	app := fx.New(
 //		boot.FxModule(),
 //		fx.Provide(
-//			webapi.NewAdapter,
+//			apis.NewAdapter,
 //			boot.NewServer,
 //		),
 //		fx.Invoke(boot.Main), // <-- run here
@@ -95,9 +94,6 @@ func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
 	lc.Append(fx.Hook{
 		OnStart: func(_ context.Context) error {
 			logger.Info("Server starting")
-			if err := db.MigrateUp(); err != nil {
-				return err
-			}
 			go func() {
 				log.Fatal(server.Connect(adapter))
 			}()

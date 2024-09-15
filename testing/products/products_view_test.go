@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"swclabs/swix/internal/apis/controller"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/enum"
 	"swclabs/swix/internal/core/domain/model"
-	productRepo "swclabs/swix/internal/core/repository/products"
+	productRepo "swclabs/swix/internal/core/repos/products"
 	"swclabs/swix/internal/core/service/products"
-	"swclabs/swix/internal/webapi/controller"
 	"swclabs/swix/pkg/lib/logger"
 	"testing"
 
@@ -21,7 +21,7 @@ import (
 func TestProductView(t *testing.T) {
 	var (
 		product productRepo.Mock
-		service = products.ProductService{
+		service = products.Products{
 			Products: &product,
 		}
 		controller = controller.Products{
@@ -108,7 +108,7 @@ func TestProductView(t *testing.T) {
 func TestProductViewAccessory(t *testing.T) {
 	var (
 		product productRepo.Mock
-		service = products.ProductService{
+		service = products.Products{
 			Products: &product,
 		}
 		controller = controller.Products{

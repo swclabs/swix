@@ -6,16 +6,16 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"swclabs/swix/internal/apis/controller"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repository/inventories"
-	"swclabs/swix/internal/core/repository/specifications"
+	"swclabs/swix/internal/core/repos/inventories"
+	"swclabs/swix/internal/core/repos/specifications"
 	"swclabs/swix/internal/core/service/products"
-	"swclabs/swix/internal/webapi/controller"
 	"swclabs/swix/pkg/lib/logger"
 	"testing"
 
-	productRepo "swclabs/swix/internal/core/repository/products"
+	productRepo "swclabs/swix/internal/core/repos/products"
 
 	"github.com/labstack/echo/v4"
 	"github.com/shopspring/decimal"
@@ -35,7 +35,7 @@ func TestGetInventory(t *testing.T) {
 		inventory inventories.Mock
 		product   productRepo.Mock
 		specs     specifications.Mock
-		service   = products.ProductService{
+		service   = products.Products{
 			Inventory: &inventory,
 			Products:  &product,
 			Specs:     &specs,

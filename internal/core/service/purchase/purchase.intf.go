@@ -6,9 +6,9 @@ import (
 	"swclabs/swix/internal/core/domain/dtos"
 )
 
-// IPurchaseService : Module for Purchasing.
+// IPurchase : Module for Purchasing.
 // Actor: Admin & Customer (Users)
-type IPurchaseService interface {
+type IPurchase interface {
 	// AddToCart adds a product to the shopping cart.
 	// ctx is the context to manage the request's lifecycle.
 	// cart contains the cart information to be added.

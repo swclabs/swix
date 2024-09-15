@@ -11,10 +11,10 @@ import (
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/enum"
-	"swclabs/swix/internal/core/repository/categories"
-	"swclabs/swix/internal/core/repository/inventories"
-	"swclabs/swix/internal/core/repository/products"
-	"swclabs/swix/internal/core/repository/specifications"
+	"swclabs/swix/internal/core/repos/categories"
+	"swclabs/swix/internal/core/repos/inventories"
+	"swclabs/swix/internal/core/repos/products"
+	"swclabs/swix/internal/core/repos/specifications"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/errors"
@@ -23,17 +23,17 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-var _ IProductService = (*ProductService)(nil)
+var _ IProducts = (*Products)(nil)
 
 // New creates a new ProductService object
 func New(
 	blob blob.IBlobStorage,
-	products products.IProductRepository,
-	inventory inventories.IInventoryRepository,
-	category categories.ICategoriesRepository,
+	products products.IProducts,
+	inventory inventories.IInventories,
+	category categories.ICategories,
 	Spec specifications.ISpecifications,
-) IProductService {
-	return &ProductService{
+) IProducts {
+	return &Products{
 		Blob:      blob,
 		Products:  products,
 		Inventory: inventory,
@@ -42,17 +42,17 @@ func New(
 	}
 }
 
-// ProductService struct for product service
-type ProductService struct {
+// Products struct for product service
+type Products struct {
 	Blob      blob.IBlobStorage
-	Products  products.IProductRepository
-	Inventory inventories.IInventoryRepository
-	Category  categories.ICategoriesRepository
+	Products  products.IProducts
+	Inventory inventories.IInventories
+	Category  categories.ICategories
 	Specs     specifications.ISpecifications
 }
 
 // AccessoryDetail implements IProductService.
-func (s *ProductService) AccessoryDetail(ctx context.Context, productID int64) (*dtos.AccessoryDetail, error) {
+func (s *Products) AccessoryDetail(ctx context.Context, productID int64) (*dtos.AccessoryDetail, error) {
 	product, err := s.Products.GetByID(ctx, productID)
 	if err != nil {
 		return nil, err
@@ -79,7 +79,7 @@ func (s *ProductService) AccessoryDetail(ctx context.Context, productID int64) (
 }
 
 // InsertSpecWireless implements IProductService.
-func (s *ProductService) InsertSpecWireless(ctx context.Context, specification dtos.Wireless) error {
+func (s *Products) InsertSpecWireless(ctx context.Context, specification dtos.Wireless) error {
 	inventory, err := s.Inventory.GetByID(ctx, specification.InventoryID)
 	if err != nil {
 		return err
@@ -110,7 +110,7 @@ func (s *ProductService) InsertSpecWireless(ctx context.Context, specification d
 }
 
 // InsertSpecStorage implements IProductService.
-func (s *ProductService) InsertSpecStorage(ctx context.Context, specification dtos.Storage) error {
+func (s *Products) InsertSpecStorage(ctx context.Context, specification dtos.Storage) error {
 	inventory, err := s.Inventory.GetByID(ctx, specification.InventoryID)
 	if err != nil {
 		return err
@@ -141,7 +141,7 @@ func (s *ProductService) InsertSpecStorage(ctx context.Context, specification dt
 }
 
 // ViewDataOf implements IProductService.
-func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductView, error) {
+func (s *Products) ViewDataOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductView, error) {
 	products, err := s.Products.GetByCategory(ctx, types, offset)
 	if err != nil {
 		return nil, err
@@ -169,7 +169,7 @@ func (s *ProductService) ViewDataOf(ctx context.Context, types enum.Category, of
 }
 
 // GetInvByID implements IProductService.
-func (s *ProductService) GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory[interface{}], error) {
+func (s *Products) GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory[interface{}], error) {
 	stock, err := s.Inventory.GetByID(ctx, inventoryID)
 	if err != nil {
 		return nil, err
@@ -223,7 +223,7 @@ func (s *ProductService) GetInvByID(ctx context.Context, inventoryID int64) (*dt
 }
 
 // ProductDetail implements IProductService.
-func (s *ProductService) ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail[interface{}], error) {
+func (s *Products) ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail[interface{}], error) {
 	var (
 		productSpecs dtos.ProductSpecs
 		types        enum.Category
@@ -296,7 +296,7 @@ func (s *ProductService) ProductDetail(ctx context.Context, productID int64) (*d
 }
 
 // UpdateInv implements IProductService.
-func (s *ProductService) UpdateInv(ctx context.Context, inventory dtos.InvUpdate) error {
+func (s *Products) UpdateInv(ctx context.Context, inventory dtos.InvUpdate) error {
 	pid, err := strconv.Atoi(inventory.ProductID)
 	if err != nil {
 		pid = -1
@@ -321,7 +321,7 @@ func (s *ProductService) UpdateInv(ctx context.Context, inventory dtos.InvUpdate
 }
 
 // UploadInvImage implements IProductService.
-func (s *ProductService) UploadInvImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
+func (s *Products) UploadInvImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
 		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
@@ -347,12 +347,12 @@ func (s *ProductService) UploadInvImage(ctx context.Context, ID int, fileHeader 
 }
 
 // DeleteInvByID implements IProductService.
-func (s *ProductService) DeleteInvByID(ctx context.Context, inventoryID int64) error {
+func (s *Products) DeleteInvByID(ctx context.Context, inventoryID int64) error {
 	return s.Inventory.DeleteByID(ctx, inventoryID)
 }
 
 // GetAllInv implements IProductService.
-func (s *ProductService) GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvStock[interface{}], error) {
+func (s *Products) GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvStock[interface{}], error) {
 	inventories, err := s.Inventory.GetLimit(ctx, limit, page)
 	if err != nil {
 		return nil, errors.Service("get stock", err)
@@ -427,12 +427,12 @@ func (s *ProductService) GetAllInv(ctx context.Context, page int, limit int) (*d
 }
 
 // GetInv implements IProductService.
-func (s *ProductService) GetInv(ctx context.Context, productID int64) ([]entity.Inventories, error) {
+func (s *Products) GetInv(ctx context.Context, productID int64) ([]entity.Inventories, error) {
 	return s.Inventory.GetByProductID(ctx, productID)
 }
 
 // Search implements IProductService.
-func (s *ProductService) Search(ctx context.Context, keyword string) ([]dtos.ProductResponse, error) {
+func (s *Products) Search(ctx context.Context, keyword string) ([]dtos.ProductResponse, error) {
 	_products, err := s.Products.Search(ctx, keyword)
 	if err != nil {
 		return nil, errors.Service("keyword error", err)
@@ -458,7 +458,7 @@ func (s *ProductService) Search(ctx context.Context, keyword string) ([]dtos.Pro
 }
 
 // UpdateProductInfo implements IProductService.
-func (s *ProductService) UpdateProductInfo(ctx context.Context, product dtos.UpdateProductInfo) error {
+func (s *Products) UpdateProductInfo(ctx context.Context, product dtos.UpdateProductInfo) error {
 	if product.CategoryID != 0 {
 		_category, err := s.Category.GetByID(ctx, product.CategoryID)
 		if err != nil {
@@ -492,7 +492,7 @@ func (s *ProductService) UpdateProductInfo(ctx context.Context, product dtos.Upd
 }
 
 // UploadProductImage implements IProductService.
-func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
+func (s *Products) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
 		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
@@ -516,7 +516,7 @@ func (s *ProductService) UploadProductImage(ctx context.Context, ID int, fileHea
 }
 
 // CreateProduct implements IProductService.
-func (s *ProductService) CreateProduct(ctx context.Context, products dtos.Product) (int64, error) {
+func (s *Products) CreateProduct(ctx context.Context, products dtos.Product) (int64, error) {
 	_category, err := s.Category.GetByID(ctx, products.CategoryID)
 	if err != nil {
 		return -1, fmt.Errorf("category not found %v", err)
@@ -547,12 +547,12 @@ func (s *ProductService) CreateProduct(ctx context.Context, products dtos.Produc
 }
 
 // DelProductByID implements IProductService.
-func (s *ProductService) DelProductByID(ctx context.Context, productID int64) error {
+func (s *Products) DelProductByID(ctx context.Context, productID int64) error {
 	return s.Products.DeleteByID(ctx, productID)
 }
 
 // InsertInv implements IProductService.
-func (s *ProductService) InsertInv(ctx context.Context, product dtos.Inventory[interface{}]) error {
+func (s *Products) InsertInv(ctx context.Context, product dtos.Inventory[interface{}]) error {
 	var (
 		pid, _    = strconv.Atoi(product.ProductID)
 		price, _  = decimal.NewFromString(product.Price)
@@ -612,7 +612,7 @@ func (s *ProductService) InsertInv(ctx context.Context, product dtos.Inventory[i
 }
 
 // GetProductsLimit implements IProductService.
-func (s *ProductService) GetProductsLimit(ctx context.Context, limit int) ([]dtos.ProductResponse, error) {
+func (s *Products) GetProductsLimit(ctx context.Context, limit int) ([]dtos.ProductResponse, error) {
 	products, err := s.Products.GetLimit(ctx, limit)
 	if err != nil {
 		return nil, err
