@@ -19,6 +19,8 @@ type IArticle interface {
 
 	UploadMessage(c echo.Context) error
 	GetMessage(c echo.Context) error
+	GetComment(c echo.Context) error
+	UploadComment(c echo.Context) error
 }
 
 // Article struct implementation of IArticle
@@ -190,4 +192,59 @@ func (p *Article) GetArticleData(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, *carousel)
+}
+
+// GetComment .
+// @Description get all comments of product
+// @Tags comments
+// @Accept json
+// @Produce json
+// @Param product_id query string true "id of products"
+// @Success 200 {object} dtos.Comment
+// @Router /comment [GET]
+func (p *Article) GetComment(c echo.Context) error {
+	product_id, err := strconv.Atoi(c.QueryParam("product_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Missing 'product_id' required",
+		})
+	}
+
+	comments, err := p.Services.GetComment(c.Request().Context(), int64(product_id))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, comments)
+}
+
+// UploadComment .
+// @Description create comment into products
+// @Tags collections
+// @Accept json
+// @Produce json
+// @Param banner body dtos.Comment true "comment data request"
+// @Success 201 {object} dtos.OK
+// @Router /comment [POST]
+func (p *Article) UploadComment(c echo.Context) error {
+	var cmt dtos.Comment
+	if err := c.Bind(&cmt); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := valid.Validate(&cmt); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := p.Services.UploadComment(c.Request().Context(), cmt); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, dtos.OK{
+		Msg: "your comment has been uploaded successfully",
+	})
 }
