@@ -18,10 +18,12 @@ import (
 func New(
 	blob blob.IBlobStorage,
 	collection collections.ICollections,
+	cmt comments.ICommentRepository,
 ) IArticle {
 	return &Article{
 		Blob:        blob,
 		Collections: collection,
+		Comments:    cmt,
 	}
 }
 

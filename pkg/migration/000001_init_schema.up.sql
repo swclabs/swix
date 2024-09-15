@@ -41,7 +41,8 @@ CREATE TABLE "comments" (
   "product_id" bigint NOT NULL,
   "rating" int,
   "liked" int,
-  "disliked" int
+  "disliked" int,
+  "parent_id" bigint
 );
 
 CREATE TABLE "products" (

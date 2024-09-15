@@ -77,9 +77,9 @@ INSERT INTO specifications (id, inventory_id, content) VALUES (6, 4, '{"ram": "1
 -- Dependencies: 250
 -- Data for Name: specifications; Type: TABLE DATA; Schema: public; Owner: admin
 --
-INSERT INTO comments (id, level, user_id, product_id, rating, liked, disliked, content) VALUES (1, 0, 1, 1, 5, 0, 0, 'This is a great product');
-INSERT INTO comments (id, level, user_id, product_id, rating, liked, disliked, content) VALUES (2, 0, 1, 1, 5, 0, 0, 'This is a great product');
-INSERT INTO comments (id, level, user_id, product_id, rating, liked, disliked, content) VALUES (3, 0, 1, 2, 5, 0, 0, 'This is a great product');
-INSERT INTO comments (id, level, user_id, product_id, rating, liked, disliked, content) VALUES (4, 0, 1, 3, 5, 0, 0, 'This is a great product');
-INSERT INTO comments (id, level, user_id, product_id, rating, liked, disliked, content) VALUES (5, 0, 1, 4, 5, 0, 0, 'This is a great product');
-INSERT INTO comments (id, level, user_id, product_id, rating, liked, disliked, content) VALUES (6, 0, 1, 5, 5, 0, 0, 'This is a great product');
+INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (1, 0, 0, 1, 1, 5, 0, 0, 'This is a great product');
+INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (2, 0, 0, 1, 1, 5, 0, 0, 'This is a great product');
+INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (3, 0, 0, 1, 2, 5, 0, 0, 'This is a great product');
+INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (4, 0, 0, 1, 3, 5, 0, 0, 'This is a great product');
+INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (5, 0, 0, 1, 4, 5, 0, 0, 'This is a great product');
+INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (6, 0, 0, 1, 5, 5, 0, 0, 'This is a great product');
