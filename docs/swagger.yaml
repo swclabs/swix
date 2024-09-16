@@ -110,6 +110,41 @@ definitions:
       user_id:
         type: integer
     type: object
+  dtos.Comment:
+    properties:
+      content:
+        items:
+          type: string
+        type: array
+      dislike:
+        type: integer
+      id:
+        description: Position string   `json:"position" validate:"required"`
+        type: integer
+      level:
+        description: '0: parent, 1: child'
+        type: integer
+      like:
+        type: integer
+      parent_id:
+        type: integer
+      product_id:
+        type: integer
+      rating:
+        type: integer
+      user_id:
+        type: integer
+      username:
+        type: string
+    required:
+    - content
+    - dislike
+    - id
+    - level
+    - like
+    - rating
+    - username
+    type: object
   dtos.CreateOrderSchema:
     properties:
       delevery_id:
@@ -983,6 +1018,46 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/dtos.Message'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - collections
+  /comment:
+    get:
+      consumes:
+      - application/json
+      description: get all comments of product
+      parameters:
+      - description: id of products
+        in: query
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Comment'
+      tags:
+      - comments
+    post:
+      consumes:
+      - application/json
+      description: create comment into products
+      parameters:
+      - description: comment data request
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.Comment'
       produces:
       - application/json
       responses:

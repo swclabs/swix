@@ -2,44 +2,36 @@ package server
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"swclabs/swix/internal/apis/middleware"
-	"swclabs/swix/internal/apis/router"
 	"swclabs/swix/internal/config"
 	"swclabs/swix/pkg/infra/sentry"
 
 	"github.com/labstack/echo/v4"
 )
 
-type _Server struct {
-	engine *echo.Echo
+// IServer interface represents all server method
+type IServer interface {
+	Run(string) error
 }
 
 var _ IServer = &_Server{}
 
 // New creates a new instance of the Server
-func New(base router.IBaseRouter) IServer {
+func New(mux IMux) IServer {
 	sentry.Init()
 	server := &_Server{
+		mux:    mux,
 		engine: echo.New(),
 	}
 	server.initMiddleware()
-	server.Connect(base)
 	return server
 }
 
-func (server *_Server) middleware(mdws ...func(*echo.Echo)) {
-	for _, m := range mdws {
-		m(server.engine)
-	}
-}
-
-func (server *_Server) backgroundTask(tasks ...func()) {
-	for _, t := range tasks {
-		go t()
-	}
+type _Server struct {
+	mux    IMux
+	engine *echo.Echo
 }
 
 func (server *_Server) loggerWriter(file *os.File) {
@@ -47,29 +39,13 @@ func (server *_Server) loggerWriter(file *os.File) {
 }
 
 func (server *_Server) initMiddleware() {
-	server.middleware(
-		middleware.BaseSetting,
-		middleware.CookieSetting,
-		middleware.Sentry,
-	)
-}
-
-func (server *_Server) Routes() []string {
-	var path = make([]string, 0)
-	for _, route := range server.engine.Routes() {
-		if route != nil {
-			path = append(path,
-				fmt.Sprintf("[%s]    %s \n", route.Method, route.Path))
-		}
-	}
-	return path
-}
-
-func (server *_Server) Connect(routers router.IRouter) {
-	routers.Routers(server.engine)
+	middleware.BaseSetting(server.engine)
+	middleware.CookieSetting(server.engine)
+	middleware.Sentry(server.engine)
 }
 
 func (server *_Server) Run(addr string) error {
+	server.mux.ServeHTTP(server.engine)
 	if config.StageStatus != "dev" {
 		const filePath = "api.log"
 		file, err := os.OpenFile(filePath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)

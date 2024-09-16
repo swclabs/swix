@@ -3,7 +3,7 @@ package router
 
 import (
 	"swclabs/swix/internal/workers/handler"
-	"swclabs/swix/internal/workers/server"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 // IBase interface for Base objects
@@ -24,6 +24,6 @@ type Base struct {
 }
 
 // Register register the queue
-func (c *Base) Register(eng server.IWorker) {
+func (c *Base) Register(eng worker.IEngine) {
 	eng.RegisterQueue(c.handlers.HandleHealthCheck)
 }

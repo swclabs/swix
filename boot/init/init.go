@@ -3,5 +3,4 @@ package init
 
 import (
 	_ "swclabs/swix/docs" // start swagger
-
 )

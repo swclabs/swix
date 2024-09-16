@@ -1,10 +1,9 @@
 // Package apis fx define
-package apis
+package server
 
 import (
 	"swclabs/swix/internal/apis/controller"
 	"swclabs/swix/internal/apis/router"
-	"swclabs/swix/internal/apis/server"
 
 	"go.uber.org/fx"
 )
@@ -13,7 +12,4 @@ import (
 var FxModule = fx.Options(
 	controller.FxModule,
 	router.FxModule,
-	fx.Provide(
-		server.New,
-	),
 )

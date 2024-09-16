@@ -3,7 +3,7 @@ package router
 
 import (
 	"swclabs/swix/internal/workers/handler"
-	"swclabs/swix/internal/workers/server"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 // IManager interface for Manager objects
@@ -24,7 +24,7 @@ type Manager struct {
 }
 
 // Register register the queue
-func (router *Manager) Register(eng server.IWorker) {
+func (router *Manager) Register(eng worker.IEngine) {
 	eng.RegisterQueue(router.handlers.HandleOAuth2SaveUser)
 	eng.RegisterQueue(router.handlers.HandleSignUp)
 	eng.RegisterQueue(router.handlers.HandleUpdateUserInfo)

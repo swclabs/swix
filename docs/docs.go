@@ -506,6 +506,68 @@ const docTemplate = `{
                 }
             }
         },
+        "/comment": {
+            "get": {
+                "description": "get all comments of product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comments"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id of products",
+                        "name": "product_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Comment"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create comment into products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "description": "comment data request",
+                        "name": "banner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Comment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
         "/common/healthcheck": {
             "get": {
                 "description": "health check api server.",
@@ -1646,6 +1708,55 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "dtos.Comment": {
+            "type": "object",
+            "required": [
+                "content",
+                "dislike",
+                "id",
+                "level",
+                "like",
+                "rating",
+                "username"
+            ],
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "dislike": {
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "Position string   ` + "`" + `json:\"position\" validate:\"required\"` + "`" + `",
+                    "type": "integer"
+                },
+                "level": {
+                    "description": "0: parent, 1: child",
+                    "type": "integer"
+                },
+                "like": {
+                    "type": "integer"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
                 }
             }
         },

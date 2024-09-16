@@ -43,7 +43,7 @@ type OrderSchema struct {
 	UserID    int64                `json:"user_id"`
 	Username  string               `json:"user_name"`
 	UserEmail string               `json:"user_email"`
-	Items      []ProductOrderSchema `json:"items"`
+	Items     []ProductOrderSchema `json:"items"`
 }
 
 // CreateOrderSchema is the schema for creating an order request

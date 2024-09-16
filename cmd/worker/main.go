@@ -18,6 +18,6 @@ func main() {
 	if config.StageStatus != "dev" {
 		flag = boot.APIs | boot.ProdMode
 	}
-	app := boot.NewApp(flag, boot.NewWorker, workers.NewAdapter)
+	app := boot.NewApp(flag, boot.NewWorker, workers.NewWorkerNode)
 	app.Run()
 }

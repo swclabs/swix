@@ -2,10 +2,10 @@
 package boot
 
 import (
-	"swclabs/swix/internal/apis"
+	apis "swclabs/swix/internal/apis/server"
 	"swclabs/swix/internal/core/repos"
 	"swclabs/swix/internal/core/service"
-	"swclabs/swix/internal/workers"
+	workers "swclabs/swix/internal/workers/server"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"

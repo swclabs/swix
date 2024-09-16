@@ -23,29 +23,17 @@ Example:
 package main
 
 import (
-	"log"
 	"swclabs/swix/boot"
-	"swclabs/swix/internal/apis"
-	"swclabs/swix/internal/types"
-
-	"go.uber.org/fx"
+	_ "swclabs/swix/boot/init"
+	"swclabs/swix/internal/config"
 )
 
-func StartServer(server boot.IServer, adapter types.IAdapter) {
-	go func() {
-		log.Fatal(server.Connect(adapter))
-	}()
-}
-
 func main() {
-	app := fx.New(
-		boot.FxModule(),
-		fx.Provide(
-			apis.NewAdapter,
-			boot.NewServer,
-		),
-		fx.Invoke(boot.Main),
-	)
+	var flag = boot.APIs | boot.DebugMode
+	if config.StageStatus != "dev" {
+		flag = boot.APIs | boot.ProdMode
+	}
+	app := boot.NewApp(flag, boot.NewServer)
 	app.Run()
 }
 */
@@ -55,7 +43,6 @@ package boot
 import (
 	"context"
 	"log"
-	"swclabs/swix/internal/types"
 	"swclabs/swix/pkg/lib/logger"
 
 	"go.uber.org/fx"
@@ -65,7 +52,11 @@ import (
 
 // IServer connect and run via adapter (apis, worker, rpc)
 type IServer interface {
-	Connect(adapter types.IAdapter) error
+	Bootstrap(core ICore) error
+}
+
+type ICore interface {
+	Run(string) error
 }
 
 // NewApp used to create Fx Application
@@ -80,22 +71,21 @@ func NewApp(flag int, serverConstructor func() IServer, adapterConstructors ...i
 
 // Main used to start a server, through to fx.Invoke() method
 //
-//	boot.PrepareFor(boot.RestAPI | boot.ProdMode)
 //	app := fx.New(
 //		boot.FxModule(),
 //		fx.Provide(
-//			apis.NewAdapter,
 //			boot.NewServer,
+//			apis.NewAPIServer
 //		),
 //		fx.Invoke(boot.Main), // <-- run here
 //	)
 //	app.Run()
-func Main(lc fx.Lifecycle, server IServer, adapter types.IAdapter) {
+func Main(lc fx.Lifecycle, server IServer, core ICore) {
 	lc.Append(fx.Hook{
 		OnStart: func(_ context.Context) error {
 			logger.Info("Server starting")
 			go func() {
-				log.Fatal(server.Connect(adapter))
+				log.Fatal(server.Bootstrap(core))
 			}()
 			return nil
 		},
