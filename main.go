@@ -14,12 +14,12 @@ package main
 
 import (
 	"log"
-	"swclabs/swix/boot"
-	"swclabs/swix/internal/apis"
 	"swclabs/swix/internal/apis/controller"
 	"swclabs/swix/internal/apis/router"
 	"swclabs/swix/internal/apis/server"
 	"swclabs/swix/internal/core/service/base"
+
+	_ "swclabs/swix/docs"
 )
 
 // @title Swipe Public API v0.0.1
@@ -33,10 +33,10 @@ func main() {
 		baseController = controller.New(baseService)
 		baseRouter     = router.New(baseController)
 
-		httpServer = server.New(baseRouter)
-		adapt      = apis.NewBaseAdapter(httpServer)
-		server     = boot.NewServer()
+		mux    = server.NewServeMux()
+		server = server.New(mux)
 	)
+	mux.Handle(baseRouter)
 
-	log.Fatal(server.Connect(adapt))
+	log.Fatal(server.Run("localhost:8000"))
 }

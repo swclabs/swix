@@ -3,7 +3,7 @@ package router
 
 import (
 	"swclabs/swix/internal/workers/handler"
-	"swclabs/swix/internal/workers/server"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 // IPurchase interface for Purchase objects
@@ -24,6 +24,6 @@ type Purchase struct {
 }
 
 // Register implements IPurchase.
-func (p *Purchase) Register(eng server.IWorker) {
+func (p *Purchase) Register(eng worker.IEngine) {
 	eng.RegisterQueue(p.handler.HandleAddToCart)
 }

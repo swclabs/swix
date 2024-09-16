@@ -4,23 +4,7 @@ package boot
 import (
 	"strconv"
 	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/types"
 )
-
-/*
- * Example:
- *	package main
- *	import (
- *		"log"
- *		"swclabs/swix/boot"
- *  )
- * 	func main() {
- *		w := boot.NewWorker()
- *		if err := w.Run(10); err != nil {
- *			log.Fatal(err)
- *		}
- *	}
- */
 
 type _Worker struct {
 	concurrency int
@@ -33,6 +17,6 @@ func NewWorker() IServer {
 	}
 }
 
-func (w *_Worker) Connect(adapter types.IAdapter) error {
-	return adapter.Run(strconv.Itoa(w.concurrency))
+func (w *_Worker) Bootstrap(core ICore) error {
+	return core.Run(strconv.Itoa(w.concurrency))
 }

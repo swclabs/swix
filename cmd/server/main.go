@@ -8,7 +8,6 @@ package main
 import (
 	"swclabs/swix/boot"
 	_ "swclabs/swix/boot/init"
-	"swclabs/swix/internal/apis"
 	"swclabs/swix/internal/config"
 )
 
@@ -17,6 +16,6 @@ func main() {
 	if config.StageStatus != "dev" {
 		flag = boot.APIs | boot.ProdMode
 	}
-	app := boot.NewApp(flag, boot.NewServer, apis.NewAdapter)
+	app := boot.NewApp(flag, boot.NewServer)
 	app.Run()
 }

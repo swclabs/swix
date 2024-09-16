@@ -3,7 +3,6 @@ package boot
 import (
 	"fmt"
 	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/types"
 )
 
 // struct server in project
@@ -28,21 +27,19 @@ func NewServerWithAddress(address string) IServer {
 	}
 }
 
-// Connect to module via adapter
+// Bootstrap to module via adapter
 //
 //	func main() {
 //		var (
 //			baseService    = base.New()
 //			baseController = controller.New(baseService)
 //			baseRouter     = router.New(baseController)
-//			httpServer = server.New(baseRouter)
-//			adapt      = apis.NewBaseAdapter(httpServer)
-//			server     = boot.NewServer()
-//
+//			mux    = server.NewServeMux()
+//			server = server.New(mux)
 //		)
-//
-//		log.Fatal(server.Connect(adapt))
+//		mux.Handle(baseRouter)
+//		log.Fatal(server.Run("localhost:8000"))
 //	}
-func (server *_Server) Connect(adapter types.IAdapter) error {
-	return adapter.Run(server.address)
+func (server *_Server) Bootstrap(core ICore) error {
+	return core.Run(server.address)
 }

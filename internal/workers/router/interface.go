@@ -1,9 +1,9 @@
 // Package router define tasks - queue
 package router
 
-import "swclabs/swix/internal/workers/server"
+import "swclabs/swix/pkg/lib/worker"
 
 // IRouter interface for router objects
 type IRouter interface {
-	Register(eng server.IWorker)
+	Register(eng worker.IEngine)
 }
