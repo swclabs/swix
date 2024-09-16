@@ -82,6 +82,20 @@ func Debug(msg string) {
 	logger.Debug(msg)
 }
 
+// Debug logs an Debug message
+func Error(msg string) {
+	logger, err := config.Build()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		if err := logger.Sync(); err != nil {
+			return // ignore error
+		}
+	}()
+	logger.Error(msg)
+}
+
 // Write writes logs to a file
 func Write(file io.Writer) *zap.Logger {
 	encoderConfig := zapcore.EncoderConfig{

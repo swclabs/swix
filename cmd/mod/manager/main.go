@@ -9,70 +9,35 @@
 package main
 
 import (
-	"log"
-	"os"
-	"sort"
+	"flag"
+	"fmt"
 	"swclabs/swix/boot"
 	"swclabs/swix/internal/apis"
-	"swclabs/swix/internal/config"
 	"swclabs/swix/internal/workers"
-
-	"github.com/urfave/cli/v2"
+	"swclabs/swix/pkg/lib/logger"
 
 	_ "swclabs/swix/boot/init"
 	_ "swclabs/swix/docs"
 )
 
-var command = []*cli.Command{
-	{
-		Name:    "worker",
-		Aliases: []string{"w"},
-		Usage:   "run worker handle tasks in queue",
-		Action: func(_ *cli.Context) error {
-			var flag = boot.APIs | boot.DebugMode
-			if config.StageStatus != "dev" {
-				flag = boot.APIs | boot.ProdMode
-			}
-			app := boot.NewApp(flag, boot.NewWorker, workers.NewAdapter)
-			app.Run()
-			return nil
-		},
-	},
-	{
-		Name:    "server",
-		Aliases: []string{"s"},
-		Usage:   "run api server",
-		Action: func(_ *cli.Context) error {
-			var flag = boot.APIs | boot.DebugMode
-			if config.StageStatus != "dev" {
-				flag = boot.APIs | boot.ProdMode
-			}
-			app := boot.NewApp(flag, boot.NewServer, apis.NewManagerAdapter)
-			app.Run()
-			return nil
-		},
-	},
-}
-
-func newClient() *cli.App {
-	newApp := &cli.App{
-		Name:        "swipe",
-		Usage:       "Swipe Project",
-		Version:     "0.0.1",
-		Description: "Swipe Manager API server",
-		Commands:    command,
-	}
-
-	sort.Sort(cli.FlagsByName(newApp.Flags))
-	sort.Sort(cli.CommandsByName(newApp.Commands))
-
-	return newApp
-}
-
 func main() {
-	client := newClient()
+	cmd := flag.String("start", "server", "start server or worker")
+	flag.Usage = func() {
+		fmt.Println("Usage: swipe [flags]")
+		flag.PrintDefaults()
+	}
+	flag.Parse()
 
-	if err := client.Run(os.Args); err != nil {
-		log.Fatal(err)
+	switch *cmd {
+	case "worker":
+		flags := boot.Worker | boot.DebugMode
+		app := boot.NewApp(flags, boot.NewWorker, workers.NewAdapter)
+		app.Run()
+	case "server":
+		flags := boot.APIs | boot.DebugMode
+		app := boot.NewApp(flags, boot.NewServer, apis.NewManagerAdapter)
+		app.Run()
+	default:
+		logger.Error("unknown flag: " + *cmd)
 	}
 }
