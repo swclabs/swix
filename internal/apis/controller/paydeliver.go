@@ -3,11 +3,21 @@ package controller
 import (
 	"net/http"
 	"strconv"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/paydeliver"
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ = boot.Controller(NewPaydeliver)
+
+// NewPaydeliver creates a new Products object
+func NewPaydeliver(services paydeliver.IPaymentDelivery) IPaydeliver {
+	return &Paydeliver{
+		Services: services,
+	}
+}
 
 // IPaydeliver interface for paydeliver controller
 type IPaydeliver interface {
@@ -15,13 +25,6 @@ type IPaydeliver interface {
 	GetDeliveryAddress(e echo.Context) error
 	CreateDelivery(e echo.Context) error
 	GetDelivery(e echo.Context) error
-}
-
-// NewPaydeliver creates a new Products object
-func NewPaydeliver(services paydeliver.IPaymentDelivery) IPaydeliver {
-	return &Paydeliver{
-		Services: services,
-	}
 }
 
 // Paydeliver struct implementation of IProducts

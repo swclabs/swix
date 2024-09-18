@@ -2,15 +2,11 @@ package orders
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
-
-// Orders represents the repos for orders
-type Orders struct {
-	db db.IDatabase
-}
 
 // New creates a new Orders object
 func New(conn db.IDatabase) IOrders {
@@ -19,12 +15,19 @@ func New(conn db.IDatabase) IOrders {
 	}
 }
 
+var _ = boot.Repos(Init)
+
 // Init initializes the Orders object with database and redis connection
 func Init(conn db.IDatabase, cache cache.ICache) IOrders {
 	return useCache(cache, New(conn))
 }
 
 var _ IOrders = (*Orders)(nil)
+
+// Orders represents the repos for orders
+type Orders struct {
+	db db.IDatabase
+}
 
 // InsertProduct implements IOrdersRepository.
 func (orders *Orders) InsertProduct(ctx context.Context, product entity.ProductInOrder) error {

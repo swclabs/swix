@@ -2,24 +2,27 @@ package suppliers
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
-
-// Suppliers struct for suppliers repos
-type Suppliers struct {
-	db db.IDatabase
-}
 
 // New creates a new Suppliers object.
 func New(conn db.IDatabase) ISuppliers {
 	return &Suppliers{db: conn}
 }
 
+var _ = boot.Repos(Init)
+
 // Init initializes the Suppliers object with database and redis connection.
 func Init(conn db.IDatabase, cache cache.ICache) ISuppliers {
 	return useCache(cache, New(conn))
+}
+
+// Suppliers struct for suppliers repos
+type Suppliers struct {
+	db db.IDatabase
 }
 
 // Insert implements ISuppliersRepository.

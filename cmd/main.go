@@ -27,13 +27,11 @@ func main() {
 
 	switch *cmd {
 	case "worker":
-		flags := boot.Worker | boot.DebugMode
-		app := boot.NewApp(flags, boot.NewWorker, workers.NewWorkerNode)
-		app.Run()
+		app := boot.App(workers.NewWorkerNode)
+		_ = app.Run()
 	case "server":
-		flags := boot.APIs | boot.DebugMode
-		app := boot.NewApp(flags, boot.NewServer, apis.NewAPIServer)
-		app.Run()
+		app := boot.App(apis.NewAPIServer)
+		_ = app.Run()
 	default:
 		logger.Error("unknown flag: " + *cmd)
 	}

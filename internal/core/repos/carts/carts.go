@@ -3,17 +3,19 @@ package carts
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
 
-// Carts struct for cart repos
-type Carts struct {
-	db db.IDatabase
-}
-
 var _ ICarts = (*Carts)(nil)
+var _ = boot.Repos(Init)
+
+// Init initializes the Carts object with database and redis connection
+func Init(connection db.IDatabase, cache cache.ICache) ICarts {
+	return useCache(cache, New(connection))
+}
 
 // New creates a new Carts object
 func New(connection db.IDatabase) ICarts {
@@ -22,9 +24,9 @@ func New(connection db.IDatabase) ICarts {
 	}
 }
 
-// Init initializes the Carts object with database and redis connection
-func Init(connection db.IDatabase, cache cache.ICache) ICarts {
-	return useCache(cache, New(connection))
+// Carts struct for cart repos
+type Carts struct {
+	db db.IDatabase
 }
 
 // GetCartByUserID implements domain.ICartRepository.

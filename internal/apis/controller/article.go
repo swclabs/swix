@@ -4,12 +4,22 @@ package controller
 import (
 	"net/http"
 	"strconv"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/article"
 	"swclabs/swix/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ = boot.Controller(NewArticle)
+
+// NewArticle creates a new Article object
+func NewArticle(service article.IArticle) IArticle {
+	return &Article{
+		Services: service,
+	}
+}
 
 // IArticle interface for article controller
 type IArticle interface {
@@ -26,13 +36,6 @@ type IArticle interface {
 // Article struct implementation of IArticle
 type Article struct {
 	Services article.IArticle
-}
-
-// NewArticle creates a new Article object
-func NewArticle(service article.IArticle) IArticle {
-	return &Article{
-		Services: service,
-	}
 }
 
 // GetMessage .

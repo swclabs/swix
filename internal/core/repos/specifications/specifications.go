@@ -3,10 +3,13 @@ package specifications
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
+
+var _ = boot.Repos(Init)
 
 // Init initializes the Specifications repos.
 func Init(conn db.IDatabase, _ cache.ICache) ISpecifications {

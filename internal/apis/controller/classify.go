@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/service/classify"
@@ -11,6 +12,15 @@ import (
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ = boot.Controller(NewClassify)
+
+// NewClassify creates a new Classify object
+func NewClassify(service classify.IClassify) IClassify {
+	return &Classify{
+		Service: service,
+	}
+}
 
 // IClassify interface for classify controller
 type IClassify interface {
@@ -21,13 +31,6 @@ type IClassify interface {
 	InsertCategory(c echo.Context) error
 	DeleteCategory(c echo.Context) error
 	UpdateCategory(c echo.Context) error
-}
-
-// NewClassify creates a new Classify object
-func NewClassify(service classify.IClassify) IClassify {
-	return &Classify{
-		Service: service,
-	}
 }
 
 // Classify struct implementation of IClassify

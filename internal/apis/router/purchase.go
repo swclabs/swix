@@ -4,10 +4,18 @@
 package router
 
 import (
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ = boot.Router(NewPurchase)
+
+// NewPurchase returns a new Purchase router object
+func NewPurchase(controllers controller.IPurchase) IPurchase {
+	return &Purchase{controllers: controllers}
+}
 
 // IPurchase extends the IRouter interface
 type IPurchase interface {
@@ -17,13 +25,6 @@ type IPurchase interface {
 // Purchase is the router implementation for IPurchase
 type Purchase struct {
 	controllers controller.IPurchase
-}
-
-var _ IRouter = (*Purchase)(nil)
-
-// NewPurchase returns a new Purchase router object
-func NewPurchase(controllers controller.IPurchase) IPurchase {
-	return &Purchase{controllers: controllers}
 }
 
 // Routers define route endpoint

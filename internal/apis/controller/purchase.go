@@ -6,12 +6,21 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/purchase"
 	"swclabs/swix/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ IPurchase = (*Purchase)(nil)
+var _ = boot.Controller(NewPurchase)
+
+// NewPurchase creates a new Purchase object
+func NewPurchase(services purchase.IPurchase) IPurchase {
+	return &Purchase{services: services}
+}
 
 // IPurchase interface for purchase controller
 type IPurchase interface {
@@ -25,13 +34,6 @@ type IPurchase interface {
 // Purchase struct implementation of IPurchase
 type Purchase struct {
 	services purchase.IPurchase
-}
-
-var _ IPurchase = (*Purchase)(nil)
-
-// NewPurchase creates a new Purchase object
-func NewPurchase(services purchase.IPurchase) IPurchase {
-	return &Purchase{services: services}
 }
 
 // GetOrders .

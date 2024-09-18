@@ -2,12 +2,14 @@ package deliveries
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
 
 var _ IDeliveries = (*Deliveries)(nil)
+var _ = boot.Repos(Init)
 
 // Init creates a new Deliveries object
 func Init(_ cache.ICache, db db.IDatabase) IDeliveries {

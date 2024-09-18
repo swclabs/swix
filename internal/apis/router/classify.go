@@ -1,21 +1,24 @@
 package router
 
 import (
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 )
 
-// IClassify router objects
-type IClassify interface {
-	IRouter
-}
+var _ = boot.Router(NewClassify)
 
 // NewClassify returns a new Products router object
 func NewClassify(controllers controller.IClassify) IClassify {
 	return &Classify{
 		controller: controllers,
 	}
+}
+
+// IClassify router objects
+type IClassify interface {
+	IRouter
 }
 
 // Classify router objects

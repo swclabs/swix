@@ -4,10 +4,20 @@
 package router
 
 import (
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ = boot.Router(NewArticle)
+
+// NewArticle creates a new Article router object
+func NewArticle(controllers controller.IArticle) IArticle {
+	return &Article{
+		controller: controllers,
+	}
+}
 
 // IArticle extends the IRouter interface
 type IArticle interface {
@@ -17,13 +27,6 @@ type IArticle interface {
 // Article implements IArticle
 type Article struct {
 	controller controller.IArticle
-}
-
-// NewArticle creates a new Article router object
-func NewArticle(controllers controller.IArticle) IArticle {
-	return &Article{
-		controller: controllers,
-	}
 }
 
 // Routers define route endpoints

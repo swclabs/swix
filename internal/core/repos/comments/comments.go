@@ -3,6 +3,7 @@ package comments
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
@@ -10,6 +11,7 @@ import (
 )
 
 var _ ICommentRepository = (*Comments)(nil)
+var _ = boot.Repos(Init)
 
 func New(conn db.IDatabase) ICommentRepository {
 	return &Comments{

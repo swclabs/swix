@@ -4,6 +4,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
 	"swclabs/swix/pkg/lib/valid"
@@ -12,6 +13,15 @@ import (
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ = boot.Controller(NewManager)
+
+// NewManager creates a new Manager object
+func NewManager(services manager.IManager) IManager {
+	return &Manager{
+		Service: services,
+	}
+}
 
 // IManager interface for manager
 type IManager interface {
@@ -28,13 +38,6 @@ type IManager interface {
 // Manager struct implementation of IManager
 type Manager struct {
 	Service manager.IManager
-}
-
-// NewManager creates a new Manager object
-func NewManager(services manager.IManager) IManager {
-	return &Manager{
-		Service: services,
-	}
 }
 
 // Auth implements IManager.

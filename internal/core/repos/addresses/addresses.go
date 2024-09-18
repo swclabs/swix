@@ -3,16 +3,24 @@ package addresses
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
+
+var _ = boot.Repos(Init)
 
 // New creates a new Addresses object
 func New(conn db.IDatabase) IAddress {
 	return &Addresses{
 		db: conn,
 	}
+}
+
+// Init initializes the Addresses object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) IAddress {
+	return useCache(cache, New(conn))
 }
 
 // Addresses struct for address repos
@@ -31,11 +39,6 @@ func (addr *Addresses) GetByUserID(ctx context.Context, userID int64) ([]entity.
 		return nil, err
 	}
 	return addrData, nil
-}
-
-// Init initializes the Addresses object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) IAddress {
-	return useCache(cache, New(conn))
 }
 
 // Insert implements IAddressRepository.

@@ -7,17 +7,11 @@ package main
 
 import (
 	"swclabs/swix/boot"
-	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/workers"
-
 	_ "swclabs/swix/boot/init"
+	"swclabs/swix/internal/workers"
 )
 
 func main() {
-	var flag = boot.APIs | boot.DebugMode
-	if config.StageStatus != "dev" {
-		flag = boot.APIs | boot.ProdMode
-	}
-	app := boot.NewApp(flag, boot.NewWorker, workers.NewWorkerNode)
-	app.Run()
+	app := boot.App(workers.NewWorkerNode)
+	_ = app.Run()
 }

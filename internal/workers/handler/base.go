@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/service/base"
 
 	"swclabs/swix/pkg/lib/worker"
@@ -12,24 +13,25 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-// IBaseHandler is an interface for Base.
-type IBaseHandler interface {
-	HandleHealthCheck() (taskName string, fn worker.HandleFunc)
-}
-
 var _ IBaseHandler = (*BaseHandler)(nil)
-
-// BaseHandler struct define the base object
-type BaseHandler struct {
-	base.Task               // embedded delay function here
-	handler   base.IService // create handler for services
-}
+var _ = boot.Controller(NewBase)
 
 // NewBase creates a new base object
 func NewBase(_base base.IService) IBaseHandler {
 	return &BaseHandler{
 		handler: _base,
 	}
+}
+
+// IBaseHandler is an interface for Base.
+type IBaseHandler interface {
+	HandleHealthCheck() (taskName string, fn worker.HandleFunc)
+}
+
+// BaseHandler struct define the base object
+type BaseHandler struct {
+	base.Task               // embedded delay function here
+	handler   base.IService // create handler for services
 }
 
 // HandleHealthCheck handle health check

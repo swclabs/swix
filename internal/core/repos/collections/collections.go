@@ -2,17 +2,14 @@ package collections
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
 
-// Collections struct for collections
-type Collections struct {
-	db db.IDatabase
-}
-
 var _ ICollections = (*Collections)(nil)
+var _ = boot.Repos(Init)
 
 // New creates a new Collections object
 func New(conn db.IDatabase) ICollections {
@@ -24,6 +21,11 @@ func New(conn db.IDatabase) ICollections {
 // Init initializes the Collections object with database and redis connection
 func Init(conn db.IDatabase, cache cache.ICache) ICollections {
 	return useCache(cache, New(conn))
+}
+
+// Collections struct for collections
+type Collections struct {
+	db db.IDatabase
 }
 
 // UploadCollectionImage implements domain.ICollections.

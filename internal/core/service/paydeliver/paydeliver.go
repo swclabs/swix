@@ -2,12 +2,15 @@ package paydeliver
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repos/addresses"
 	"swclabs/swix/internal/core/repos/deliveries"
 	"time"
 )
+
+var _ = boot.Service(New)
 
 // New creates a new Classify object
 func New(

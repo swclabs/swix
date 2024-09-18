@@ -4,16 +4,19 @@ package accounts
 import (
 	"context"
 	"errors"
+	"swclabs/swix/boot"
+	"swclabs/swix/pkg/infra/cache"
 	"time"
 
 	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
 
-// Accounts struct for account repos
-type Accounts struct {
-	db db.IDatabase
+var _ = boot.Repos(Init)
+
+// Init initializes the Accounts object with database and redis connection
+func Init(conn db.IDatabase, cache cache.ICache) IAccounts {
+	return useCache(cache, &Accounts{db: conn})
 }
 
 // New creates a new Accounts object
@@ -21,9 +24,9 @@ func New(conn db.IDatabase) IAccounts {
 	return &Accounts{conn}
 }
 
-// Init initializes the Accounts object with database and redis connection
-func Init(conn db.IDatabase, cache cache.ICache) IAccounts {
-	return useCache(cache, &Accounts{db: conn})
+// Accounts struct for account repos
+type Accounts struct {
+	db db.IDatabase
 }
 
 // GetByEmail implements IAccountRepository.

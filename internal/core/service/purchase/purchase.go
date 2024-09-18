@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repos/carts"
@@ -21,6 +22,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
+
+var _ = boot.Service(New)
 
 // New creates a new Purchase object
 func New(

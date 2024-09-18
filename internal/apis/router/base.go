@@ -1,16 +1,14 @@
 package router
 
 import (
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-// IBaseRouter interface for router objects
-type IBaseRouter interface {
-	IRouter
-}
+var _ = boot.Router(New)
 
 // New creates a new Base object
 func New(controller controller.IBaseController) IBaseRouter {
@@ -19,7 +17,10 @@ func New(controller controller.IBaseController) IBaseRouter {
 	}
 }
 
-var _ IBaseRouter = (*BaseRouter)(nil)
+// IBaseRouter interface for router objects
+type IBaseRouter interface {
+	IRouter
+}
 
 // BaseRouter struct define the BaseRouter object
 type BaseRouter struct {

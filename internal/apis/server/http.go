@@ -2,6 +2,7 @@ package server
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"swclabs/swix/internal/apis/middleware"
@@ -13,7 +14,7 @@ import (
 
 // IServer interface represents all server method
 type IServer interface {
-	Run(string) error
+	Run() error
 }
 
 var _ IServer = &_Server{}
@@ -44,7 +45,7 @@ func (server *_Server) initMiddleware() {
 	middleware.Sentry(server.engine)
 }
 
-func (server *_Server) Run(addr string) error {
+func (server *_Server) Run() error {
 	server.mux.ServeHTTP(server.engine)
 	if config.StageStatus != "dev" {
 		const filePath = "api.log"
@@ -60,5 +61,5 @@ func (server *_Server) Run(addr string) error {
 		}(file)
 		server.loggerWriter(file)
 	}
-	return server.engine.Start(addr)
+	return server.engine.Start(fmt.Sprintf("%s:%s", config.Host, config.Port))
 }

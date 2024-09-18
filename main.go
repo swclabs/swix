@@ -38,5 +38,5 @@ func main() {
 	)
 	mux.Handle(baseRouter)
 
-	log.Fatal(server.Run("localhost:8000"))
+	log.Fatal(server.Run())
 }
