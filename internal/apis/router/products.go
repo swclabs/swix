@@ -6,13 +6,13 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Router(NewProducts)
+var _ = app.Router(NewProducts)
 
 // NewProducts returns a new Products router object
 func NewProducts(controllers controller.IProducts) IProducts {

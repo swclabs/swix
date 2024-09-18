@@ -4,7 +4,7 @@ package classify
 import (
 	"context"
 	"log"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
@@ -13,7 +13,7 @@ import (
 	"swclabs/swix/pkg/infra/db"
 )
 
-var _ = boot.Service(New)
+var _ = app.Service(New)
 
 // New creates a new Classify object
 func New(

@@ -4,13 +4,13 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Router(NewPurchase)
+var _ = app.Router(NewPurchase)
 
 // NewPurchase returns a new Purchase router object
 func NewPurchase(controllers controller.IPurchase) IPurchase {

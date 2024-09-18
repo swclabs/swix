@@ -6,12 +6,12 @@
 package main
 
 import (
-	"swclabs/swix/boot"
-	_ "swclabs/swix/boot/init"
+	"swclabs/swix/app"
+	_ "swclabs/swix/app/init"
 	"swclabs/swix/internal/workers"
 )
 
 func main() {
-	app := boot.App(workers.NewWorkerNode)
+	app := app.App(workers.NewWorkerNode)
 	_ = app.Run()
 }

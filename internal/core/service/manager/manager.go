@@ -14,7 +14,7 @@ import (
 	"fmt"
 	"log"
 	"mime/multipart"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/model"
@@ -28,7 +28,7 @@ import (
 )
 
 var _ IManager = (*Manager)(nil)
-var _ = boot.Service(New)
+var _ = app.Service(New)
 
 // New create new Manager object
 func New(

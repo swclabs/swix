@@ -5,7 +5,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 )
 
@@ -18,7 +18,7 @@ func New() IService {
 	return &Service{}
 }
 
-var _ = boot.Service(New)
+var _ = app.Service(New)
 
 type Service struct{}
 

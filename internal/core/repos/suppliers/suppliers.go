@@ -2,7 +2,7 @@ package suppliers
 
 import (
 	"context"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
@@ -13,7 +13,7 @@ func New(conn db.IDatabase) ISuppliers {
 	return &Suppliers{db: conn}
 }
 
-var _ = boot.Repos(Init)
+var _ = app.Repos(Init)
 
 // Init initializes the Suppliers object with database and redis connection.
 func Init(conn db.IDatabase, cache cache.ICache) ISuppliers {

@@ -2,12 +2,12 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/workers/handler"
 	"swclabs/swix/pkg/lib/worker"
 )
 
-var _ = boot.Router(NewBase)
+var _ = app.Router(NewBase)
 
 // NewBase creates a new Base object
 func NewBase(handler handler.IBaseHandler) IBase {

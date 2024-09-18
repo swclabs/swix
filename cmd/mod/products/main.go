@@ -12,11 +12,11 @@ package main
 import (
 	"flag"
 	"fmt"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/workers"
 	"swclabs/swix/pkg/lib/logger"
 
-	_ "swclabs/swix/boot/init"
+	_ "swclabs/swix/app/init"
 	_ "swclabs/swix/docs"
 )
 
@@ -30,7 +30,7 @@ func main() {
 
 	switch *cmd {
 	case "worker":
-		app := boot.App(workers.NewWorkerNode)
+		app := app.App(workers.NewWorkerNode)
 		_ = app.Run()
 	case "server":
 	default:

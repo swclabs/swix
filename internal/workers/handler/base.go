@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/service/base"
 
 	"swclabs/swix/pkg/lib/worker"
@@ -14,7 +14,7 @@ import (
 )
 
 var _ IBaseHandler = (*BaseHandler)(nil)
-var _ = boot.Controller(NewBase)
+var _ = app.Controller(NewBase)
 
 // NewBase creates a new base object
 func NewBase(_base base.IService) IBaseHandler {

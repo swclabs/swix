@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/purchase"
 	"swclabs/swix/pkg/lib/valid"
@@ -15,7 +15,7 @@ import (
 )
 
 var _ IPurchase = (*Purchase)(nil)
-var _ = boot.Controller(NewPurchase)
+var _ = app.Controller(NewPurchase)
 
 // NewPurchase creates a new Purchase object
 func NewPurchase(services purchase.IPurchase) IPurchase {

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mime/multipart"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repos/collections"
@@ -15,7 +15,7 @@ import (
 	"swclabs/swix/pkg/infra/db"
 )
 
-var _ = boot.Service(New)
+var _ = app.Service(New)
 
 // New creates a new Article object
 func New(

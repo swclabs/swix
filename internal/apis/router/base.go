@@ -1,14 +1,14 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-var _ = boot.Router(New)
+var _ = app.Router(New)
 
 // New creates a new Base object
 func New(controller controller.IBaseController) IBaseRouter {

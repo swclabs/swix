@@ -4,13 +4,13 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Router(NewArticle)
+var _ = app.Router(NewArticle)
 
 // NewArticle creates a new Article router object
 func NewArticle(controllers controller.IArticle) IArticle {

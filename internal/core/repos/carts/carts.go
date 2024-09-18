@@ -3,14 +3,14 @@ package carts
 
 import (
 	"context"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
 
 var _ ICarts = (*Carts)(nil)
-var _ = boot.Repos(Init)
+var _ = app.Repos(Init)
 
 // Init initializes the Carts object with database and redis connection
 func Init(connection db.IDatabase, cache cache.ICache) ICarts {

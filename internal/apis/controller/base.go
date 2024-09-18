@@ -3,7 +3,7 @@ package controller
 
 import (
 	"net/http"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/base"
 	"swclabs/swix/internal/core/x/oauth2"
@@ -12,7 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Controller(New)
+var _ = app.Controller(New)
 
 // New creates a new Base object
 func New(services base.IService) IBaseController {

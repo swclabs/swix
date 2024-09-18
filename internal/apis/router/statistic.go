@@ -1,7 +1,7 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
@@ -12,7 +12,7 @@ type IStatistic interface {
 }
 
 var _ IStatistic = (*Statistic)(nil)
-var _ = boot.Router(NewStatistic)
+var _ = app.Router(NewStatistic)
 
 func NewStatistic(controller controller.IStatistic) IStatistic {
 	return &Statistic{controller: controller}

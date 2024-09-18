@@ -2,12 +2,12 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/workers/handler"
 	"swclabs/swix/pkg/lib/worker"
 )
 
-var _ = boot.Router(NewPurchase)
+var _ = app.Router(NewPurchase)
 
 // NewPurchase creates a new Purchase object
 func NewPurchase(handler handler.IPurchase) IPurchase {

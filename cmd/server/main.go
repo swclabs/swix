@@ -6,12 +6,12 @@
 package main
 
 import (
-	"swclabs/swix/boot"
-	_ "swclabs/swix/boot/init"
+	"swclabs/swix/app"
+	_ "swclabs/swix/app/init"
 	"swclabs/swix/internal/apis"
 )
 
 func main() {
-	app := boot.App(apis.NewAPIServer)
+	app := app.App(apis.NewAPIServer)
 	_ = app.Run()
 }
