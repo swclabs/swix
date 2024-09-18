@@ -2,14 +2,14 @@ package collections
 
 import (
 	"context"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
 
 var _ ICollections = (*Collections)(nil)
-var _ = boot.Repos(Init)
+var _ = app.Repos(Init)
 
 // New creates a new Collections object
 func New(conn db.IDatabase) ICollections {

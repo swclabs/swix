@@ -2,7 +2,7 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
@@ -10,7 +10,7 @@ import (
 )
 
 var _ IInventories = (*Inventory)(nil)
-var _ = boot.Repos(Init)
+var _ = app.Repos(Init)
 
 // New creates a new Inventory object.
 func New(conn db.IDatabase) IInventories {

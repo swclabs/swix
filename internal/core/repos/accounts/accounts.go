@@ -4,7 +4,7 @@ package accounts
 import (
 	"context"
 	"errors"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/pkg/infra/cache"
 	"time"
 
@@ -12,7 +12,7 @@ import (
 	"swclabs/swix/pkg/infra/db"
 )
 
-var _ = boot.Repos(Init)
+var _ = app.Repos(Init)
 
 // Init initializes the Accounts object with database and redis connection
 func Init(conn db.IDatabase, cache cache.ICache) IAccounts {

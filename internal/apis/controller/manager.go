@@ -4,7 +4,7 @@ package controller
 import (
 	"fmt"
 	"net/http"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
 	"swclabs/swix/pkg/lib/valid"
@@ -14,7 +14,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Controller(NewManager)
+var _ = app.Controller(NewManager)
 
 // NewManager creates a new Manager object
 func NewManager(services manager.IManager) IManager {

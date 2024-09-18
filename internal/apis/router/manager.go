@@ -4,14 +4,14 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/controller"
 	"swclabs/swix/internal/apis/middleware"
 
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Router(NewManager)
+var _ = app.Router(NewManager)
 
 // NewManager creates a new Manager router object
 func NewManager(controllers controller.IManager) IManager {

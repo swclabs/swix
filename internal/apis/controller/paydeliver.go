@@ -3,14 +3,14 @@ package controller
 import (
 	"net/http"
 	"strconv"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/paydeliver"
 
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Controller(NewPaydeliver)
+var _ = app.Controller(NewPaydeliver)
 
 // NewPaydeliver creates a new Products object
 func NewPaydeliver(services paydeliver.IPaymentDelivery) IPaydeliver {

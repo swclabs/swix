@@ -3,7 +3,7 @@ package categories
 
 import (
 	"context"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
@@ -15,7 +15,7 @@ func New(conn db.IDatabase) ICategories {
 	return &Categories{db: conn}
 }
 
-var _ = boot.Repos(Init)
+var _ = app.Repos(Init)
 
 // Init initializes the Categories object with database and redis connection
 func Init(conn db.IDatabase, cache cache.ICache) ICategories {

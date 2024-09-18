@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/service/classify"
@@ -13,7 +13,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Controller(NewClassify)
+var _ = app.Controller(NewClassify)
 
 // NewClassify creates a new Classify object
 func NewClassify(service classify.IClassify) IClassify {

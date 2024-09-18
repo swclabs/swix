@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/enum"
 	"swclabs/swix/internal/core/service/products"
@@ -15,7 +15,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Controller(NewProducts)
+var _ = app.Controller(NewProducts)
 
 // NewProducts creates a new Products object
 func NewProducts(services products.IProducts) IProducts {

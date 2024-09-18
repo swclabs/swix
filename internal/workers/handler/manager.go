@@ -4,7 +4,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
 
@@ -13,7 +13,7 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-var _ = boot.Controller(NewManager)
+var _ = app.Controller(NewManager)
 
 // NewManager creates a new Manager object
 func NewManager(handler manager.IManager) IManager {

@@ -4,7 +4,7 @@ package controller
 import (
 	"net/http"
 	"strconv"
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/article"
 	"swclabs/swix/pkg/lib/valid"
@@ -12,7 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Controller(NewArticle)
+var _ = app.Controller(NewArticle)
 
 // NewArticle creates a new Article object
 func NewArticle(service article.IArticle) IArticle {

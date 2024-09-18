@@ -1,13 +1,13 @@
 package router
 
 import (
-	"swclabs/swix/boot"
+	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 )
 
-var _ = boot.Router(NewPaydeliver)
+var _ = app.Router(NewPaydeliver)
 
 // NewPaydeliver creates a new Manager router object
 func NewPaydeliver(controllers controller.IPaydeliver) IPaydeliver {
