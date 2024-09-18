@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/enum"
@@ -24,6 +25,7 @@ import (
 )
 
 var _ IProducts = (*Products)(nil)
+var _ = boot.Service(New)
 
 // New creates a new ProductService object
 func New(

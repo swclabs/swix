@@ -5,18 +5,22 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 )
 
 var _ IService = (*Service)(nil)
 
 // Service struct for base service
-type Service struct{}
 
 // New creates a new Service object
 func New() IService {
 	return &Service{}
 }
+
+var _ = boot.Service(New)
+
+type Service struct{}
 
 // WorkerCheckResult implements IbaseService.
 func (base *Service) WorkerCheckResult(ctx context.Context, num int64) (string, error) {

@@ -3,6 +3,7 @@ package products
 
 import (
 	"context"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/enum"
 	"swclabs/swix/internal/core/domain/model"
@@ -19,6 +20,8 @@ func New(conn db.IDatabase) IProducts {
 		db: conn,
 	}
 }
+
+var _ = boot.Repos(Init)
 
 // Init initializes the Products object with database and redis connection
 func Init(conn db.IDatabase, cache cache.ICache) IProducts {

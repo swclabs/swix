@@ -4,11 +4,21 @@
 package router
 
 import (
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/apis/controller"
 	"swclabs/swix/internal/apis/middleware"
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ = boot.Router(NewManager)
+
+// NewManager creates a new Manager router object
+func NewManager(controllers controller.IManager) IManager {
+	return &Manager{
+		controller: controllers,
+	}
+}
 
 // IManager interface for manager
 type IManager interface {
@@ -18,13 +28,6 @@ type IManager interface {
 // Manager struct	implementation of IManager
 type Manager struct {
 	controller controller.IManager
-}
-
-// NewManager creates a new Manager router object
-func NewManager(controllers controller.IManager) IManager {
-	return &Manager{
-		controller: controllers,
-	}
 }
 
 // Routers define route endpoint

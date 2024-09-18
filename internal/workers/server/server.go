@@ -2,15 +2,14 @@
 package server
 
 import (
-	"fmt"
-	"strconv"
+	"swclabs/swix/internal/config"
 	"swclabs/swix/internal/workers/queue"
 	"swclabs/swix/pkg/lib/worker"
 )
 
 // IWorker interface for Worker objects
 type IWorker interface {
-	Run(concurrency string) error
+	Run() error
 }
 
 // Worker struct define the Worker object
@@ -29,11 +28,7 @@ func New(mux IMux) IWorker {
 }
 
 // Run runs the worker engine
-func (msg *Worker) Run(concurrency string) error {
+func (msg *Worker) Run() error {
 	msg.mux.Serve(msg.e)
-	_concurrency, err := strconv.Atoi(concurrency)
-	if err != nil {
-		return fmt.Errorf("invalid concurrency value: %v", err)
-	}
-	return msg.e.Run(_concurrency)
+	return msg.e.Run(config.NumberOfWorker)
 }

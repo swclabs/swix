@@ -4,13 +4,15 @@ import (
 	"swclabs/swix/internal/core/service/statistic"
 )
 
-type IStatistic interface {
-}
-
 var _ IStatistic = (*Statistic)(nil)
+
+// var _ = sx.Controller(NewStatistic)
 
 func NewStatistic(service statistic.IStatistic) IStatistic {
 	return &Statistic{service: service}
+}
+
+type IStatistic interface {
 }
 
 type Statistic struct {

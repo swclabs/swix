@@ -2,20 +2,23 @@
 package router
 
 import (
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/workers/handler"
 	"swclabs/swix/pkg/lib/worker"
 )
 
-// IPurchase interface for Purchase objects
-type IPurchase interface {
-	IRouter
-}
+var _ = boot.Router(NewPurchase)
 
 // NewPurchase creates a new Purchase object
 func NewPurchase(handler handler.IPurchase) IPurchase {
 	return &Purchase{
 		handler: handler,
 	}
+}
+
+// IPurchase interface for Purchase objects
+type IPurchase interface {
+	IRouter
 }
 
 // Purchase struct define the Purchase object

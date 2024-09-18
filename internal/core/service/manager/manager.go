@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"log"
 	"mime/multipart"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/model"
@@ -26,15 +27,8 @@ import (
 	"swclabs/swix/pkg/utils"
 )
 
-// Manager implement IManager
-type Manager struct {
-	Blob    blob.IBlobStorage
-	User    users.IUsers
-	Account accounts.IAccounts
-	Address addresses.IAddress
-}
-
 var _ IManager = (*Manager)(nil)
+var _ = boot.Service(New)
 
 // New create new Manager object
 func New(
@@ -49,6 +43,14 @@ func New(
 		Account: account,
 		Address: address,
 	}
+}
+
+// Manager implement IManager
+type Manager struct {
+	Blob    blob.IBlobStorage
+	User    users.IUsers
+	Account accounts.IAccounts
+	Address addresses.IAddress
 }
 
 // SignUp user to access system, return error if exist

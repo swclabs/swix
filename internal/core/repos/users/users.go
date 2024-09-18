@@ -3,6 +3,7 @@ package users
 
 import (
 	"context"
+	"swclabs/swix/boot"
 
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/domain/model"
@@ -10,15 +11,12 @@ import (
 	"swclabs/swix/pkg/infra/db"
 )
 
-// Users repos implementation
-type Users struct {
-	db db.IDatabase
-}
-
 // New creates a new instance of IUserRepository.
 func New(conn db.IDatabase) IUsers {
 	return &Users{conn}
 }
+
+var _ = boot.Repos(Init)
 
 // Init initializes the Users object with database and redis connection
 func Init(conn db.IDatabase, cache cache.ICache) IUsers {
@@ -26,6 +24,11 @@ func Init(conn db.IDatabase, cache cache.ICache) IUsers {
 }
 
 var _ IUsers = (*Users)(nil)
+
+// Users repos implementation
+type Users struct {
+	db db.IDatabase
+}
 
 // GetByID implements IUserRepository.
 func (usr *Users) GetByID(ctx context.Context, id int64) (*entity.Users, error) {

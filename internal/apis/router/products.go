@@ -6,10 +6,20 @@
 package router
 
 import (
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/apis/controller"
 
 	"github.com/labstack/echo/v4"
 )
+
+var _ = boot.Router(NewProducts)
+
+// NewProducts returns a new Products router object
+func NewProducts(controllers controller.IProducts) IProducts {
+	return &Products{
+		controller: controllers,
+	}
+}
 
 // IProducts router objects
 type IProducts interface {
@@ -19,13 +29,6 @@ type IProducts interface {
 // Products router objects
 type Products struct {
 	controller controller.IProducts
-}
-
-// NewProducts returns a new Products router object
-func NewProducts(controllers controller.IProducts) IProducts {
-	return &Products{
-		controller: controllers,
-	}
 }
 
 // Routers define route endpoints

@@ -2,20 +2,23 @@
 package router
 
 import (
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/workers/handler"
 	"swclabs/swix/pkg/lib/worker"
 )
 
-// IBase interface for Base objects
-type IBase interface {
-	IRouter
-}
+var _ = boot.Router(NewBase)
 
 // NewBase creates a new Base object
 func NewBase(handler handler.IBaseHandler) IBase {
 	return &Base{
 		handlers: handler,
 	}
+}
+
+// IBase interface for Base objects
+type IBase interface {
+	IRouter
 }
 
 // Base struct define the Base object

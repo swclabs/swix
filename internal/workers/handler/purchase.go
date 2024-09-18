@@ -4,6 +4,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/purchase"
 	"swclabs/swix/pkg/lib/worker"
@@ -11,16 +12,17 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-// IPurchase is an interface for Purchase.
-type IPurchase interface {
-	HandleAddToCart() (string, worker.HandleFunc)
-}
-
 var _ IPurchase = (*Purchase)(nil)
+var _ = boot.Controller(NewPurchase)
 
 // NewPurchase creates a new Purchase object
 func NewPurchase(service purchase.IPurchase) IPurchase {
 	return &Purchase{service: service}
+}
+
+// IPurchase is an interface for Purchase.
+type IPurchase interface {
+	HandleAddToCart() (string, worker.HandleFunc)
 }
 
 // Purchase is a struct for Purchase.

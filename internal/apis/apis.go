@@ -1,4 +1,3 @@
-
 package apis
 
 import (
@@ -6,6 +5,8 @@ import (
 	"swclabs/swix/internal/apis/router"
 	"swclabs/swix/internal/apis/server"
 )
+
+// var _ = sx.App(NewAPIServer)
 
 func NewAPIServer(
 	base router.IBaseRouter,
@@ -15,7 +16,7 @@ func NewAPIServer(
 	purchase router.IPurchase,
 	classify router.IClassify,
 	paydeli router.IPaydeliver,
-) boot.ICore {
+) boot.IApplication {
 	mux := server.NewServeMux()
 	mux.Handle(base)
 	mux.Handle(products)

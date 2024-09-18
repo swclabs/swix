@@ -4,6 +4,7 @@ package handler
 import (
 	"context"
 	"encoding/json"
+	"swclabs/swix/boot"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
 
@@ -11,6 +12,15 @@ import (
 
 	"github.com/hibiken/asynq"
 )
+
+var _ = boot.Controller(NewManager)
+
+// NewManager creates a new Manager object
+func NewManager(handler manager.IManager) IManager {
+	return &Manager{
+		handler: handler,
+	}
+}
 
 // IManager is an interface for Manager
 type IManager interface {
@@ -23,13 +33,6 @@ type IManager interface {
 type Manager struct {
 	manager.Task
 	handler manager.IManager
-}
-
-// NewManager creates a new Manager object
-func NewManager(handler manager.IManager) IManager {
-	return &Manager{
-		handler: handler,
-	}
 }
 
 // HandleSignUp handle sign up

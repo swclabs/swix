@@ -10,7 +10,7 @@ func NewWorkerNode(
 	base router.IBase,
 	manager router.IManager,
 	purchase router.IPurchase,
-) boot.ICore {
+) boot.IApplication {
 	mux := server.NewServeMux()
 	mux.Handle(base)
 	mux.Handle(manager)
