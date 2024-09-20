@@ -5,6 +5,7 @@ import (
 	"context"
 	"swclabs/swix/internal/config"
 	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/xdto"
 	"swclabs/swix/internal/workers/queue"
 	"swclabs/swix/pkg/lib/worker"
 )
@@ -23,6 +24,41 @@ func UseTask(service IPurchase) IPurchase {
 type Task struct {
 	worker  worker.IWorkerClient
 	service IPurchase
+}
+
+// AddressDistrict implements IPurchase.
+func (t *Task) AddressDistrict(ctx context.Context, ward int) (*xdto.DistrictDTO, error) {
+	panic("unimplemented")
+}
+
+// AddressProvince implements IPurchase.
+func (t *Task) AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error) {
+	panic("unimplemented")
+}
+
+// AddressWard implements IPurchase.
+func (t *Task) AddressWard(ctx context.Context, provinceID int) (*xdto.WardDTO, error) {
+	panic("unimplemented")
+}
+
+// CreateDelivery implements IPurchase.
+func (t *Task) CreateDelivery(ctx context.Context, delivery dtos.DeliveryBody) error {
+	panic("unimplemented")
+}
+
+// CreateDeliveryAddress implements IPurchase.
+func (t *Task) CreateDeliveryAddress(ctx context.Context, addr dtos.DeliveryAddress) error {
+	panic("unimplemented")
+}
+
+// GetDelivery implements IPurchase.
+func (t *Task) GetDelivery(ctx context.Context, userID int64) ([]dtos.Delivery, error) {
+	panic("unimplemented")
+}
+
+// GetDeliveryAddress implements IPurchase.
+func (t *Task) GetDeliveryAddress(ctx context.Context, userID int64) ([]dtos.Address, error) {
+	panic("unimplemented")
 }
 
 // AddToCart implements IPurchaseService.

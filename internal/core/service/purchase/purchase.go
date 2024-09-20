@@ -9,13 +9,17 @@ import (
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/xdto"
+	"swclabs/swix/internal/core/repos/addresses"
 	"swclabs/swix/internal/core/repos/carts"
 	"swclabs/swix/internal/core/repos/categories"
+	"swclabs/swix/internal/core/repos/deliveries"
 	"swclabs/swix/internal/core/repos/inventories"
 	"swclabs/swix/internal/core/repos/orders"
 	"swclabs/swix/internal/core/repos/products"
 	"swclabs/swix/internal/core/repos/specifications"
 	"swclabs/swix/internal/core/repos/users"
+	"swclabs/swix/internal/core/x/ghnx"
 	"swclabs/swix/pkg/infra/db"
 	"time"
 
@@ -23,28 +27,34 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-var _ = app.Service(New)
-
 // New creates a new Purchase object
-func New(
-	order orders.IOrders,
-	cart carts.ICarts,
-	user users.IUsers,
-	spec specifications.ISpecifications,
-	inv inventories.IInventories,
-	product products.IProducts,
-	category categories.ICategories,
-) IPurchase {
-	return &Purchase{
-		Cart:      cart,
-		Order:     order,
-		User:      user,
-		Spec:      spec,
-		Inventory: inv,
-		Product:   product,
-		Category:  category,
-	}
-}
+var New = app.Service(
+	func(
+		order orders.IOrders,
+		cart carts.ICarts,
+		user users.IUsers,
+		spec specifications.ISpecifications,
+		inv inventories.IInventories,
+		product products.IProducts,
+		category categories.ICategories,
+		address addresses.IAddress,
+		delivery deliveries.IDeliveries,
+		ghn ghnx.IGhnx,
+	) IPurchase {
+		return &Purchase{
+			Cart:      cart,
+			Order:     order,
+			User:      user,
+			Spec:      spec,
+			Inventory: inv,
+			Product:   product,
+			Category:  category,
+			Address:   address,
+			Delivery:  delivery,
+			Ghn:       ghn,
+		}
+	},
+)
 
 // Purchase struct for purchase service
 type Purchase struct {
@@ -55,6 +65,107 @@ type Purchase struct {
 	Category  categories.ICategories
 	Product   products.IProducts
 	Inventory inventories.IInventories
+	Address   addresses.IAddress
+	Delivery  deliveries.IDeliveries
+	Ghn       ghnx.IGhnx
+}
+
+// AddressDistrict implements IPurchase.
+func (p *Purchase) AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error) {
+	return p.Ghn.District(ctx, provinceID)
+}
+
+// AddressProvince implements IPurchase.
+func (p *Purchase) AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error) {
+	return p.Ghn.Province(ctx)
+}
+
+// AddressWard implements IPurchase.
+func (p *Purchase) AddressWard(ctx context.Context, districtID int) (*xdto.WardDTO, error) {
+	return p.Ghn.Ward(ctx, districtID)
+}
+
+// CreateDelivery implements IPurchase.
+func (p *Purchase) CreateDelivery(ctx context.Context, delivery dtos.DeliveryBody) error {
+	sendate, err := time.Parse(time.RFC3339, delivery.SentDate)
+	if err != nil {
+		sendate = time.Time{}
+	}
+	receivedate, err := time.Parse(time.RFC3339, delivery.ReceivedDate)
+	if err != nil {
+		receivedate = time.Time{}
+	}
+	return p.Delivery.Create(ctx, entity.Deliveries{
+		UserID:       delivery.UserID,
+		AddressID:    delivery.AddressID,
+		Status:       delivery.Status,
+		Method:       delivery.Method,
+		Note:         delivery.Note,
+		SentDate:     sendate,
+		ReceivedDate: receivedate,
+	})
+}
+
+// CreateDeliveryAddress implements IPurchase.
+func (p *Purchase) CreateDeliveryAddress(ctx context.Context, addr dtos.DeliveryAddress) error {
+	return p.Address.Insert(ctx, entity.Addresses{
+		UserID:   addr.UserID,
+		Street:   addr.Street,
+		City:     addr.City,
+		Ward:     addr.Ward,
+		District: addr.District,
+	})
+}
+
+// GetDelivery implements IPurchase.
+func (p *Purchase) GetDelivery(ctx context.Context, userID int64) ([]dtos.Delivery, error) {
+	deliveries, err := p.Delivery.GetByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	var delivery = []dtos.Delivery{}
+	for _, del := range deliveries {
+		var (
+			sentdate     string
+			receiveddate string
+		)
+		if !del.SentDate.IsZero() {
+			sentdate = del.SentDate.Format(time.RFC3339)
+		}
+		if !del.ReceivedDate.IsZero() {
+			receiveddate = del.ReceivedDate.Format(time.RFC3339)
+		}
+		delivery = append(delivery, dtos.Delivery{
+			ID:           del.ID,
+			AddressID:    del.AddressID,
+			UserID:       del.UserID,
+			Status:       del.Status,
+			Method:       del.Method,
+			Note:         del.Note,
+			SentDate:     sentdate,
+			ReceivedDate: receiveddate,
+		})
+	}
+	return delivery, nil
+}
+
+// GetDeliveryAddress implements IPurchase.
+func (p *Purchase) GetDeliveryAddress(ctx context.Context, userID int64) ([]dtos.Address, error) {
+	addrs, err := p.Address.GetByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	var addresses = []dtos.Address{}
+	for _, addr := range addrs {
+		addresses = append(addresses, dtos.Address{
+			ID:       addr.ID,
+			Street:   addr.Street,
+			City:     addr.City,
+			Ward:     addr.Ward,
+			District: addr.District,
+		})
+	}
+	return addresses, nil
 }
 
 // GetOrdersByUserID implements IPurchaseService.

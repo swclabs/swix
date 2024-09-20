@@ -15,7 +15,6 @@ func NewAPIServer(
 	article router.IArticle,
 	purchase router.IPurchase,
 	classify router.IClassify,
-	paydeli router.IPaydeliver,
 ) app.IApplication {
 	mux := server.NewServeMux()
 	mux.Handle(base)
@@ -24,7 +23,6 @@ func NewAPIServer(
 	mux.Handle(article)
 	mux.Handle(purchase)
 	mux.Handle(classify)
-	mux.Handle(paydeli)
 	server := server.New(mux)
 	return server
 }
