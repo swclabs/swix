@@ -48,7 +48,7 @@ type Purchase struct {
 // @Tags address
 // @Accept json
 // @Produce json
-// @Param province_id query string true "province id"
+// @Param province_id query number true "province id"
 // @Success 200 {object} xdto.DistrictDTO
 // @Router /address/district [GET]
 func (p *Purchase) AddressDistrict(c echo.Context) error {
@@ -89,7 +89,7 @@ func (p *Purchase) AddressProvince(c echo.Context) error {
 // @Tags address
 // @Accept json
 // @Produce json
-// @Param district_id query string true "district id"
+// @Param district_id query number true "district id"
 // @Success 200 {object} xdto.WardDTO
 // @Router /address/ward [GET]
 func (p *Purchase) AddressWard(c echo.Context) error {

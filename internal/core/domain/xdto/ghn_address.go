@@ -7,13 +7,13 @@ type Province struct {
 }
 
 type ProvinceDTO struct {
-	Code    string     `json:"code"`
+	Code    int        `json:"code"`
 	Message string     `json:"message"`
 	Data    []Province `json:"data"`
 }
 
 type DistrictDTO struct {
-	Code    string     `json:"code"`
+	Code    int        `json:"code"`
 	Message string     `json:"message"`
 	Data    []District `json:"data"`
 }
@@ -34,7 +34,7 @@ type Ward struct {
 }
 
 type WardDTO struct {
-	Code    string `json:"code"`
+	Code    int    `json:"code"`
 	Message string `json:"message"`
 	Data    []Ward `json:"data"`
 }

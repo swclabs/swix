@@ -90,7 +90,7 @@
                 ],
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "number",
                         "description": "province id",
                         "name": "province_id",
                         "in": "query",
@@ -143,7 +143,7 @@
                 ],
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "number",
                         "description": "district id",
                         "name": "district_id",
                         "in": "query",
@@ -2691,7 +2691,7 @@
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "data": {
                     "type": "array",
@@ -2722,7 +2722,7 @@
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "data": {
                     "type": "array",
@@ -2753,7 +2753,7 @@
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "data": {
                     "type": "array",

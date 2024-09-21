@@ -97,7 +97,7 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "number",
                         "description": "province id",
                         "name": "province_id",
                         "in": "query",
@@ -150,7 +150,7 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "type": "string",
+                        "type": "number",
                         "description": "district id",
                         "name": "district_id",
                         "in": "query",
@@ -2698,7 +2698,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "data": {
                     "type": "array",
@@ -2729,7 +2729,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "data": {
                     "type": "array",
@@ -2760,7 +2760,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "data": {
                     "type": "array",

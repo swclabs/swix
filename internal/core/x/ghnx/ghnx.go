@@ -43,7 +43,7 @@ func call[T any](client *http.Client, method string, url string, bodyReq io.Read
 		return nil, fmt.Errorf("error when handle request: %v", err)
 	}
 	defer resp.Body.Close()
-	body, err := io.ReadAll(req.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("error when read response: %v", err)
 	}

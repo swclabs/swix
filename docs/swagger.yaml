@@ -721,7 +721,7 @@ definitions:
   xdto.DistrictDTO:
     properties:
       code:
-        type: string
+        type: integer
       data:
         items:
           $ref: '#/definitions/xdto.District'
@@ -741,7 +741,7 @@ definitions:
   xdto.ProvinceDTO:
     properties:
       code:
-        type: string
+        type: integer
       data:
         items:
           $ref: '#/definitions/xdto.Province'
@@ -761,7 +761,7 @@ definitions:
   xdto.WardDTO:
     properties:
       code:
-        type: string
+        type: integer
       data:
         items:
           $ref: '#/definitions/xdto.Ward'
@@ -829,7 +829,7 @@ paths:
         in: query
         name: province_id
         required: true
-        type: string
+        type: number
       produces:
       - application/json
       responses:
@@ -863,7 +863,7 @@ paths:
         in: query
         name: district_id
         required: true
-        type: string
+        type: number
       produces:
       - application/json
       responses:
