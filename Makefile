@@ -35,10 +35,10 @@ proto: $(GENERATED_DIR) $(PROTO_DIR)
 			$(PROTO_DIR)/*.proto
 
 
-s: build
-	@./bin/swipe
-w: build
-	@./bin/swipe --start=worker
+s: cmd/main.go
+	@go run cmd/main.go s
+w: cmd/main.go
+	@go run cmd/main.go w
 d: # Init swagger docs
 	@swag init
 templ: # Generate templates
