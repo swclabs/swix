@@ -67,6 +67,6 @@ type IPurchase interface {
 	GetDelivery(ctx context.Context, userID int64) ([]dtos.Delivery, error)
 
 	AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error)
-	AddressWard(ctx context.Context, provinceID int) (*xdto.WardDTO, error)
-	AddressDistrict(ctx context.Context, districtID int) (*xdto.DistrictDTO, error)
+	AddressWard(ctx context.Context, districtID int) (*xdto.WardDTO, error)
+	AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error)
 }

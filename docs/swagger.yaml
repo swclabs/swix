@@ -703,6 +703,72 @@ definitions:
     - role
     - username
     type: object
+  xdto.District:
+    properties:
+      Code:
+        type: string
+      DistrictID:
+        type: integer
+      DistrictName:
+        type: string
+      ProvinceID:
+        type: integer
+      SupportType:
+        type: integer
+      Type:
+        type: integer
+    type: object
+  xdto.DistrictDTO:
+    properties:
+      code:
+        type: string
+      data:
+        items:
+          $ref: '#/definitions/xdto.District'
+        type: array
+      message:
+        type: string
+    type: object
+  xdto.Province:
+    properties:
+      Code:
+        type: string
+      ProvinceID:
+        type: integer
+      ProvinceName:
+        type: string
+    type: object
+  xdto.ProvinceDTO:
+    properties:
+      code:
+        type: string
+      data:
+        items:
+          $ref: '#/definitions/xdto.Province'
+        type: array
+      message:
+        type: string
+    type: object
+  xdto.Ward:
+    properties:
+      DistrictID:
+        type: integer
+      WardCode:
+        type: integer
+      WardName:
+        type: string
+    type: object
+  xdto.WardDTO:
+    properties:
+      code:
+        type: string
+      data:
+        items:
+          $ref: '#/definitions/xdto.Ward'
+        type: array
+      message:
+        type: string
+    type: object
 info:
   contact: {}
   description: This is a documentation for the Swipe API
@@ -751,6 +817,60 @@ paths:
             items:
               $ref: '#/definitions/dtos.ProductResponse'
             type: array
+      tags:
+      - address
+  /address/district:
+    get:
+      consumes:
+      - application/json
+      description: get district by province ID.
+      parameters:
+      - description: province id
+        in: query
+        name: province_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/xdto.DistrictDTO'
+      tags:
+      - address
+  /address/province:
+    get:
+      consumes:
+      - application/json
+      description: get province
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/xdto.ProvinceDTO'
+      tags:
+      - address
+  /address/ward:
+    get:
+      consumes:
+      - application/json
+      description: get ward by district ID.
+      parameters:
+      - description: district id
+        in: query
+        name: district_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/xdto.WardDTO'
       tags:
       - address
   /auth/email:

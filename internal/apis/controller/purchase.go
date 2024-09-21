@@ -29,15 +29,83 @@ type IPurchase interface {
 	DeleteItem(c echo.Context) error
 	CreateOrder(c echo.Context) error
 	GetOrders(c echo.Context) error
-	CreateDeliveryAddress(e echo.Context) error
-	GetDeliveryAddress(e echo.Context) error
-	CreateDelivery(e echo.Context) error
-	GetDelivery(e echo.Context) error
+	CreateDeliveryAddress(c echo.Context) error
+	GetDeliveryAddress(c echo.Context) error
+	CreateDelivery(c echo.Context) error
+	GetDelivery(c echo.Context) error
+	AddressProvince(c echo.Context) error
+	AddressWard(c echo.Context) error
+	AddressDistrict(c echo.Context) error
 }
 
 // Purchase struct implementation of IPurchase
 type Purchase struct {
 	services purchase.IPurchase
+}
+
+// AddressDistrict .
+// @Description get district by province ID.
+// @Tags address
+// @Accept json
+// @Produce json
+// @Param province_id query string true "province id"
+// @Success 200 {object} xdto.DistrictDTO
+// @Router /address/district [GET]
+func (p *Purchase) AddressDistrict(c echo.Context) error {
+	provinceID, err := strconv.Atoi(c.QueryParam("province_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "[province_id] invalid query params",
+		})
+	}
+	resp, err := p.services.AddressDistrict(c.Request().Context(), provinceID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, resp)
+}
+
+// AddressProvince .
+// @Description get province
+// @Tags address
+// @Accept json
+// @Produce json
+// @Success 200 {object} xdto.ProvinceDTO
+// @Router /address/province [GET]
+func (p *Purchase) AddressProvince(c echo.Context) error {
+	resp, err := p.services.AddressProvince(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, resp)
+}
+
+// AddressWard .
+// @Description get ward by district ID.
+// @Tags address
+// @Accept json
+// @Produce json
+// @Param district_id query string true "district id"
+// @Success 200 {object} xdto.WardDTO
+// @Router /address/ward [GET]
+func (p *Purchase) AddressWard(c echo.Context) error {
+	districtID, err := strconv.Atoi(c.QueryParam("district_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "[district_id] invalid query params",
+		})
+	}
+	resp, err := p.services.AddressWard(c.Request().Context(), districtID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, resp)
 }
 
 // CreateDelivery .

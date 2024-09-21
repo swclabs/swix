@@ -27,7 +27,7 @@ type Task struct {
 }
 
 // AddressDistrict implements IPurchase.
-func (t *Task) AddressDistrict(ctx context.Context, ward int) (*xdto.DistrictDTO, error) {
+func (t *Task) AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error) {
 	panic("unimplemented")
 }
 
@@ -37,7 +37,7 @@ func (t *Task) AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error) {
 }
 
 // AddressWard implements IPurchase.
-func (t *Task) AddressWard(ctx context.Context, provinceID int) (*xdto.WardDTO, error) {
+func (t *Task) AddressWard(ctx context.Context, districtID int) (*xdto.WardDTO, error) {
 	panic("unimplemented")
 }
 

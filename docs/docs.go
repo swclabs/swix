@@ -83,6 +83,90 @@ const docTemplate = `{
                 }
             }
         },
+        "/address/district": {
+            "get": {
+                "description": "get district by province ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "province id",
+                        "name": "province_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.DistrictDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/province": {
+            "get": {
+                "description": "get province",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.ProvinceDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/ward": {
+            "get": {
+                "description": "get ward by district ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "district id",
+                        "name": "district_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.WardDTO"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/email": {
             "get": {
                 "description": "check email address before login",
@@ -2583,6 +2667,108 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.District": {
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "type": "string"
+                },
+                "DistrictID": {
+                    "type": "integer"
+                },
+                "DistrictName": {
+                    "type": "string"
+                },
+                "ProvinceID": {
+                    "type": "integer"
+                },
+                "SupportType": {
+                    "type": "integer"
+                },
+                "Type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "xdto.DistrictDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.District"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.Province": {
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "type": "string"
+                },
+                "ProvinceID": {
+                    "type": "integer"
+                },
+                "ProvinceName": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.ProvinceDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.Province"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.Ward": {
+            "type": "object",
+            "properties": {
+                "DistrictID": {
+                    "type": "integer"
+                },
+                "WardCode": {
+                    "type": "integer"
+                },
+                "WardName": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.WardDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.Ward"
+                    }
+                },
+                "message": {
                     "type": "string"
                 }
             }
