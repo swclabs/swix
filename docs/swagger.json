@@ -745,6 +745,70 @@
                 }
             }
         },
+        "/delivery/order": {
+            "post": {
+                "description": "create order delivery.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "description": "order delivery body request",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/xdto.CreateOrderDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.OrderDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/delivery/order/{code}": {
+            "get": {
+                "description": "get delivery order details by order code.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "delivery order code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.OrderInfoDTO"
+                        }
+                    }
+                }
+            }
+        },
         "/inventories": {
             "get": {
                 "description": "get all product from inventory",
@@ -2664,6 +2728,184 @@
                 }
             }
         },
+        "xdto.CreateOrderDTO": {
+            "type": "object",
+            "required": [
+                "from_address",
+                "from_district_name",
+                "from_name",
+                "from_phone",
+                "from_province_name",
+                "from_ward_name",
+                "height",
+                "items",
+                "length",
+                "payment_type_id",
+                "required_note",
+                "service_type_id",
+                "shop_id",
+                "to_address",
+                "to_district_id",
+                "to_name",
+                "to_phone",
+                "to_ward_code",
+                "token",
+                "weight",
+                "width"
+            ],
+            "properties": {
+                "client_order_code": {
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "cod_amount": {
+                    "type": "integer",
+                    "maximum": 50000000
+                },
+                "content": {
+                    "type": "string",
+                    "maxLength": 2000
+                },
+                "coupon": {
+                    "type": "string"
+                },
+                "from_address": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "from_district_name": {
+                    "type": "string"
+                },
+                "from_name": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "from_phone": {
+                    "type": "string"
+                },
+                "from_province_name": {
+                    "type": "string"
+                },
+                "from_ward_name": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "integer",
+                    "maximum": 200
+                },
+                "insurance_value": {
+                    "type": "integer",
+                    "maximum": 5000000
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.OrderItem"
+                    }
+                },
+                "length": {
+                    "type": "integer",
+                    "maximum": 200
+                },
+                "note": {
+                    "type": "string",
+                    "maxLength": 5000
+                },
+                "payment_type_id": {
+                    "type": "integer"
+                },
+                "pick_shift": {
+                    "type": "string"
+                },
+                "pick_station_id": {
+                    "type": "integer"
+                },
+                "required_note": {
+                    "type": "string",
+                    "enum": [
+                        "CHOTHUHANG",
+                        "CHOXEMHANGKHONGTHU",
+                        "KHONGCHOXEMHANG"
+                    ]
+                },
+                "return_address": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "return_district_id": {
+                    "type": "integer"
+                },
+                "return_phone": {
+                    "type": "string"
+                },
+                "return_ward_code": {
+                    "type": "string"
+                },
+                "service_type_id": {
+                    "type": "integer"
+                },
+                "shop_id": {
+                    "type": "integer"
+                },
+                "to_address": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "to_district_id": {
+                    "type": "integer"
+                },
+                "to_name": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "to_phone": {
+                    "type": "string"
+                },
+                "to_ward_code": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "integer",
+                    "maximum": 50000
+                },
+                "width": {
+                    "type": "integer",
+                    "maximum": 200
+                }
+            }
+        },
+        "xdto.Data": {
+            "type": "object",
+            "properties": {
+                "district_encode": {
+                    "type": "string"
+                },
+                "expected_delivery_time": {
+                    "type": "string"
+                },
+                "fee": {
+                    "$ref": "#/definitions/xdto.Fee"
+                },
+                "order_code": {
+                    "type": "string"
+                },
+                "sort_code": {
+                    "type": "string"
+                },
+                "total_fee": {
+                    "type": "string"
+                },
+                "trans_type": {
+                    "type": "string"
+                },
+                "ward_encode": {
+                    "type": "string"
+                }
+            }
+        },
         "xdto.District": {
             "type": "object",
             "properties": {
@@ -2701,6 +2943,329 @@
                 },
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "xdto.Fee": {
+            "type": "object",
+            "properties": {
+                "coupon": {
+                    "type": "integer"
+                },
+                "insurance": {
+                    "type": "integer"
+                },
+                "main_service": {
+                    "type": "integer"
+                },
+                "r2s": {
+                    "type": "integer"
+                },
+                "return": {
+                    "type": "integer"
+                },
+                "station_do": {
+                    "type": "integer"
+                },
+                "station_pu": {
+                    "type": "integer"
+                }
+            }
+        },
+        "xdto.Log": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "updated_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.OrderDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/xdto.Data"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.OrderInfo": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "client_id": {
+                    "type": "integer"
+                },
+                "client_order_code": {
+                    "type": "string"
+                },
+                "cod_amount": {
+                    "type": "integer"
+                },
+                "cod_collect_date": {
+                    "type": "string"
+                },
+                "cod_failed_amount": {
+                    "type": "integer"
+                },
+                "cod_failed_collect_date": {
+                    "type": "string"
+                },
+                "cod_transfer_date": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "converted_weight": {
+                    "type": "integer"
+                },
+                "coupon": {
+                    "type": "string"
+                },
+                "created_client": {
+                    "type": "integer"
+                },
+                "created_date": {
+                    "type": "string"
+                },
+                "created_employee": {
+                    "type": "integer"
+                },
+                "created_ip": {
+                    "type": "string"
+                },
+                "created_source": {
+                    "type": "string"
+                },
+                "current_warehouse_id": {
+                    "type": "integer"
+                },
+                "custom_service_fee": {
+                    "type": "integer"
+                },
+                "deliver_station_id": {
+                    "type": "integer"
+                },
+                "deliver_warehouse_id": {
+                    "type": "integer"
+                },
+                "employee_note": {
+                    "type": "string"
+                },
+                "finish_date": {
+                    "type": "string"
+                },
+                "from_address": {
+                    "type": "string"
+                },
+                "from_district_id": {
+                    "type": "integer"
+                },
+                "from_name": {
+                    "type": "string"
+                },
+                "from_phone": {
+                    "type": "string"
+                },
+                "from_ward_code": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "integer"
+                },
+                "insurance_value": {
+                    "type": "integer"
+                },
+                "is_cod_collected": {
+                    "type": "boolean"
+                },
+                "is_cod_transferred": {
+                    "type": "boolean"
+                },
+                "leadtime": {
+                    "type": "string"
+                },
+                "length": {
+                    "type": "integer"
+                },
+                "log": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.Log"
+                    }
+                },
+                "next_warehouse_id": {
+                    "type": "integer"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "order_code": {
+                    "type": "string"
+                },
+                "order_date": {
+                    "type": "string"
+                },
+                "order_value": {
+                    "type": "integer"
+                },
+                "payment_type_id": {
+                    "type": "integer"
+                },
+                "pick_station_id": {
+                    "type": "integer"
+                },
+                "pick_warehouse_id": {
+                    "type": "integer"
+                },
+                "required_note": {
+                    "type": "string"
+                },
+                "return_address": {
+                    "type": "string"
+                },
+                "return_district_id": {
+                    "type": "integer"
+                },
+                "return_name": {
+                    "type": "string"
+                },
+                "return_phone": {
+                    "type": "string"
+                },
+                "return_ward_code": {
+                    "type": "string"
+                },
+                "return_warehouse_id": {
+                    "type": "integer"
+                },
+                "service_id": {
+                    "type": "integer"
+                },
+                "service_type_id": {
+                    "type": "integer"
+                },
+                "shop_id": {
+                    "type": "integer"
+                },
+                "soc_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "to_address": {
+                    "type": "string"
+                },
+                "to_district_id": {
+                    "type": "integer"
+                },
+                "to_name": {
+                    "type": "string"
+                },
+                "to_phone": {
+                    "type": "string"
+                },
+                "to_ward_code": {
+                    "type": "string"
+                },
+                "updated_client": {
+                    "type": "integer"
+                },
+                "updated_date": {
+                    "type": "string"
+                },
+                "updated_employee": {
+                    "type": "integer"
+                },
+                "updated_ip": {
+                    "type": "string"
+                },
+                "updated_source": {
+                    "type": "string"
+                },
+                "updated_warehouse": {
+                    "type": "integer"
+                },
+                "version_no": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "integer"
+                },
+                "width": {
+                    "type": "integer"
+                }
+            }
+        },
+        "xdto.OrderInfoDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.OrderInfo"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.OrderItem": {
+            "type": "object",
+            "required": [
+                "name",
+                "quantity",
+                "weight"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "integer"
+                },
+                "length": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "weight": {
+                    "type": "integer"
+                },
+                "width": {
+                    "type": "integer"
                 }
             }
         },

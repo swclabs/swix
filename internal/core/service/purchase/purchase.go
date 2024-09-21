@@ -70,6 +70,16 @@ type Purchase struct {
 	Ghn       ghnx.IGhnx
 }
 
+// CreateDeliveryOrder implements IPurchase.
+func (p *Purchase) CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error) {
+	return p.Ghn.CreateOrder(ctx, shopID, order)
+}
+
+// DeliveryOrderInfo implements IPurchase.
+func (p *Purchase) DeliveryOrderInfo(ctx context.Context, orderCode string) (*xdto.OrderInfoDTO, error) {
+	return p.Ghn.OrderInfo(ctx, orderCode)
+}
+
 // AddressDistrict implements IPurchase.
 func (p *Purchase) AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error) {
 	return p.Ghn.District(ctx, provinceID)
