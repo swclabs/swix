@@ -35,4 +35,14 @@ func (p *Purchase) Routers(e *echo.Echo) {
 
 	e.GET("/purchase/orders", p.controllers.GetOrders)
 	e.POST("/purchase/orders", p.controllers.CreateOrder)
+
+	e.GET("/address", p.controllers.GetDeliveryAddress)
+	e.POST("/address", p.controllers.CreateDeliveryAddress)
+
+	e.GET("/address/province", p.controllers.AddressProvince)
+	e.GET("/address/district", p.controllers.AddressDistrict)
+	e.GET("/address/ward", p.controllers.AddressWard)
+
+	e.GET("/delivery", p.controllers.GetDelivery)
+	e.POST("/delivery", p.controllers.CreateDelivery)
 }

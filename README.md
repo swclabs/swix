@@ -36,11 +36,11 @@ make
 Run api server
 
 ```bash
-./bin/swipe s
+./bin/swipe
 ```
 
 Run worker server
 
 ```bash
-./bin/swipe w
+./bin/swipe --start=worker
 ```

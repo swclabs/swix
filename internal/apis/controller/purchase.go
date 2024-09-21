@@ -29,11 +29,183 @@ type IPurchase interface {
 	DeleteItem(c echo.Context) error
 	CreateOrder(c echo.Context) error
 	GetOrders(c echo.Context) error
+	CreateDeliveryAddress(c echo.Context) error
+	GetDeliveryAddress(c echo.Context) error
+	CreateDelivery(c echo.Context) error
+	GetDelivery(c echo.Context) error
+	AddressProvince(c echo.Context) error
+	AddressWard(c echo.Context) error
+	AddressDistrict(c echo.Context) error
 }
 
 // Purchase struct implementation of IPurchase
 type Purchase struct {
 	services purchase.IPurchase
+}
+
+// AddressDistrict .
+// @Description get district by province ID.
+// @Tags address
+// @Accept json
+// @Produce json
+// @Param province_id query number true "province id"
+// @Success 200 {object} xdto.DistrictDTO
+// @Router /address/district [GET]
+func (p *Purchase) AddressDistrict(c echo.Context) error {
+	provinceID, err := strconv.Atoi(c.QueryParam("province_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "[province_id] invalid query params",
+		})
+	}
+	resp, err := p.services.AddressDistrict(c.Request().Context(), provinceID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, resp)
+}
+
+// AddressProvince .
+// @Description get province
+// @Tags address
+// @Accept json
+// @Produce json
+// @Success 200 {object} xdto.ProvinceDTO
+// @Router /address/province [GET]
+func (p *Purchase) AddressProvince(c echo.Context) error {
+	resp, err := p.services.AddressProvince(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, resp)
+}
+
+// AddressWard .
+// @Description get ward by district ID.
+// @Tags address
+// @Accept json
+// @Produce json
+// @Param district_id query number true "district id"
+// @Success 200 {object} xdto.WardDTO
+// @Router /address/ward [GET]
+func (p *Purchase) AddressWard(c echo.Context) error {
+	districtID, err := strconv.Atoi(c.QueryParam("district_id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "[district_id] invalid query params",
+		})
+	}
+	resp, err := p.services.AddressWard(c.Request().Context(), districtID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, resp)
+}
+
+// CreateDelivery .
+// @Description create delivery info.
+// @Tags delivery
+// @Accept json
+// @Produce json
+// @Param addr body dtos.DeliveryBody true "delivery info request"
+// @Success 200 {object} dtos.OK
+// @Router /delivery [POST]
+func (p *Purchase) CreateDelivery(e echo.Context) error {
+	var body dtos.DeliveryBody
+	if err := e.Bind(&body); err != nil {
+		return e.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := p.services.CreateDelivery(e.Request().Context(), body); err != nil {
+		return e.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return e.JSON(http.StatusOK, dtos.OK{
+		Msg: "your delivery info has been saved",
+	})
+}
+
+// GetDelivery .
+// @Description get delivery info by user id.
+// @Tags delivery
+// @Accept json
+// @Produce json
+// @Param uid query string true "user id"
+// @Success 200 {object} dtos.OK
+// @Router /delivery [GET]
+func (p *Purchase) GetDelivery(e echo.Context) error {
+	uid, err := strconv.Atoi(e.QueryParam("uid"))
+	if err != nil {
+		return e.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "missing 'uid' required",
+		})
+	}
+
+	del, err := p.services.GetDelivery(e.Request().Context(), int64(uid))
+	if err != nil {
+		return e.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return e.JSON(http.StatusOK, del)
+}
+
+// GetDeliveryAddress .
+// @Description get address delivery.
+// @Tags address
+// @Accept json
+// @Produce json
+// @Param uid query string true "user id"
+// @Success 200 {object} []dtos.Address
+// @Router /address [GET]
+func (p *Purchase) GetDeliveryAddress(e echo.Context) error {
+	uid, err := strconv.Atoi(e.QueryParam("uid"))
+	if err != nil {
+		return e.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "missing 'uid' required",
+		})
+	}
+
+	addr, err := p.services.GetDeliveryAddress(e.Request().Context(), int64(uid))
+	if err != nil {
+		return e.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return e.JSON(http.StatusOK, addr)
+}
+
+// CreateDeliveryAddress .
+// @Description create address delivery.
+// @Tags address
+// @Accept json
+// @Produce json
+// @Param addr body dtos.DeliveryAddress true "address request"
+// @Success 200 {object} []dtos.ProductResponse
+// @Router /address [POST]
+func (p *Purchase) CreateDeliveryAddress(e echo.Context) error {
+	var addr dtos.DeliveryAddress
+	if err := e.Bind(&addr); err != nil {
+		return e.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := p.services.CreateDeliveryAddress(e.Request().Context(), addr); err != nil {
+		return e.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return e.JSON(http.StatusOK, dtos.OK{
+		Msg: "your address has been saved",
+	})
 }
 
 // GetOrders .

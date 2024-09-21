@@ -4,6 +4,7 @@ package purchase
 import (
 	"context"
 	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/xdto"
 )
 
 // IPurchase : Module for Purchasing.
@@ -40,4 +41,32 @@ type IPurchase interface {
 	// limit is the maximum number of orders to retrieve.
 	// Returns a slice of OrderSchema objects and an error if any issues occur during the retrieval process.
 	GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderSchema, error)
+
+	// CreateDeliveryAddress creates a new delivery address.
+	// ctx is the context to manage the request's lifecycle.
+	// addr contains the delivery address information to be created.
+	// Returns an error if any issues occur during the creation process.
+	CreateDeliveryAddress(ctx context.Context, addr dtos.DeliveryAddress) error
+
+	// GetDeliveryAddress retrieves delivery addresses by user ID.
+	// ctx is the context to manage the request's lifecycle.
+	// userID is the user ID of the delivery addresses to retrieve.
+	// Returns a slice of Address objects and an error if any issues occur during the retrieval process.
+	GetDeliveryAddress(ctx context.Context, userID int64) ([]dtos.Address, error)
+
+	// CreateDelivery creates a new delivery.
+	// ctx is the context to manage the request's lifecycle.
+	// delivery contains the delivery information to be created.
+	// Returns an error if any issues occur during the creation process.
+	CreateDelivery(ctx context.Context, delivery dtos.DeliveryBody) error
+
+	// GetDelivery retrieves deliveries by user ID.
+	// ctx is the context to manage the request's lifecycle.
+	// userID is the user ID of the deliveries to retrieve.
+	// Returns a slice of Delivery objects and an error if any issues occur during the retrieval process.
+	GetDelivery(ctx context.Context, userID int64) ([]dtos.Delivery, error)
+
+	AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error)
+	AddressWard(ctx context.Context, districtID int) (*xdto.WardDTO, error)
+	AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error)
 }
