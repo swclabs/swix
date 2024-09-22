@@ -8,6 +8,7 @@ import (
 	"strings"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swix/internal/core/domain/xdto"
 	"swclabs/swix/internal/core/service/purchase"
 	"swclabs/swix/pkg/lib/valid"
 
@@ -36,11 +37,61 @@ type IPurchase interface {
 	AddressProvince(c echo.Context) error
 	AddressWard(c echo.Context) error
 	AddressDistrict(c echo.Context) error
+	CreateDeliveryOrder(c echo.Context) error
+	DeliveryOrderInfo(c echo.Context) error
 }
 
 // Purchase struct implementation of IPurchase
 type Purchase struct {
 	services purchase.IPurchase
+}
+
+// CreateDeliveryOrder .
+// @Description create order delivery.
+// @Tags delivery
+// @Accept json
+// @Produce json
+// @Param order body xdto.CreateOrderDTO true "order delivery body request"
+// @Success 200 {object} xdto.OrderDTO
+// @Router /delivery/order [POST]
+func (p *Purchase) CreateDeliveryOrder(c echo.Context) error {
+	var order xdto.CreateOrderDTO
+	if err := c.Bind(&order); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := valid.Validate(&order); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	resp, err := p.services.CreateDeliveryOrder(c.Request().Context(), order.ShopID, order)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, resp)
+}
+
+// DeliveryOrderInfo .
+// @Description get delivery order details by order code.
+// @Tags delivery
+// @Accept json
+// @Produce json
+// @Param code path string true "delivery order code"
+// @Success 200 {object} xdto.OrderInfoDTO
+// @Router /delivery/order/{code} [GET]
+func (p *Purchase) DeliveryOrderInfo(c echo.Context) error {
+	orderCode := c.Param("code")
+	orderInfo, err := p.services.DeliveryOrderInfo(c.Request().Context(), orderCode)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, orderInfo)
 }
 
 // AddressDistrict .

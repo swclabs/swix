@@ -28,7 +28,7 @@ type District struct {
 }
 
 type Ward struct {
-	WardCode   int    `json:"WardCode"`
+	WardCode   string `json:"WardCode"`
 	DistrictID int    `json:"DistrictID"`
 	WardName   string `json:"WardName"`
 }

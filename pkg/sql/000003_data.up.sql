@@ -83,3 +83,74 @@ INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, 
 INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (4, 0, 0, 1, 3, 5, 0, 0, 'This is a great product');
 INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (5, 0, 0, 1, 4, 5, 0, 0, 'This is a great product');
 INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (6, 0, 0, 1, 5, 5, 0, 0, 'This is a great product');
+
+-- Completed on 2024-09-21 20:03:14
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- TOC entry 3411 (class 0 OID 16706)
+-- Dependencies: 222
+-- Data for Name: addresses; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO public.addresses VALUES (1, 'Hồ Chí Minh', 'Phường Thảo Điền', 'Thành Phố Thủ Đức', 'Xa lộ Hà Nội', 1);
+
+
+--
+-- TOC entry 3417 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: addresses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.addresses_id_seq', 1, true);
+
+
+-- Completed on 2024-09-21 20:00:17
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- TOC entry 3412 (class 0 OID 16781)
+-- Dependencies: 238
+-- Data for Name: deliveries; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO public.deliveries (id, user_id, address_id, sent_date, received_date, status, method, note) VALUES (1, 1, 1, '0001-01-01 00:00:00+00', '0001-01-01 00:00:00+00', 'active', 'COD', '');
+
+
+--
+-- TOC entry 3418 (class 0 OID 0)
+-- Dependencies: 237
+-- Name: deliveries_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.deliveries_id_seq', 1, true);
+
+--
+-- TOC entry 3414 (class 0 OID 17047)
+-- Dependencies: 234
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO public.orders (id, uuid, "time", user_id, delivery_id, total_amount, status) VALUES (1, 'QK0BXY2LNC8CHY29', '2024-09-21 14:09:17.94149', 1, 1, 20000.0000, 'active');
+
+
+--
+-- TOC entry 3420 (class 0 OID 0)
+-- Dependencies: 233
+-- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.orders_id_seq', 1, true);
+
+
+-- Completed on 2024-09-22 13:09:17
+
+--
+-- PostgreSQL database dump complete
+--

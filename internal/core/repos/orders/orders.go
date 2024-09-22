@@ -4,6 +4,7 @@ import (
 	"context"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
@@ -27,6 +28,32 @@ var _ IOrders = (*Orders)(nil)
 // Orders represents the repos for orders
 type Orders struct {
 	db db.IDatabase
+}
+
+// GetOrderItemByCode implements IOrders.
+func (orders *Orders) GetOrderItemByCode(ctx context.Context, orderCode string) ([]model.Order, error) {
+	rows, err := orders.db.Query(ctx, getByOrderCode, orderCode)
+	if err != nil {
+		return nil, err
+	}
+	order, err := db.CollectRows[model.Order](rows)
+	if err != nil {
+		return nil, err
+	}
+	return order, nil
+}
+
+// GetByUUID implements IOrders.
+func (orders *Orders) GetByUUID(ctx context.Context, uuid string) (*entity.Orders, error) {
+	rows, err := orders.db.Query(ctx, getByUUID, uuid)
+	if err != nil {
+		return nil, err
+	}
+	order, err := db.CollectOneRow[entity.Orders](rows)
+	if err != nil {
+		return nil, err
+	}
+	return &order, nil
 }
 
 // InsertProduct implements IOrdersRepository.

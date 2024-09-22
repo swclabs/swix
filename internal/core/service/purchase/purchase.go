@@ -21,9 +21,9 @@ import (
 	"swclabs/swix/internal/core/repos/users"
 	"swclabs/swix/internal/core/x/ghnx"
 	"swclabs/swix/pkg/infra/db"
+	"swclabs/swix/pkg/utils"
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
 
@@ -68,6 +68,16 @@ type Purchase struct {
 	Address   addresses.IAddress
 	Delivery  deliveries.IDeliveries
 	Ghn       ghnx.IGhnx
+}
+
+// CreateDeliveryOrder implements IPurchase.
+func (p *Purchase) CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error) {
+	return p.Ghn.CreateOrder(ctx, shopID, order)
+}
+
+// DeliveryOrderInfo implements IPurchase.
+func (p *Purchase) DeliveryOrderInfo(ctx context.Context, orderCode string) (*xdto.OrderInfoDTO, error) {
+	return p.Ghn.OrderInfo(ctx, orderCode)
 }
 
 // AddressDistrict implements IPurchase.
@@ -183,30 +193,19 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 	var orderSchema = []dtos.OrderSchema{}
 
 	for _, order := range orders {
-		// Get products by order ID
-		products, err := p.Order.GetProductByOrderID(ctx, order.ID)
+		// Get products by order code
+		_orders, err := p.Order.GetOrderItemByCode(ctx, order.UUID)
 		if err != nil {
-			return nil, err
-		}
-		var productSchema []dtos.ProductOrderSchema
-		for _, product := range products {
-			productSchema = append(productSchema, dtos.ProductOrderSchema{
-				ID:           product.ID,
-				OrderID:      product.OrderID,
-				CurrencyCode: product.CurrencyCode,
-				InventoryID:  product.InventoryID,
-				Quantity:     product.Quantity,
-				TotalAmount:  product.TotalAmount.String(),
-			})
+			return nil, fmt.Errorf("error getting order by UUID: %w", err)
 		}
 		// Merge product and order schema
 		orderSchema = append(orderSchema, dtos.OrderSchema{
+			Items:     _orders,
 			ID:        order.ID,
 			UserID:    user.ID,
 			Time:      order.Time.Format(time.RFC3339),
 			UUID:      order.UUID,
 			Status:    order.Status,
-			Items:     productSchema,
 			UserEmail: user.Email,
 			Username:  fmt.Sprintf("%s %s", user.FirstName, user.LastName),
 		})
@@ -282,13 +281,19 @@ func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrde
 		return "", err
 	}
 	var (
-		_uuid              = strings.ReplaceAll(uuid.New().String(), "_", " ")
+		_uuid              = utils.GenerateOrderCode(16)
 		inventoryRepo      = inventories.New(tx)
 		orderRepo          = orders.New(tx)
 		totalAmount        decimal.Decimal
 		productTotalAmount []decimal.Decimal
 	)
-
+	for {
+		_order, err := orderRepo.GetByUUID(ctx, _uuid)
+		if err != nil || _order.UUID == "" {
+			break
+		}
+		_uuid = utils.GenerateOrderCode(16)
+	}
 	for _, product := range createOrder.Products {
 		inven, err := inventoryRepo.GetByID(ctx, product.InventoryID)
 		if err != nil {
@@ -321,6 +326,7 @@ func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrde
 			InventoryID: product.InventoryID,
 			Quantity:    product.Quantity,
 			TotalAmount: productTotalAmount[idx],
+			SpecsID:     product.SpecsID,
 		}); err != nil {
 			if errTx := tx.Rollback(ctx); errTx != nil {
 				log.Fatal(errTx)

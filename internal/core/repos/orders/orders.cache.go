@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/lib/crypto"
 )
@@ -19,6 +20,16 @@ func useCache(cache cache.ICache, orders IOrders) IOrders {
 type _Cache struct {
 	cache  cache.ICache
 	orders IOrders
+}
+
+// GetOrderItemByCode implements IOrders.
+func (c *_Cache) GetOrderItemByCode(ctx context.Context, orderCode string) ([]model.Order, error) {
+	return c.orders.GetOrderItemByCode(ctx, orderCode)
+}
+
+// GetByUUID implements IOrders.
+func (c *_Cache) GetByUUID(ctx context.Context, orderCode string) (*entity.Orders, error) {
+	return c.orders.GetByUUID(ctx, orderCode)
 }
 
 // Create implements IOrdersRepository.

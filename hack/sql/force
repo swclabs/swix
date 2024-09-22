@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+source .env
+
+migrate -path pkg/sql -database "postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?sslmode=$DB_SSL_MODE" force $1

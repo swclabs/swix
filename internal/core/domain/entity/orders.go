@@ -13,8 +13,8 @@ type Orders struct {
 	UserID      int64           `json:"user_id" db:"user_id"`
 	DeliveryID  int64           `json:"delivery_id" db:"delivery_id"`
 	Status      string          `json:"status" db:"status"`
-	TotalAmount decimal.Decimal `json:"total_amount" db:"total_amount"`
 	Time        time.Time       `json:"time" db:"time"`
+	TotalAmount decimal.Decimal `json:"total_amount" db:"total_amount"`
 }
 
 // ProductInOrder table schema
