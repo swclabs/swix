@@ -1,5 +1,5 @@
 // Package controller implements the controller interface
-package controller
+package base
 
 import (
 	"net/http"
@@ -12,23 +12,23 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ = app.Controller(New)
+var _ = app.Controller(NewController)
 
-// New creates a new Base object
-func New(services base.IService) IBaseController {
-	return &BaseController{
+// NewController creates a new Base object
+func NewController(services base.IService) IController {
+	return &Controller{
 		service: services,
 	}
 }
 
-// IBaseController interface for base controller
-type IBaseController interface {
+// IController interface for base controller
+type IController interface {
 	HealthCheck(c echo.Context) error
 	WorkerCheck(c echo.Context) error
 }
 
-// BaseController struct implementation of IBase
-type BaseController struct {
+// Controller struct implementation of IBase
+type Controller struct {
 	service base.IService
 }
 
@@ -38,8 +38,8 @@ type BaseController struct {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /common/healthcheck [GET]
-func (b *BaseController) HealthCheck(c echo.Context) error {
+// @Router /healthcheck [GET]
+func (b *Controller) HealthCheck(c echo.Context) error {
 	return c.JSON(200, b.service.HealthCheck(c.Request().Context()))
 }
 
@@ -49,8 +49,8 @@ func (b *BaseController) HealthCheck(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /common/worker [GET]
-func (b *BaseController) WorkerCheck(c echo.Context) error {
+// @Router /worker [GET]
+func (b *Controller) WorkerCheck(c echo.Context) error {
 	results, err := base.UseTask(b.service).WorkerCheckResult(c.Request().Context(), 10)
 	if err != nil {
 		return c.JSON(400, dtos.Error{

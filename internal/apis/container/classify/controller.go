@@ -1,4 +1,4 @@
-package controller
+package classify
 
 import (
 	"fmt"
@@ -13,17 +13,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ = app.Controller(NewClassify)
+var _ = app.Controller(NewController)
 
-// NewClassify creates a new Classify object
-func NewClassify(service classify.IClassify) IClassify {
-	return &Classify{
+// NewController creates a new Classify object
+func NewController(service classify.IClassify) IController {
+	return &Controller{
 		Service: service,
 	}
 }
 
-// IClassify interface for classify controller
-type IClassify interface {
+// IController interface for classify controller
+type IController interface {
 	GetSupplier(c echo.Context) error
 	InsertSupplier(c echo.Context) error
 
@@ -33,8 +33,8 @@ type IClassify interface {
 	UpdateCategory(c echo.Context) error
 }
 
-// Classify struct implementation of IClassify
-type Classify struct {
+// Controller struct implementation of IClassify
+type Controller struct {
 	Service classify.IClassify
 }
 
@@ -46,7 +46,7 @@ type Classify struct {
 // @Param limit query number true "limit number"
 // @Success 200 {object} dtos.Slices[entity.Categories]
 // @Router /categories [GET]
-func (classify *Classify) GetCategories(c echo.Context) error {
+func (classify *Controller) GetCategories(c echo.Context) error {
 	limit := c.QueryParam("limit")
 	if limit == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -74,7 +74,7 @@ func (classify *Classify) GetCategories(c echo.Context) error {
 // @Param limit query int true "limit number of suppliers"
 // @Success 200 {object} dtos.Slices[entity.Suppliers]
 // @Router /suppliers [GET]
-func (classify *Classify) GetSupplier(c echo.Context) error {
+func (classify *Controller) GetSupplier(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -100,7 +100,7 @@ func (classify *Classify) GetSupplier(c echo.Context) error {
 // @Param login body entity.Categories true "Categories Request"
 // @Success 201 {object} dtos.OK
 // @Router /categories [POST]
-func (classify *Classify) InsertCategory(c echo.Context) error {
+func (classify *Controller) InsertCategory(c echo.Context) error {
 	var request entity.Categories
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -130,7 +130,7 @@ func (classify *Classify) InsertCategory(c echo.Context) error {
 // @Param Supplier body dtos.Supplier true "Suppliers Request"
 // @Success 201 {object} dtos.OK
 // @Router /suppliers [POST]
-func (classify *Classify) InsertSupplier(c echo.Context) error {
+func (classify *Controller) InsertSupplier(c echo.Context) error {
 	var req dtos.Supplier
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -160,7 +160,7 @@ func (classify *Classify) InsertSupplier(c echo.Context) error {
 // @Param id path int true "category ID"
 // @Success 200 {object} dtos.OK
 // @Router /categories/{id} [DELETE]
-func (classify *Classify) DeleteCategory(c echo.Context) error {
+func (classify *Controller) DeleteCategory(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -186,7 +186,7 @@ func (classify *Classify) DeleteCategory(c echo.Context) error {
 // @Param category body entity.Categories true "Category Request"
 // @Success 200 {object} dtos.OK
 // @Router /categories/{id} [PUT]
-func (classify *Classify) UpdateCategory(c echo.Context) error {
+func (classify *Controller) UpdateCategory(c echo.Context) error {
 	var payload dtos.UpdateCategories
 	if err := c.Bind(&payload); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{

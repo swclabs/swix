@@ -6,16 +6,17 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"swclabs/swix/internal/apis/controller"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/repos/categories"
 	"swclabs/swix/internal/core/repos/inventories"
 	"swclabs/swix/internal/core/repos/specifications"
-	"swclabs/swix/internal/core/service/products"
 	"swclabs/swix/pkg/lib/logger"
 	"testing"
 
+	productContainer "swclabs/swix/internal/apis/container/products"
 	productRepo "swclabs/swix/internal/core/repos/products"
+	productService "swclabs/swix/internal/core/service/products"
 
 	"github.com/labstack/echo/v4"
 	"github.com/shopspring/decimal"
@@ -31,18 +32,13 @@ func TestGetInventory(t *testing.T) {
 			RAM: "8GB",
 			SSD: "256GB",
 		}
-		bSpec, _  = json.Marshal(spec)
-		inventory inventories.Mock
-		product   productRepo.Mock
-		specs     specifications.Mock
-		service   = products.Products{
-			Inventory: &inventory,
-			Products:  &product,
-			Specs:     &specs,
-		}
-		controller = controller.Products{
-			Services: &service,
-		}
+		bSpec, _   = json.Marshal(spec)
+		inventory  inventories.Mock
+		product    productRepo.Mock
+		specs      specifications.Mock
+		category   categories.Mock
+		service    = productService.New(nil, &product, &inventory, &category, &specs)
+		controller = productContainer.NewController(service)
 	)
 
 	specs.On("GetByInventoryID", context.Background(), int64(1)).Return([]entity.Specifications{
@@ -51,6 +47,12 @@ func TestGetInventory(t *testing.T) {
 			InventoryID: 1,
 			Content:     string(bSpec),
 		},
+	}, nil)
+
+	category.On("GetByID", context.Background(), int64(1)).Return(&entity.Categories{
+		ID:          1,
+		Name:        "phone",
+		Description: "iPhone",
 	}, nil)
 
 	inventory.On("GetByID", context.Background(), int64(1)).Return(&entity.Inventories{
@@ -66,7 +68,8 @@ func TestGetInventory(t *testing.T) {
 	}, nil)
 
 	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
-		Name: "iPhone 12",
+		Name:       "iPhone 12",
+		CategoryID: 1,
 	}, nil)
 
 	e.GET("/inventories/details", controller.GetInvDetails)

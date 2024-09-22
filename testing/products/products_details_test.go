@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"swclabs/swix/internal/apis/controller"
+	productContainer "swclabs/swix/internal/apis/container/products"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repos/categories"
 	"swclabs/swix/internal/core/repos/inventories"
 	productRepo "swclabs/swix/internal/core/repos/products"
 	"swclabs/swix/internal/core/repos/specifications"
-	"swclabs/swix/internal/core/service/products"
+	productService "swclabs/swix/internal/core/service/products"
 	"swclabs/swix/pkg/lib/logger"
 	"testing"
 
@@ -37,15 +37,13 @@ func TestProductDetails(t *testing.T) {
 		product          productRepo.Mock
 		specs            specifications.Mock
 		category         = categories.Mock{}
-		service          = products.Products{
+		service          = productService.Products{
 			Inventory: &inventory,
 			Products:  &product,
 			Specs:     &specs,
 			Category:  &category,
 		}
-		controller = controller.Products{
-			Services: &service,
-		}
+		controller = productContainer.NewController(&service)
 	)
 
 	for i := 1; i <= 4; i++ {

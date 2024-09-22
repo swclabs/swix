@@ -6,7 +6,7 @@ import (
 	"swclabs/swix/internal/workers/server"
 )
 
-func NewWorkerNode(
+func NewApp(
 	base router.IBase,
 	manager router.IManager,
 	purchase router.IPurchase,

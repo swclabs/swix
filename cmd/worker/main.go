@@ -12,6 +12,6 @@ import (
 )
 
 func main() {
-	app := app.App(workers.NewWorkerNode)
+	app := app.Builder(workers.NewApp)
 	_ = app.Run()
 }

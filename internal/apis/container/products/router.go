@@ -1,38 +1,38 @@
-// Package router implements the router interface
+// Package products implements the router interface
 // File products.go defines APIs for functions related to products
 // such as getting a list of products, adding a product, updating product information,
 // deleting a product, adding product images.
 // It also includes APIs related to inventory.
-package router
+package products
 
 import (
 	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/controller"
+	"swclabs/swix/internal/apis/server"
 
 	"github.com/labstack/echo/v4"
 )
 
-var _ = app.Router(NewProducts)
+var _ = app.Router(NewRouter)
 
-// NewProducts returns a new Products router object
-func NewProducts(controllers controller.IProducts) IProducts {
-	return &Products{
+// NewRouter returns a new Products router object
+func NewRouter(controllers IController) IRouter {
+	return &Router{
 		controller: controllers,
 	}
 }
 
-// IProducts router objects
-type IProducts interface {
-	IRouter
+// IRouter router objects
+type IRouter interface {
+	server.IRouter
 }
 
-// Products router objects
-type Products struct {
-	controller controller.IProducts
+// Router router objects
+type Router struct {
+	controller IController
 }
 
 // Routers define route endpoints
-func (r *Products) Routers(e *echo.Echo) {
+func (r *Router) Routers(e *echo.Echo) {
 	// endpoint for search
 	e.GET("/search", r.controller.Search)
 

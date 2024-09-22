@@ -1,6 +1,6 @@
 {
     "level": "info",
-    "time": 1723717283.2258117,
+    "time": 1727018716.823637,
     "message": "Response body",
     "body": {
         "id": 1,
@@ -9,7 +9,7 @@
         "price": "10000",
         "available": "1000",
         "currency_code": "VND",
-        "category": "",
+        "category": "phone",
         "color_img": "https://example.com/black-titanium.jpg",
         "color": "Black Titanium",
         "status": "active",

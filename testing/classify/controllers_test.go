@@ -4,10 +4,10 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
-	"swclabs/swix/internal/apis/controller"
+	classifyContainer "swclabs/swix/internal/apis/container/classify"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repos/suppliers"
-	"swclabs/swix/internal/core/service/classify"
+	classifyService "swclabs/swix/internal/core/service/classify"
 	"testing"
 
 	"github.com/labstack/echo/v4"
@@ -28,14 +28,10 @@ func TestGetSuppliers(t *testing.T) {
 	}, nil)
 
 	// business logic layers
-	services := classify.Classify{
-		Supplier: &repos,
-	}
+	services := classifyService.New(nil, &repos)
 
 	// presenter layers
-	controllers := controller.Classify{
-		Service: &services,
-	}
+	controllers := classifyContainer.NewController(services)
 
 	e.GET("/suppliers", controllers.GetSupplier)
 

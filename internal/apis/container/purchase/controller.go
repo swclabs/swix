@@ -1,5 +1,5 @@
-// Package controller purchase controller for handling purchase request.
-package controller
+// Package purchase purchase controller for handling purchase request.
+package purchase
 
 import (
 	"fmt"
@@ -15,16 +15,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ IPurchase = (*Purchase)(nil)
-var _ = app.Controller(NewPurchase)
+var _ IController = (*Controller)(nil)
+var _ = app.Controller(NewController)
 
-// NewPurchase creates a new Purchase object
-func NewPurchase(services purchase.IPurchase) IPurchase {
-	return &Purchase{services: services}
+// NewController creates a new Purchase object
+func NewController(services purchase.IPurchase) IController {
+	return &Controller{services: services}
 }
 
-// IPurchase interface for purchase controller
-type IPurchase interface {
+// IController interface for purchase controller
+type IController interface {
 	AddToCarts(c echo.Context) error
 	GetCarts(c echo.Context) error
 	DeleteItem(c echo.Context) error
@@ -41,8 +41,8 @@ type IPurchase interface {
 	DeliveryOrderInfo(c echo.Context) error
 }
 
-// Purchase struct implementation of IPurchase
-type Purchase struct {
+// Controller struct implementation of IPurchase
+type Controller struct {
 	services purchase.IPurchase
 }
 
@@ -54,7 +54,7 @@ type Purchase struct {
 // @Param order body xdto.CreateOrderDTO true "order delivery body request"
 // @Success 200 {object} xdto.OrderDTO
 // @Router /delivery/order [POST]
-func (p *Purchase) CreateDeliveryOrder(c echo.Context) error {
+func (p *Controller) CreateDeliveryOrder(c echo.Context) error {
 	var order xdto.CreateOrderDTO
 	if err := c.Bind(&order); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -83,7 +83,7 @@ func (p *Purchase) CreateDeliveryOrder(c echo.Context) error {
 // @Param code path string true "delivery order code"
 // @Success 200 {object} xdto.OrderInfoDTO
 // @Router /delivery/order/{code} [GET]
-func (p *Purchase) DeliveryOrderInfo(c echo.Context) error {
+func (p *Controller) DeliveryOrderInfo(c echo.Context) error {
 	orderCode := c.Param("code")
 	orderInfo, err := p.services.DeliveryOrderInfo(c.Request().Context(), orderCode)
 	if err != nil {
@@ -102,7 +102,7 @@ func (p *Purchase) DeliveryOrderInfo(c echo.Context) error {
 // @Param province_id query number true "province id"
 // @Success 200 {object} xdto.DistrictDTO
 // @Router /address/district [GET]
-func (p *Purchase) AddressDistrict(c echo.Context) error {
+func (p *Controller) AddressDistrict(c echo.Context) error {
 	provinceID, err := strconv.Atoi(c.QueryParam("province_id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -125,7 +125,7 @@ func (p *Purchase) AddressDistrict(c echo.Context) error {
 // @Produce json
 // @Success 200 {object} xdto.ProvinceDTO
 // @Router /address/province [GET]
-func (p *Purchase) AddressProvince(c echo.Context) error {
+func (p *Controller) AddressProvince(c echo.Context) error {
 	resp, err := p.services.AddressProvince(c.Request().Context())
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
@@ -143,7 +143,7 @@ func (p *Purchase) AddressProvince(c echo.Context) error {
 // @Param district_id query number true "district id"
 // @Success 200 {object} xdto.WardDTO
 // @Router /address/ward [GET]
-func (p *Purchase) AddressWard(c echo.Context) error {
+func (p *Controller) AddressWard(c echo.Context) error {
 	districtID, err := strconv.Atoi(c.QueryParam("district_id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -167,7 +167,7 @@ func (p *Purchase) AddressWard(c echo.Context) error {
 // @Param addr body dtos.DeliveryBody true "delivery info request"
 // @Success 200 {object} dtos.OK
 // @Router /delivery [POST]
-func (p *Purchase) CreateDelivery(e echo.Context) error {
+func (p *Controller) CreateDelivery(e echo.Context) error {
 	var body dtos.DeliveryBody
 	if err := e.Bind(&body); err != nil {
 		return e.JSON(http.StatusBadRequest, dtos.Error{
@@ -192,7 +192,7 @@ func (p *Purchase) CreateDelivery(e echo.Context) error {
 // @Param uid query string true "user id"
 // @Success 200 {object} dtos.OK
 // @Router /delivery [GET]
-func (p *Purchase) GetDelivery(e echo.Context) error {
+func (p *Controller) GetDelivery(e echo.Context) error {
 	uid, err := strconv.Atoi(e.QueryParam("uid"))
 	if err != nil {
 		return e.JSON(http.StatusBadRequest, dtos.Error{
@@ -217,7 +217,7 @@ func (p *Purchase) GetDelivery(e echo.Context) error {
 // @Param uid query string true "user id"
 // @Success 200 {object} []dtos.Address
 // @Router /address [GET]
-func (p *Purchase) GetDeliveryAddress(e echo.Context) error {
+func (p *Controller) GetDeliveryAddress(e echo.Context) error {
 	uid, err := strconv.Atoi(e.QueryParam("uid"))
 	if err != nil {
 		return e.JSON(http.StatusBadRequest, dtos.Error{
@@ -242,7 +242,7 @@ func (p *Purchase) GetDeliveryAddress(e echo.Context) error {
 // @Param addr body dtos.DeliveryAddress true "address request"
 // @Success 200 {object} []dtos.ProductResponse
 // @Router /address [POST]
-func (p *Purchase) CreateDeliveryAddress(e echo.Context) error {
+func (p *Controller) CreateDeliveryAddress(e echo.Context) error {
 	var addr dtos.DeliveryAddress
 	if err := e.Bind(&addr); err != nil {
 		return e.JSON(http.StatusBadRequest, dtos.Error{
@@ -268,7 +268,7 @@ func (p *Purchase) CreateDeliveryAddress(e echo.Context) error {
 // @Param limit query string true "limit order"
 // @Success 200 {object} []dtos.OrderSchema
 // @Router /purchase/orders [GET]
-func (p *Purchase) GetOrders(c echo.Context) error {
+func (p *Controller) GetOrders(c echo.Context) error {
 	sUserID := c.QueryParam("uid")
 	if sUserID == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -318,7 +318,7 @@ func (p *Purchase) GetOrders(c echo.Context) error {
 // @Param login body dtos.CreateOrderSchema true "order insert request"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/orders [POST]
-func (p *Purchase) CreateOrder(c echo.Context) error {
+func (p *Controller) CreateOrder(c echo.Context) error {
 	var orderReq dtos.CreateOrderSchema
 	if err := c.Bind(&orderReq); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -354,7 +354,7 @@ func (p *Purchase) CreateOrder(c echo.Context) error {
 // @Param login body dtos.CartInsert true "cart insert request"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/carts [POST]
-func (p *Purchase) AddToCarts(c echo.Context) error {
+func (p *Controller) AddToCarts(c echo.Context) error {
 	var cartReq dtos.CartInsert
 	if err := c.Bind(&cartReq); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -389,7 +389,7 @@ func (p *Purchase) AddToCarts(c echo.Context) error {
 // @Param uid query number true "user id"
 // @Success 200 {object} dtos.CartSlices
 // @Router /purchase/carts [GET]
-func (p *Purchase) GetCarts(c echo.Context) error {
+func (p *Controller) GetCarts(c echo.Context) error {
 	sUserID := c.QueryParam("uid")
 	if sUserID == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -424,7 +424,7 @@ func (p *Purchase) GetCarts(c echo.Context) error {
 // @Param id query int true "cart id"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/carts [DELETE]
-func (p *Purchase) DeleteItem(c echo.Context) error {
+func (p *Controller) DeleteItem(c echo.Context) error {
 	cID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{

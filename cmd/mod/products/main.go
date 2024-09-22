@@ -30,7 +30,7 @@ func main() {
 
 	switch *cmd {
 	case "worker":
-		app := app.App(workers.NewWorkerNode)
+		app := app.Builder(workers.NewApp)
 		_ = app.Run()
 	case "server":
 	default:

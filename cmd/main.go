@@ -27,10 +27,10 @@ func main() {
 
 	switch *cmd {
 	case "worker":
-		application := app.App(workers.NewWorkerNode)
+		application := app.Builder(workers.NewApp)
 		_ = application.Run()
 	case "server":
-		application := app.App(apis.NewAPIServer)
+		application := app.Builder(apis.NewApp)
 		_ = application.Run()
 	default:
 		logger.Error("unknown flag: " + *cmd)

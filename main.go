@@ -14,10 +14,9 @@ package main
 
 import (
 	"log"
-	"swclabs/swix/internal/apis/controller"
-	"swclabs/swix/internal/apis/router"
+	"swclabs/swix/internal/apis/container/base"
 	"swclabs/swix/internal/apis/server"
-	"swclabs/swix/internal/core/service/base"
+	service "swclabs/swix/internal/core/service/base"
 
 	_ "swclabs/swix/docs"
 )
@@ -29,14 +28,14 @@ import (
 // @basePath /
 func main() {
 	var (
-		baseService    = base.New()
-		baseController = controller.New(baseService)
-		baseRouter     = router.New(baseController)
+		_service    = service.New()
+		_controller = base.NewController(_service)
+		_router     = base.NewRouter(_controller)
 
 		mux    = server.NewServeMux()
 		server = server.New(mux)
 	)
-	mux.Handle(baseRouter)
+	mux.Handle(_router)
 
 	log.Fatal(server.Run())
 }

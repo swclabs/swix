@@ -1,4 +1,4 @@
-package controller
+package base
 
 import (
 	"swclabs/swix/pkg/components"
