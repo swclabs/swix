@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"swclabs/swix/internal/apis/controller"
+	productContainer "swclabs/swix/internal/apis/container/products"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/enum"
 	"swclabs/swix/internal/core/domain/model"
 	productRepo "swclabs/swix/internal/core/repos/products"
-	"swclabs/swix/internal/core/service/products"
+	productService "swclabs/swix/internal/core/service/products"
 	"swclabs/swix/pkg/lib/logger"
 	"testing"
 
@@ -21,13 +21,11 @@ import (
 func TestProductView(t *testing.T) {
 	var (
 		product productRepo.Mock
-		service = products.Products{
+		service = productService.Products{
 			Products: &product,
 		}
-		controller = controller.Products{
-			Services: &service,
-		}
-		specs = []dtos.ProductSpecs{
+		controller = productContainer.NewController(&service)
+		specs      = []dtos.ProductSpecs{
 			{
 				Screen:  "6.1 inch",
 				Display: "Super Retina XDR display",
@@ -108,12 +106,10 @@ func TestProductView(t *testing.T) {
 func TestProductViewAccessory(t *testing.T) {
 	var (
 		product productRepo.Mock
-		service = products.Products{
+		service = productService.Products{
 			Products: &product,
 		}
-		controller = controller.Products{
-			Services: &service,
-		}
+		controller = productContainer.NewController(&service)
 	)
 
 	product.On("GetByCategory", context.Background(), enum.Accessories, 0).Return(
@@ -147,8 +143,8 @@ func TestProductViewAccessory(t *testing.T) {
 			},
 		},
 		nil)
-	e.GET("/products/view", controller.GetProductView)
-	req := httptest.NewRequest(http.MethodGet, "/products/view?type=accessories", nil)
+	e.GET("/products/:type", controller.GetProductView)
+	req := httptest.NewRequest(http.MethodGet, "/products/accessories", nil)
 	rr := httptest.NewRecorder()
 	e.ServeHTTP(rr, req)
 

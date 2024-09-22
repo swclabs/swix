@@ -6,11 +6,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"swclabs/swix/internal/apis/controller"
+	articleContainer "swclabs/swix/internal/apis/container/article"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repos/collections"
-	"swclabs/swix/internal/core/service/article"
+	articleService "swclabs/swix/internal/core/service/article"
 	"swclabs/swix/pkg/lib/logger"
 	"testing"
 	"time"
@@ -22,8 +22,8 @@ import (
 func TestPhoneCarousel(t *testing.T) {
 	var (
 		repos      = collections.Mock{}
-		service    = article.New(nil, &repos, nil)
-		controller = controller.NewArticle(service)
+		service    = articleService.New(nil, &repos, nil)
+		controller = articleContainer.NewController(service)
 		e          = echo.New()
 
 		content = []dtos.CardContent{

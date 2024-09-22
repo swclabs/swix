@@ -53,7 +53,7 @@ func _main(lc fx.Lifecycle, app IApplication) {
 	})
 }
 
-func App(constructor interface{}) IApplication {
+func Builder(constructor interface{}) *app {
 	module = fx.Options(module, fx.Provide(constructor))
 	return &app{
 		core: fx.New(fx.Provide(blob.New, db.New, cache.New), module,

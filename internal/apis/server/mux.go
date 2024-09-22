@@ -1,14 +1,16 @@
 package server
 
 import (
-	"swclabs/swix/internal/apis/router"
-
 	"github.com/labstack/echo/v4"
 )
 
 type IMux interface {
-	Handle(router router.IRouter)
+	Handle(router IRouter)
 	ServeHTTP(engine *echo.Echo)
+}
+
+type IRouter interface {
+	Routers(e *echo.Echo)
 }
 
 func NewServeMux() IMux {
@@ -16,11 +18,11 @@ func NewServeMux() IMux {
 }
 
 type Mux struct {
-	router []router.IRouter
+	router []IRouter
 }
 
 // Handle implements IMux.
-func (m *Mux) Handle(router router.IRouter) {
+func (m *Mux) Handle(router IRouter) {
 	m.router = append(m.router, router)
 }
 

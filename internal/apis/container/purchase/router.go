@@ -1,34 +1,34 @@
-// Package router implements the router interface
+// Package purchase implements the router interface
 // File purchase.go defines routes for APIs related to purchasing, adding to cart,
 // accessing invoices, order, and creating invoices, order, etc.
-package router
+package purchase
 
 import (
 	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/controller"
+	"swclabs/swix/internal/apis/server"
 
 	"github.com/labstack/echo/v4"
 )
 
-var _ = app.Router(NewPurchase)
+var _ = app.Router(NewRouter)
 
-// NewPurchase returns a new Purchase router object
-func NewPurchase(controllers controller.IPurchase) IPurchase {
-	return &Purchase{controllers: controllers}
+// NewRouter returns a new Purchase router object
+func NewRouter(controllers IController) IRouter {
+	return &Router{controllers: controllers}
 }
 
-// IPurchase extends the IRouter interface
-type IPurchase interface {
-	IRouter
+// IRouter extends the IRouter interface
+type IRouter interface {
+	server.IRouter
 }
 
-// Purchase is the router implementation for IPurchase
-type Purchase struct {
-	controllers controller.IPurchase
+// Router is the router implementation for IPurchase
+type Router struct {
+	controllers IController
 }
 
 // Routers define route endpoint
-func (p *Purchase) Routers(e *echo.Echo) {
+func (p *Router) Routers(e *echo.Echo) {
 	e.POST("/purchase/carts", p.controllers.AddToCarts)
 	e.GET("/purchase/carts", p.controllers.GetCarts)
 	e.DELETE("/purchase/carts/:id", p.controllers.DeleteItem)

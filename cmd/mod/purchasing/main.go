@@ -5,8 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/router"
-	"swclabs/swix/internal/apis/server"
+	"swclabs/swix/internal/apis/container/purchase"
 	"swclabs/swix/pkg/lib/logger"
 )
 
@@ -23,11 +22,7 @@ func main() {
 		// app := app.App(workers.NewWorkerNode)
 		// _ = app.Run()
 	case "server":
-		app := app.App(func(purchase router.IPurchase) app.IApplication {
-			mux := server.NewServeMux()
-			mux.Handle(purchase)
-			return server.New(mux)
-		})
+		app := app.Builder(purchase.New)
 		_ = app.Run()
 	default:
 		logger.Error("unknown flag: " + *cmd)

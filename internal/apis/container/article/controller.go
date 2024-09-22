@@ -1,5 +1,4 @@
-// Package controller implements the controller interface
-package controller
+package article
 
 import (
 	"net/http"
@@ -12,17 +11,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var _ = app.Controller(NewArticle)
+var _ = app.Controller(NewController)
 
-// NewArticle creates a new Article object
-func NewArticle(service article.IArticle) IArticle {
-	return &Article{
+// NewController creates a new Article object
+func NewController(service article.IArticle) IController {
+	return &Controller{
 		Services: service,
 	}
 }
 
-// IArticle interface for article controller
-type IArticle interface {
+// IController interface for article controller
+type IController interface {
 	UploadArticle(c echo.Context) error
 	UpdateCollectionsImage(c echo.Context) error
 	GetArticleData(c echo.Context) error
@@ -33,8 +32,8 @@ type IArticle interface {
 	UploadComment(c echo.Context) error
 }
 
-// Article struct implementation of IArticle
-type Article struct {
+// Controller struct implementation of IArticle
+type Controller struct {
 	Services article.IArticle
 }
 
@@ -47,7 +46,7 @@ type Article struct {
 // @Param limit query int true "limit headline of collections"
 // @Success 200 {object} dtos.Message
 // @Router /collections/message [GET]
-func (p *Article) GetMessage(c echo.Context) error {
+func (p *Controller) GetMessage(c echo.Context) error {
 	var (
 		pos    = c.QueryParam("position")
 		sLimit = c.QueryParam("limit")
@@ -75,7 +74,7 @@ func (p *Article) GetMessage(c echo.Context) error {
 // @Param banner body dtos.Message true "headline banner data request"
 // @Success 201 {object} dtos.OK
 // @Router /collections/message [POST]
-func (p *Article) UploadMessage(c echo.Context) error {
+func (p *Controller) UploadMessage(c echo.Context) error {
 	var banner dtos.Message
 	if err := c.Bind(&banner); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -105,7 +104,7 @@ func (p *Article) UploadMessage(c echo.Context) error {
 // @Param collection body dtos.UploadArticle true "collections Request"
 // @Success 201 {object} dtos.Message
 // @Router /collections [POST]
-func (p *Article) UploadArticle(c echo.Context) error {
+func (p *Controller) UploadArticle(c echo.Context) error {
 	var cardBanner dtos.UploadArticle
 	if err := c.Bind(&cardBanner); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -138,7 +137,7 @@ func (p *Article) UploadArticle(c echo.Context) error {
 // @Param id formData string true "collections identifier"
 // @Success 200 {object} dtos.OK
 // @Router /collections/img [PUT]
-func (p *Article) UpdateCollectionsImage(c echo.Context) error {
+func (p *Controller) UpdateCollectionsImage(c echo.Context) error {
 	file, err := c.FormFile("img")
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -172,7 +171,7 @@ func (p *Article) UpdateCollectionsImage(c echo.Context) error {
 // @Param limit query number true "limit of cards carousel"
 // @Success 200 {object} dtos.Article
 // @Router /collections [GET]
-func (p *Article) GetArticleData(c echo.Context) error {
+func (p *Controller) GetArticleData(c echo.Context) error {
 	position := c.QueryParam("position")
 	limit := c.QueryParam("limit")
 	if position == "" || limit == "" {
@@ -205,7 +204,7 @@ func (p *Article) GetArticleData(c echo.Context) error {
 // @Param product_id query string true "id of products"
 // @Success 200 {object} dtos.Comment
 // @Router /comment [GET]
-func (p *Article) GetComment(c echo.Context) error {
+func (p *Controller) GetComment(c echo.Context) error {
 	product_id, err := strconv.Atoi(c.QueryParam("product_id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -230,7 +229,7 @@ func (p *Article) GetComment(c echo.Context) error {
 // @Param banner body dtos.Comment true "comment data request"
 // @Success 201 {object} dtos.OK
 // @Router /comment [POST]
-func (p *Article) UploadComment(c echo.Context) error {
+func (p *Controller) UploadComment(c echo.Context) error {
 	var cmt dtos.Comment
 	if err := c.Bind(&cmt); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
