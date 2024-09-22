@@ -59,3 +59,8 @@ func TestStmt(_ *testing.T) {
 	}
 	queryHandler("select * from", "table", "row", "column")
 }
+
+func TestGenerateOrderCode(t *testing.T) {
+	orderCode := utils.GenerateOrderCode(16)
+	t.Log(orderCode)
+}

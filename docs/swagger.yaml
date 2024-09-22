@@ -406,7 +406,7 @@ definitions:
         type: integer
       items:
         items:
-          $ref: '#/definitions/dtos.ProductOrderSchema'
+          $ref: '#/definitions/model.Order'
         type: array
       status:
         type: string
@@ -441,21 +441,6 @@ definitions:
         type: string
       screen:
         description: Screen 6.1 inch
-        type: string
-    type: object
-  dtos.ProductOrderSchema:
-    properties:
-      currency_code:
-        type: string
-      id:
-        type: integer
-      inventory_id:
-        type: integer
-      order_id:
-        type: integer
-      quantity:
-        type: integer
-      total_amount:
         type: string
     type: object
   dtos.ProductRequest:
@@ -673,6 +658,29 @@ definitions:
       id:
         type: string
       name:
+        type: string
+    type: object
+  model.Order:
+    properties:
+      category_id:
+        type: integer
+      color:
+        type: string
+      currency_code:
+        type: string
+      inventory_image:
+        type: string
+      name:
+        type: string
+      quantity:
+        type: integer
+      time:
+        type: string
+      total_amount:
+        type: number
+      user_id:
+        type: integer
+      uuid:
         type: string
     type: object
   model.Users:
@@ -1098,7 +1106,7 @@ definitions:
       DistrictID:
         type: integer
       WardCode:
-        type: integer
+        type: string
       WardName:
         type: string
     type: object

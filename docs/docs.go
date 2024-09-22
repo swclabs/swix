@@ -2295,7 +2295,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.ProductOrderSchema"
+                        "$ref": "#/definitions/model.Order"
                     }
                 },
                 "status": {
@@ -2345,29 +2345,6 @@ const docTemplate = `{
                 },
                 "screen": {
                     "description": "Screen 6.1 inch",
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.ProductOrderSchema": {
-            "type": "object",
-            "properties": {
-                "currency_code": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "inventory_id": {
-                    "type": "integer"
-                },
-                "order_id": {
-                    "type": "integer"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "total_amount": {
                     "type": "string"
                 }
             }
@@ -2692,6 +2669,41 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Order": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "inventory_image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "string"
+                },
+                "total_amount": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "uuid": {
                     "type": "string"
                 }
             }
@@ -3314,7 +3326,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "WardCode": {
-                    "type": "integer"
+                    "type": "string"
                 },
                 "WardName": {
                     "type": "string"
