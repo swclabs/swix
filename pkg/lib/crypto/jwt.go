@@ -28,11 +28,12 @@ func claims(tokenString string) (*jwt.Token, error) {
 }
 
 // GenerateToken Generate JWT token
-func GenerateToken(email string, role string) (string, error) {
+func GenerateToken(accountID int64, email string, role string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"role":  role,
-		"email": email,
-		"exp":   time.Now().Add(time.Hour * 24).Unix(), // 1 day
+		"account_id": accountID,
+		"role":       role,
+		"email":      email,
+		"exp":        time.Now().Add(time.Hour * 24).Unix(), // 1 day
 	})
 	tokenString, errToken := token.SignedString([]byte(config.JwtSecret))
 	if errToken != nil {
@@ -42,18 +43,19 @@ func GenerateToken(email string, role string) (string, error) {
 }
 
 // ParseToken Return Email from JWT token
-func ParseToken(tokenString string) (string, error) {
+func ParseToken(tokenString string) (accountID int64, email string, err error) {
 	tokenString = removeBearerPrefix(tokenString)
 	token, _ := claims(tokenString)
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		email := claims["email"]
+		email = claims["email"].(string)
+		accountID = int64(claims["account_id"].(int64))
 		// _ = claims["exp"]
 		if float64(time.Now().Unix()) > claims["exp"].(float64) {
-			return "", errors.New("token has expired")
+			return -1, "", errors.New("token has expired")
 		}
-		return email.(string), nil
+		return accountID, email, nil
 	}
-	return "", errors.New("token invalid")
+	return -1, "", errors.New("token invalid")
 }
 
 // ParseTokenRole Return Role from JWT token

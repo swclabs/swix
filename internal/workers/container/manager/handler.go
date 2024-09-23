@@ -4,6 +4,7 @@ package manager
 import (
 	"context"
 	"encoding/json"
+	"strconv"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
@@ -55,7 +56,12 @@ func (manager *Handler) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
 			if err := json.Unmarshal(task.Payload(), &data); err != nil {
 				return err
 			}
-			return manager.handler.OAuth2SaveUser(context.Background(), data)
+			ID, err := manager.handler.OAuth2SaveUser(context.Background(), data)
+			if err != nil {
+				return err
+			}
+			_, err = task.ResultWriter().Write([]byte(strconv.FormatInt(ID, 10)))
+			return err
 		}
 }
 

@@ -13,7 +13,7 @@ type IPurchase interface {
 	// AddToCart adds a product to the shopping cart.
 	// ctx is the context to manage the request's lifecycle.
 	// cart contains the cart information to be added.
-	AddToCart(ctx context.Context, cart dtos.CartInsert) error
+	AddToCart(ctx context.Context, cart dtos.CartInsertDTO) error
 
 	// GetCart retrieves the shopping cart with a specified limit.
 	// ctx is the context to manage the request's lifecycle.
@@ -26,7 +26,7 @@ type IPurchase interface {
 	// ctx is the context to manage the request's lifecycle.
 	// createOrder contains the order information to be created.
 	// Returns the UUID of the newly created order and an error if any issues occur during the creation process.
-	CreateOrders(ctx context.Context, createOrder dtos.CreateOrderSchema) (string, error)
+	CreateOrders(ctx context.Context, createOrder dtos.CreateOrderDTO) (string, error)
 
 	// DeleteItemFromCart deletes an item from the shopping cart.
 	// ctx is the context to manage the request's lifecycle.

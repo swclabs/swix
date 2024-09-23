@@ -22,13 +22,13 @@ func NewAccountsMock() *Mock {
 // GetByEmail implements IAccountRepository.
 func (a *Mock) GetByEmail(ctx context.Context, email string) (*entity.Account, error) {
 	args := a.Called(ctx, email)
-	return args.Get(0).(*entity.Account), args.Error(0)
+	return args.Get(0).(*entity.Account), args.Error(1)
 }
 
 // Insert implements IAccountRepository.
-func (a *Mock) Insert(ctx context.Context, acc entity.Account) error {
+func (a *Mock) Insert(ctx context.Context, acc entity.Account) (int64, error) {
 	args := a.Called(ctx, acc)
-	return args.Error(0)
+	return args.Get(0).(int64), args.Error(1)
 }
 
 // SaveInfo implements IAccountRepository.

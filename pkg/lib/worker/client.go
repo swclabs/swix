@@ -11,7 +11,7 @@ import (
 
 // IWorkerClient interface for worker client
 type IWorkerClient interface {
-	Exec(queue string, task *asynq.Task) error
+	Exec(ctx context.Context, queue string, task *asynq.Task) error
 	ExecGetResult(ctx context.Context, queue string, task *asynq.Task) ([]byte, error)
 	Delay(delay *time.Duration, queue string, task *asynq.Task) error
 }
@@ -32,25 +32,30 @@ func NewClient(host, port, password string) IWorkerClient {
 }
 
 // Exec executes tasks in the given queue
-func (cli *Client) Exec(queue string, task *asynq.Task) error {
-	// Create a new Asynq client.
-	client := asynq.NewClient(cli.broker)
-	defer func(client *asynq.Client) {
-		err := client.Close()
+func (cli *Client) Exec(ctx context.Context, queue string, task *asynq.Task) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		// Create a new Asynq client.
+		client := asynq.NewClient(cli.broker)
+		defer func(client *asynq.Client) {
+			err := client.Close()
+			if err != nil {
+				panic(err.Error())
+			}
+		}(client)
+		// Process the task immediately in critical queue.
+		_, err := client.Enqueue(
+			task,               // task payload
+			asynq.Queue(queue), // set queue for task
+			asynq.Retention(time.Duration(time.Second*15)), // store tasks when finished
+		)
 		if err != nil {
-			panic(err.Error())
+			return err
 		}
-	}(client)
-	// Process the task immediately in critical queue.
-	_, err := client.Enqueue(
-		task,               // task payload
-		asynq.Queue(queue), // set queue for task
-		asynq.Retention(time.Duration(time.Second*15)), // store tasks when finished
-	)
-	if err != nil {
-		return err
+		return nil
 	}
-	return nil
 
 }
 

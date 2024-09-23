@@ -219,13 +219,17 @@ func (p *Purchase) DeleteItemFromCart(ctx context.Context, cartID int64) error {
 }
 
 // AddToCart implements IPurchaseService.
-func (p *Purchase) AddToCart(ctx context.Context, cart dtos.CartInsert) error {
+func (p *Purchase) AddToCart(ctx context.Context, cart dtos.CartInsertDTO) error {
 	specs, err := p.Spec.GetByID(ctx, cart.SpecID)
 	if err != nil {
-		return err
+		return fmt.Errorf("error getting specs by ID: %v", err)
+	}
+	user, err := p.User.GetByEmail(ctx, cart.Email)
+	if err != nil {
+		return fmt.Errorf("error getting user by email: %v", err)
 	}
 	return p.Cart.Insert(ctx, entity.Carts{
-		UserID:      cart.UserID,
+		UserID:      user.ID,
 		InventoryID: cart.InventoryID,
 		Quantity:    cart.Quantity,
 		SpecID:      specs.ID,
@@ -275,7 +279,7 @@ func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*dtos.
 }
 
 // CreateOrders implements IPurchaseService.
-func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrderSchema) (string, error) {
+func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrderDTO) (string, error) {
 	tx, err := db.NewTransaction(ctx)
 	if err != nil {
 		return "", err
@@ -307,10 +311,17 @@ func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrde
 			productTotalAmount,
 			inven.Price.Mul(decimal.NewFromInt32(int32(product.Quantity))))
 	}
+	user, err := p.User.GetByEmail(ctx, createOrder.Email)
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return "", fmt.Errorf("error getting user by email: %v", err)
+	}
 	orderID, err := orderRepo.Create(ctx, entity.Orders{
 		UUID:        _uuid,
 		DeliveryID:  createOrder.DeleveryID,
-		UserID:      createOrder.UserID,
+		UserID:      user.ID,
 		Status:      "pending",
 		TotalAmount: totalAmount,
 	})

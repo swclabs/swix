@@ -3,6 +3,7 @@ package manager
 import (
 	"context"
 	"mime/multipart"
+	"strconv"
 	"swclabs/swix/internal/config"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/model"
@@ -27,27 +28,32 @@ func UseTask(service IManager) IManager {
 }
 
 // SignUp user to access system, return error if exist
-func (t *Task) SignUp(_ context.Context, req dtos.SignUpRequest) error {
-	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
+func (t *Task) SignUp(ctx context.Context, req dtos.SignUpRequest) error {
+	return t.worker.Exec(ctx, queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.SignUp),
 		req,
 	))
 }
 
 // UpdateUserInfo update user information
-func (t *Task) UpdateUserInfo(_ context.Context, req dtos.UserUpdate) error {
-	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
+func (t *Task) UpdateUserInfo(ctx context.Context, req dtos.UserUpdate) error {
+	return t.worker.Exec(ctx, queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.UpdateUserInfo),
 		req,
 	))
 }
 
 // OAuth2SaveUser save user information from oauth2
-func (t *Task) OAuth2SaveUser(_ context.Context, req dtos.OAuth2SaveUser) error {
-	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
+func (t *Task) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (int64, error) {
+	result, err := t.worker.ExecGetResult(ctx, queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.OAuth2SaveUser),
 		req,
 	))
+	if err != nil {
+		return -1, err
+	}
+	return strconv.ParseInt(string(result), 10, 64)
+
 }
 
 // Login user to access system, return token if success

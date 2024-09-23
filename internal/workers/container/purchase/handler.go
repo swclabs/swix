@@ -35,7 +35,7 @@ type Handler struct {
 func (p *Handler) HandleAddToCart() (string, worker.HandleFunc) {
 	return worker.GetTaskName(p.AddToCart),
 		func(_ context.Context, task *asynq.Task) error {
-			var req dtos.CartInsert
+			var req dtos.CartInsertDTO
 			if err := json.Unmarshal(task.Payload(), &req); err != nil {
 				return err
 			}

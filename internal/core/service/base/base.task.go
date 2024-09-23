@@ -32,8 +32,8 @@ func (t *Task) HealthCheck(_ context.Context) dtos.HealthCheck {
 }
 
 // WorkerCheck implements IbaseService.
-func (t *Task) WorkerCheck(_ context.Context, _ int64) error {
-	return t.worker.Exec(queue.CriticalQueue, worker.NewTask(
+func (t *Task) WorkerCheck(ctx context.Context, _ int64) error {
+	return t.worker.Exec(ctx, queue.CriticalQueue, worker.NewTask(
 		worker.GetTaskName(t.WorkerCheck),
 		1,
 	))

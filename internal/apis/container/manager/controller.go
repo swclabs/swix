@@ -6,9 +6,8 @@ import (
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
+	"swclabs/swix/pkg/lib/session"
 	"swclabs/swix/pkg/lib/valid"
-
-	"swclabs/swix/pkg/utils"
 
 	"github.com/labstack/echo/v4"
 )
@@ -52,7 +51,7 @@ func (manager *Controller) Auth(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusBadRequest, fmt.Sprintf("error login: %v, %s, %s", err, email, password))
 	}
-	if err := utils.SaveSession(c, utils.BaseSessions, "access_token", accessToken); err != nil {
+	if err := session.Save(c, session.Base, "access_token", accessToken); err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 	return c.Redirect(http.StatusSeeOther, "/docs/index.html")
@@ -91,7 +90,7 @@ func (manager *Controller) Login(c echo.Context) error {
 	// 	return c.String(http.StatusInternalServerError, err.Error())
 	// }
 
-	if err := utils.SaveSession(c, utils.BaseSessions, "access_token", accessToken); err != nil {
+	if err := session.Save(c, session.Base, "access_token", accessToken); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -148,7 +147,7 @@ func (manager *Controller) Logout(c echo.Context) error {
 	// if err := session.Save(); err != nil {
 	// 	return c.String(http.StatusInternalServerError, err.Error())
 	// }
-	if err := utils.SaveSession(c, utils.BaseSessions, "access_token", ""); err != nil {
+	if err := session.Save(c, session.Base, "access_token", ""); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -168,7 +167,7 @@ func (manager *Controller) Logout(c echo.Context) error {
 func (manager *Controller) GetMe(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
-	email := utils.Session(c, utils.BaseSessions, "email").(string)
+	email := session.Get(c, session.Base, "email")
 	response, err := manager.service.UserInfo(c.Request().Context(), email)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
@@ -183,7 +182,7 @@ func (manager *Controller) GetMe(c echo.Context) error {
 // @Tags manager
 // @Accept json
 // @Produce json
-// @Param UserSchema body dtos.User true "Update Users"
+// @Param UserSchema body dtos.UserUpdate true "Update Users"
 // @Success 200 {object} dtos.OK
 // @Router /users [PUT]
 func (manager *Controller) UpdateUserInfo(c echo.Context) error {
@@ -220,7 +219,7 @@ func (manager *Controller) UpdateUserInfo(c echo.Context) error {
 func (manager *Controller) UpdateUserImage(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
-	email := utils.Session(c, utils.BaseSessions, "email").(string)
+	email := session.Get(c, session.Base, "email")
 	file, err := c.FormFile("img")
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{

@@ -371,7 +371,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.Categories"
+                            "$ref": "#/definitions/dtos.UpdateCategories"
                         }
                     }
                 ],
@@ -1378,7 +1378,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.CartInsert"
+                            "$ref": "#/definitions/dtos.CartDTO"
                         }
                     }
                 ],
@@ -1479,7 +1479,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.CreateOrderSchema"
+                            "$ref": "#/definitions/dtos.OrderDTO"
                         }
                     }
                 ],
@@ -1628,7 +1628,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.User"
+                            "$ref": "#/definitions/dtos.UserUpdate"
                         }
                     }
                 ],
@@ -1800,12 +1800,12 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.CartInsert": {
+        "dtos.CartDTO": {
             "type": "object",
             "required": [
                 "inventory_id",
                 "quantity",
-                "user_id"
+                "spec_id"
             ],
             "properties": {
                 "inventory_id": {
@@ -1815,9 +1815,6 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "spec_id": {
-                    "type": "integer"
-                },
-                "user_id": {
                     "type": "integer"
                 }
             }
@@ -1905,43 +1902,6 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
-                }
-            }
-        },
-        "dtos.CreateOrderSchema": {
-            "type": "object",
-            "required": [
-                "delevery_id",
-                "product",
-                "user_id"
-            ],
-            "properties": {
-                "delevery_id": {
-                    "type": "integer"
-                },
-                "product": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "required": [
-                            "inventory_id",
-                            "quantity"
-                        ],
-                        "properties": {
-                            "inventory_id": {
-                                "type": "integer"
-                            },
-                            "quantity": {
-                                "type": "integer"
-                            },
-                            "specs_id": {
-                                "type": "integer"
-                            }
-                        }
-                    }
-                },
-                "user_id": {
-                    "type": "integer"
                 }
             }
         },
@@ -2286,6 +2246,39 @@ const docTemplate = `{
         "dtos.Object": {
             "type": "object"
         },
+        "dtos.OrderDTO": {
+            "type": "object",
+            "required": [
+                "delevery_id",
+                "product"
+            ],
+            "properties": {
+                "delevery_id": {
+                    "type": "integer"
+                },
+                "product": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "inventory_id",
+                            "quantity"
+                        ],
+                        "properties": {
+                            "inventory_id": {
+                                "type": "integer"
+                            },
+                            "quantity": {
+                                "type": "integer"
+                            },
+                            "specs_id": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "dtos.OrderSchema": {
             "type": "object",
             "properties": {
@@ -2556,6 +2549,24 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.UpdateCategories": {
+            "type": "object",
+            "required": [
+                "description",
+                "name"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.UpdateProductInfo": {
             "type": "object",
             "required": [
@@ -2610,15 +2621,10 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.User": {
+        "dtos.UserUpdate": {
             "type": "object",
             "required": [
-                "email",
-                "first_name",
-                "id",
-                "last_name",
-                "phone_number",
-                "username"
+                "email"
             ],
             "properties": {
                 "email": {
@@ -2627,16 +2633,13 @@ const docTemplate = `{
                 "first_name": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
+                "image": {
+                    "type": "string"
                 },
                 "last_name": {
                     "type": "string"
                 },
                 "phone_number": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }
