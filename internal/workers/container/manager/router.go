@@ -1,33 +1,33 @@
-// Package router define tasks - queue
-package router
+// Package manager define tasks - queue
+package manager
 
 import (
 	"swclabs/swix/app"
-	"swclabs/swix/internal/workers/handler"
+	"swclabs/swix/internal/workers/server"
 	"swclabs/swix/pkg/lib/worker"
 )
 
-var _ = app.Router(NewManager)
+var _ = app.Router(NewRouter)
 
 // NewManager creates a new Manager object
-func NewManager(handlers handler.IManager) IManager {
-	return &Manager{
+func NewRouter(handlers IHandler) IRouter {
+	return &Router{
 		handlers: handlers,
 	}
 }
 
 // IManager interface for Manager objects
-type IManager interface {
-	IRouter
+type IRouter interface {
+	server.IRouter
 }
 
 // Manager struct define the Manager object
-type Manager struct {
-	handlers handler.IManager
+type Router struct {
+	handlers IHandler
 }
 
 // Register register the queue
-func (router *Manager) Register(eng worker.IEngine) {
+func (router *Router) Register(eng worker.IEngine) {
 	eng.RegisterQueue(router.handlers.HandleOAuth2SaveUser)
 	eng.RegisterQueue(router.handlers.HandleSignUp)
 	eng.RegisterQueue(router.handlers.HandleUpdateUserInfo)

@@ -38,7 +38,7 @@ proto: $(GENERATED_DIR) $(PROTO_DIR)
 s: cmd/main.go
 	@go run cmd/main.go s
 w: cmd/main.go
-	@go run cmd/main.go w
+	@go run cmd/main.go --start=worker
 d: # Init swagger docs
 	@swag init
 templ: # Generate templates

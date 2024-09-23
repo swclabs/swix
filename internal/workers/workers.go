@@ -2,14 +2,16 @@ package workers
 
 import (
 	"swclabs/swix/app"
-	"swclabs/swix/internal/workers/router"
+	"swclabs/swix/internal/workers/container/base"
+	"swclabs/swix/internal/workers/container/manager"
+	"swclabs/swix/internal/workers/container/purchase"
 	"swclabs/swix/internal/workers/server"
 )
 
 func NewApp(
-	base router.IBase,
-	manager router.IManager,
-	purchase router.IPurchase,
+	base base.IRouter,
+	manager manager.IRouter,
+	purchase purchase.IRouter,
 ) app.IApplication {
 	mux := server.NewServeMux()
 	mux.Handle(base)

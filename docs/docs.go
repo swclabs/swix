@@ -652,44 +652,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/common/healthcheck": {
-            "get": {
-                "description": "health check api server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "base"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/common/worker": {
-            "get": {
-                "description": "health check worker consume server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "base"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/delivery": {
             "get": {
                 "description": "get delivery info by user id.",
@@ -812,6 +774,25 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/xdto.OrderInfoDTO"
                         }
+                    }
+                }
+            }
+        },
+        "/healthcheck": {
+            "get": {
+                "description": "health check api server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "base"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -1688,6 +1669,25 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.OK"
                         }
+                    }
+                }
+            }
+        },
+        "/worker": {
+            "get": {
+                "description": "health check worker consume server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "base"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -2680,6 +2680,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "color": {
+                    "type": "string"
+                },
+                "content": {
                     "type": "string"
                 },
                 "currency_code": {

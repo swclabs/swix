@@ -12,6 +12,10 @@ type IWorker interface {
 	Run() error
 }
 
+type IRouter interface {
+	Register(eng worker.IEngine)
+}
+
 // Worker struct define the Worker object
 type Worker struct {
 	e   worker.IEngine
