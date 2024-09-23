@@ -1,5 +1,5 @@
-// Package handler implements handler of worker
-package handler
+// Package manager implements handler of worker
+package manager
 
 import (
 	"context"
@@ -13,30 +13,30 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-var _ = app.Controller(NewManager)
+var _ = app.Controller(NewHandler)
 
-// NewManager creates a new Manager object
-func NewManager(handler manager.IManager) IManager {
-	return &Manager{
+// NewHandler creates a new Manager object
+func NewHandler(handler manager.IManager) IHandler {
+	return &Handler{
 		handler: handler,
 	}
 }
 
-// IManager is an interface for Manager
-type IManager interface {
+// IHandler is an interface for Manager
+type IHandler interface {
 	HandleSignUp() (string, worker.HandleFunc)
 	HandleOAuth2SaveUser() (string, worker.HandleFunc)
 	HandleUpdateUserInfo() (string, worker.HandleFunc)
 }
 
-// Manager struct define the Manager object
-type Manager struct {
+// Handler struct define the Handler object
+type Handler struct {
 	manager.Task
 	handler manager.IManager
 }
 
 // HandleSignUp handle sign up
-func (manager *Manager) HandleSignUp() (string, worker.HandleFunc) {
+func (manager *Handler) HandleSignUp() (string, worker.HandleFunc) {
 	return worker.GetTaskName(manager.SignUp),
 		func(_ context.Context, task *asynq.Task) error {
 			var data dtos.SignUpRequest
@@ -48,7 +48,7 @@ func (manager *Manager) HandleSignUp() (string, worker.HandleFunc) {
 }
 
 // HandleOAuth2SaveUser handle save user information from oauth2
-func (manager *Manager) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
+func (manager *Handler) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
 	return worker.GetTaskName(manager.OAuth2SaveUser),
 		func(_ context.Context, task *asynq.Task) error {
 			var data dtos.OAuth2SaveUser
@@ -60,7 +60,7 @@ func (manager *Manager) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
 }
 
 // HandleUpdateUserInfo handle update user information
-func (manager *Manager) HandleUpdateUserInfo() (string, worker.HandleFunc) {
+func (manager *Handler) HandleUpdateUserInfo() (string, worker.HandleFunc) {
 	return worker.GetTaskName(manager.UpdateUserInfo),
 		func(_ context.Context, task *asynq.Task) error {
 			var data dtos.UserUpdate

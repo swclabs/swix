@@ -666,6 +666,8 @@ definitions:
         type: integer
       color:
         type: string
+      content:
+        type: string
       currency_code:
         type: string
       inventory_image:
@@ -1539,30 +1541,6 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - collections
-  /common/healthcheck:
-    get:
-      consumes:
-      - application/json
-      description: health check api server.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-      tags:
-      - base
-  /common/worker:
-    get:
-      consumes:
-      - application/json
-      description: health check worker consume server.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-      tags:
-      - base
   /delivery:
     get:
       consumes:
@@ -1644,6 +1622,18 @@ paths:
             $ref: '#/definitions/xdto.OrderInfoDTO'
       tags:
       - delivery
+  /healthcheck:
+    get:
+      consumes:
+      - application/json
+      description: health check api server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - base
   /inventories:
     delete:
       consumes:
@@ -2212,4 +2202,16 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - manager
+  /worker:
+    get:
+      consumes:
+      - application/json
+      description: health check worker consume server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - base
 swagger: "2.0"

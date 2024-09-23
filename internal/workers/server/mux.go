@@ -1,12 +1,11 @@
 package server
 
 import (
-	"swclabs/swix/internal/workers/router"
 	"swclabs/swix/pkg/lib/worker"
 )
 
 type IMux interface {
-	Handle(router router.IRouter)
+	Handle(router IRouter)
 	Serve(enginer worker.IEngine)
 }
 
@@ -15,11 +14,11 @@ func NewServeMux() IMux {
 }
 
 type Mux struct {
-	router []router.IRouter
+	router []IRouter
 }
 
 // Handle implements IMux.
-func (m *Mux) Handle(router router.IRouter) {
+func (m *Mux) Handle(router IRouter) {
 	m.router = append(m.router, router)
 }
 

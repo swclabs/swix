@@ -1,4 +1,4 @@
-// Package main start purchasing module
+// Package main start purchase module
 package main
 
 import (
@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/container/purchase"
+	purchaseWorker "swclabs/swix/internal/workers/container/purchase"
 	"swclabs/swix/pkg/lib/logger"
 )
 
@@ -19,8 +20,8 @@ func main() {
 
 	switch *cmd {
 	case "worker":
-		// app := app.App(workers.NewWorkerNode)
-		// _ = app.Run()
+		app := app.Builder(purchaseWorker.New)
+		_ = app.Run()
 	case "server":
 		app := app.Builder(purchase.New)
 		_ = app.Run()

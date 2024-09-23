@@ -1,5 +1,5 @@
-// Package handler implements handler of worker
-package handler
+// Package purchase implements handler of worker
+package purchase
 
 import (
 	"context"
@@ -12,27 +12,27 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-var _ IPurchase = (*Purchase)(nil)
-var _ = app.Controller(NewPurchase)
+var _ IHandler = (*Handler)(nil)
+var _ = app.Controller(NewHandler)
 
-// NewPurchase creates a new Purchase object
-func NewPurchase(service purchase.IPurchase) IPurchase {
-	return &Purchase{service: service}
+// NewHandler creates a new Purchase object
+func NewHandler(service purchase.IPurchase) IHandler {
+	return &Handler{service: service}
 }
 
-// IPurchase is an interface for Purchase.
-type IPurchase interface {
+// IHandler is an interface for Purchase.
+type IHandler interface {
 	HandleAddToCart() (string, worker.HandleFunc)
 }
 
-// Purchase is a struct for Purchase.
-type Purchase struct {
+// Handler is a struct for Handler.
+type Handler struct {
 	purchase.Task
 	service purchase.IPurchase
 }
 
 // HandleAddToCart implements IPurchase.
-func (p *Purchase) HandleAddToCart() (string, worker.HandleFunc) {
+func (p *Handler) HandleAddToCart() (string, worker.HandleFunc) {
 	return worker.GetTaskName(p.AddToCart),
 		func(_ context.Context, task *asynq.Task) error {
 			var req dtos.CartInsert

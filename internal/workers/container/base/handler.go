@@ -1,5 +1,5 @@
 // Package handler implements handler of worker
-package handler
+package base
 
 import (
 	"context"
@@ -13,29 +13,29 @@ import (
 	"github.com/hibiken/asynq"
 )
 
-var _ IBaseHandler = (*BaseHandler)(nil)
-var _ = app.Controller(NewBase)
+var _ IHandler = (*Handler)(nil)
+var _ = app.Controller(NewHandler)
 
-// NewBase creates a new base object
-func NewBase(_base base.IService) IBaseHandler {
-	return &BaseHandler{
+// NewHandler creates a new base object
+func NewHandler(_base base.IService) IHandler {
+	return &Handler{
 		handler: _base,
 	}
 }
 
-// IBaseHandler is an interface for Base.
-type IBaseHandler interface {
+// IHandler is an interface for Base.
+type IHandler interface {
 	HandleHealthCheck() (taskName string, fn worker.HandleFunc)
 }
 
-// BaseHandler struct define the base object
-type BaseHandler struct {
+// Handler struct define the base object
+type Handler struct {
 	base.Task               // embedded delay function here
 	handler   base.IService // create handler for services
 }
 
 // HandleHealthCheck handle health check
-func (base *BaseHandler) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
+func (base *Handler) HandleHealthCheck() (taskName string, fn worker.HandleFunc) {
 	// get task name from delay function
 	taskName = worker.GetTaskName(base.WorkerCheckResult)
 	// implement handler function base on delay function
