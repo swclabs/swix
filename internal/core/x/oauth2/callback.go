@@ -13,8 +13,7 @@ import (
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/crypto"
-
-	"swclabs/swix/pkg/utils"
+	"swclabs/swix/pkg/lib/session"
 
 	"github.com/labstack/echo/v4"
 )
@@ -39,7 +38,7 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		})
 	}
 
-	state := utils.Session(ctx, utils.BaseSessions, "state").(string)
+	state := session.Get(ctx, session.Base, "state")
 	if state != query.State {
 		return ctx.String(http.StatusBadRequest, fmt.Sprintf("Invalid state parameter. %s", state))
 	}
@@ -65,25 +64,26 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		accounts.New(dbpool),
 		addresses.New(dbpool),
 	)
-	if err := account.OAuth2SaveUser(
-		context.TODO(),
+	ID, err := account.OAuth2SaveUser(context.TODO(),
 		dtos.OAuth2SaveUser{
 			Email:     profile.Email,
 			FirstName: profile.GivenName,
 			LastName:  profile.FamilyName,
 			Image:     profile.Picture,
-		}); err != nil {
+		},
+	)
+	if err != nil {
 		return ctx.String(http.StatusInternalServerError, err.Error())
 	}
 
-	accessToken, err := crypto.GenerateToken(profile.Email, "Customer")
+	accessToken, err := crypto.GenerateToken(ID, profile.Email, "Customer")
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
 
-	if err := utils.SaveSession(ctx, utils.BaseSessions, "access_token", accessToken); err != nil {
+	if err := session.Save(ctx, session.Base, "access_token", accessToken); err != nil {
 		return ctx.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})

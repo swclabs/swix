@@ -24,7 +24,7 @@ type (
 
 // IEngine is an interface for Engine
 type IEngine interface {
-	RegisterQueue(hfn func() (taskName string, fn HandleFunc))
+	HandlerFunc(hfn func() (taskName string, fn HandleFunc))
 	Run(concurrency int) error
 }
 
@@ -58,8 +58,8 @@ func (w *Engine) handleFunctions() {
 	}
 }
 
-// RegisterQueue register the queue
-func (w *Engine) RegisterQueue(hfn func() (taskName string, fn HandleFunc)) {
+// HandlerFunc register the queue
+func (w *Engine) HandlerFunc(hfn func() (taskName string, fn HandleFunc)) {
 	taskName, fn := hfn()
 	w.queue[taskName] = fn
 }

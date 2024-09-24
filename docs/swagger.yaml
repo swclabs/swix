@@ -71,7 +71,7 @@ definitions:
     - category
     - title
     type: object
-  dtos.CartInsert:
+  dtos.CartDTO:
     properties:
       inventory_id:
         type: integer
@@ -79,12 +79,10 @@ definitions:
         type: integer
       spec_id:
         type: integer
-      user_id:
-        type: integer
     required:
     - inventory_id
     - quantity
-    - user_id
+    - spec_id
     type: object
   dtos.CartSchema:
     properties:
@@ -144,31 +142,6 @@ definitions:
     - like
     - rating
     - username
-    type: object
-  dtos.CreateOrderSchema:
-    properties:
-      delevery_id:
-        type: integer
-      product:
-        items:
-          properties:
-            inventory_id:
-              type: integer
-            quantity:
-              type: integer
-            specs_id:
-              type: integer
-          required:
-          - inventory_id
-          - quantity
-          type: object
-        type: array
-      user_id:
-        type: integer
-    required:
-    - delevery_id
-    - product
-    - user_id
     type: object
   dtos.CreateProduct:
     properties:
@@ -400,6 +373,28 @@ definitions:
     type: object
   dtos.Object:
     type: object
+  dtos.OrderDTO:
+    properties:
+      delevery_id:
+        type: integer
+      product:
+        items:
+          properties:
+            inventory_id:
+              type: integer
+            quantity:
+              type: integer
+            specs_id:
+              type: integer
+          required:
+          - inventory_id
+          - quantity
+          type: object
+        type: array
+    required:
+    - delevery_id
+    - product
+    type: object
   dtos.OrderSchema:
     properties:
       id:
@@ -581,6 +576,18 @@ definitions:
     - email
     - name
     type: object
+  dtos.UpdateCategories:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    required:
+    - description
+    - name
+    type: object
   dtos.UpdateProductInfo:
     properties:
       category_id:
@@ -617,27 +624,20 @@ definitions:
     - headline
     - position
     type: object
-  dtos.User:
+  dtos.UserUpdate:
     properties:
       email:
         type: string
       first_name:
         type: string
-      id:
-        type: integer
+      image:
+        type: string
       last_name:
         type: string
       phone_number:
         type: string
-      username:
-        type: string
     required:
     - email
-    - first_name
-    - id
-    - last_name
-    - phone_number
-    - username
     type: object
   entity.Categories:
     properties:
@@ -1378,7 +1378,7 @@ paths:
         name: category
         required: true
         schema:
-          $ref: '#/definitions/entity.Categories'
+          $ref: '#/definitions/dtos.UpdateCategories'
       responses:
         "200":
           description: OK
@@ -2029,7 +2029,7 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/dtos.CartInsert'
+          $ref: '#/definitions/dtos.CartDTO'
       produces:
       - application/json
       responses:
@@ -2076,7 +2076,7 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/dtos.CreateOrderSchema'
+          $ref: '#/definitions/dtos.OrderDTO'
       produces:
       - application/json
       responses:
@@ -2172,7 +2172,7 @@ paths:
         name: UserSchema
         required: true
         schema:
-          $ref: '#/definitions/dtos.User'
+          $ref: '#/definitions/dtos.UserUpdate'
       produces:
       - application/json
       responses:

@@ -10,6 +10,7 @@ import (
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/xdto"
 	"swclabs/swix/internal/core/service/purchase"
+	"swclabs/swix/pkg/lib/session"
 	"swclabs/swix/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
@@ -315,11 +316,11 @@ func (p *Controller) GetOrders(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param login body dtos.CreateOrderSchema true "order insert request"
+// @Param login body dtos.OrderDTO true "order insert request"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/orders [POST]
 func (p *Controller) CreateOrder(c echo.Context) error {
-	var orderReq dtos.CreateOrderSchema
+	var orderReq dtos.OrderDTO
 	if err := c.Bind(&orderReq); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -330,7 +331,9 @@ func (p *Controller) CreateOrder(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	msg, err := p.services.CreateOrders(c.Request().Context(), orderReq)
+	email := session.Get(c, session.Base, "email")
+	msg, err := p.services.CreateOrders(
+		c.Request().Context(), dtos.CreateOrderDTO{OrderDTO: orderReq, Email: email})
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -351,11 +354,11 @@ func (p *Controller) CreateOrder(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param login body dtos.CartInsert true "cart insert request"
+// @Param login body dtos.CartDTO true "cart insert request"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/carts [POST]
 func (p *Controller) AddToCarts(c echo.Context) error {
-	var cartReq dtos.CartInsert
+	var cartReq dtos.CartDTO
 	if err := c.Bind(&cartReq); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -366,7 +369,9 @@ func (p *Controller) AddToCarts(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if err := p.services.AddToCart(c.Request().Context(), cartReq); err != nil {
+	email := session.Get(c, session.Base, "email")
+	if err := p.services.AddToCart(
+		c.Request().Context(), dtos.CartInsertDTO{CartDTO: cartReq, Email: email}); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),

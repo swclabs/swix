@@ -5,6 +5,7 @@ package purchase
 
 import (
 	"swclabs/swix/app"
+	"swclabs/swix/internal/apis/middleware"
 	"swclabs/swix/internal/apis/server"
 
 	"github.com/labstack/echo/v4"
@@ -29,12 +30,12 @@ type Router struct {
 
 // Routers define route endpoint
 func (p *Router) Routers(e *echo.Echo) {
-	e.POST("/purchase/carts", p.controllers.AddToCarts)
+	e.POST("/purchase/carts", p.controllers.AddToCarts, middleware.SessionProtected)
 	e.GET("/purchase/carts", p.controllers.GetCarts)
 	e.DELETE("/purchase/carts/:id", p.controllers.DeleteItem)
 
 	e.GET("/purchase/orders", p.controllers.GetOrders)
-	e.POST("/purchase/orders", p.controllers.CreateOrder)
+	e.POST("/purchase/orders", p.controllers.CreateOrder, middleware.SessionProtected)
 
 	e.GET("/address", p.controllers.GetDeliveryAddress)
 	e.POST("/address", p.controllers.CreateDeliveryAddress)

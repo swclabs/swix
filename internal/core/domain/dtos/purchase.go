@@ -18,12 +18,16 @@ type CartSlices struct {
 	Products []CartSchema `json:"products"`
 }
 
-// CartInsert request, response
-type CartInsert struct {
-	UserID      int64 `json:"user_id" validate:"required"`
+// CartDTO request, response
+type CartDTO struct {
 	InventoryID int64 `json:"inventory_id" validate:"required"`
 	Quantity    int64 `json:"quantity" validate:"required"`
-	SpecID      int64 `json:"spec_id"`
+	SpecID      int64 `json:"spec_id" validate:"required"`
+}
+
+type CartInsertDTO struct {
+	CartDTO
+	Email string `json:"email" validate:"required"`
 }
 
 // ProductOrderSchema is the schema for product in order
@@ -51,13 +55,18 @@ type OrderSchema struct {
 	Items     []model.Order `json:"items"`
 }
 
-// CreateOrderSchema is the schema for creating an order request
-type CreateOrderSchema struct {
-	UserID     int64 `json:"user_id" validate:"required"`
+// OrderDTO is the schema for creating an order request
+type OrderDTO struct {
 	DeleveryID int64 `json:"delevery_id" validate:"required"`
 	Products   []struct {
 		InventoryID int64 `json:"inventory_id" validate:"required"`
 		Quantity    int64 `json:"quantity" validate:"required"`
 		SpecsID     int64 `json:"specs_id"`
 	} `json:"product" validate:"required"`
+}
+
+// CreateOrderSchema is the schema for creating an order request
+type CreateOrderDTO struct {
+	Email string `json:"email" validate:"required"`
+	OrderDTO
 }

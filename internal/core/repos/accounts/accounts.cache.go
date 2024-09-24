@@ -26,7 +26,7 @@ func (c *_cache) GetByEmail(ctx context.Context, email string) (*entity.Account,
 }
 
 // Insert implements IAccountRepository.
-func (c *_cache) Insert(ctx context.Context, acc entity.Account) error {
+func (c *_cache) Insert(ctx context.Context, acc entity.Account) (int64, error) {
 	return c.account.Insert(ctx, acc)
 }
 

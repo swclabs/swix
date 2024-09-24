@@ -50,5 +50,5 @@ type IManager interface {
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the OAuth2 user information details.
 	// Returns an error if any issues occur during the save process.
-	OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) error
+	OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (int64, error)
 }

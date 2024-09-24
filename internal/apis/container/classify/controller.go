@@ -183,7 +183,7 @@ func (classify *Controller) DeleteCategory(c echo.Context) error {
 // @Accept json
 // @Category json
 // @Param id path int true "category ID"
-// @Param category body entity.Categories true "Category Request"
+// @Param category body dtos.UpdateCategories true "Category Request"
 // @Success 200 {object} dtos.OK
 // @Router /categories/{id} [PUT]
 func (classify *Controller) UpdateCategory(c echo.Context) error {

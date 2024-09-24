@@ -28,5 +28,5 @@ type Router struct {
 
 // Register register the queue
 func (b *Router) Register(eng worker.IEngine) {
-	eng.RegisterQueue(b.handlers.HandleHealthCheck)
+	eng.HandlerFunc(b.handlers.HandleHealthCheck)
 }

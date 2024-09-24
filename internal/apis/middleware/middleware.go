@@ -6,7 +6,7 @@ import (
 	"os"
 	"swclabs/swix/internal/config"
 
-	"swclabs/swix/pkg/utils"
+	sessionUtils "swclabs/swix/pkg/lib/session"
 
 	sentryecho "github.com/getsentry/sentry-go/echo"
 	"github.com/labstack/echo-contrib/session"
@@ -45,7 +45,7 @@ func Logger(file *os.File, e *echo.Echo) {
 
 // CookieSetting middleware
 func CookieSetting(e *echo.Echo) {
-	store := utils.NewSession()
+	store := sessionUtils.New()
 	e.Use(session.Middleware(store))
 }
 

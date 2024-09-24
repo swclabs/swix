@@ -45,9 +45,9 @@ func (account *Accounts) GetByEmail(
 
 // Insert implements IAccountRepository.
 func (account *Accounts) Insert(
-	ctx context.Context, acc entity.Account) error {
+	ctx context.Context, acc entity.Account) (int64, error) {
 	createdAt := time.Now().UTC().Format(time.RFC3339)
-	return account.db.SafeWrite(ctx,
+	return account.db.SafeWriteReturn(ctx,
 		insertIntoAccounts,
 		acc.Username, acc.Role, acc.Email, acc.Password,
 		createdAt, acc.Type,

@@ -92,7 +92,7 @@ func (manager *Manager) SignUp(ctx context.Context, req dtos.SignUpRequest) erro
 		return err
 	}
 
-	if err := accountRepo.Insert(ctx, entity.Account{
+	if _, err = accountRepo.Insert(ctx, entity.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.ID),
 		Password: hashPassword,
 		Role:     "Customer",
@@ -118,7 +118,7 @@ func (manager *Manager) Login(ctx context.Context, req dtos.LoginRequest) (strin
 	if err := crypto.ComparePassword(account.Password, req.Password); err != nil {
 		return "", errors.New("email or password incorrect")
 	}
-	return crypto.GenerateToken(req.Email, account.Role)
+	return crypto.GenerateToken(account.ID, account.Email, account.Role)
 }
 
 // UserInfo return user information from Database
@@ -157,14 +157,14 @@ func (manager *Manager) UploadAvatar(email string, fileHeader *multipart.FileHea
 }
 
 // OAuth2SaveUser save user use oauth2 protocol
-func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) error {
+func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (int64, error) {
 	hash, err := crypto.GenPassword(utils.RandomString(18))
 	if err != nil {
-		return err
+		return -1, err
 	}
 	tx, err := db.NewTransaction(ctx)
 	if err != nil {
-		return err
+		return -1, err
 	}
 	var (
 		userRepo    = users.New(tx)
@@ -180,28 +180,29 @@ func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveU
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}
-		return err
+		return -1, err
 	}
 	userInfo, err := userRepo.GetByEmail(ctx, req.Email)
 	if err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}
-		return err
+		return -1, err
 	}
-	if err := accountRepo.Insert(ctx, entity.Account{
+	ID, err := accountRepo.Insert(ctx, entity.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.ID),
 		Password: hash,
 		Role:     "Customer",
 		Email:    req.Email,
 		Type:     "oauth2-google",
-	}); err != nil {
+	})
+	if err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}
-		return err
+		return -1, err
 	}
-	return tx.Commit(ctx)
+	return ID, tx.Commit(ctx)
 }
 
 // CheckLoginEmail check email already exist in database

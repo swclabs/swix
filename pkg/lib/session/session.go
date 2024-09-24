@@ -1,5 +1,5 @@
-// Package utils provides utils functionality
-package utils
+// Package session provides session functionality
+package session
 
 import (
 	"swclabs/swix/internal/config"
@@ -9,14 +9,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// BaseSessions is the base session name
-const BaseSessions = "swipe_session"
+// Base is the base session name
+const Base = "swipe_session"
 
 var store *sessions.CookieStore
 var lock = &sync.Mutex{}
 
-// NewSession creates a new session
-func NewSession() *sessions.CookieStore {
+// New creates a new session
+func New() *sessions.CookieStore {
 	if store == nil {
 		lock.Lock()
 		defer lock.Unlock()
@@ -27,8 +27,8 @@ func NewSession() *sessions.CookieStore {
 	return store
 }
 
-// SaveSession saves session
-func SaveSession(c echo.Context, sessionName string, key string, value string) error {
+// Save saves session
+func Save(c echo.Context, sessionName string, key string, value string) error {
 	sess, _ := store.Get(c.Request(), sessionName)
 	// sess.Options = &sessions.Options{
 	// 	MaxAge:   86400 * 7,
@@ -38,9 +38,9 @@ func SaveSession(c echo.Context, sessionName string, key string, value string) e
 	return sess.Save(c.Request(), c.Response())
 }
 
-// Session gets session
-func Session(c echo.Context, sessionName, key string) interface{} {
+// Get gets session
+func Get(c echo.Context, sessionName, key string) string {
 	sess, _ := store.Get(c.Request(), sessionName)
 	value := sess.Values[key]
-	return value
+	return value.(string)
 }
