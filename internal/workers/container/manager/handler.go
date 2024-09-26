@@ -9,70 +9,51 @@ import (
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
 
-	"swclabs/swix/pkg/lib/worker"
-
 	"github.com/hibiken/asynq"
 )
 
 var _ = app.Controller(NewHandler)
 
 // NewHandler creates a new Manager object
-func NewHandler(handler manager.IManager) IHandler {
+func NewHandler(handler manager.IManager) *Handler {
 	return &Handler{
 		handler: handler,
 	}
 }
 
-// IHandler is an interface for Manager
-type IHandler interface {
-	HandleSignUp() (string, worker.HandleFunc)
-	HandleOAuth2SaveUser() (string, worker.HandleFunc)
-	HandleUpdateUserInfo() (string, worker.HandleFunc)
-}
-
 // Handler struct define the Handler object
 type Handler struct {
-	manager.Task
 	handler manager.IManager
 }
 
-// HandleSignUp handle sign up
-func (manager *Handler) HandleSignUp() (string, worker.HandleFunc) {
-	return worker.GetTaskName(manager.SignUp),
-		func(_ context.Context, task *asynq.Task) error {
-			var data dtos.SignUpRequest
-			if err := json.Unmarshal(task.Payload(), &data); err != nil {
-				return err
-			}
-			return manager.handler.SignUp(context.Background(), data)
-		}
+// SignUp handle sign up
+func (manager *Handler) SignUp(_ context.Context, task *asynq.Task) error {
+	var data dtos.SignUpRequest
+	if err := json.Unmarshal(task.Payload(), &data); err != nil {
+		return err
+	}
+	return manager.handler.SignUp(context.Background(), data)
 }
 
-// HandleOAuth2SaveUser handle save user information from oauth2
-func (manager *Handler) HandleOAuth2SaveUser() (string, worker.HandleFunc) {
-	return worker.GetTaskName(manager.OAuth2SaveUser),
-		func(_ context.Context, task *asynq.Task) error {
-			var data dtos.OAuth2SaveUser
-			if err := json.Unmarshal(task.Payload(), &data); err != nil {
-				return err
-			}
-			ID, err := manager.handler.OAuth2SaveUser(context.Background(), data)
-			if err != nil {
-				return err
-			}
-			_, err = task.ResultWriter().Write([]byte(strconv.FormatInt(ID, 10)))
-			return err
-		}
+// OAuth2SaveUser handle save user information from oauth2
+func (manager *Handler) OAuth2SaveUser(_ context.Context, task *asynq.Task) error {
+	var data dtos.OAuth2SaveUser
+	if err := json.Unmarshal(task.Payload(), &data); err != nil {
+		return err
+	}
+	ID, err := manager.handler.OAuth2SaveUser(context.Background(), data)
+	if err != nil {
+		return err
+	}
+	_, err = task.ResultWriter().Write([]byte(strconv.FormatInt(ID, 10)))
+	return err
 }
 
-// HandleUpdateUserInfo handle update user information
-func (manager *Handler) HandleUpdateUserInfo() (string, worker.HandleFunc) {
-	return worker.GetTaskName(manager.UpdateUserInfo),
-		func(_ context.Context, task *asynq.Task) error {
-			var data dtos.UserUpdate
-			if err := json.Unmarshal(task.Payload(), &data); err != nil {
-				return err
-			}
-			return manager.handler.UpdateUserInfo(context.Background(), data)
-		}
+// UpdateUserInfo handle update user information
+func (manager *Handler) UpdateUserInfo(_ context.Context, task *asynq.Task) error {
+	var data dtos.UserUpdate
+	if err := json.Unmarshal(task.Payload(), &data); err != nil {
+		return err
+	}
+	return manager.handler.UpdateUserInfo(context.Background(), data)
 }

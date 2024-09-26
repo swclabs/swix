@@ -9,6 +9,7 @@ import (
 
 // IWorker interface for Worker objects
 type IWorker interface {
+	Register(taskName string, fn worker.HandleFunc)
 	Run() error
 }
 
@@ -22,17 +23,22 @@ type Worker struct {
 	mux IMux
 }
 
-// New creates a new Writer object
+// New creates a new worker object
 func New(mux IMux) IWorker {
-	writer := &Worker{
+	worker := &Worker{
 		e:   worker.New(queue.New()),
 		mux: mux,
 	}
-	return writer
+	return worker
+}
+
+// Register register the task
+func (worker *Worker) Register(taskName string, fn worker.HandleFunc) {
+	worker.e.Register(taskName, fn)
 }
 
 // Run runs the worker engine
-func (msg *Worker) Run() error {
-	msg.mux.Serve(msg.e)
-	return msg.e.Run(config.NumberOfWorker)
+func (worker *Worker) Run() error {
+	worker.mux.Serve(worker.e)
+	return worker.e.Run(config.NumberOfWorker)
 }

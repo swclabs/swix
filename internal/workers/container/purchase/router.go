@@ -10,7 +10,7 @@ import (
 var _ = app.Router(NewRouter)
 
 // NewRouter creates a new Purchase object
-func NewRouter(handler IHandler) IRouter {
+func NewRouter(handler *Handler) IRouter {
 	return &Router{
 		handler: handler,
 	}
@@ -23,10 +23,10 @@ type IRouter interface {
 
 // Router struct define the Router object
 type Router struct {
-	handler IHandler
+	handler *Handler
 }
 
 // Register implements IPurchase.
 func (r *Router) Register(eng worker.IEngine) {
-	eng.HandlerFunc(r.handler.HandleAddToCart)
+	eng.Register("purchase.AddToCart", r.handler.AddToCart)
 }

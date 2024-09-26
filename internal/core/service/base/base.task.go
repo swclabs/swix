@@ -34,7 +34,7 @@ func (t *Task) HealthCheck(_ context.Context) dtos.HealthCheck {
 // WorkerCheck implements IbaseService.
 func (t *Task) WorkerCheck(ctx context.Context, _ int64) error {
 	return t.worker.Exec(ctx, queue.CriticalQueue, worker.NewTask(
-		worker.GetTaskName(t.WorkerCheck),
+		"base.WorkerCheck",
 		1,
 	))
 }
@@ -42,7 +42,7 @@ func (t *Task) WorkerCheck(ctx context.Context, _ int64) error {
 // WorkerCheckResult implements IbaseService.
 func (t *Task) WorkerCheckResult(ctx context.Context, num int64) (string, error) {
 	result, err := t.worker.ExecGetResult(ctx, queue.CriticalQueue, worker.NewTask(
-		worker.GetTaskName(t.WorkerCheckResult),
+		"base.WorkerCheckResult",
 		num,
 	))
 	if err != nil {

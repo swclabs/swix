@@ -24,6 +24,7 @@ type (
 
 // IEngine is an interface for Engine
 type IEngine interface {
+	Register(taskName string, fn HandleFunc)
 	HandlerFunc(hfn func() (taskName string, fn HandleFunc))
 	Run(concurrency int) error
 }
@@ -49,6 +50,11 @@ func New(priorityQueue Priority) IEngine {
 			Password: config.RedisPassword,                                     // Redis password
 		},
 	}
+}
+
+// Register implements IEngine.
+func (w *Engine) Register(taskName string, fn HandleFunc) {
+	w.queue[taskName] = fn
 }
 
 // handleFunctions run all functions in the given path

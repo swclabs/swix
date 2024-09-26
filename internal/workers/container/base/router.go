@@ -10,7 +10,7 @@ import (
 var _ = app.Router(NewRouter)
 
 // NewRouter creates a new Base object
-func NewRouter(handler IHandler) IRouter {
+func NewRouter(handler *Handler) IRouter {
 	return &Router{
 		handlers: handler,
 	}
@@ -23,10 +23,10 @@ type IRouter interface {
 
 // Router struct define the Router object
 type Router struct {
-	handlers IHandler
+	handlers *Handler
 }
 
 // Register register the queue
 func (b *Router) Register(eng worker.IEngine) {
-	eng.HandlerFunc(b.handlers.HandleHealthCheck)
+	eng.Register("base.WorkerCheckResult", b.handlers.WorkerCheckResult)
 }
