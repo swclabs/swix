@@ -846,6 +846,44 @@ const docTemplate = `{
                     }
                 }
             },
+            "post": {
+                "description": "add product to inventories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Specification type (storage or wireless)",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Inventories Request",
+                        "name": "InvDetail",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.InvDetail-dtos_Specs"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "description": "delete inventory by id",
                 "consumes": [
@@ -938,7 +976,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/inventories/specs/{type}": {
+        "/inventories/specs": {
             "post": {
                 "description": "create new specification for inventory",
                 "consumes": [
@@ -952,19 +990,12 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "Specification type (storage or wireless)",
-                        "name": "type",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Storage Specification",
+                        "description": "Specification",
                         "name": "spec",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.Object"
+                            "$ref": "#/definitions/dtos.InsertSpecsDTO"
                         }
                     }
                 ],
@@ -985,46 +1016,6 @@ const docTemplate = `{
                         "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/dtos.Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/inventories/{type}": {
-            "post": {
-                "description": "add product to inventories",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "inventories"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Specification type (storage or wireless)",
-                        "name": "type",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Inventories Request",
-                        "name": "InvDetail",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.InvDetail-dtos_Object"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
                         }
                     }
                 }
@@ -2026,7 +2017,30 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.InvDetail-dtos_Object": {
+        "dtos.InsertSpecsDTO": {
+            "type": "object",
+            "required": [
+                "inventory_id"
+            ],
+            "properties": {
+                "connection": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "inventory_id": {
+                    "type": "integer"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.InvDetail-dtos_Specs": {
             "type": "object",
             "required": [
                 "available",
@@ -2062,7 +2076,7 @@ const docTemplate = `{
                 "specs": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.Object"
+                        "$ref": "#/definitions/dtos.Specs"
                     }
                 },
                 "status": {
@@ -2242,9 +2256,6 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
-        },
-        "dtos.Object": {
-            "type": "object"
         },
         "dtos.OrderDTO": {
             "type": "object",
@@ -2514,6 +2525,26 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/entity.Suppliers"
                     }
+                }
+            }
+        },
+        "dtos.Specs": {
+            "type": "object",
+            "properties": {
+                "connection": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
                 }
             }
         },

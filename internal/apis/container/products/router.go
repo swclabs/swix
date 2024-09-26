@@ -52,6 +52,6 @@ func (r *Router) Routers(e *echo.Echo) {
 	e.DELETE("/inventories", r.controller.DeleteInv)
 	e.PUT("/inventories/image", r.controller.UploadInvImage)
 	e.GET("/inventories/details", r.controller.GetInvDetails)
-	e.POST("/inventories/:type", r.controller.AddInv)
-	e.POST("/inventories/specs/:type", r.controller.InsertInvSpecs)
+	e.POST("/inventories", r.controller.InsertInv)
+	e.POST("/inventories/specs", r.controller.InsertInvSpecs)
 }
