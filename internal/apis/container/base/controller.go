@@ -38,7 +38,7 @@ type Controller struct {
 // @Accept json
 // @Produce json
 // @Success 200
-// @Router /healthcheck [GET]
+// @Router /status [GET]
 func (b *Controller) HealthCheck(c echo.Context) error {
 	return c.JSON(200, b.service.HealthCheck(c.Request().Context()))
 }

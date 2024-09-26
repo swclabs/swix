@@ -778,25 +778,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/healthcheck": {
-            "get": {
-                "description": "health check api server.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "base"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/inventories": {
             "get": {
                 "description": "get all product from inventory",
@@ -1523,6 +1504,25 @@ const docTemplate = `{
                                 "$ref": "#/definitions/dtos.ProductResponse"
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/status": {
+            "get": {
+                "description": "health check api server.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "base"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }

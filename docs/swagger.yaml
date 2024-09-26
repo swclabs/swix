@@ -1622,18 +1622,6 @@ paths:
             $ref: '#/definitions/xdto.OrderInfoDTO'
       tags:
       - delivery
-  /healthcheck:
-    get:
-      consumes:
-      - application/json
-      description: health check api server.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-      tags:
-      - base
   /inventories:
     delete:
       consumes:
@@ -2108,6 +2096,18 @@ paths:
             type: array
       tags:
       - search
+  /status:
+    get:
+      consumes:
+      - application/json
+      description: health check api server.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      tags:
+      - base
   /suppliers:
     get:
       consumes:
