@@ -4,20 +4,17 @@ package worker
 import (
 	"context"
 	"encoding/json"
-	"reflect"
-	"runtime"
-	"strings"
 	"time"
 
 	"github.com/hibiken/asynq"
 )
 
 // getName returns the name of the function
-func getName(input interface{}) string {
-	str := runtime.FuncForPC(reflect.ValueOf(input).Pointer()).Name()
-	paths := strings.Split(str, "/")
-	return paths[len(paths)-1]
-}
+// func getName(input interface{}) string {
+// 	str := runtime.FuncForPC(reflect.ValueOf(input).Pointer()).Name()
+// 	paths := strings.Split(str, "/")
+// 	return paths[len(paths)-1]
+// }
 
 // wait for task to complete and get result
 func await(ctx context.Context, i *asynq.Inspector, queue, taskID string) (*asynq.TaskInfo, error) {
@@ -45,9 +42,9 @@ func await(ctx context.Context, i *asynq.Inspector, queue, taskID string) (*asyn
 }
 
 // GetTaskName get task name from function
-func GetTaskName(input interface{}) string {
-	return getName(input)
-}
+// func GetTaskName(input interface{}) string {
+// 	return getName(input)
+// }
 
 // NewTask creates a new asynq.Task instance
 // to be executed by worker consume handler.

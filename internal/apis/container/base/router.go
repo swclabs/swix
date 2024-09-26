@@ -35,6 +35,6 @@ func (b *Router) Routers(e *echo.Echo) {
 	e.GET("/", Home)
 
 	// endpoint for common routes
-	e.GET("/healthcheck", b.controllers.HealthCheck)
+	e.GET("/status", b.controllers.HealthCheck)
 	e.GET("/worker", b.controllers.WorkerCheck)
 }

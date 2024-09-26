@@ -73,10 +73,13 @@ func (t *Task) GetDeliveryAddress(ctx context.Context, userID int64) ([]dtos.Add
 
 // AddToCart implements IPurchaseService.
 func (t *Task) AddToCart(ctx context.Context, cart dtos.CartInsertDTO) error {
-	return t.worker.Exec(ctx, queue.CartQueue, worker.NewTask(
-		worker.GetTaskName(t.AddToCart),
-		cart,
-	))
+	return t.worker.Exec(ctx,
+		queue.CartQueue,
+		worker.NewTask(
+			"purchase.AddToCart",
+			cart,
+		),
+	)
 }
 
 // CreateOrders implements IPurchaseService.

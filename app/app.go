@@ -15,7 +15,13 @@ type IApplication interface {
 	Run() error
 }
 
+type Tasks[T any] struct {
+	TaskName string
+	Handle   T
+}
+
 var module = fx.Provide()
+var task = fx.Provide()
 
 func Repos[Fn any](reposConstructor Fn) Fn {
 	module = fx.Options(module, fx.Provide(reposConstructor))
@@ -35,6 +41,11 @@ func Router[Fn any](routersConstructor Fn) Fn {
 func Controller[Fn any](controllerConstructor Fn) Fn {
 	module = fx.Options(module, fx.Provide(controllerConstructor))
 	return controllerConstructor
+}
+
+func Task[Fn any](taskName string, taskConstructor Fn) Fn {
+	task = fx.Options(task, fx.Provide(taskConstructor))
+	return taskConstructor
 }
 
 func _main(lc fx.Lifecycle, app IApplication) {
