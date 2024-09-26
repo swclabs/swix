@@ -80,39 +80,8 @@ func (s *Products) AccessoryDetail(ctx context.Context, productID int64) (*dtos.
 	return &detail, nil
 }
 
-// InsertSpecWireless implements IProductService.
-func (s *Products) InsertSpecWireless(ctx context.Context, specification dtos.Wireless) error {
-	inventory, err := s.Inventory.GetByID(ctx, specification.InventoryID)
-	if err != nil {
-		return err
-	}
-	product, err := s.Products.GetByID(ctx, inventory.ProductID)
-	if err != nil {
-		return err
-	}
-	category, err := s.Category.GetByID(ctx, product.CategoryID)
-	if err != nil {
-		return err
-	}
-	var types enum.Category
-	if err := types.Load(category.Name); err != nil {
-		return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-	}
-	if types&enum.Storage != 0 {
-		return fmt.Errorf("[code %d] category not support specification", http.StatusBadRequest)
-	}
-	content, _ := json.Marshal(dtos.InvWireless{
-		Connection: specification.Connection,
-		Desc:       specification.Connection,
-	})
-	return s.Specs.Insert(ctx, entity.Specifications{
-		InventoryID: specification.InventoryID,
-		Content:     string(content),
-	})
-}
-
-// InsertSpecStorage implements IProductService.
-func (s *Products) InsertSpecStorage(ctx context.Context, specification dtos.Storage) error {
+// InsertSpecsInv implements IProductService.
+func (s *Products) InsertSpecsInv(ctx context.Context, specification dtos.InsertSpecsDTO) error {
 	inventory, err := s.Inventory.GetByID(ctx, specification.InventoryID)
 	if err != nil {
 		return err
@@ -132,9 +101,11 @@ func (s *Products) InsertSpecStorage(ctx context.Context, specification dtos.Sto
 	if types&enum.Storage == 0 {
 		return fmt.Errorf("[code %d] category not support specification", http.StatusBadRequest)
 	}
-	content, _ := json.Marshal(dtos.InvStorage{
-		RAM: specification.RAM,
-		SSD: specification.SSD,
+	content, _ := json.Marshal(dtos.Specs{
+		RAM:        specification.RAM,
+		SSD:        specification.SSD,
+		Connection: specification.Connection,
+		Desc:       specification.Desc,
 	})
 	return s.Specs.Insert(ctx, entity.Specifications{
 		InventoryID: specification.InventoryID,
@@ -204,21 +175,27 @@ func (s *Products) GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inv
 		return nil, err
 	}
 	for _, spec := range specOfproduct {
-		if types&enum.Storage != 0 {
-			var _spec dtos.InvStorage
-			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-				return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-			}
-			_spec.ID = spec.ID
-			result.Specs = append(result.Specs, _spec)
-		} else {
-			var _spec dtos.InvWireless
-			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-				return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-			}
-			_spec.ID = spec.ID
-			result.Specs = append(result.Specs, _spec)
+		var _spec dtos.Specs
+		if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+			return nil, err
 		}
+		_spec.ID = spec.ID
+		result.Specs = append(result.Specs, _spec)
+		// if types&enum.Storage != 0 {
+		// 	var _spec dtos.InvStorage
+		// 	if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+		// 		return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
+		// 	}
+		// 	_spec.ID = spec.ID
+		// 	result.Specs = append(result.Specs, _spec)
+		// } else {
+		// 	var _spec dtos.InvWireless
+		// 	if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+		// 		return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
+		// 	}
+		// 	_spec.ID = spec.ID
+		// 	result.Specs = append(result.Specs, _spec)
+		// }
 	}
 	return &result, nil
 
@@ -273,23 +250,29 @@ func (s *Products) ProductDetail(ctx context.Context, productID int64) (*dtos.Pr
 			detailSpec []interface{}
 		)
 		for _, spec := range specOfproduct {
-			if types&enum.Storage != 0 {
-				var storage dtos.InvStorage
-				_ = json.Unmarshal([]byte(spec.Content), &storage)
-				detailSpec = append(detailSpec, dtos.DetailStorage{
-					RAM:   storage.RAM,
-					SSD:   storage.SSD,
-					Price: stock.Price.String(),
-				})
-			} else {
-				var wireless dtos.InvWireless
-				_ = json.Unmarshal([]byte(spec.Content), &wireless)
-				detailSpec = append(detailSpec, dtos.DetailWireless{
-					Name:  wireless.Connection,
-					Desc:  "",
-					Price: stock.Price.String(),
-				})
+			var _spec dtos.Specs
+			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+				return nil, err
 			}
+			_spec.ID = spec.ID
+			detailSpec = append(detailSpec, _spec)
+			// if types&enum.Storage != 0 {
+			// 	var storage dtos.InvStorage
+			// 	_ = json.Unmarshal([]byte(spec.Content), &storage)
+			// 	detailSpec = append(detailSpec, dtos.DetailStorage{
+			// 		RAM:   storage.RAM,
+			// 		SSD:   storage.SSD,
+			// 		Price: stock.Price.String(),
+			// 	})
+			// } else {
+			// 	var wireless dtos.InvWireless
+			// 	_ = json.Unmarshal([]byte(spec.Content), &wireless)
+			// 	detailSpec = append(detailSpec, dtos.DetailWireless{
+			// 		Name:  wireless.Connection,
+			// 		Desc:  "",
+			// 		Price: stock.Price.String(),
+			// 	})
+			// }
 		}
 		detailColor.Specs = append(detailColor.Specs, detailSpec...)
 		details.Color = append(details.Color, detailColor)
@@ -402,21 +385,27 @@ func (s *Products) GetAllInv(ctx context.Context, page int, limit int) (*dtos.In
 			return nil, err
 		}
 		for _, spec := range specOfproduct {
-			if types&enum.Storage != 0 {
-				var _spec dtos.InvStorage
-				if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-					return nil, err
-				}
-				_spec.ID = spec.ID
-				inv.Specs = append(inv.Specs, _spec)
-			} else {
-				var _spec dtos.InvWireless
-				if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-					return nil, err
-				}
-				_spec.ID = spec.ID
-				inv.Specs = append(inv.Specs, _spec)
+			var _spec dtos.Specs
+			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+				return nil, err
 			}
+			_spec.ID = spec.ID
+			inv.Specs = append(inv.Specs, _spec)
+			// if types&enum.Storage != 0 {
+			// 	var _spec dtos.InvStorage
+			// 	if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+			// 		return nil, err
+			// 	}
+			// 	_spec.ID = spec.ID
+			// 	inv.Specs = append(inv.Specs, _spec)
+			// } else {
+			// 	var _spec dtos.InvWireless
+			// 	if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+			// 		return nil, err
+			// 	}
+			// 	_spec.ID = spec.ID
+			// 	inv.Specs = append(inv.Specs, _spec)
+			// }
 		}
 		stock.Stock = append(stock.Stock, inv)
 	}

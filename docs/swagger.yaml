@@ -226,7 +226,22 @@ definitions:
       msg:
         type: string
     type: object
-  dtos.InvDetail-dtos_Object:
+  dtos.InsertSpecsDTO:
+    properties:
+      connection:
+        type: string
+      desc:
+        type: string
+      inventory_id:
+        type: integer
+      ram:
+        type: string
+      ssd:
+        type: string
+    required:
+    - inventory_id
+    type: object
+  dtos.InvDetail-dtos_Specs:
     properties:
       available:
         type: string
@@ -246,7 +261,7 @@ definitions:
         type: string
       specs:
         items:
-          $ref: '#/definitions/dtos.Object'
+          $ref: '#/definitions/dtos.Specs'
         type: array
       status:
         type: string
@@ -370,8 +385,6 @@ definitions:
     properties:
       msg:
         type: string
-    type: object
-  dtos.Object:
     type: object
   dtos.OrderDTO:
     properties:
@@ -554,6 +567,19 @@ definitions:
         items:
           $ref: '#/definitions/entity.Suppliers'
         type: array
+    type: object
+  dtos.Specs:
+    properties:
+      connection:
+        type: string
+      desc:
+        type: string
+      id:
+        type: integer
+      ram:
+        type: string
+      ssd:
+        type: string
     type: object
   dtos.StockHeader:
     properties:
@@ -1666,6 +1692,31 @@ paths:
             $ref: '#/definitions/dtos.InvStock-dtos_InvStorage'
       tags:
       - inventories
+    post:
+      consumes:
+      - application/json
+      description: add product to inventories
+      parameters:
+      - description: Specification type (storage or wireless)
+        in: path
+        name: type
+        required: true
+        type: string
+      - description: Inventories Request
+        in: body
+        name: InvDetail
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.InvDetail-dtos_Specs'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
     put:
       consumes:
       - application/json
@@ -1682,32 +1733,6 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - inventories
-  /inventories/{type}:
-    post:
-      consumes:
-      - application/json
-      description: add product to inventories
-      parameters:
-      - description: Specification type (storage or wireless)
-        in: path
-        name: type
-        required: true
-        type: string
-      - description: Inventories Request
-        in: body
-        name: InvDetail
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.InvDetail-dtos_Object'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
@@ -1752,23 +1777,18 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
-  /inventories/specs/{type}:
+  /inventories/specs:
     post:
       consumes:
       - application/json
       description: create new specification for inventory
       parameters:
-      - description: Specification type (storage or wireless)
-        in: path
-        name: type
-        required: true
-        type: string
-      - description: Storage Specification
+      - description: Specification
         in: body
         name: spec
         required: true
         schema:
-          $ref: '#/definitions/dtos.Object'
+          $ref: '#/definitions/dtos.InsertSpecsDTO'
       produces:
       - application/json
       responses:

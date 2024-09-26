@@ -84,6 +84,14 @@ type WirelessReq struct {
 	Connection string `json:"connection"`
 }
 
+type Specs struct {
+	ID         int64  `json:"id"`
+	SSD        string `json:"ssd"`
+	RAM        string `json:"ram"`
+	Desc       string `json:"desc"`
+	Connection string `json:"connection"`
+}
+
 // InvDetail request, response
 type InvDetail[T any] struct {
 	ProductID    string   `json:"product_id" validate:"number,required"`
@@ -162,4 +170,12 @@ type Wireless struct {
 	InventoryID int64  `json:"inventory_id" validate:"number,required"`
 	Connection  string `json:"connection" validate:"required"`
 	Desc        string `json:"desc" validate:"required"`
+}
+
+type InsertSpecsDTO struct {
+	InventoryID int64  `json:"inventory_id" validate:"number,required"`
+	RAM         string `json:"ram" validate:"number"`
+	SSD         string `json:"ssd" validate:"number"`
+	Connection  string `json:"connection"`
+	Desc        string `json:"desc"`
 }
