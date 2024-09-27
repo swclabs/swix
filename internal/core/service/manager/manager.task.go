@@ -30,7 +30,7 @@ func UseTask(service IManager) IManager {
 // SignUp user to access system, return error if exist
 func (t *Task) SignUp(ctx context.Context, req dtos.SignUpRequest) error {
 	return t.worker.Exec(ctx,
-		queue.CriticalQueue,
+		queue.DefaultQueue,
 		worker.NewTask(
 			"manager.SignUp",
 			req,
@@ -41,7 +41,7 @@ func (t *Task) SignUp(ctx context.Context, req dtos.SignUpRequest) error {
 // UpdateUserInfo update user information
 func (t *Task) UpdateUserInfo(ctx context.Context, req dtos.UserUpdate) error {
 	return t.worker.Exec(ctx,
-		queue.CriticalQueue,
+		queue.DefaultQueue,
 		worker.NewTask(
 			"manager.UpdateUserInfo",
 			req,
@@ -52,7 +52,7 @@ func (t *Task) UpdateUserInfo(ctx context.Context, req dtos.UserUpdate) error {
 // OAuth2SaveUser save user information from oauth2
 func (t *Task) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (int64, error) {
 	result, err := t.worker.ExecGetResult(ctx,
-		queue.CriticalQueue,
+		queue.DefaultQueue,
 		worker.NewTask(
 			"manager.OAuth2SaveUser",
 			req,

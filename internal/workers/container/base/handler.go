@@ -7,8 +7,7 @@ import (
 	"fmt"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/service/base"
-
-	"github.com/hibiken/asynq"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 var _ = app.Controller(NewHandler)
@@ -26,16 +25,14 @@ type Handler struct {
 }
 
 // HandleHealthCheck handle health check
-func (base *Handler) WorkerCheckResult(_ context.Context, task *asynq.Task) error {
+func (base *Handler) WorkerCheckResult(c worker.Context) error {
 	var num int64
-	if err := json.Unmarshal(task.Payload(), &num); err != nil {
+	if err := json.Unmarshal(c.Payload(), &num); err != nil {
 		return err
 	}
 	result, err := base.handler.WorkerCheckResult(context.Background(), num)
 	if err != nil {
 		return err
 	}
-	_, err = task.ResultWriter().Write(
-		[]byte(fmt.Sprintf("HandleHealthCheck with param '%s': success", result)))
-	return err
+	return c.Return([]byte(fmt.Sprintf("ID: %s", result)))
 }

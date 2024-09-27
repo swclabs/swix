@@ -28,7 +28,7 @@ type Router struct {
 
 // Register register the queue
 func (router *Router) Register(eng worker.IEngine) {
-	eng.Register("manager.SignUp", router.handlers.SignUp)
-	eng.Register("manager.OAuth2SaveUser", router.handlers.OAuth2SaveUser)
-	eng.Register("manager.UpdateUserInfo", router.handlers.UpdateUserInfo)
+	eng.HandlerFunc("manager.SignUp", router.handlers.SignUp)
+	eng.HandlerFunc("manager.OAuth2SaveUser", router.handlers.OAuth2SaveUser)
+	eng.HandlerFunc("manager.UpdateUserInfo", router.handlers.UpdateUserInfo)
 }
