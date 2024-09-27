@@ -8,8 +8,7 @@ import (
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
-
-	"github.com/hibiken/asynq"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 var _ = app.Controller(NewHandler)
@@ -27,32 +26,31 @@ type Handler struct {
 }
 
 // SignUp handle sign up
-func (manager *Handler) SignUp(_ context.Context, task *asynq.Task) error {
+func (manager *Handler) SignUp(c worker.Context) error {
 	var data dtos.SignUpRequest
-	if err := json.Unmarshal(task.Payload(), &data); err != nil {
+	if err := json.Unmarshal(c.Payload(), &data); err != nil {
 		return err
 	}
 	return manager.handler.SignUp(context.Background(), data)
 }
 
 // OAuth2SaveUser handle save user information from oauth2
-func (manager *Handler) OAuth2SaveUser(_ context.Context, task *asynq.Task) error {
+func (manager *Handler) OAuth2SaveUser(c worker.Context) error {
 	var data dtos.OAuth2SaveUser
-	if err := json.Unmarshal(task.Payload(), &data); err != nil {
+	if err := json.Unmarshal(c.Payload(), &data); err != nil {
 		return err
 	}
 	ID, err := manager.handler.OAuth2SaveUser(context.Background(), data)
 	if err != nil {
 		return err
 	}
-	_, err = task.ResultWriter().Write([]byte(strconv.FormatInt(ID, 10)))
-	return err
+	return c.Return([]byte(strconv.FormatInt(ID, 10)))
 }
 
 // UpdateUserInfo handle update user information
-func (manager *Handler) UpdateUserInfo(_ context.Context, task *asynq.Task) error {
+func (manager *Handler) UpdateUserInfo(c worker.Context) error {
 	var data dtos.UserUpdate
-	if err := json.Unmarshal(task.Payload(), &data); err != nil {
+	if err := json.Unmarshal(c.Payload(), &data); err != nil {
 		return err
 	}
 	return manager.handler.UpdateUserInfo(context.Background(), data)

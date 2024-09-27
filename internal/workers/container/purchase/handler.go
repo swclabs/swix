@@ -7,8 +7,7 @@ import (
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/purchase"
-
-	"github.com/hibiken/asynq"
+	"swclabs/swix/pkg/lib/worker"
 )
 
 var _ = app.Controller(NewHandler)
@@ -24,9 +23,9 @@ type Handler struct {
 }
 
 // HandleAddToCart implements IPurchase.
-func (p *Handler) AddToCart(_ context.Context, task *asynq.Task) error {
+func (p *Handler) AddToCart(c worker.Context) error {
 	var req dtos.CartInsertDTO
-	if err := json.Unmarshal(task.Payload(), &req); err != nil {
+	if err := json.Unmarshal(c.Payload(), &req); err != nil {
 		return err
 	}
 	return p.service.AddToCart(context.Background(), req)

@@ -25,7 +25,7 @@ type (
 // IEngine is an interface for Engine
 type IEngine interface {
 	Register(taskName string, fn HandleFunc)
-	HandlerFunc(hfn func() (taskName string, fn HandleFunc))
+	HandlerFunc(taskName string, fn func(c Context) error)
 	Run(concurrency int) error
 }
 
@@ -65,9 +65,10 @@ func (w *Engine) handleFunctions() {
 }
 
 // HandlerFunc register the queue
-func (w *Engine) HandlerFunc(hfn func() (taskName string, fn HandleFunc)) {
-	taskName, fn := hfn()
-	w.queue[taskName] = fn
+func (w *Engine) HandlerFunc(taskName string, fn func(c Context) error) {
+	w.mux.HandleFunc(taskName, func(ctx context.Context, task *asynq.Task) error {
+		return fn(Context{ctx, task})
+	})
 }
 
 // Run start the asynq server

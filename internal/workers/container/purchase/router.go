@@ -28,5 +28,5 @@ type Router struct {
 
 // Register implements IPurchase.
 func (r *Router) Register(eng worker.IEngine) {
-	eng.Register("purchase.AddToCart", r.handler.AddToCart)
+	eng.HandlerFunc("purchase.AddToCart", r.handler.AddToCart)
 }
