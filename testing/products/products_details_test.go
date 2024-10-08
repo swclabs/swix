@@ -9,10 +9,10 @@ import (
 	productContainer "swclabs/swix/internal/apis/container/products"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 	"swclabs/swix/internal/core/repos/categories"
 	"swclabs/swix/internal/core/repos/inventories"
 	productRepo "swclabs/swix/internal/core/repos/products"
-	"swclabs/swix/internal/core/repos/specifications"
 	productService "swclabs/swix/internal/core/service/products"
 	"swclabs/swix/pkg/lib/logger"
 	"testing"
@@ -27,53 +27,35 @@ func TestProductDetails(t *testing.T) {
 			Screen:  "6.1 inch",
 			Display: "Super Retina XDR display",
 		}
-		inventorySpec = dtos.InvStorage{
-			RAM: "8GB",
-			SSD: "256GB",
-		}
 		bProductSpecs, _ = json.Marshal(productSpecs)
-		bInvSpec, _      = json.Marshal(inventorySpec)
 		inventory        inventories.Mock
 		product          productRepo.Mock
-		specs            specifications.Mock
 		category         = categories.Mock{}
 		service          = productService.Products{
 			Inventory: &inventory,
 			Products:  &product,
-			Specs:     &specs,
 			Category:  &category,
 		}
 		controller = productContainer.NewController(&service)
 	)
-
-	for i := 1; i <= 4; i++ {
-		specs.On("GetByInventoryID", context.Background(), int64(i)).Return([]entity.Specifications{
-			{
-				ID:          1,
-				InventoryID: int64(i),
-				Content:     string(bInvSpec),
-			},
-			{
-				ID:          2,
-				InventoryID: int64(i),
-				Content:     string(bInvSpec),
-			},
-			{
-				ID:          3,
-				InventoryID: int64(i),
-				Content:     string(bInvSpec),
-			},
-		}, nil)
-	}
-
+	specs, _ := json.Marshal(dtos.Specs{
+		SSD: "256",
+		RAM: "128",
+	})
 	category.On("GetByID", context.Background(), int64(1)).Return(&entity.Categories{
 		ID:          int64(1),
 		Name:        "phone",
 		Description: "phone",
 	}, nil)
 
+	inventory.On("GetColor", context.Background(), int64(1)).Return([]model.ColorItem{
+		{
+			Color: "Black Titanium",
+		},
+	}, nil)
+
 	// sInventorySpec, _ := json.Marshal(inventorySpec)
-	inventory.On("GetByProductID", context.Background(), int64(1)).Return([]entity.Inventories{
+	inventory.On("GetByColor", context.Background(), int64(1), "Black Titanium").Return([]entity.Inventories{
 		{
 			ID:           1,
 			ProductID:    1,
@@ -84,41 +66,10 @@ func TestProductDetails(t *testing.T) {
 			Color:        "Black Titanium",
 			ColorImg:     "https://example.com/black-titanium.jpg",
 			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg,https://example.com/iphone-12-3.jpg",
-		},
-		{
-			ID:           2,
-			ProductID:    1,
-			Available:    1000,
-			Price:        decimal.NewFromInt(10000),
-			CurrencyCode: "VND",
-			Status:       "active",
-			Color:        "White Ceramic",
-			ColorImg:     "https://example.com/white-ceramic.jpg",
-			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
-		},
-		{
-			ID:           3,
-			ProductID:    1,
-			Available:    1000,
-			Price:        decimal.NewFromInt(10000),
-			CurrencyCode: "VND",
-			Status:       "active",
-			Color:        "Blue Titanium",
-			ColorImg:     "https://example.com/blue-titanium.jpg",
-			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
-		},
-		{
-			ID:           4,
-			ProductID:    1,
-			Available:    1000,
-			Price:        decimal.NewFromInt(10000),
-			CurrencyCode: "VND",
-			Status:       "active",
-			Color:        "Red Titanium",
-			ColorImg:     "https://example.com/red-titanium.jpg",
-			Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
+			Specs:        string(specs),
 		},
 	}, nil)
+
 	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
 		Name:       "iPhone 12",
 		Image:      "/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-1-202309.jpg,/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-2-202309.jpg,/img/shop/iphone-15-pro/iphone-15-pro-finish-select.jpg",
@@ -134,7 +85,7 @@ func TestProductDetails(t *testing.T) {
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body dtos.ProductDetail[dtos.DetailStorage]
+	var body dtos.ProductDetail
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}

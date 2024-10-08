@@ -6,6 +6,7 @@
 package main
 
 import (
+	"log"
 	"swclabs/swix/app"
 	_ "swclabs/swix/app/init"
 	"swclabs/swix/internal/apis"
@@ -13,5 +14,5 @@ import (
 
 func main() {
 	app := app.Builder(apis.NewApp)
-	_ = app.Run()
+	log.Fatal(app.Run())
 }

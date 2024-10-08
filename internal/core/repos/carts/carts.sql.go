@@ -2,9 +2,9 @@ package carts
 
 const (
 	insertItemToCart = `
-		INSERT INTO carts (user_id, inventory_id, quantity, spec_id)
-		VALUES ($1, $2, $3, $4)
-		ON CONFLICT (inventory_id, user_id, spec_id)
+		INSERT INTO carts (user_id, inventory_id, quantity)
+		VALUES ($1, $2, $3)
+		ON CONFLICT (inventory_id, user_id)
 		DO UPDATE SET quantity = carts.quantity + EXCLUDED.quantity;
 	`
 

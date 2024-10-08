@@ -15,7 +15,6 @@ import (
 	"swclabs/swix/internal/core/repos/categories"
 	"swclabs/swix/internal/core/repos/inventories"
 	"swclabs/swix/internal/core/repos/products"
-	"swclabs/swix/internal/core/repos/specifications"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/errors"
@@ -33,14 +32,12 @@ func New(
 	products products.IProducts,
 	inventory inventories.IInventories,
 	category categories.ICategories,
-	Spec specifications.ISpecifications,
 ) IProducts {
 	return &Products{
 		Blob:      blob,
 		Products:  products,
 		Inventory: inventory,
 		Category:  category,
-		Specs:     Spec,
 	}
 }
 
@@ -50,7 +47,23 @@ type Products struct {
 	Products  products.IProducts
 	Inventory inventories.IInventories
 	Category  categories.ICategories
-	Specs     specifications.ISpecifications
+}
+
+// SearchDetails implements IProducts.
+func (s *Products) SearchDetails(ctx context.Context, keyword string) ([]dtos.ProductDetail, error) {
+	products, err := s.Products.Search(ctx, keyword)
+	if err != nil {
+		return nil, errors.Service("keyword error", err)
+	}
+	var details []dtos.ProductDetail
+	for _, product := range products {
+		detail, err := s.ProductDetail(ctx, product.ID)
+		if err != nil {
+			return nil, err
+		}
+		details = append(details, *detail)
+	}
+	return details, nil
 }
 
 // AccessoryDetail implements IProductService.
@@ -78,39 +91,6 @@ func (s *Products) AccessoryDetail(ctx context.Context, productID int64) (*dtos.
 		Category: types.String(),
 	}
 	return &detail, nil
-}
-
-// InsertSpecsInv implements IProductService.
-func (s *Products) InsertSpecsInv(ctx context.Context, specification dtos.InsertSpecsDTO) error {
-	inventory, err := s.Inventory.GetByID(ctx, specification.InventoryID)
-	if err != nil {
-		return err
-	}
-	product, err := s.Products.GetByID(ctx, inventory.ProductID)
-	if err != nil {
-		return err
-	}
-	category, err := s.Category.GetByID(ctx, product.CategoryID)
-	if err != nil {
-		return err
-	}
-	var types enum.Category
-	if err := types.Load(category.Name); err != nil {
-		return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-	}
-	if types&enum.Storage == 0 {
-		return fmt.Errorf("[code %d] category not support specification", http.StatusBadRequest)
-	}
-	content, _ := json.Marshal(dtos.Specs{
-		RAM:        specification.RAM,
-		SSD:        specification.SSD,
-		Connection: specification.Connection,
-		Desc:       specification.Desc,
-	})
-	return s.Specs.Insert(ctx, entity.Specifications{
-		InventoryID: specification.InventoryID,
-		Content:     string(content),
-	})
 }
 
 // ViewDataOf implements IProductService.
@@ -142,140 +122,81 @@ func (s *Products) ViewDataOf(ctx context.Context, types enum.Category, offset i
 }
 
 // GetInvByID implements IProductService.
-func (s *Products) GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory[interface{}], error) {
-	stock, err := s.Inventory.GetByID(ctx, inventoryID)
+func (s *Products) GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory, error) {
+	item, err := s.Inventory.GetByID(ctx, inventoryID)
 	if err != nil {
 		return nil, err
 	}
-	product, err := s.Products.GetByID(ctx, stock.ProductID)
+	product, err := s.Products.GetByID(ctx, item.ProductID)
 	if err != nil {
 		return nil, err
 	}
 	category, _ := s.Category.GetByID(ctx, product.CategoryID)
-	var (
-		result = dtos.Inventory[interface{}]{
-			ID:           stock.ID,
-			ProductName:  product.Name,
-			ProductID:    strconv.Itoa(int(stock.ProductID)),
-			Price:        stock.Price.String(),
-			Available:    strconv.Itoa(int(stock.Available)),
-			CurrencyCode: stock.CurrencyCode,
-			Status:       stock.Status,
-			Color:        stock.Color,
-			ColorImg:     stock.ColorImg,
-			Image:        strings.Split(stock.Image, ","),
-			Category:     category.Name,
-			Specs:        nil,
-		}
-		types enum.Category
-	)
-	_ = types.Load(category.Name)
-	specOfproduct, err := s.Specs.GetByInventoryID(ctx, inventoryID)
-	if err != nil {
+	var specs dtos.Specs
+	if err := json.Unmarshal([]byte(item.Specs), &specs); err != nil {
 		return nil, err
 	}
-	for _, spec := range specOfproduct {
-		var _spec dtos.Specs
-		if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-			return nil, err
+	var (
+		result = dtos.Inventory{
+			ID:           item.ID,
+			ProductName:  product.Name,
+			ProductID:    item.ProductID,
+			Price:        item.Price.String(),
+			Available:    strconv.Itoa(int(item.Available)),
+			CurrencyCode: item.CurrencyCode,
+			Status:       item.Status,
+			Color:        item.Color,
+			ColorImg:     item.ColorImg,
+			Image:        strings.Split(item.Image, ","),
+			Category:     category.Name,
+			Specs:        []dtos.Specs{specs},
 		}
-		_spec.ID = spec.ID
-		result.Specs = append(result.Specs, _spec)
-		// if types&enum.Storage != 0 {
-		// 	var _spec dtos.InvStorage
-		// 	if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-		// 		return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-		// 	}
-		// 	_spec.ID = spec.ID
-		// 	result.Specs = append(result.Specs, _spec)
-		// } else {
-		// 	var _spec dtos.InvWireless
-		// 	if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-		// 		return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-		// 	}
-		// 	_spec.ID = spec.ID
-		// 	result.Specs = append(result.Specs, _spec)
-		// }
-	}
+	)
 	return &result, nil
 
 }
 
 // ProductDetail implements IProductService.
-func (s *Products) ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail[interface{}], error) {
+func (s *Products) ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail, error) {
 	var (
 		productSpecs dtos.ProductSpecs
-		types        enum.Category
-		details      dtos.ProductDetail[interface{}]
+		details      dtos.ProductDetail
 	)
-
-	rawStocks, err := s.Inventory.GetByProductID(ctx, productID)
+	colors, err := s.Inventory.GetColor(ctx, productID)
 	if err != nil {
 		return nil, err
 	}
-	rawProduct, err := s.Products.GetByID(ctx, productID)
+	product, err := s.Products.GetByID(ctx, productID)
 	if err != nil {
 		return nil, err
 	}
-	category, err := s.Category.GetByID(ctx, rawProduct.CategoryID)
-	if err != nil {
+	if err := json.Unmarshal([]byte(product.Specs), &productSpecs); err != nil {
 		return nil, err
 	}
-	if err := types.Load(category.Name); err != nil {
-		return nil, err
-	}
-	if types&enum.Storage == 0 {
-		return &details, nil
-	}
-	if err := json.Unmarshal([]byte(rawProduct.Specs), &productSpecs); err != nil {
-		return nil, err
-	}
-	details.Name = rawProduct.Name
+	details.Name = product.Name
 	details.Screen = productSpecs.Screen
 	details.Display = productSpecs.Display
-	details.Image = strings.Split(rawProduct.Image, ",")
+	details.Image = strings.Split(product.Image, ",")
 
-	for _, stock := range rawStocks {
-		specOfproduct, err := s.Specs.GetByInventoryID(ctx, stock.ID)
+	for _, color := range colors {
+		items, err := s.Inventory.GetByColor(ctx, productID, color.Color)
 		if err != nil {
 			return nil, err
 		}
-		var (
-			detailColor = dtos.DetailColor[interface{}]{
-				Name:    stock.Color,
-				Img:     stock.ColorImg,
-				Product: strings.Split(stock.Image, ","),
-				Specs:   nil,
-			}
-			detailSpec []interface{}
-		)
-		for _, spec := range specOfproduct {
-			var _spec dtos.Specs
-			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+		detailsColor := dtos.DetailColor{
+			Name:    color.Color,
+			Img:     items[0].ColorImg,
+			Product: strings.Split(items[0].Image, ","),
+		}
+		for _, item := range items {
+			var spec dtos.SpecsItem
+			if err := json.Unmarshal([]byte(item.Specs), &spec); err != nil {
 				return nil, err
 			}
-			_spec.ID = spec.ID
-			detailSpec = append(detailSpec, _spec)
-			// if types&enum.Storage != 0 {
-			// 	var storage dtos.InvStorage
-			// 	_ = json.Unmarshal([]byte(spec.Content), &storage)
-			// 	detailSpec = append(detailSpec, dtos.DetailStorage{
-			// 		RAM:   storage.RAM,
-			// 		SSD:   storage.SSD,
-			// 		Price: stock.Price.String(),
-			// 	})
-			// } else {
-			// 	var wireless dtos.InvWireless
-			// 	_ = json.Unmarshal([]byte(spec.Content), &wireless)
-			// 	detailSpec = append(detailSpec, dtos.DetailWireless{
-			// 		Name:  wireless.Connection,
-			// 		Desc:  "",
-			// 		Price: stock.Price.String(),
-			// 	})
-			// }
+			spec.Price = item.Price.String()
+			detailsColor.Specs = append(detailsColor.Specs, spec)
 		}
-		detailColor.Specs = append(detailColor.Specs, detailSpec...)
-		details.Color = append(details.Color, detailColor)
+		details.Color = append(details.Color, detailsColor)
 	}
 	return &details, nil
 }
@@ -337,23 +258,15 @@ func (s *Products) DeleteInvByID(ctx context.Context, inventoryID int64) error {
 }
 
 // GetAllInv implements IProductService.
-func (s *Products) GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvStock[interface{}], error) {
-	inventories, err := s.Inventory.GetLimit(ctx, limit, page)
-	if err != nil {
-		return nil, errors.Service("get stock", err)
-	}
-	var stock dtos.InvStock[interface{}]
+func (s *Products) GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvItems, error) {
 
-	for _, inv := range inventories {
-		switch inv.Status {
-		case "active":
-			stock.Header.Active++
-		case "draft":
-			stock.Header.Draft++
-		case "archived":
-			stock.Header.Active++
-		}
-		product, err := s.Products.GetByID(ctx, inv.ProductID)
+	products, err := s.Products.GetLimit(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
+	var invItems dtos.InvItems
+	for _, product := range products {
+		colors, err := s.Inventory.GetColor(ctx, product.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -361,60 +274,49 @@ func (s *Products) GetAllInv(ctx context.Context, page int, limit int) (*dtos.In
 		if err != nil {
 			return nil, err
 		}
-		var (
-			specs []interface{}
-			types enum.Category
-			inv   = dtos.Inventory[interface{}]{
-				Specs:        specs,
-				ProductName:  product.Name,
-				ProductID:    strconv.Itoa(int(inv.ProductID)),
-				Image:        strings.Split(inv.Image, ","),
-				Category:     category.Name,
-				ID:           inv.ID,
-				Price:        inv.Price.String(),
-				Available:    strconv.Itoa(int(inv.Available)),
-				CurrencyCode: inv.CurrencyCode,
-				Status:       inv.Status,
-				ColorImg:     inv.ColorImg,
-				Color:        inv.Color,
-			}
-		)
-		_ = types.Load(category.Name)
-		specOfproduct, err := s.Specs.GetByInventoryID(ctx, inv.ID)
-		if err != nil {
-			return nil, err
-		}
-		for _, spec := range specOfproduct {
-			var _spec dtos.Specs
-			if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
+		for _, color := range colors {
+			items, err := s.Inventory.GetByColor(ctx, product.ID, color.Color)
+			if err != nil {
 				return nil, err
 			}
-			_spec.ID = spec.ID
-			inv.Specs = append(inv.Specs, _spec)
-			// if types&enum.Storage != 0 {
-			// 	var _spec dtos.InvStorage
-			// 	if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-			// 		return nil, err
-			// 	}
-			// 	_spec.ID = spec.ID
-			// 	inv.Specs = append(inv.Specs, _spec)
-			// } else {
-			// 	var _spec dtos.InvWireless
-			// 	if err := json.Unmarshal([]byte(spec.Content), &_spec); err != nil {
-			// 		return nil, err
-			// 	}
-			// 	_spec.ID = spec.ID
-			// 	inv.Specs = append(inv.Specs, _spec)
-			// }
+			_item := dtos.Inventory{
+				ID:           items[0].ID,
+				ProductName:  product.Name,
+				ProductID:    items[0].ProductID,
+				Price:        items[0].Price.String(),
+				Available:    strconv.Itoa(int(items[0].Available)),
+				CurrencyCode: items[0].CurrencyCode,
+				Status:       items[0].Status,
+				Color:        items[0].Color,
+				ColorImg:     items[0].ColorImg,
+				Image:        strings.Split(items[0].Image, ","),
+				Category:     category.Name,
+				Specs:        nil,
+			}
+			for _, item := range items {
+				switch item.Status {
+				case "active":
+					invItems.Header.Active++
+				case "draft":
+					invItems.Header.Draft++
+				case "archived":
+					invItems.Header.Active++
+				}
+				invItems.Header.All++
+				var specs dtos.Specs
+				if err := json.Unmarshal([]byte(item.Specs), &specs); err != nil {
+					return nil, err
+				}
+				_item.Specs = append(_item.Specs, specs)
+			}
+			invItems.Stock = append(invItems.Stock, _item)
 		}
-		stock.Stock = append(stock.Stock, inv)
 	}
 
-	stock.Page = page
-	stock.Limit = limit
-	stock.Header.All = len(inventories)
+	invItems.Page = page
+	invItems.Limit = limit
 
-	return &stock, nil
+	return &invItems, nil
 }
 
 // GetInv implements IProductService.
@@ -543,56 +445,33 @@ func (s *Products) DelProductByID(ctx context.Context, productID int64) error {
 }
 
 // InsertInv implements IProductService.
-func (s *Products) InsertInv(ctx context.Context, product dtos.Inventory[interface{}]) error {
+func (s *Products) InsertInv(ctx context.Context, product dtos.Inventory) error {
 	var (
-		pid, _    = strconv.Atoi(product.ProductID)
 		price, _  = decimal.NewFromString(product.Price)
 		avai, _   = strconv.Atoi(product.Available)
 		inventory = entity.Inventories{
 			Color:        product.Color,
 			ColorImg:     product.ColorImg,
 			Image:        strings.Join(product.Image, ","),
-			ProductID:    int64(pid),
+			ProductID:    product.ProductID,
 			Price:        price,
 			Available:    int64(avai),
 			CurrencyCode: product.CurrencyCode,
 			Status:       "active",
 		}
-		types enum.Category
 	)
-	pID, _ := strconv.ParseInt(product.ProductID, 10, 64)
-	p, err := s.Products.GetByID(ctx, pID)
-	if err != nil {
-		return err
-	}
-	category, err := s.Category.GetByID(ctx, p.CategoryID)
-	if err != nil {
-		return err
-	}
-	if err := types.Load(category.Name); err != nil {
-		return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-	}
 	tx, err := db.NewTransaction(ctx)
 	if err != nil {
 		return err
 	}
 	var (
-		invRepo  = inventories.New(tx)
-		specRepo = specifications.New(tx)
+		invRepo = inventories.New(tx)
 	)
-	invID, err := invRepo.InsertProduct(ctx, inventory)
-	if err != nil {
-		if errTx := tx.Rollback(ctx); errTx != nil {
-			return errTx
-		}
-		return err
-	}
 	for _, spec := range product.Specs {
-		bSpec, _ := json.Marshal(spec)
-		if err := specRepo.Insert(ctx, entity.Specifications{
-			InventoryID: invID,
-			Content:     string(bSpec),
-		}); err != nil {
+		specs, _ := json.Marshal(spec)
+		inventory.Specs = string(specs)
+		_, err := invRepo.InsertProduct(ctx, inventory)
+		if err != nil {
 			if errTx := tx.Rollback(ctx); errTx != nil {
 				return errTx
 			}

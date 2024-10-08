@@ -22,7 +22,6 @@ type CartSlices struct {
 type CartDTO struct {
 	InventoryID int64 `json:"inventory_id" validate:"required"`
 	Quantity    int64 `json:"quantity" validate:"required"`
-	SpecID      int64 `json:"spec_id" validate:"required"`
 }
 
 type CartInsertDTO struct {

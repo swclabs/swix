@@ -2,8 +2,8 @@ INSERT INTO users (id, email, phone_number, first_name, last_name, image)
 VALUES (1, 'sa@sa.com', '123', 'sa', 'sa', '')
 ON CONFLICT (email) DO NOTHING;
 
-INSERT INTO accounts (username, role, email, password, type, created_at)
-VALUES ('user#1', 'Admin', 'sa@sa.com', '$2a$12$x9jSMLNRSTX.kOmLThUFH.VanhMBTUJrFxUwNOkx7GOLTGrMWl5Kq', 'swc', '2024-07-31 07:51:50+00')
+INSERT INTO accounts (id, username, role, email, password, type, created_at)
+VALUES (1, 'user#1', 'Admin', 'sa@sa.com', '$2a$12$x9jSMLNRSTX.kOmLThUFH.VanhMBTUJrFxUwNOkx7GOLTGrMWl5Kq', 'swc', '2024-07-31 07:51:50+00')
 ON CONFLICT (username) DO NOTHING;
 --
 -- TOC entry 3416 (class 0 OID 16468)
@@ -54,29 +54,12 @@ INSERT INTO collections (id, created, "position", headline, body) VALUES (6, '20
 -- Data for Name: inventories; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image) VALUES (2, 1, 10000.0000, 'active', 'VND', 1000, 'Blue Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg');
-INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image) VALUES (3, 1, 10000.0000, 'active', 'VND', 1000, 'Red Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg');
-INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image) VALUES (1, 1, 10000.0000, 'active', 'VND', 5000, 'Grey Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg');
-INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image) VALUES (4, 1, 10000000.0000, 'active', 'VND', 70, 'Black Titanium', 'https://example.com/black-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg');
+INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image, specs) VALUES (2, 1, 10000.0000, 'active', 'VND', 1000, 'Blue Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg', '{"ram": "256", "ssd": "512", "desc": "", "connection": ""}');
+INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image, specs) VALUES (3, 1, 10000.0000, 'active', 'VND', 1000, 'Red Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg', '{"ram": "256", "ssd": "512", "desc": "", "connection": ""}');
+INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image, specs) VALUES (1, 1, 10000.0000, 'active', 'VND', 5000, 'Grey Titanium', 'https://example.com/grey-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12.jpg', '{"ram": "256", "ssd": "512", "desc": "", "connection": ""}');
+INSERT INTO inventories (id, product_id, price, status, currency_code, available, color, color_img, image, specs) VALUES (4, 1, 10000000.0000, 'active', 'VND', 70, 'Black Titanium', 'https://example.com/black-titanium.jpg', 'https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg', '{"ram": "256", "ssd": "512", "desc": "", "connection": ""}');
 
---
--- TOC entry 3421 (class 0 OID 16557)
--- Dependencies: 250
--- Data for Name: specifications; Type: TABLE DATA; Schema: public; Owner: admin
---
 
-INSERT INTO specifications (id, inventory_id, content) VALUES (1, 1, '{"ram": "16", "ssd": "512"}');
-INSERT INTO specifications (id, inventory_id, content) VALUES (2, 1, '{"ram": "32", "ssd": "512"}');
-INSERT INTO specifications (id, inventory_id, content) VALUES (3, 2, '{"ram": "16", "ssd": "512"}');
-INSERT INTO specifications (id, inventory_id, content) VALUES (4, 3, '{"ram": "32", "ssd": "512"}');
-INSERT INTO specifications (id, inventory_id, content) VALUES (5, 4, '{"ram": "8GB", "ssd": "256GB"}');
-INSERT INTO specifications (id, inventory_id, content) VALUES (6, 4, '{"ram": "16GB", "ssd": "512"}');
-
---
--- TOC entry 3421 (class 0 OID 16557)
--- Dependencies: 250
--- Data for Name: specifications; Type: TABLE DATA; Schema: public; Owner: admin
---
 INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (1, 0, 0, 1, 1, 5, 0, 0, 'This is a great product');
 INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (2, 0, 0, 1, 1, 5, 0, 0, 'This is a great product');
 INSERT INTO comments (id, level, parent_id, user_id, product_id, rating, liked, disliked, content) VALUES (3, 0, 0, 1, 2, 5, 0, 0, 'This is a great product');

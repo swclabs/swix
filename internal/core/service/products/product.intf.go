@@ -12,7 +12,6 @@ import (
 // IProducts : Module for Product interactions.
 // Actor: Admin & Customer (Users)
 type IProducts interface {
-
 	// GetProductsLimit retrieves a list of products with a specified limit.
 	// ctx is the context to manage the request's lifecycle.
 	// limit is the maximum number of products to retrieve.
@@ -36,7 +35,7 @@ type IProducts interface {
 	// ctx is the context to manage the request's lifecycle.
 	// product contains the inventories product details to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertInv(ctx context.Context, product dtos.Inventory[interface{}]) error
+	InsertInv(ctx context.Context, product dtos.Inventory) error
 
 	// DelProductByID deletes a product from the database.
 	// ctx is the context to manage the request's lifecycle.
@@ -62,12 +61,14 @@ type IProducts interface {
 	// Returns a slice of ProductResponse objects and an error if any issues occur during the retrieval process.
 	Search(ctx context.Context, keyword string) ([]dtos.ProductResponse, error)
 
+	SearchDetails(ctx context.Context, keyword string) ([]dtos.ProductDetail, error)
+
 	// GetAllInv retrieves a list of all stock.
 	// ctx is the context to manage the request's lifecycle.
 	// page is the page number.
 	// limit is the maximum number of stock to retrieve.
 	// Returns a pointer to the InvStock object and an error if any issues occur during the retrieval process.
-	GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvStock[interface{}], error)
+	GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvItems, error)
 
 	// DeleteInvByID deletes an inventory by its ID.
 	// ctx is the context to manage the request's lifecycle.
@@ -91,7 +92,7 @@ type IProducts interface {
 	// ctx is the context to manage the request's lifecycle.
 	// productID is the ID of the product to retrieve details for.
 	// Returns a pointer to the ProductDetail object and an error if any issues occur during the retrieval
-	ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail[interface{}], error)
+	ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail, error)
 
 	// AccessoryDetail retrieves the details of an accessory product.
 	// ctx is the context to manage the request's lifecycle.
@@ -103,17 +104,11 @@ type IProducts interface {
 	// ctx is the context to manage the request's lifecycle.
 	// inventoryID is the ID of the inventory to retrieve.
 	// Returns a pointer to the Inventory object and an error if any issues occur during the retrieval process.
-	GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory[interface{}], error)
+	GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory, error)
 
 	// ViewDataOf retrieves the data of a product.
 	// ctx is the context to manage the request's lifecycle.
 	// types is the category of the product.
 	// Returns a slice of ProductView objects and an error if any issues occur during the retrieval process.
 	ViewDataOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductView, error)
-
-	// InsertSpecsInv inserts specifications for an inventory.
-	// ctx is the context to manage the request's lifecycle.
-	// specification contains the specifications to be added.
-	// Returns an error if any issues occur during the insertion process.
-	InsertSpecsInv(ctx context.Context, specification dtos.InsertSpecsDTO) error
 }

@@ -85,16 +85,23 @@ type WirelessReq struct {
 }
 
 type Specs struct {
-	ID         int64  `json:"id"`
 	SSD        string `json:"ssd"`
 	RAM        string `json:"ram"`
 	Desc       string `json:"desc"`
 	Connection string `json:"connection"`
 }
 
+type SpecsItem struct {
+	SSD        string `json:"ssd"`
+	RAM        string `json:"ram"`
+	Desc       string `json:"desc"`
+	Connection string `json:"connection"`
+	Price      string `json:"price"`
+}
+
 // InvDetail request, response
-type InvDetail[T any] struct {
-	ProductID    string   `json:"product_id" validate:"number,required"`
+type InvDetail struct {
+	ProductID    int64    `json:"product_id" validate:"number,required"`
 	Price        string   `json:"price" validate:"number,required"`
 	Available    string   `json:"available" validate:"number,required"`
 	CurrencyCode string   `json:"currency_code" validate:"required"`
@@ -102,14 +109,14 @@ type InvDetail[T any] struct {
 	Color        string   `json:"color"`
 	Status       string   `json:"status"`
 	Image        []string `json:"image"`
-	Specs        []T      `json:"specs"`
+	Specs        []Specs  `json:"specs"`
 }
 
 // Inventory response, request
-type Inventory[T any] struct {
+type Inventory struct {
 	ID           int64    `json:"id"`
 	ProductName  string   `json:"product_name"`
-	ProductID    string   `json:"product_id" validate:"number,required"`
+	ProductID    int64    `json:"product_id" validate:"number,required"`
 	Price        string   `json:"price" validate:"number,required"`
 	Available    string   `json:"available" validate:"number,required"`
 	CurrencyCode string   `json:"currency_code" validate:"required"`
@@ -118,7 +125,7 @@ type Inventory[T any] struct {
 	Color        string   `json:"color"`
 	Status       string   `json:"status"`
 	Image        []string `json:"image"`
-	Specs        []T      `json:"specs"`
+	Specs        []Specs  `json:"specs"`
 }
 
 // StockHeader response, request
@@ -129,12 +136,12 @@ type StockHeader struct {
 	Archive int `json:"archive"`
 }
 
-// InvStock response, request
-type InvStock[T any] struct {
-	Page   int            `json:"page"`
-	Limit  int            `json:"limit"`
-	Header StockHeader    `json:"header"`
-	Stock  []Inventory[T] `json:"stock"`
+// InvItems response, request
+type InvItems struct {
+	Page   int         `json:"page"`
+	Limit  int         `json:"limit"`
+	Header StockHeader `json:"header"`
+	Stock  []Inventory `json:"stock"`
 }
 
 // InvUpdate request, response
@@ -156,20 +163,6 @@ type ProductView struct {
 	Image    string      `json:"image"`
 	Category string      `json:"category"`
 	Specs    interface{} `json:"specs"`
-}
-
-// Storage request, response
-type Storage struct {
-	InventoryID int64  `json:"inventory_id" validate:"number,required"`
-	RAM         string `json:"ram" validate:"number,required"`
-	SSD         string `json:"ssd" validate:"number,required"`
-}
-
-// Wireless request, response
-type Wireless struct {
-	InventoryID int64  `json:"inventory_id" validate:"number,required"`
-	Connection  string `json:"connection" validate:"required"`
-	Desc        string `json:"desc" validate:"required"`
 }
 
 type InsertSpecsDTO struct {

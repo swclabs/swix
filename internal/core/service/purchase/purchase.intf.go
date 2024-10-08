@@ -43,6 +43,7 @@ type IPurchase interface {
 	GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderSchema, error)
 
 	DeliveryOrderInfo(ctx context.Context, orderCode string) (*xdto.OrderInfoDTO, error)
+	
 	CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error)
 
 	// CreateDeliveryAddress creates a new delivery address.

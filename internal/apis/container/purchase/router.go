@@ -31,7 +31,7 @@ type Router struct {
 // Routers define route endpoint
 func (p *Router) Routers(e *echo.Echo) {
 	e.POST("/purchase/carts", p.controllers.AddToCarts, middleware.SessionProtected)
-	e.GET("/purchase/carts", p.controllers.GetCarts)
+	e.GET("/purchase/carts", p.controllers.GetCarts, middleware.SessionProtected)
 	e.DELETE("/purchase/carts/:id", p.controllers.DeleteItem)
 
 	e.GET("/purchase/orders", p.controllers.GetOrders)

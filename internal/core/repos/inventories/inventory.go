@@ -4,6 +4,7 @@ import (
 	"context"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/errors"
@@ -27,6 +28,32 @@ func Init(conn db.IDatabase, cache cache.ICache) IInventories {
 // Inventory represents the Inventory object.
 type Inventory struct {
 	db db.IDatabase
+}
+
+// GetByColor implements IInventories.
+func (w *Inventory) GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error) {
+	rows, err := w.db.Query(ctx, getByColor, productID, color)
+	if err != nil {
+		return nil, errors.Repository("500", err)
+	}
+	inventories, err := db.CollectRows[entity.Inventories](rows)
+	if err != nil {
+		return nil, errors.Repository("500", err)
+	}
+	return inventories, nil
+}
+
+// GetColor implements IInventories.
+func (w *Inventory) GetColor(ctx context.Context, productID int64) ([]model.ColorItem, error) {
+	rows, err := w.db.Query(ctx, groupByColor, productID)
+	if err != nil {
+		return nil, errors.Repository("500", err)
+	}
+	colors, err := db.CollectRows[model.ColorItem](rows)
+	if err != nil {
+		return nil, errors.Repository("500", err)
+	}
+	return colors, nil
 }
 
 // Update implements IInventoryRepository.
@@ -97,6 +124,6 @@ func (w *Inventory) InsertProduct(ctx context.Context, product entity.Inventorie
 	return w.db.SafeWriteReturn(ctx, insertIntoInventory,
 		product.ProductID, product.Price,
 		product.Available, product.CurrencyCode,
-		product.Status, product.Image, product.Color, product.ColorImg,
+		product.Status, product.Image, product.Color, product.ColorImg, product.Specs,
 	)
 }

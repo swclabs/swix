@@ -3,6 +3,7 @@ package inventories
 import (
 	"context"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 )
 
 // IInventories represents the interface for Inventory repos.
@@ -27,4 +28,8 @@ type IInventories interface {
 
 	// Update updates an inventory.
 	Update(ctx context.Context, inventory entity.Inventories) error
+
+	GetColor(ctx context.Context, productID int64) ([]model.ColorItem, error)
+	
+	GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error)
 }

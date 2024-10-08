@@ -35,6 +35,7 @@ type Router struct {
 func (r *Router) Routers(e *echo.Echo) {
 	// endpoint for search
 	e.GET("/search", r.controller.Search)
+	e.GET("/search/details", r.controller.SearchDetails)
 
 	// endpoint for products
 	e.GET("/products", r.controller.GetProductLimit)
@@ -53,5 +54,4 @@ func (r *Router) Routers(e *echo.Echo) {
 	e.PUT("/inventories/image", r.controller.UploadInvImage)
 	e.GET("/inventories/details", r.controller.GetInvDetails)
 	e.POST("/inventories", r.controller.InsertInv)
-	e.POST("/inventories/specs", r.controller.InsertInvSpecs)
 }

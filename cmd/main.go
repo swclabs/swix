@@ -11,6 +11,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/apis"
 	"swclabs/swix/internal/workers"
@@ -28,10 +29,10 @@ func main() {
 	switch *cmd {
 	case "worker":
 		application := app.Builder(workers.NewApp)
-		_ = application.Run()
+		log.Fatal(application.Run())
 	case "server":
 		application := app.Builder(apis.NewApp)
-		_ = application.Run()
+		log.Fatal(application.Run())
 	default:
 		logger.Error("unknown flag: " + *cmd)
 	}

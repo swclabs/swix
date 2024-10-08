@@ -7,5 +7,4 @@ type Carts struct {
 	UserID      int64 `json:"user_id" db:"user_id"`
 	InventoryID int64 `json:"inventory_id" db:"inventory_id"`
 	Quantity    int64 `json:"quantity" db:"quantity"`
-	SpecID      int64 `json:"spec_id" db:"spec_id"`
 }
