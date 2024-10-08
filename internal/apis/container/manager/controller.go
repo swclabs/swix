@@ -80,7 +80,7 @@ func (manager *Controller) Login(c echo.Context) error {
 	// var account = service.New()
 	accessToken, err := manager.service.Login(c.Request().Context(), request)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
 	}

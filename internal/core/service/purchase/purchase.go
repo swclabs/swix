@@ -17,7 +17,6 @@ import (
 	"swclabs/swix/internal/core/repos/inventories"
 	"swclabs/swix/internal/core/repos/orders"
 	"swclabs/swix/internal/core/repos/products"
-	"swclabs/swix/internal/core/repos/specifications"
 	"swclabs/swix/internal/core/repos/users"
 	"swclabs/swix/internal/core/x/ghnx"
 	"swclabs/swix/pkg/infra/db"
@@ -33,7 +32,6 @@ var New = app.Service(
 		order orders.IOrders,
 		cart carts.ICarts,
 		user users.IUsers,
-		spec specifications.ISpecifications,
 		inv inventories.IInventories,
 		product products.IProducts,
 		category categories.ICategories,
@@ -45,7 +43,6 @@ var New = app.Service(
 			Cart:      cart,
 			Order:     order,
 			User:      user,
-			Spec:      spec,
 			Inventory: inv,
 			Product:   product,
 			Category:  category,
@@ -61,7 +58,6 @@ type Purchase struct {
 	Order     orders.IOrders
 	Cart      carts.ICarts
 	User      users.IUsers
-	Spec      specifications.ISpecifications
 	Category  categories.ICategories
 	Product   products.IProducts
 	Inventory inventories.IInventories
@@ -220,10 +216,6 @@ func (p *Purchase) DeleteItemFromCart(ctx context.Context, cartID int64) error {
 
 // AddToCart implements IPurchaseService.
 func (p *Purchase) AddToCart(ctx context.Context, cart dtos.CartInsertDTO) error {
-	specs, err := p.Spec.GetByID(ctx, cart.SpecID)
-	if err != nil {
-		return fmt.Errorf("error getting specs by ID: %v", err)
-	}
 	user, err := p.User.GetByEmail(ctx, cart.Email)
 	if err != nil {
 		return fmt.Errorf("error getting user by email: %v", err)
@@ -232,7 +224,6 @@ func (p *Purchase) AddToCart(ctx context.Context, cart dtos.CartInsertDTO) error
 		UserID:      user.ID,
 		InventoryID: cart.InventoryID,
 		Quantity:    cart.Quantity,
-		SpecID:      specs.ID,
 	})
 }
 

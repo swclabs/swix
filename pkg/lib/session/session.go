@@ -42,5 +42,8 @@ func Save(c echo.Context, sessionName string, key string, value string) error {
 func Get(c echo.Context, sessionName, key string) string {
 	sess, _ := store.Get(c.Request(), sessionName)
 	value := sess.Values[key]
+	if value == nil {
+		return ""
+	}
 	return value.(string)
 }

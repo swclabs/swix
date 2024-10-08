@@ -114,11 +114,15 @@ func (manager *Manager) Login(ctx context.Context, req dtos.LoginRequest) (strin
 	if err != nil {
 		return "", err
 	}
+	user, err := manager.UserInfo(ctx, req.Email)
+	if err != nil {
+		return "", err
+	}
 	// compare input password
 	if err := crypto.ComparePassword(account.Password, req.Password); err != nil {
 		return "", errors.New("email or password incorrect")
 	}
-	return crypto.GenerateToken(account.ID, account.Email, account.Role)
+	return crypto.GenerateToken(user.ID, account.Email, account.Role)
 }
 
 // UserInfo return user information from Database

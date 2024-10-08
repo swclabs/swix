@@ -12,5 +12,6 @@ type Inventories struct {
 	Color        string          `json:"color" db:"color"`
 	ColorImg     string          `json:"color_img" db:"color_img"`
 	Image        string          `json:"image" db:"image"`
+	Specs        string          `json:"specs" db:"specs"`
 	Price        decimal.Decimal `json:"price" db:"price"`
 }

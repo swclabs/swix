@@ -12,6 +12,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/apis/container/products"
 	"swclabs/swix/pkg/lib/logger"
@@ -32,7 +33,7 @@ func main() {
 	case "worker":
 	case "server":
 		app := app.Builder(products.New)
-		_ = app.Run()
+		log.Fatal(app.Run())
 	default:
 		logger.Error("unknown flag: " + *cmd)
 	}

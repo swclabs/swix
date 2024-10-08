@@ -10,7 +10,6 @@ import (
 	"swclabs/swix/internal/core/domain/entity"
 	"swclabs/swix/internal/core/repos/categories"
 	"swclabs/swix/internal/core/repos/inventories"
-	"swclabs/swix/internal/core/repos/specifications"
 	"swclabs/swix/pkg/lib/logger"
 	"testing"
 
@@ -27,28 +26,16 @@ var e = echo.New()
 
 func TestGetInventory(t *testing.T) {
 	var (
-		spec = dtos.InvStorage{
-			ID:  1,
-			RAM: "8GB",
-			SSD: "256GB",
-		}
-		bSpec, _   = json.Marshal(spec)
 		inventory  inventories.Mock
 		product    productRepo.Mock
-		specs      specifications.Mock
 		category   categories.Mock
-		service    = productService.New(nil, &product, &inventory, &category, &specs)
+		service    = productService.New(nil, &product, &inventory, &category)
 		controller = productContainer.NewController(service)
 	)
-
-	specs.On("GetByInventoryID", context.Background(), int64(1)).Return([]entity.Specifications{
-		{
-			ID:          1,
-			InventoryID: 1,
-			Content:     string(bSpec),
-		},
-	}, nil)
-
+	specs, _ := json.Marshal(dtos.Specs{
+		SSD: "256",
+		RAM: "128",
+	})
 	category.On("GetByID", context.Background(), int64(1)).Return(&entity.Categories{
 		ID:          1,
 		Name:        "phone",
@@ -65,11 +52,13 @@ func TestGetInventory(t *testing.T) {
 		Color:        "Black Titanium",
 		ColorImg:     "https://example.com/black-titanium.jpg",
 		Image:        "https://example.com/iphone-12.jpg,https://example.com/iphone-12-2.jpg",
+		Specs:        string(specs),
 	}, nil)
 
 	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
 		Name:       "iPhone 12",
 		CategoryID: 1,
+		ID:         1,
 	}, nil)
 
 	e.GET("/inventories/details", controller.GetInvDetails)
@@ -78,7 +67,7 @@ func TestGetInventory(t *testing.T) {
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body dtos.Inventory[dtos.InvStorage]
+	var body dtos.Inventory
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}

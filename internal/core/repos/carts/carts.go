@@ -45,7 +45,7 @@ func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) ([
 // Insert implements domain.ICartRepository.
 func (c *Carts) Insert(ctx context.Context, cart entity.Carts) error {
 	return c.db.SafeWrite(ctx, insertItemToCart,
-		cart.UserID, cart.InventoryID, cart.Quantity, cart.SpecID,
+		cart.UserID, cart.InventoryID, cart.Quantity,
 	)
 }
 

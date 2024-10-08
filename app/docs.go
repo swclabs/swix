@@ -22,7 +22,7 @@ import (
 )
 
 func main() {
-	app := app.App(apis.NewAPIServer)
+	app := app.Builder(apis.NewApp)
 	_ = app.Run()
 }
 */

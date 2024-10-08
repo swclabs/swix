@@ -2,8 +2,8 @@ package inventories
 
 const (
 	insertIntoInventory string = `
-		INSERT INTO inventories (product_id, price, available, currency_code, status, image, color, color_img)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO inventories (product_id, price, available, currency_code, status, image, color, color_img, specs)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 		RETURNING id;
 	`
 
@@ -68,5 +68,13 @@ const (
 							ELSE color_img
 						END
 		WHERE id = $1;
+	`
+
+	groupByColor = `
+		SELECT color from inventories WHERE product_id = $1 GROUP BY color;
+	`
+
+	getByColor = `
+		SELECT * FROM inventories WHERE product_id = $1 AND color = $2;
 	`
 )

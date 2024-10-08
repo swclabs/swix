@@ -39,7 +39,7 @@ func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
 		// session := sessions.Default(c)
 		AccessToken := session.Get(c, session.Base, "access_token")
 		if AccessToken != "" {
-			accountID, email, err := crypto.ParseToken(AccessToken)
+			userID, email, err := crypto.ParseToken(AccessToken)
 			if err != nil {
 				return c.JSON(http.StatusUnauthorized, map[string]interface{}{
 					"msg":     "unauthorized",
@@ -51,7 +51,7 @@ func SessionProtected(next echo.HandlerFunc) echo.HandlerFunc {
 					Msg: err.Error(),
 				})
 			}
-			if err := session.Save(c, session.Base, "account_id", fmt.Sprintf("%d", accountID)); err != nil {
+			if err := session.Save(c, session.Base, "user_id", fmt.Sprintf("%d", userID)); err != nil {
 				return c.JSON(http.StatusInternalServerError, dtos.Error{
 					Msg: err.Error(),
 				})

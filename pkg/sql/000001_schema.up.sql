@@ -1,5 +1,6 @@
 CREATE TABLE "accounts" (
-  "username" varchar PRIMARY KEY,
+  "id" bigserial PRIMARY KEY,
+  "username" varchar UNIQUE NOT NULL,
   "role" varchar NOT NULL DEFAULT('customer'),
   "email" varchar UNIQUE NOT NULL,
   "password" varchar NOT NULL,
@@ -75,8 +76,7 @@ CREATE TABLE "carts" (
   "user_id" bigint NOT NULL,
   "inventory_id" bigint NOT NULL,
   "quantity" bigint NOT NULL,
-  "spec_id" bigint,
-  CONSTRAINT unique_inventory UNIQUE (inventory_id, user_id, spec_id)
+  CONSTRAINT unique_inventory UNIQUE (inventory_id, user_id)
 );
 
 CREATE TABLE "orders" (
@@ -125,7 +125,8 @@ CREATE TABLE "inventories" (
   "available" int NOT NULL,
   "color" varchar NOT NULL,
   "color_img" varchar,
-  "image" varchar
+  "image" varchar,
+  "specs" jsonb
 );
 
 CREATE TABLE "collections" (
@@ -134,10 +135,4 @@ CREATE TABLE "collections" (
   "position" varchar NOT NULL ,
   "headline" varchar,
   "body" jsonb
-);
-
-CREATE TABLE "specifications" (
-  "id" bigserial PRIMARY KEY,
-  "inventory_id" int NOT NULL,
-  "content" jsonb
 );

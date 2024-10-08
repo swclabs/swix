@@ -28,5 +28,3 @@ ALTER TABLE "favorite_product" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("
 ALTER TABLE "favorite_product" ADD FOREIGN KEY ("inventory_id") REFERENCES "inventories" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "inventories" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE "specifications" ADD FOREIGN KEY ("inventory_id") REFERENCES "inventories" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

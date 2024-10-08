@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/lib/crypto"
 )
@@ -27,13 +28,23 @@ type _Cache struct {
 	inventory IInventories
 }
 
+// GetByColor implements IInventories.
+func (c *_Cache) GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error) {
+	return c.inventory.GetByColor(ctx, productID, color)
+}
+
+// GetColor implements IInventories.
+func (c *_Cache) GetColor(ctx context.Context, productID int64) ([]model.ColorItem, error) {
+	return c.inventory.GetColor(ctx, productID)
+}
+
 // Update implements IInventoryRepository.
 func (c *_Cache) Update(ctx context.Context, inventory entity.Inventories) error {
 	if err := c.inventory.Update(ctx, inventory); err != nil {
 		return err
 	}
 	key := crypto.HashOf(fmt.Sprintf(keyGetByID, inventory.ID))
-	return cache.Set(ctx, c.cache, key, inventory)
+	return cache.Delete(ctx, c.cache, key)
 }
 
 // UploadImage implements IInventoryRepository.

@@ -391,14 +391,13 @@ func (p *Controller) AddToCarts(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param uid query number true "user id"
 // @Success 200 {object} dtos.CartSlices
 // @Router /purchase/carts [GET]
 func (p *Controller) GetCarts(c echo.Context) error {
-	sUserID := c.QueryParam("uid")
+	sUserID := session.Get(c, session.Base, "user_id")
 	if sUserID == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "missing 'uid' required",
+			Msg: "session expired",
 		})
 	}
 	userID, err := strconv.ParseInt(sUserID, 10, 64)
@@ -426,9 +425,9 @@ func (p *Controller) GetCarts(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param id query int true "cart id"
+// @Param type path string true "product type"
 // @Success 200 {object} dtos.OK
-// @Router /purchase/carts [DELETE]
+// @Router /purchase/carts/{type} [DELETE]
 func (p *Controller) DeleteItem(c echo.Context) error {
 	cID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -436,8 +435,7 @@ func (p *Controller) DeleteItem(c echo.Context) error {
 			Msg: "'id' must be a positive integer",
 		})
 	}
-	if err := p.
-		services.DeleteItemFromCart(c.Request().Context(), cID); err != nil {
+	if err := p.services.DeleteItemFromCart(c.Request().Context(), cID); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),

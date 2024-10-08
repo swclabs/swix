@@ -1,11 +1,11 @@
 {
     "level": "info",
-    "time": 1727018716.823637,
+    "time": 1728380599.884616,
     "message": "Response body",
     "body": {
         "id": 1,
         "product_name": "iPhone 12",
-        "product_id": "1",
+        "product_id": 1,
         "price": "10000",
         "available": "1000",
         "currency_code": "VND",
@@ -19,9 +19,10 @@
         ],
         "specs": [
             {
-                "id": 1,
-                "ram": "8GB",
-                "ssd": "256GB"
+                "ssd": "256",
+                "ram": "128",
+                "desc": "",
+                "connection": ""
             }
         ]
     },

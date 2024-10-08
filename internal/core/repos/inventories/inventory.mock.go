@@ -3,6 +3,7 @@ package inventories
 import (
 	"context"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -12,6 +13,18 @@ var _ IInventories = (*Mock)(nil)
 // Mock represents a mock for IInventoryRepository.
 type Mock struct {
 	mock.Mock
+}
+
+// GetByColor implements IInventories.
+func (w *Mock) GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error) {
+	args := w.Called(ctx, productID, color)
+	return args.Get(0).([]entity.Inventories), args.Error(1)
+}
+
+// GetColor implements IInventories.
+func (w *Mock) GetColor(ctx context.Context, productID int64) ([]model.ColorItem, error) {
+	args := w.Called(ctx, productID)
+	return args.Get(0).([]model.ColorItem), args.Error(1)
 }
 
 // Update implements IInventoryRepository.
