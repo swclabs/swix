@@ -64,5 +64,5 @@ func (c *Cache) Get(ctx context.Context, key string) (string, error) {
 
 // Set implements ICache.
 func (c *Cache) Set(ctx context.Context, key string, val string) error {
-	return c.conn.Set(ctx, key, val, time.Duration(time.Minute*5)).Err()
+	return c.conn.Set(ctx, key, val, time.Duration(time.Second*5)).Err()
 }

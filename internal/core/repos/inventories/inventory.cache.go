@@ -28,6 +28,15 @@ type _Cache struct {
 	inventory IInventories
 }
 
+// UploadColorImage implements IInventories.
+func (c *_Cache) UploadColorImage(ctx context.Context, ID int, url string) error {
+	if err := c.inventory.UploadColorImage(ctx, ID, url); err != nil {
+		return err
+	}
+	key := crypto.HashOf(fmt.Sprintf(keyGetByID, ID))
+	return cache.Delete(ctx, c.cache, key)
+}
+
 // GetByColor implements IInventories.
 func (c *_Cache) GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error) {
 	return c.inventory.GetByColor(ctx, productID, color)

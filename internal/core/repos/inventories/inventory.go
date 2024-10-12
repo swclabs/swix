@@ -30,6 +30,11 @@ type Inventory struct {
 	db db.IDatabase
 }
 
+// UploadColorImage implements IInventories.
+func (w *Inventory) UploadColorImage(ctx context.Context, ID int, url string) error {
+	return w.db.SafeWrite(ctx, uploadInvItemColor, url, ID)
+}
+
 // GetByColor implements IInventories.
 func (w *Inventory) GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error) {
 	rows, err := w.db.Query(ctx, getByColor, productID, color)

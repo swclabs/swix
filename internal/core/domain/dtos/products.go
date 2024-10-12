@@ -1,11 +1,5 @@
 package dtos
 
-// ProductSpecs request, response
-type ProductSpecs struct {
-	Screen  string `json:"screen"`
-	Display string `json:"display"`
-}
-
 // ProductRequest request, response
 type ProductRequest struct {
 	Specs       ProductSpecs `json:"specs"`
@@ -30,14 +24,14 @@ type Product struct {
 
 // ProductResponse request, response
 type ProductResponse struct {
-	ID          int64    `json:"id"`
-	Image       []string `json:"image"`
-	Price       string   `json:"price"`
-	Description string   `json:"description"`
-	Name        string   `json:"name"`
-	Status      string   `json:"status"`
-	Created     string   `json:"created"`
-	Category    string   `json:"category"`
+	ID          int64  `json:"id"`
+	Image       string `json:"image"`
+	Price       string `json:"price"`
+	Description string `json:"description"`
+	Name        string `json:"name"`
+	Status      string `json:"status"`
+	Created     string `json:"created"`
+	Category    string `json:"category"`
 }
 
 // UpdateProductInfo request, response
@@ -109,7 +103,17 @@ type InvDetail struct {
 	Color        string   `json:"color"`
 	Status       string   `json:"status"`
 	Image        []string `json:"image"`
-	Specs        []Specs  `json:"specs"`
+	Specs        Specs    `json:"specs"`
+}
+
+type InvItem struct {
+	ProductID    int64  `json:"product_id" validate:"number,required"`
+	Price        string `json:"price" validate:"number,required"`
+	Available    string `json:"available" validate:"number,required"`
+	CurrencyCode string `json:"currency_code" validate:"required"`
+	Color        string `json:"color"`
+	Status       string `json:"status"`
+	Specs        Specs  `json:"specs"`
 }
 
 // Inventory response, request
@@ -125,7 +129,7 @@ type Inventory struct {
 	Color        string   `json:"color"`
 	Status       string   `json:"status"`
 	Image        []string `json:"image"`
-	Specs        []Specs  `json:"specs"`
+	Specs        Specs    `json:"specs"`
 }
 
 // StockHeader response, request
@@ -154,15 +158,22 @@ type InvUpdate struct {
 	Status       string `json:"status"`
 }
 
-// ProductView request, response
-type ProductView struct {
-	ID       int64       `json:"id"`
-	Name     string      `json:"name"`
-	Price    string      `json:"price"`
-	Desc     string      `json:"desc"`
-	Image    string      `json:"image"`
-	Category string      `json:"category"`
-	Specs    interface{} `json:"specs"`
+type ProductSpecs struct {
+	Screen  string `json:"screen"`
+	Display string `json:"display"`
+	SSD     []int  `json:"SSD"`
+	RAM     []int  `json:"RAM"`
+}
+
+// ProductTypeDTO request, response
+type ProductTypeDTO struct {
+	ID       int64        `json:"id"`
+	Name     string       `json:"name"`
+	Price    string       `json:"price"`
+	Desc     string       `json:"desc"`
+	Image    string       `json:"image"`
+	Category string       `json:"category"`
+	Specs    ProductSpecs `json:"specs"`
 }
 
 type InsertSpecsDTO struct {

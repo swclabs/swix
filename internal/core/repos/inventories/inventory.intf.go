@@ -26,10 +26,12 @@ type IInventories interface {
 	// UploadImage uploads an image to the inventory.
 	UploadImage(ctx context.Context, ID int, url string) error
 
+	UploadColorImage(ctx context.Context, ID int, url string) error
+
 	// Update updates an inventory.
 	Update(ctx context.Context, inventory entity.Inventories) error
 
 	GetColor(ctx context.Context, productID int64) ([]model.ColorItem, error)
-	
+
 	GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error)
 }

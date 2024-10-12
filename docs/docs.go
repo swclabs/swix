@@ -864,7 +864,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.InvDetail"
+                            "$ref": "#/definitions/dtos.InvItem"
                         }
                     }
                 ],
@@ -942,7 +942,38 @@ const docTemplate = `{
             "put": {
                 "description": "update inventory image",
                 "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "stock image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventories/image/color": {
+            "put": {
+                "description": "update inventory image",
+                "consumes": [
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -1110,37 +1141,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/accessory": {
-            "get": {
-                "description": "get accessory detail",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "products"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "id of product",
-                        "name": "id",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.AccessoryDetail"
-                        }
-                    }
-                }
-            }
-        },
         "/products/details": {
             "get": {
                 "description": "get product details",
@@ -1173,7 +1173,51 @@ const docTemplate = `{
             }
         },
         "/products/img": {
-            "post": {
+            "put": {
+                "description": "insert new product image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id of product",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "image of product",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/img/shop": {
+            "put": {
                 "description": "insert new product image",
                 "consumes": [
                     "multipart/form-data"
@@ -1243,7 +1287,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dtos.ProductView"
+                                "$ref": "#/definitions/dtos.ProductTypeDTO"
                             }
                         }
                     }
@@ -1660,29 +1704,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dtos.AccessoryDetail": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "name": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "string"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.Address": {
             "type": "object",
             "required": [
@@ -1971,7 +1992,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.InvDetail": {
+        "dtos.InvItem": {
             "type": "object",
             "required": [
                 "available",
@@ -1986,17 +2007,8 @@ const docTemplate = `{
                 "color": {
                     "type": "string"
                 },
-                "color_img": {
-                    "type": "string"
-                },
                 "currency_code": {
                     "type": "string"
-                },
-                "image": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 },
                 "price": {
                     "type": "string"
@@ -2005,10 +2017,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "specs": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.Specs"
-                    }
+                    "$ref": "#/definitions/dtos.Specs"
                 },
                 "status": {
                     "type": "string"
@@ -2104,10 +2113,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "specs": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.Specs"
-                    }
+                    "$ref": "#/definitions/dtos.Specs"
                 },
                 "status": {
                     "type": "string"
@@ -2264,6 +2270,9 @@ const docTemplate = `{
                     "description": "Name of product",
                     "type": "string"
                 },
+                "price": {
+                    "type": "string"
+                },
                 "screen": {
                     "description": "Screen 6.1 inch",
                     "type": "string"
@@ -2319,10 +2328,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "image": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "string"
                 },
                 "name": {
                     "type": "string"
@@ -2338,6 +2344,18 @@ const docTemplate = `{
         "dtos.ProductSpecs": {
             "type": "object",
             "properties": {
+                "RAM": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "SSD": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
                 "display": {
                     "type": "string"
                 },
@@ -2346,7 +2364,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.ProductView": {
+        "dtos.ProductTypeDTO": {
             "type": "object",
             "properties": {
                 "category": {
@@ -2367,7 +2385,9 @@ const docTemplate = `{
                 "price": {
                     "type": "string"
                 },
-                "specs": {}
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                }
             }
         },
         "dtos.SignUpRequest": {

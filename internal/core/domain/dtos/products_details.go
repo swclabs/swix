@@ -45,6 +45,8 @@ type ProductDetail struct {
 	// Display Super AMOLED
 	Display string `json:"display"`
 
+	Price string `json:"price"`
+
 	// Image of product
 	Image []string `json:"image"`
 

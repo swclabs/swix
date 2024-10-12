@@ -29,24 +29,104 @@ type IController interface {
 	SearchDetails(c echo.Context) error
 	GetProductLimit(c echo.Context) error
 	UploadProductImage(c echo.Context) error
+	UploadProductShopImage(c echo.Context) error
 	CreateProduct(c echo.Context) error
 	DeleteProduct(c echo.Context) error
 	UpdateProductInfo(c echo.Context) error
 	GetProductDetails(c echo.Context) error
-	AccessoryDetail(c echo.Context) error
-	GetProductView(c echo.Context) error
+	GetProductByType(c echo.Context) error
 
 	GetInvDetails(c echo.Context) error
 	InsertInv(c echo.Context) error
 	DeleteInv(c echo.Context) error
 	UploadInvImage(c echo.Context) error
-	GetStock(c echo.Context) error
+	UploadInvColorImage(c echo.Context) error
+	GetItems(c echo.Context) error
 	UpdateInv(c echo.Context) error
 }
 
 // Controller struct implementation of IProducts
 type Controller struct {
 	service products.IProducts
+}
+
+// UploadInvColorImage .
+// @Description update inventory image
+// @Tags inventories
+// @Accept multipart/form-data
+// @Produce json
+// @Param image formData file true "stock image"
+// @Success 200 {object} dtos.OK
+// @Router /inventories/image/color [PUT]
+func (p *Controller) UploadInvColorImage(c echo.Context) error {
+	form, err := c.MultipartForm()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	files := form.File["image"]
+	// get id params
+	id, err := strconv.Atoi(c.QueryParam("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'id' query parameter",
+		})
+	}
+	if err := p.service.UploadInvColorImage(c.Request().Context(), id, files); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.Error{
+		Msg: "your inventory image has been uploaded successfully",
+	})
+}
+
+// UploadProductShopImage .
+// @Description insert new product image
+// @Tags products
+// @Accept multipart/form-data
+// @Produce json
+// @Param id query string true "id of product"
+// @Param img formData file true "image of product"
+// @Success 200 {object} dtos.OK
+// @Failure 400 {object} dtos.Error
+// @Router /products/img/shop [PUT]
+func (p *Controller) UploadProductShopImage(c echo.Context) error {
+	form, err := c.MultipartForm()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	files := form.File["img"]
+	// get id params
+	id, err := strconv.Atoi(c.QueryParam("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'id' query parameter",
+		})
+	}
+	// call services
+	if err := p.service.UploadProductShopImage(c.Request().Context(), id, files); err != nil {
+		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
+			return c.JSON(http.StatusBadRequest, dtos.Error{
+				Msg: err.Error(),
+			})
+		}
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, dtos.OK{
+		Msg: "update successfully",
+	})
 }
 
 // SearchDetails .
@@ -71,31 +151,6 @@ func (p *Controller) SearchDetails(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, product)
-}
-
-// AccessoryDetail .
-// @Description get accessory detail
-// @Tags products
-// @Accept json
-// @Produce json
-// @Param id query string true "id of product"
-// @Success 200 {object} dtos.AccessoryDetail
-// @Router /products/accessory [GET]
-func (p *Controller) AccessoryDetail(c echo.Context) error {
-	ID, err := strconv.Atoi(c.QueryParam("id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "Invalid 'id' query parameter",
-		})
-	}
-
-	accessory, err := p.service.AccessoryDetail(c.Request().Context(), int64(ID))
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, dtos.Error{
-			Msg: err.Error(),
-		})
-	}
-	return c.JSON(http.StatusOK, accessory)
 }
 
 // Search .
@@ -127,22 +182,22 @@ func (p *Controller) Search(c echo.Context) error {
 	return c.JSON(http.StatusOK, product)
 }
 
-// GetProductView .
+// GetProductByType .
 // @Description get product view
 // @Tags products
 // @Accept json
 // @Produce json
 // @Param type path string true "product type"
-// @Success 200 {object} []dtos.ProductView
+// @Success 200 {object} []dtos.ProductTypeDTO
 // @Router /products/{type} [GET]
-func (p *Controller) GetProductView(c echo.Context) error {
+func (p *Controller) GetProductByType(c echo.Context) error {
 	var types enum.Category
 	if err := types.Load(c.Param("type")); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
 		})
 	}
-	product, err := p.service.ViewDataOf(c.Request().Context(), types, 0)
+	product, err := p.service.ProductOfType(c.Request().Context(), types, 0)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -219,7 +274,7 @@ func (p *Controller) UpdateInv(c echo.Context) error {
 // UploadInvImage .
 // @Description update inventory image
 // @Tags inventories
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
 // @Param image formData file true "stock image"
 // @Success 200 {object} dtos.OK
@@ -236,7 +291,7 @@ func (p *Controller) UploadInvImage(c echo.Context) error {
 	id, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "Invalid 'limit' query parameter",
+			Msg: "Invalid 'id' query parameter",
 		})
 	}
 	if err := p.service.UploadInvImage(c.Request().Context(), id, files); err != nil {
@@ -290,7 +345,7 @@ func (p *Controller) DeleteInv(c echo.Context) error {
 	})
 }
 
-// GetStock .
+// GetItems .
 // @Description get all product from inventory
 // @Tags inventories
 // @Accept json
@@ -299,7 +354,7 @@ func (p *Controller) DeleteInv(c echo.Context) error {
 // @Param limit query number true "limit"
 // @Success 200 {object} dtos.InvItems
 // @Router /inventories [GET]
-func (p *Controller) GetStock(c echo.Context) error {
+func (p *Controller) GetItems(c echo.Context) error {
 	page, err := strconv.Atoi(c.QueryParam("page"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -467,7 +522,7 @@ func (p *Controller) DeleteProduct(c echo.Context) error {
 // @Param img formData file true "image of product"
 // @Success 200 {object} dtos.OK
 // @Failure 400 {object} dtos.Error
-// @Router /products/img [POST]
+// @Router /products/img [PUT]
 func (p *Controller) UploadProductImage(c echo.Context) error {
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -553,14 +608,13 @@ func (p *Controller) CreateProduct(c echo.Context) error {
 // @Tags inventories
 // @Accept json
 // @Produce json
-// @Param InvDetail body dtos.InvDetail true "Inventories Request"
+// @Param InvDetail body dtos.InvItem true "Inventories Request"
 // @Success 201 {object} dtos.OK
 // @Router /inventories [POST]
 func (p *Controller) InsertInv(c echo.Context) error {
 	var (
-		specs []dtos.Specs
-		inv   dtos.Inventory
-		req   dtos.InvDetail
+		inv dtos.Inventory
+		req dtos.InvDetail
 	)
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -572,8 +626,6 @@ func (p *Controller) InsertInv(c echo.Context) error {
 			Msg: validate.Error(),
 		})
 	}
-	specs = make([]dtos.Specs, len(req.Specs))
-	copy(specs, req.Specs)
 	inv = dtos.Inventory{
 		ProductID:    req.ProductID,
 		Price:        req.Price,
@@ -583,7 +635,7 @@ func (p *Controller) InsertInv(c echo.Context) error {
 		Color:        req.Color,
 		Status:       req.Status,
 		Image:        req.Image,
-		Specs:        specs,
+		Specs:        req.Specs,
 	}
 	if err := p.service.InsertInv(c.Request().Context(), inv); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {

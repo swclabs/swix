@@ -25,6 +25,8 @@ type IProducts interface {
 	// Returns an error if any issues occur during the upload process.
 	UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
 
+	UploadProductShopImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
+
 	// CreateProduct adds a new product to the database.
 	// ctx is the context to manage the request's lifecycle.
 	// products contains the product details to be added.
@@ -82,6 +84,8 @@ type IProducts interface {
 	// fileHeader contains the file headers of the images to be uploaded.
 	UploadInvImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
 
+	UploadInvColorImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error
+
 	// UpdateInv updates an inventory.
 	// ctx is the context to manage the request's lifecycle.
 	// inventory contains the updated inventory details.
@@ -94,21 +98,15 @@ type IProducts interface {
 	// Returns a pointer to the ProductDetail object and an error if any issues occur during the retrieval
 	ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail, error)
 
-	// AccessoryDetail retrieves the details of an accessory product.
-	// ctx is the context to manage the request's lifecycle.
-	// productID is the ID of the product to retrieve details for.
-	// Returns a pointer to the AccessoryDetail object and an error if any issues occur during the retrieval process.
-	AccessoryDetail(ctx context.Context, productID int64) (*dtos.AccessoryDetail, error)
-
 	// GetInvByID retrieves an inventory by its ID.
 	// ctx is the context to manage the request's lifecycle.
 	// inventoryID is the ID of the inventory to retrieve.
 	// Returns a pointer to the Inventory object and an error if any issues occur during the retrieval process.
 	GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory, error)
 
-	// ViewDataOf retrieves the data of a product.
+	// ProductOfType retrieves the data of a product.
 	// ctx is the context to manage the request's lifecycle.
 	// types is the category of the product.
 	// Returns a slice of ProductView objects and an error if any issues occur during the retrieval process.
-	ViewDataOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductView, error)
+	ProductOfType(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductTypeDTO, error)
 }

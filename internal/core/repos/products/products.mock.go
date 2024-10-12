@@ -22,6 +22,11 @@ type Mock struct {
 	mock.Mock
 }
 
+// UploadShopImage implements IProducts.
+func (p *Mock) UploadShopImage(ctx context.Context, urlImg string, ID int) error {
+	panic("unimplemented")
+}
+
 // GetByCategory implements IProductRepository.
 func (p *Mock) GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error) {
 	args := p.Called(ctx, types, offset)
@@ -52,8 +57,8 @@ func (p *Mock) GetByID(ctx context.Context, productID int64) (*entity.Products, 
 }
 
 // GetLimit implements IProductRepository.
-func (p *Mock) GetLimit(ctx context.Context, limit int) ([]entity.Products, error) {
-	args := p.Called(ctx, limit)
+func (p *Mock) GetLimit(ctx context.Context, limit int, offset int) ([]entity.Products, error) {
+	args := p.Called(ctx, limit, offset)
 	return args.Get(0).([]entity.Products), args.Error(1)
 }
 

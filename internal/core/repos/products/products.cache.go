@@ -22,6 +22,11 @@ type _cache struct {
 	products IProducts
 }
 
+// UploadShopImage implements IProducts.
+func (c *_cache) UploadShopImage(ctx context.Context, urlImg string, ID int) error {
+	return c.products.UploadShopImage(ctx, urlImg, ID)
+}
+
 // GetByCategory implements IProductRepository.
 func (c *_cache) GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error) {
 	return c.products.GetByCategory(ctx, types, offset)
@@ -48,8 +53,8 @@ func (c *_cache) GetByID(ctx context.Context, productID int64) (*entity.Products
 }
 
 // GetLimit implements IProductRepository.
-func (c *_cache) GetLimit(ctx context.Context, limit int) ([]entity.Products, error) {
-	return c.products.GetLimit(ctx, limit)
+func (c *_cache) GetLimit(ctx context.Context, limit int, offset int) ([]entity.Products, error) {
+	return c.products.GetLimit(ctx, limit, offset)
 }
 
 // Insert implements IProductRepository.

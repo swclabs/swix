@@ -43,15 +43,16 @@ func (r *Router) Routers(e *echo.Echo) {
 	e.PUT("/products", r.controller.UpdateProductInfo)
 	e.DELETE("/products", r.controller.DeleteProduct)
 	e.GET("/products/details", r.controller.GetProductDetails)
-	e.GET("/products/accessory", r.controller.AccessoryDetail)
-	e.POST("/products/img", r.controller.UploadProductImage)
-	e.GET("/products/:type", r.controller.GetProductView)
+	e.PUT("/products/img", r.controller.UploadProductImage)
+	e.PUT("/products/img/shop", r.controller.UploadProductShopImage)
+	e.GET("/products/:type", r.controller.GetProductByType)
 
 	// endpoint for inventories
-	e.GET("/inventories", r.controller.GetStock)
+	e.GET("/inventories", r.controller.GetItems)
 	e.PUT("/inventories", r.controller.UpdateInv)
 	e.DELETE("/inventories", r.controller.DeleteInv)
 	e.PUT("/inventories/image", r.controller.UploadInvImage)
+	e.PUT("/inventories/image/color", r.controller.UploadInvColorImage)
 	e.GET("/inventories/details", r.controller.GetInvDetails)
 	e.POST("/inventories", r.controller.InsertInv)
 }

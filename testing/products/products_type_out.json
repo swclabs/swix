@@ -1,6 +1,6 @@
 {
     "level": "info",
-    "time": 1728379672.366495,
+    "time": 1728446432.4987402,
     "message": "Response body",
     "body": [
         {
@@ -11,8 +11,10 @@
             "image": "https://example.com/iphone-12.jpg",
             "category": "phone",
             "specs": {
+                "screen": "6.1 inch",
                 "display": "Super Retina XDR display",
-                "screen": "6.1 inch"
+                "SSD": null,
+                "RAM": null
             }
         },
         {
@@ -23,8 +25,10 @@
             "image": "https://example.com/iphone-12-pro.jpg",
             "category": "phone",
             "specs": {
+                "screen": "6.7 inch",
                 "display": "Super Retina XDR display",
-                "screen": "6.7 inch"
+                "SSD": null,
+                "RAM": null
             }
         },
         {
@@ -35,8 +39,10 @@
             "image": "https://example.com/iphone-12-mini.jpg",
             "category": "phone",
             "specs": {
+                "screen": "5.4 inch",
                 "display": "Super Retina XDR display",
-                "screen": "5.4 inch"
+                "SSD": null,
+                "RAM": null
             }
         }
     ],

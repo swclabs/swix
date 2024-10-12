@@ -2,8 +2,8 @@ package products
 
 const (
 	insertIntoProducts string = `
-		INSERT INTO products (image, price, name, description, supplier_id, category_id, status, specs)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+		INSERT INTO products (image, price, name, description, supplier_id, category_id, status, specs, shop_image)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, '')
 		RETURNING id;
 	`
 
@@ -16,10 +16,20 @@ const (
 		WHERE id = $2;
 	`
 
+	updateShopImage string = `
+	UPDATE products
+	SET shop_image = CASE
+					WHEN shop_image IS NULL OR shop_image = '' THEN $1
+					ELSE shop_image || ',' || $1
+				END
+	WHERE id = $2;
+`
+
 	selectLimit string = `
 		SELECT *
 		FROM products
-		LIMIT $1;
+		LIMIT $1
+		OFFSET $2;
 	`
 
 	selectByID string = `
