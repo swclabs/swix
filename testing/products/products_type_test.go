@@ -79,18 +79,18 @@ func TestProductView(t *testing.T) {
 			},
 		},
 		nil)
-	e.GET("/products/:type", controller.GetProductView)
+	e.GET("/products/:type", controller.GetProductByType)
 	req := httptest.NewRequest(http.MethodGet, "/products/phone", nil)
 	rr := httptest.NewRecorder()
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body []dtos.ProductView
+	var body []dtos.ProductTypeDTO
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}
 
-	file, err := os.Create("./products_view_out.json")
+	file, err := os.Create("./products_type_out.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -143,18 +143,18 @@ func TestProductViewAccessory(t *testing.T) {
 			},
 		},
 		nil)
-	e.GET("/products/:type", controller.GetProductView)
+	e.GET("/products/:type", controller.GetProductByType)
 	req := httptest.NewRequest(http.MethodGet, "/products/accessories", nil)
 	rr := httptest.NewRecorder()
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body []dtos.ProductView
+	var body []dtos.ProductTypeDTO
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}
 
-	file, err := os.Create("./products_view_accessory_out.json")
+	file, err := os.Create("./products_type_accessory_out.json")
 	if err != nil {
 		t.Fatal(err)
 	}

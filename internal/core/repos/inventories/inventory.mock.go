@@ -15,6 +15,11 @@ type Mock struct {
 	mock.Mock
 }
 
+// UploadColorImage implements IInventories.
+func (w *Mock) UploadColorImage(ctx context.Context, ID int, url string) error {
+	panic("unimplemented")
+}
+
 // GetByColor implements IInventories.
 func (w *Mock) GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error) {
 	args := w.Called(ctx, productID, color)

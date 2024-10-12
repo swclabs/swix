@@ -49,6 +49,7 @@ CREATE TABLE "comments" (
 CREATE TABLE "products" (
   "id" bigserial PRIMARY KEY,
   "image" varchar NOT NULL,
+  "shop_image" varchar,
   "price" varchar NOT NULL,
   "description" varchar NOT NULL,
   "name" varchar NOT NULL,

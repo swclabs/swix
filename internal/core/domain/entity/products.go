@@ -6,6 +6,7 @@ import "time"
 type Products struct {
 	ID          int64     `json:"id" db:"id"`
 	Image       string    `json:"image" db:"image"`
+	ShopImage   string    `json:"shop_image" db:"shop_image"`
 	Price       string    `json:"price" db:"price"`
 	Description string    `json:"description" db:"description"`
 	Name        string    `json:"name" db:"name"`

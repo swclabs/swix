@@ -1,20 +1,5 @@
 basePath: /
 definitions:
-  dtos.AccessoryDetail:
-    properties:
-      category:
-        type: string
-      image:
-        items:
-          type: string
-        type: array
-      name:
-        type: string
-      price:
-        type: string
-      status:
-        type: string
-    type: object
   dtos.Address:
     properties:
       city:
@@ -211,28 +196,20 @@ definitions:
       msg:
         type: string
     type: object
-  dtos.InvDetail:
+  dtos.InvItem:
     properties:
       available:
         type: string
       color:
         type: string
-      color_img:
-        type: string
       currency_code:
         type: string
-      image:
-        items:
-          type: string
-        type: array
       price:
         type: string
       product_id:
         type: integer
       specs:
-        items:
-          $ref: '#/definitions/dtos.Specs'
-        type: array
+        $ref: '#/definitions/dtos.Specs'
       status:
         type: string
     required:
@@ -296,9 +273,7 @@ definitions:
       product_name:
         type: string
       specs:
-        items:
-          $ref: '#/definitions/dtos.Specs'
-        type: array
+        $ref: '#/definitions/dtos.Specs'
       status:
         type: string
     required:
@@ -408,6 +383,8 @@ definitions:
       name:
         description: Name of product
         type: string
+      price:
+        type: string
       screen:
         description: Screen 6.1 inch
         type: string
@@ -446,9 +423,7 @@ definitions:
       id:
         type: integer
       image:
-        items:
-          type: string
-        type: array
+        type: string
       name:
         type: string
       price:
@@ -458,12 +433,20 @@ definitions:
     type: object
   dtos.ProductSpecs:
     properties:
+      RAM:
+        items:
+          type: integer
+        type: array
+      SSD:
+        items:
+          type: integer
+        type: array
       display:
         type: string
       screen:
         type: string
     type: object
-  dtos.ProductView:
+  dtos.ProductTypeDTO:
     properties:
       category:
         type: string
@@ -477,7 +460,8 @@ definitions:
         type: string
       price:
         type: string
-      specs: {}
+      specs:
+        $ref: '#/definitions/dtos.ProductSpecs'
     type: object
   dtos.SignUpRequest:
     properties:
@@ -1674,7 +1658,7 @@ paths:
         name: InvDetail
         required: true
         schema:
-          $ref: '#/definitions/dtos.InvDetail'
+          $ref: '#/definitions/dtos.InvItem'
       produces:
       - application/json
       responses:
@@ -1727,7 +1711,27 @@ paths:
   /inventories/image:
     put:
       consumes:
+      - multipart/form-data
+      description: update inventory image
+      parameters:
+      - description: stock image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
       - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
+  /inventories/image/color:
+    put:
+      consumes:
+      - multipart/form-data
       description: update inventory image
       parameters:
       - description: stock image
@@ -1853,28 +1857,8 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dtos.ProductView'
+              $ref: '#/definitions/dtos.ProductTypeDTO'
             type: array
-      tags:
-      - products
-  /products/accessory:
-    get:
-      consumes:
-      - application/json
-      description: get accessory detail
-      parameters:
-      - description: id of product
-        in: query
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.AccessoryDetail'
       tags:
       - products
   /products/details:
@@ -1898,7 +1882,36 @@ paths:
       tags:
       - products
   /products/img:
-    post:
+    put:
+      consumes:
+      - multipart/form-data
+      description: insert new product image
+      parameters:
+      - description: id of product
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: image of product
+        in: formData
+        name: img
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.Error'
+      tags:
+      - products
+  /products/img/shop:
+    put:
       consumes:
       - multipart/form-data
       description: insert new product image

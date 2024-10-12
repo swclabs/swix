@@ -26,11 +26,18 @@ const (
 	uploadInventoryImage = `
 		UPDATE inventories
 		SET image = CASE
-						WHEN image is NULL OR image = '' THEN $1
+						WHEN image IS NULL OR image = '' THEN $1
 						ELSE image || ',' || $1
 					END
-		)
-		WHERE id = $2;
+		WHERE color = (SELECT color FROM inventories WHERE id = $2)
+			AND product_id = (SELECT product_id FROM inventories WHERE id = $2);
+	`
+
+	uploadInvItemColor = `
+		UPDATE inventories
+		SET color_img = $1
+		WHERE color = (SELECT color FROM inventories WHERE id = $2)
+			AND product_id = (SELECT product_id FROM inventories WHERE id = $2);
 	`
 
 	update = `

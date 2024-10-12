@@ -33,6 +33,14 @@ type Products struct {
 	db db.IDatabase
 }
 
+// UploadShopImage implements IProducts.
+func (product *Products) UploadShopImage(ctx context.Context, urlImg string, ID int) error {
+	return errors.Repository("write data", product.db.SafeWrite(
+		ctx, updateShopImage,
+		urlImg, ID,
+	))
+}
+
 // GetByCategory implements IProductRepository.
 func (product *Products) GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error) {
 	rows, err := product.db.Query(ctx, selectByCategory, types.String(), offset)
@@ -102,8 +110,11 @@ func (product *Products) Insert(ctx context.Context, prd entity.Products) (int64
 }
 
 // GetLimit implements IProductRepository.
-func (product *Products) GetLimit(ctx context.Context, limit int) ([]entity.Products, error) {
-	rows, err := product.db.Query(ctx, selectLimit, limit)
+func (product *Products) GetLimit(ctx context.Context, limit int, offset int) ([]entity.Products, error) {
+	if offset < 1 {
+		offset = 1
+	}
+	rows, err := product.db.Query(ctx, selectLimit, limit, (offset-1)*limit)
 	if err != nil {
 		return nil, errors.Repository("query", err)
 	}

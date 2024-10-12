@@ -1,6 +1,6 @@
 {
     "level": "info",
-    "time": 1727018132.5649145,
+    "time": 1728446447.5093868,
     "message": "Response body",
     "body": [
         {
@@ -10,7 +10,12 @@
             "desc": "Apple iPhone Adapter 20W",
             "image": "https://example.com/apple-iphone-adapter.jpg",
             "category": "accessories",
-            "specs": null
+            "specs": {
+                "screen": "",
+                "display": "",
+                "SSD": null,
+                "RAM": null
+            }
         },
         {
             "id": 2,
@@ -19,7 +24,12 @@
             "desc": "Apple iPhone Case",
             "image": "https://example.com/apple-iphone-case.jpg",
             "category": "accessories",
-            "specs": null
+            "specs": {
+                "screen": "",
+                "display": "",
+                "SSD": null,
+                "RAM": null
+            }
         },
         {
             "id": 3,
@@ -28,7 +38,12 @@
             "desc": "Apple iPhone Screen Protector",
             "image": "https://example.com/apple-iphone-screen-protector.jpg",
             "category": "accessories",
-            "specs": null
+            "specs": {
+                "screen": "",
+                "display": "",
+                "SSD": null,
+                "RAM": null
+            }
         }
     ],
     "status": 200

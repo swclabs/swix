@@ -52,6 +52,8 @@ func (c Category) String() string {
 		return "computer"
 	case c&Accessories != 0:
 		return "accessories"
+	case c&Watch != 0:
+		return "watch"
 	}
 	return "unknown_category"
 }
@@ -71,6 +73,8 @@ func (c *Category) Load(types string) error {
 		*c = Computer
 	case "accessories":
 		*c = Accessories
+	case "watch":
+		*c = Watch
 	default:
 		return fmt.Errorf("invalid category type")
 	}
