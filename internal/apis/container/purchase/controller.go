@@ -10,7 +10,7 @@ import (
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/xdto"
 	"swclabs/swix/internal/core/service/purchase"
-	"swclabs/swix/pkg/lib/session"
+	"swclabs/swix/pkg/lib/crypto"
 	"swclabs/swix/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
@@ -331,7 +331,7 @@ func (p *Controller) CreateOrder(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	email := session.Get(c, session.Base, "email")
+	_, email, _ := crypto.Authenticate(c)
 	msg, err := p.services.CreateOrders(
 		c.Request().Context(), dtos.CreateOrderDTO{OrderDTO: orderReq, Email: email})
 	if err != nil {
@@ -369,7 +369,7 @@ func (p *Controller) AddToCarts(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	email := session.Get(c, session.Base, "email")
+	_, email, _ := crypto.Authenticate(c)
 	if err := p.services.AddToCart(
 		c.Request().Context(), dtos.CartInsertDTO{CartDTO: cartReq, Email: email}); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
@@ -394,16 +394,10 @@ func (p *Controller) AddToCarts(c echo.Context) error {
 // @Success 200 {object} dtos.CartSlices
 // @Router /purchase/carts [GET]
 func (p *Controller) GetCarts(c echo.Context) error {
-	sUserID := session.Get(c, session.Base, "user_id")
-	if sUserID == "" {
+	userID, _, _ := crypto.Authenticate(c)
+	if userID == -1 {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "session expired",
-		})
-	}
-	userID, err := strconv.ParseInt(sUserID, 10, 64)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "'uid' must be a positive integer",
 		})
 	}
 	items, err := p.services.GetCart(c.Request().Context(), userID, 10)

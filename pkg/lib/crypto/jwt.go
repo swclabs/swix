@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/labstack/echo/v4"
 )
 
 func removeBearerPrefix(token string) string {
@@ -31,9 +32,9 @@ func claims(tokenString string) (*jwt.Token, error) {
 func GenerateToken(accountID int64, email string, role string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": accountID,
-		"role":       role,
-		"email":      email,
-		"exp":        time.Now().Add(time.Hour * 24).Unix(), // 1 day
+		"role":    role,
+		"email":   email,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(), // 1 day
 	})
 	tokenString, errToken := token.SignedString([]byte(config.JwtSecret))
 	if errToken != nil {
@@ -74,4 +75,16 @@ func ParseTokenRole(tokenString string) (string, error) {
 		return role.(string), nil
 	}
 	return "", errors.New("token invalid")
+}
+
+func Authenticate(c echo.Context) (userID int64, email string, err error) {
+	authHeader := c.Request().Header.Get("Authorization")
+	if authHeader == "" {
+		return -1, "", errors.New("unauthorized")
+	}
+	userID, email, err = ParseToken(authHeader)
+	if err != nil {
+		return -1, "", errors.New("unauthorized")
+	}
+	return userID, email, nil
 }

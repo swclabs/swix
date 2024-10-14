@@ -40,3 +40,4 @@ func HanoiZone(t time.Time) time.Time {
 func RemoveSpace(s string) string {
 	return strings.ReplaceAll(s, " ", "")
 }
+
