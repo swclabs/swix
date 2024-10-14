@@ -58,13 +58,13 @@ func (auth *Authenticator) OAuth2CallBack(ctx echo.Context) error {
 		dbpool = db.GetPool()
 		blob   = blob.Connection()
 	)
-	account := manager.New(
+	manager := manager.New(
 		blob,
 		users.New(dbpool),
 		accounts.New(dbpool),
 		addresses.New(dbpool),
 	)
-	ID, err := account.OAuth2SaveUser(context.TODO(),
+	ID, err := manager.OAuth2SaveUser(context.TODO(),
 		dtos.OAuth2SaveUser{
 			Email:     profile.Email,
 			FirstName: profile.GivenName,

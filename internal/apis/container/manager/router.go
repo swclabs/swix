@@ -31,9 +31,9 @@ type Router struct {
 // Routers define route endpoint
 func (r *Router) Routers(e *echo.Echo) {
 	// endpoint for users
-	e.GET("/users", r.controller.GetMe, middleware.SessionProtected)
+	e.GET("/users", r.controller.GetMe, middleware.Protected)
 	e.PUT("/users", r.controller.UpdateUserInfo)
-	e.PUT("/users/image", r.controller.UpdateUserImage, middleware.SessionProtected)
+	e.PUT("/users/image", r.controller.UpdateUserImage, middleware.Protected)
 
 	// endpoint for authentication
 	e.POST("/auth", r.controller.Auth)
