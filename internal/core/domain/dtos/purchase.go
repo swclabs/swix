@@ -2,20 +2,25 @@ package dtos
 
 import "swclabs/swix/internal/core/domain/model"
 
-// CartSchema schema request, response
-type CartSchema struct {
-	ID          int64  `json:"id"`
-	Img         string `json:"img"`
-	ProductName string `json:"product_name"`
-	Amount      string `json:"amount" db:"amount"`
-	Quantity    int64  `json:"quantity"`
-	Category    string `json:"category" db:"category"`
+// Cart schema request, response
+type Cart struct {
+	Name           string `json:"name"`
+	CartID         int64  `json:"cart_id"`
+	InventoryID    int64  `json:"inventory_id"`
+	ProductID      int64  `json:"product_id"`
+	Quantity       int64  `json:"quantity"`
+	Color          string `json:"color"`
+	InventoryPrice string `json:"price"`
+	CurrencyCode   string `json:"currency_code"`
+	InventoryImage string `json:"image"`
+	InventorySpecs Specs  `json:"specs"`
+	CategoryName   string `json:"category"`
 }
 
-// CartSlices schema
-type CartSlices struct {
-	UserID   int64        `json:"user_id"`
-	Products []CartSchema `json:"products"`
+// Carts schema
+type Carts struct {
+	UserID   int64  `json:"user_id"`
+	Products []Cart `json:"products"`
 }
 
 // CartDTO request, response

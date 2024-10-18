@@ -391,7 +391,7 @@ func (p *Controller) AddToCarts(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Success 200 {object} dtos.CartSlices
+// @Success 200 {object} dtos.Carts
 // @Router /purchase/carts [GET]
 func (p *Controller) GetCarts(c echo.Context) error {
 	userID, _, _ := crypto.Authenticate(c)

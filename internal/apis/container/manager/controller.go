@@ -6,6 +6,7 @@ import (
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/manager"
+	"swclabs/swix/internal/core/x/oauth2"
 	"swclabs/swix/pkg/lib/crypto"
 	"swclabs/swix/pkg/lib/valid"
 
@@ -31,6 +32,7 @@ type IController interface {
 	UpdateUserImage(c echo.Context) error
 	CheckLoginEmail(c echo.Context) error
 	UpdateUserInfo(c echo.Context) error
+	OAuth2(c echo.Context) error
 }
 
 // Controller struct implementation of IManager
@@ -66,6 +68,8 @@ func (manager *Controller) Auth(c echo.Context) error {
 // @Success 200 {object} dtos.LoginResponse
 // @Router /auth/login [POST]
 func (manager *Controller) Login(c echo.Context) error {
+	_, email, _ := crypto.Authenticate(c)
+	fmt.Println(email)
 	var request dtos.LoginRequest
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -256,5 +260,46 @@ func (manager *Controller) CheckLoginEmail(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, dtos.OK{
 		Msg: "email: " + email,
+	})
+}
+
+// OAuth2 .
+// @Description Auth0 verify token.
+// @Tags manager
+// @Accept json
+// @Produce json
+// @Param access_token query string true "google access token"
+// @Success 200
+// @Router /oauth2/google [GET]
+func (manager *Controller) OAuth2(c echo.Context) error {
+	oauth2 := oauth2.New()
+	accessToken := c.QueryParam("access_token")
+	profile, err := oauth2.VerifyAccessToken(accessToken)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	id, err := manager.service.OAuth2SaveUser(c.Request().Context(), dtos.OAuth2SaveUser{
+		Email:     profile.Email,
+		FirstName: profile.Name,
+		LastName:  profile.FamilyName,
+		Image:     profile.Picture,
+	})
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	accessToken, err = crypto.GenerateToken(id, profile.Email, "customer")
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.LoginResponse{
+		Success: true,
+		Token:   accessToken,
+		Email:   profile.Email,
 	})
 }

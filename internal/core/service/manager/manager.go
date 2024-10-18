@@ -161,7 +161,7 @@ func (manager *Manager) UploadAvatar(email string, fileHeader *multipart.FileHea
 }
 
 // OAuth2SaveUser save user use oauth2 protocol
-func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (int64, error) {
+func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (accountID int64, err error) {
 	hash, err := crypto.GenPassword(utils.RandomString(18))
 	if err != nil {
 		return -1, err
@@ -184,7 +184,7 @@ func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveU
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}
-		return -1, err
+		return -1, fmt.Errorf("error saving user info: %v", err)
 	}
 	userInfo, err := userRepo.GetByEmail(ctx, req.Email)
 	if err != nil {
@@ -196,7 +196,7 @@ func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveU
 	ID, err := accountRepo.Insert(ctx, entity.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.ID),
 		Password: hash,
-		Role:     "Customer",
+		Role:     "customer",
 		Email:    req.Email,
 		Type:     "oauth2-google",
 	})
@@ -204,7 +204,7 @@ func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveU
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}
-		return -1, err
+		return -1, fmt.Errorf("error saving account info: %v", err)
 	}
 	return ID, tx.Commit(ctx)
 }

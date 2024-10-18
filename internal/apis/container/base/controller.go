@@ -2,12 +2,9 @@
 package base
 
 import (
-	"net/http"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/service/base"
-	"swclabs/swix/internal/core/x/oauth2"
-	"swclabs/swix/pkg/lib/session"
 
 	"github.com/labstack/echo/v4"
 )
@@ -69,19 +66,19 @@ func (b *Controller) WorkerCheck(c echo.Context) error {
 // @Produce json
 // @Success 200
 // @Router /oauth2/login [GET]
-func Auth0Login(c echo.Context) error {
-	auth := oauth2.New()
-	url := auth.AuthCodeURL(auth.State)
-	if err := session.Save(c, session.Base, "state", auth.State); err != nil {
-		return c.JSON(http.StatusInternalServerError, dtos.Error{
-			Msg: err.Error(),
-		})
-	}
-	return c.Redirect(http.StatusTemporaryRedirect, url)
-}
+// func Auth0Login(c echo.Context) error {
+// 	auth := oauth2.New()
+// 	url := auth.AuthCodeURL(auth.State)
+// 	if err := session.Save(c, session.Base, "state", auth.State); err != nil {
+// 		return c.JSON(http.StatusInternalServerError, dtos.Error{
+// 			Msg: err.Error(),
+// 		})
+// 	}
+// 	return c.Redirect(http.StatusTemporaryRedirect, url)
+// }
 
 // Auth0Callback .
-func Auth0Callback(c echo.Context) error {
-	auth := oauth2.New()
-	return auth.OAuth2CallBack(c)
-}
+// func Auth0Callback(c echo.Context) error {
+// 	auth := oauth2.New()
+// 	return auth.OAuth2CallBack(c)
+// }

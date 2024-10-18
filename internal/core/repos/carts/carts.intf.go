@@ -3,6 +3,7 @@ package carts
 import (
 	"context"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 )
 
 // ICarts implement all method of Carts To access database
@@ -11,6 +12,7 @@ type ICarts interface {
 	Insert(ctx context.Context, cart entity.Carts) error
 	// GetCartByUserID is a method get CartSlices from database by userId
 	GetCartByUserID(ctx context.Context, userID int64, limit int) ([]entity.Carts, error)
+	GetCartInfo(ctx context.Context, userID int64) ([]model.Carts, error)
 	// RemoveItem delete Products in Cart
 	RemoveItem(ctx context.Context, ID int64) error
 }

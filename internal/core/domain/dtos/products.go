@@ -86,11 +86,12 @@ type Specs struct {
 }
 
 type SpecsItem struct {
-	SSD        string `json:"ssd"`
-	RAM        string `json:"ram"`
-	Desc       string `json:"desc"`
-	Connection string `json:"connection"`
-	Price      string `json:"price"`
+	InventoryID int64  `json:"inventory_id"`
+	SSD         string `json:"ssd"`
+	RAM         string `json:"ram"`
+	Desc        string `json:"desc"`
+	Connection  string `json:"connection"`
+	Price       string `json:"price"`
 }
 
 // InvDetail request, response

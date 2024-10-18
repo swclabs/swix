@@ -214,6 +214,7 @@ func (s *Products) ProductDetail(ctx context.Context, productID int64) (*dtos.Pr
 				return nil, err
 			}
 			spec.Price = item.Price.String()
+			spec.InventoryID = item.ID
 			detailsColor.Specs = append(detailsColor.Specs, spec)
 		}
 		details.Color = append(details.Color, detailsColor)
