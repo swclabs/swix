@@ -1000,9 +1000,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/oauth2/login": {
+        "/oauth2/google": {
             "get": {
-                "description": "Auth0 Login form.",
+                "description": "Auth0 verify token.",
                 "consumes": [
                     "application/json"
                 ],
@@ -1010,7 +1010,16 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "base"
+                    "manager"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "google access token",
+                        "name": "access_token",
+                        "in": "query",
+                        "required": true
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -1310,7 +1319,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.CartSlices"
+                            "$ref": "#/definitions/dtos.Carts"
                         }
                     }
                 }
@@ -1787,6 +1796,44 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.Cart": {
+            "type": "object",
+            "properties": {
+                "cart_id": {
+                    "type": "integer"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "inventory_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.Specs"
+                }
+            }
+        },
         "dtos.CartDTO": {
             "type": "object",
             "required": [
@@ -1802,36 +1849,13 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.CartSchema": {
-            "type": "object",
-            "properties": {
-                "amount": {
-                    "type": "string"
-                },
-                "category": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "img": {
-                    "type": "string"
-                },
-                "product_name": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
-                }
-            }
-        },
-        "dtos.CartSlices": {
+        "dtos.Carts": {
             "type": "object",
             "properties": {
                 "products": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.CartSchema"
+                        "$ref": "#/definitions/dtos.Cart"
                     }
                 },
                 "user_id": {
@@ -2490,6 +2514,9 @@ const docTemplate = `{
                 },
                 "desc": {
                     "type": "string"
+                },
+                "inventory_id": {
+                    "type": "integer"
                 },
                 "price": {
                     "type": "string"

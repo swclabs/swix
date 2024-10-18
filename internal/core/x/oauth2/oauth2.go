@@ -78,6 +78,28 @@ func (auth *Authenticator) VerifyToken(token *oauth2.Token) (*GoogleOAuth2, erro
 	return &profile, nil
 }
 
+// VerifyToken verifies the token
+func (auth *Authenticator) VerifyAccessToken(AccessToken string) (*GoogleOAuth2, error) {
+	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + AccessToken)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		if err := response.Body.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, err
+	}
+	var profile GoogleOAuth2
+	if err := json.Unmarshal(body, &profile); err != nil {
+		return nil, err
+	}
+	return &profile, nil
+}
+
 // VerifyTokenByte verifies the token
 func (auth *Authenticator) VerifyTokenByte(token *oauth2.Token) ([]byte, error) {
 	response, err := http.Get("https://www.googleapis.com/oauth2/v2/userinfo?access_token=" + token.AccessToken)

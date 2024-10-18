@@ -2,7 +2,6 @@ package manager
 
 import (
 	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/container/base"
 	"swclabs/swix/internal/apis/middleware"
 	"swclabs/swix/internal/apis/server"
 
@@ -43,6 +42,7 @@ func (r *Router) Routers(e *echo.Echo) {
 	e.GET("/auth/logout", r.controller.Logout)
 
 	// endpoint for oauth2 service
-	e.GET("/callback", base.Auth0Callback)
-	e.GET("/oauth2/login", base.Auth0Login)
+	// e.GET("/callback", base.Auth0Callback)
+	// e.GET("/oauth2/login", base.Auth0Login)
+	e.GET("/oauth2/google", r.controller.OAuth2)
 }

@@ -20,7 +20,7 @@ type IPurchase interface {
 	// limit is the maximum number of cart items to retrieve.
 	// userId is the user ID of cart item to retrieve.
 	// Returns a slice of Carts objects and an error if any issues occur during the retrieval process.
-	GetCart(ctx context.Context, userID int64, limit int) (*dtos.CartSlices, error)
+	GetCart(ctx context.Context, userID int64, limit int) (*dtos.Carts, error)
 
 	// CreateOrders creates a new order.
 	// ctx is the context to manage the request's lifecycle.
@@ -43,7 +43,7 @@ type IPurchase interface {
 	GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderSchema, error)
 
 	DeliveryOrderInfo(ctx context.Context, orderCode string) (*xdto.OrderInfoDTO, error)
-	
+
 	CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error)
 
 	// CreateDeliveryAddress creates a new delivery address.

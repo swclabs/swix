@@ -4,6 +4,7 @@ package carts
 import (
 	"context"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -11,6 +12,11 @@ import (
 // Mock struct for carts repos
 type Mock struct {
 	mock.Mock
+}
+
+// GetCartInfo implements ICarts.
+func (c *Mock) GetCartInfo(ctx context.Context, userID int64) ([]model.Carts, error) {
+	panic("unimplemented")
 }
 
 var _ ICarts = (*Mock)(nil)

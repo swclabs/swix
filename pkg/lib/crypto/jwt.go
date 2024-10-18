@@ -12,7 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func removeBearerPrefix(token string) string {
+func RemoveBearerPrefix(token string) string {
 	return strings.TrimPrefix(token, "Bearer ")
 }
 
@@ -45,8 +45,11 @@ func GenerateToken(accountID int64, email string, role string) (string, error) {
 
 // ParseToken Return Email from JWT token
 func ParseToken(tokenString string) (userID int64, email string, err error) {
-	tokenString = removeBearerPrefix(tokenString)
-	token, _ := claims(tokenString)
+	tokenString = RemoveBearerPrefix(tokenString)
+	token, err := claims(tokenString)
+	if err != nil {
+		return -1, "", err
+	}
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		email = claims["email"].(string)
 		userID = int64(claims["user_id"].(float64))
@@ -61,7 +64,7 @@ func ParseToken(tokenString string) (userID int64, email string, err error) {
 
 // ParseTokenRole Return Role from JWT token
 func ParseTokenRole(tokenString string) (string, error) {
-	tokenString = removeBearerPrefix(tokenString)
+	tokenString = RemoveBearerPrefix(tokenString)
 	token, _ := claims(tokenString)
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		role := claims["role"]
@@ -79,7 +82,8 @@ func ParseTokenRole(tokenString string) (string, error) {
 
 func Authenticate(c echo.Context) (userID int64, email string, err error) {
 	authHeader := c.Request().Header.Get("Authorization")
-	if authHeader == "" {
+	// fmt.Println(authHeader)
+	if authHeader == "" || authHeader == "Bearer" {
 		return -1, "", errors.New("unauthorized")
 	}
 	userID, email, err = ParseToken(authHeader)

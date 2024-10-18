@@ -2,6 +2,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"swclabs/swix/pkg/lib/crypto"
 
@@ -20,6 +21,7 @@ func Protected(next echo.HandlerFunc) echo.HandlerFunc {
 			})
 		}
 		_, _, err := crypto.ParseToken(authHeader)
+		fmt.Println(err)
 		if err != nil {
 			return c.JSON(http.StatusUnauthorized, map[string]interface{}{
 				"msg":     "unauthorized",

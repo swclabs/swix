@@ -5,6 +5,7 @@ import (
 	"context"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swix/internal/core/domain/model"
 	"swclabs/swix/pkg/infra/cache"
 	"swclabs/swix/pkg/infra/db"
 )
@@ -27,6 +28,19 @@ func New(connection db.IDatabase) ICarts {
 // Carts struct for cart repos
 type Carts struct {
 	db db.IDatabase
+}
+
+// GetCartInfo implements ICarts.
+func (c *Carts) GetCartInfo(ctx context.Context, userID int64) ([]model.Carts, error) {
+	rows, err := c.db.Query(ctx, getCartInfo, userID)
+	if err != nil {
+		return nil, err
+	}
+	cartItems, err := db.CollectRows[model.Carts](rows)
+	if err != nil {
+		return nil, err
+	}
+	return cartItems, nil
 }
 
 // GetCartByUserID implements domain.ICartRepository.

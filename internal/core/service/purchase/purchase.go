@@ -3,9 +3,9 @@ package purchase
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
-	"strings"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
@@ -228,45 +228,35 @@ func (p *Purchase) AddToCart(ctx context.Context, cart dtos.CartInsertDTO) error
 }
 
 // GetCart implements IPurchaseService.
-func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*dtos.CartSlices, error) {
-	carts, err := p.Cart.GetCartByUserID(ctx, userID, limit)
+func (p *Purchase) GetCart(ctx context.Context, userID int64, limit int) (*dtos.Carts, error) {
+	carts, err := p.Cart.GetCartInfo(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
-	var cartSchema = dtos.CartSlices{
-		UserID: userID,
+	var cartResp = dtos.Carts{
+		UserID:   userID,
+		Products: []dtos.Cart{},
 	}
-	for _, item := range carts {
-		inv, err := p.Inventory.GetByID(ctx, item.InventoryID)
-		if err != nil {
-			return nil, err
+	for _, cart := range carts {
+		var specs dtos.Specs
+		if err := json.Unmarshal([]byte(cart.InventorySpecs), &specs); err != nil {
+			return nil, fmt.Errorf("error unmarshal inventory specs: %v", err)
 		}
-		prod, err := p.Product.GetByID(ctx, inv.ProductID)
-		if err != nil {
-			return nil, err
-		}
-		category, err := p.Category.GetByID(ctx, prod.CategoryID)
-		if err != nil {
-			return nil, err
-		}
-		var (
-			amount = decimal.NewFromUint64(uint64(item.Quantity)).Mul(inv.Price)
-			images = strings.Split(inv.Image, ",")
-			image  = ""
-		)
-		if len(images) != 0 {
-			image = images[0]
-		}
-		cartSchema.Products = append(cartSchema.Products, dtos.CartSchema{
-			ID:          item.ID,
-			Quantity:    item.Quantity,
-			ProductName: prod.Name,
-			Amount:      amount.String(),
-			Img:         image,
-			Category:    category.Name,
+		cartResp.Products = append(cartResp.Products, dtos.Cart{
+			Name:           cart.Name,
+			CartID:         cart.CartID,
+			InventoryID:    cart.InventoryID,
+			ProductID:      cart.ProductID,
+			Quantity:       cart.Quantity,
+			Color:          cart.Color,
+			InventoryPrice: cart.InventoryPrice,
+			CurrencyCode:   cart.CurrencyCode,
+			InventoryImage: cart.InventoryImage,
+			CategoryName:   cart.CategoryName,
+			InventorySpecs: specs,
 		})
 	}
-	return &cartSchema, nil
+	return &cartResp, nil
 }
 
 // CreateOrders implements IPurchaseService.

@@ -56,6 +56,31 @@ definitions:
     - category
     - title
     type: object
+  dtos.Cart:
+    properties:
+      cart_id:
+        type: integer
+      category:
+        type: string
+      color:
+        type: string
+      currency_code:
+        type: string
+      image:
+        type: string
+      inventory_id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      specs:
+        $ref: '#/definitions/dtos.Specs'
+    type: object
   dtos.CartDTO:
     properties:
       inventory_id:
@@ -66,26 +91,11 @@ definitions:
     - inventory_id
     - quantity
     type: object
-  dtos.CartSchema:
-    properties:
-      amount:
-        type: string
-      category:
-        type: string
-      id:
-        type: integer
-      img:
-        type: string
-      product_name:
-        type: string
-      quantity:
-        type: integer
-    type: object
-  dtos.CartSlices:
+  dtos.Carts:
     properties:
       products:
         items:
-          $ref: '#/definitions/dtos.CartSchema'
+          $ref: '#/definitions/dtos.Cart'
         type: array
       user_id:
         type: integer
@@ -530,6 +540,8 @@ definitions:
         type: string
       desc:
         type: string
+      inventory_id:
+        type: integer
       price:
         type: string
       ram:
@@ -1748,18 +1760,24 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
-  /oauth2/login:
+  /oauth2/google:
     get:
       consumes:
       - application/json
-      description: Auth0 Login form.
+      description: Auth0 verify token.
+      parameters:
+      - description: google access token
+        in: query
+        name: access_token
+        required: true
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
       tags:
-      - base
+      - manager
   /products:
     delete:
       consumes:
@@ -1950,7 +1968,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.CartSlices'
+            $ref: '#/definitions/dtos.Carts'
       tags:
       - purchase
     post:
