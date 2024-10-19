@@ -10,7 +10,6 @@ import (
 	"swclabs/swix/pkg/utils"
 
 	"github.com/coreos/go-oidc/v3/oidc"
-	"github.com/labstack/echo/v4"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )
@@ -19,7 +18,6 @@ import (
 type I0Auth2 interface {
 	VerifyToken(*oauth2.Token) (*GoogleOAuth2, error)
 	VerifyTokenByte(token *oauth2.Token) ([]byte, error)
-	OAuth2CallBack(ctx echo.Context)
 }
 
 // GoogleOAuth2 represents the google oauth2 object
