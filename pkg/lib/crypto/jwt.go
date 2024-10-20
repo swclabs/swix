@@ -29,9 +29,9 @@ func claims(tokenString string) (*jwt.Token, error) {
 }
 
 // GenerateToken Generate JWT token
-func GenerateToken(accountID int64, email string, role string) (string, error) {
+func GenerateToken(userID int64, email string, role string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": accountID,
+		"user_id": userID,
 		"role":    role,
 		"email":   email,
 		"exp":     time.Now().Add(time.Hour * 24).Unix(), // 1 day

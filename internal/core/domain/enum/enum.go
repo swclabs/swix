@@ -21,8 +21,11 @@ const (
 	// Earphone is a category of the product.
 	Earphone
 
-	// Computer is a category of the product.
-	Computer
+	// Desktop is a category of the product.
+	Desktop
+
+	// Display is a category of the product.
+	Display
 
 	// Accessories is a category of the product.
 	Accessories
@@ -33,7 +36,7 @@ const (
 
 // Storage is an enumeration of the electronic devices.
 const (
-	Storage   = Phone | Laptop | Tablet | Computer
+	Storage   = Phone | Laptop | Tablet | Desktop
 	Accessory = Accessories | Earphone
 )
 
@@ -48,12 +51,14 @@ func (c Category) String() string {
 		return "laptop"
 	case c&Earphone != 0:
 		return "earphone"
-	case c&Computer != 0:
+	case c&Desktop != 0:
 		return "computer"
 	case c&Accessories != 0:
 		return "accessories"
 	case c&Watch != 0:
 		return "watch"
+	case c&Display != 0:
+		return "display"
 	}
 	return "unknown_category"
 }
@@ -70,11 +75,15 @@ func (c *Category) Load(types string) error {
 	case "earphone":
 		*c = Earphone
 	case "computer":
-		*c = Computer
+		*c = Desktop
 	case "accessories":
 		*c = Accessories
 	case "watch":
 		*c = Watch
+	case "display":
+		*c = Display
+	case "desktop":
+		*c = Desktop
 	default:
 		return fmt.Errorf("invalid category type")
 	}

@@ -36,7 +36,7 @@ func (usr *Users) GetByID(ctx context.Context, id int64) (*entity.Users, error) 
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[entity.Users](rows)
+	user, err := db.CollectRow[entity.Users](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (usr *Users) GetByEmail(ctx context.Context, email string) (*entity.Users, 
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[entity.Users](rows)
+	user, err := db.CollectRow[entity.Users](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func (usr *Users) Info(ctx context.Context, email string) (*model.Users, error) 
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[model.Users](rows)
+	user, err := db.CollectRow[model.Users](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*entity.Users,
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectOneRow[entity.Users](rows)
+	user, err := db.CollectRow[entity.Users](rows)
 	if err != nil {
 		return nil, err
 	}

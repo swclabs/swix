@@ -190,18 +190,11 @@ func (p *Controller) CreateDelivery(e echo.Context) error {
 // @Tags delivery
 // @Accept json
 // @Produce json
-// @Param uid query string true "user id"
 // @Success 200 {object} dtos.OK
 // @Router /delivery [GET]
 func (p *Controller) GetDelivery(e echo.Context) error {
-	uid, err := strconv.Atoi(e.QueryParam("uid"))
-	if err != nil {
-		return e.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "missing 'uid' required",
-		})
-	}
-
-	del, err := p.services.GetDelivery(e.Request().Context(), int64(uid))
+	userID, _, _ := crypto.Authenticate(e)
+	del, err := p.services.GetDelivery(e.Request().Context(), userID)
 	if err != nil {
 		return e.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -215,18 +208,11 @@ func (p *Controller) GetDelivery(e echo.Context) error {
 // @Tags address
 // @Accept json
 // @Produce json
-// @Param uid query string true "user id"
 // @Success 200 {object} []dtos.Address
 // @Router /address [GET]
 func (p *Controller) GetDeliveryAddress(e echo.Context) error {
-	uid, err := strconv.Atoi(e.QueryParam("uid"))
-	if err != nil {
-		return e.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "missing 'uid' required",
-		})
-	}
-
-	addr, err := p.services.GetDeliveryAddress(e.Request().Context(), int64(uid))
+	userID, _, _ := crypto.Authenticate(e)
+	addr, err := p.services.GetDeliveryAddress(e.Request().Context(), userID)
 	if err != nil {
 		return e.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),

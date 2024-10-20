@@ -25,6 +25,8 @@ import (
 	"swclabs/swix/pkg/infra/db"
 	"swclabs/swix/pkg/lib/crypto"
 	"swclabs/swix/pkg/utils"
+
+	"github.com/jackc/pgx/v5"
 )
 
 var _ IManager = (*Manager)(nil)
@@ -161,7 +163,7 @@ func (manager *Manager) UploadAvatar(email string, fileHeader *multipart.FileHea
 }
 
 // OAuth2SaveUser save user use oauth2 protocol
-func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (accountID int64, err error) {
+func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (userID int64, err error) {
 	hash, err := crypto.GenPassword(utils.RandomString(18))
 	if err != nil {
 		return -1, err
@@ -193,7 +195,7 @@ func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveU
 		}
 		return -1, err
 	}
-	ID, err := accountRepo.Insert(ctx, entity.Account{
+	_, err = accountRepo.Insert(ctx, entity.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.ID),
 		Password: hash,
 		Role:     "customer",
@@ -206,14 +208,20 @@ func (manager *Manager) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveU
 		}
 		return -1, fmt.Errorf("error saving account info: %v", err)
 	}
-	return ID, tx.Commit(ctx)
+	return userInfo.ID, tx.Commit(ctx)
 }
 
 // CheckLoginEmail check email already exist in database
 func (manager *Manager) CheckLoginEmail(ctx context.Context, email string) error {
-	_, err := manager.Account.GetByEmail(ctx, email)
+	account, err := manager.Account.GetByEmail(ctx, email)
 	if err != nil {
-		return errors.New("account not found: " + email)
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil
+		}
+		return err
+	}
+	if account.Email == email {
+		return errors.New("email already exist: " + email)
 	}
 	return nil
 }

@@ -31,12 +31,12 @@ type DeliveryBody struct {
 
 // Delivery request, response
 type Delivery struct {
-	ID           int64  `json:"id" db:"id"`
-	AddressID    int64  `json:"address_id" db:"address_id"`
-	UserID       int64  `json:"user_id" db:"user_id"`
-	Status       string `json:"status" db:"status"`
-	Method       string `json:"method" db:"method"`
-	Note         string `json:"note" db:"note"`
-	SentDate     string `json:"sent_date" db:"sent_date"`
-	ReceivedDate string `json:"received_date" db:"received_date"`
+	ID           int64   `json:"id" db:"id"`
+	Address      Address `json:"address" db:"address"`
+	UserID       int64   `json:"user_id" db:"user_id"`
+	Status       string  `json:"status" db:"status"`
+	Method       string  `json:"method" db:"method"`
+	Note         string  `json:"note" db:"note"`
+	SentDate     string  `json:"sent_date" db:"sent_date"`
+	ReceivedDate string  `json:"received_date" db:"received_date"`
 }

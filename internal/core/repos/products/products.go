@@ -89,7 +89,7 @@ func (product *Products) GetByID(ctx context.Context, productID int64) (*entity.
 	if err != nil {
 		return nil, errors.Repository("query", err)
 	}
-	_product, err := db.CollectOneRow[entity.Products](rows)
+	_product, err := db.CollectRow[entity.Products](rows)
 	if err != nil {
 		return nil, errors.Repository("collect row", err)
 	}

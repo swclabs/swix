@@ -117,7 +117,7 @@ func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*entity.Inv
 	if err != nil {
 		return nil, err
 	}
-	inventory, err := db.CollectOneRow[entity.Inventories](rows)
+	inventory, err := db.CollectRow[entity.Inventories](rows)
 	if err != nil {
 		return nil, err
 	}

@@ -141,9 +141,19 @@ func (p *Purchase) GetDelivery(ctx context.Context, userID int64) ([]dtos.Delive
 		if !del.ReceivedDate.IsZero() {
 			receiveddate = del.ReceivedDate.Format(time.RFC3339)
 		}
+		address, err := p.Address.GetByID(ctx, del.AddressID)
+		if err != nil {
+			return nil, err
+		}
 		delivery = append(delivery, dtos.Delivery{
-			ID:           del.ID,
-			AddressID:    del.AddressID,
+			ID: del.ID,
+			Address: dtos.Address{
+				ID:       address.ID,
+				Street:   address.Street,
+				City:     address.City,
+				Ward:     address.Ward,
+				District: address.District,
+			},
 			UserID:       del.UserID,
 			Status:       del.Status,
 			Method:       del.Method,

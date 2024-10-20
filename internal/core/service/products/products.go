@@ -3,6 +3,7 @@ package products
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"mime/multipart"
 	"net/http"
@@ -17,9 +18,10 @@ import (
 	"swclabs/swix/internal/core/repos/products"
 	"swclabs/swix/pkg/infra/blob"
 	"swclabs/swix/pkg/infra/db"
-	"swclabs/swix/pkg/lib/errors"
+	swcerr "swclabs/swix/pkg/lib/errors"
 	"swclabs/swix/pkg/utils"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/shopspring/decimal"
 )
 
@@ -100,7 +102,7 @@ func (s *Products) UploadProductShopImage(ctx context.Context, ID int, fileHeade
 func (s *Products) SearchDetails(ctx context.Context, keyword string) ([]dtos.ProductDetail, error) {
 	products, err := s.Products.Search(ctx, keyword)
 	if err != nil {
-		return nil, errors.Service("keyword error", err)
+		return nil, swcerr.Service("keyword error", err)
 	}
 	var details []dtos.ProductDetail
 	for _, product := range products {
@@ -342,7 +344,7 @@ func (s *Products) GetInv(ctx context.Context, productID int64) ([]entity.Invent
 func (s *Products) Search(ctx context.Context, keyword string) ([]dtos.ProductResponse, error) {
 	_products, err := s.Products.Search(ctx, keyword)
 	if err != nil {
-		return nil, errors.Service("keyword error", err)
+		return nil, swcerr.Service("keyword error", err)
 	}
 	var productSchema = []dtos.ProductResponse{}
 	for _, p := range _products {
@@ -470,7 +472,6 @@ func (s *Products) InsertInv(ctx context.Context, product dtos.Inventory) error 
 		inventory = entity.Inventories{
 			Color:        product.Color,
 			ColorImg:     product.ColorImg,
-			Image:        strings.Join(product.Image, ","),
 			ProductID:    product.ProductID,
 			Price:        price,
 			Available:    int64(avai),
@@ -478,13 +479,19 @@ func (s *Products) InsertInv(ctx context.Context, product dtos.Inventory) error 
 			Status:       "active",
 		}
 	)
+	items, err := s.Inventory.GetByColor(ctx, product.ProductID, product.Color)
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return err
+	}
+	if len(items) > 0 {
+		inventory.Image = items[0].Image
+		inventory.ColorImg = items[0].ColorImg
+	}
 	tx, err := db.NewTransaction(ctx)
 	if err != nil {
 		return err
 	}
-	var (
-		invRepo = inventories.New(tx)
-	)
+	var invRepo = inventories.New(tx)
 	specs, _ := json.Marshal(product.Specs)
 	inventory.Specs = string(specs)
 	_, err = invRepo.InsertProduct(ctx, inventory)

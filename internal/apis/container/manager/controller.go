@@ -254,12 +254,12 @@ func (manager *Controller) CheckLoginEmail(c echo.Context) error {
 		})
 	}
 	if err := manager.service.CheckLoginEmail(c.Request().Context(), email); err != nil {
-		return c.JSON(http.StatusInternalServerError, dtos.Error{
-			Msg: err.Error(),
+		return c.JSON(http.StatusBadRequest, dtos.OK{
+			Msg: "email invalid " + err.Error(),
 		})
 	}
 	return c.JSON(http.StatusOK, dtos.OK{
-		Msg: "email: " + email,
+		Msg: "email valid ",
 	})
 }
 
@@ -280,7 +280,7 @@ func (manager *Controller) OAuth2(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	id, err := manager.service.OAuth2SaveUser(c.Request().Context(), dtos.OAuth2SaveUser{
+	userID, err := manager.service.OAuth2SaveUser(c.Request().Context(), dtos.OAuth2SaveUser{
 		Email:     profile.Email,
 		FirstName: profile.Name,
 		LastName:  profile.FamilyName,
@@ -291,7 +291,7 @@ func (manager *Controller) OAuth2(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	accessToken, err = crypto.GenerateToken(id, profile.Email, "customer")
+	accessToken, err = crypto.GenerateToken(userID, profile.Email, "customer")
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
