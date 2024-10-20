@@ -20,6 +20,11 @@ type _cache struct {
 	address IAddress
 }
 
+// GetByID implements IAddress.
+func (c *_cache) GetByID(ctx context.Context, id int64) (*entity.Addresses, error) {
+	return c.address.GetByID(ctx, id)
+}
+
 // GetByUserID implements IAddressRepository.
 func (c *_cache) GetByUserID(ctx context.Context, userID int64) ([]entity.Addresses, error) {
 	return c.address.GetByUserID(ctx, userID)

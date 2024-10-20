@@ -19,6 +19,11 @@ type Mock struct {
 	mock.Mock
 }
 
+// GetByID implements IAddress.
+func (a *Mock) GetByID(ctx context.Context, id int64) (*entity.Addresses, error) {
+	panic("unimplemented")
+}
+
 // GetByUserID implements IAddressRepository.
 func (a *Mock) GetByUserID(_ context.Context, _ int64) ([]entity.Addresses, error) {
 	panic("unimplemented")

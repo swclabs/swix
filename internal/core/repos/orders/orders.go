@@ -49,7 +49,7 @@ func (orders *Orders) GetByUUID(ctx context.Context, uuid string) (*entity.Order
 	if err != nil {
 		return nil, err
 	}
-	order, err := db.CollectOneRow[entity.Orders](rows)
+	order, err := db.CollectRow[entity.Orders](rows)
 	if err != nil {
 		return nil, err
 	}

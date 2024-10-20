@@ -33,7 +33,7 @@ func (category *Categories) GetByID(ctx context.Context, ID int64) (*entity.Cate
 	if err != nil {
 		return nil, err
 	}
-	result, err := db.CollectOneRow[entity.Categories](raw)
+	result, err := db.CollectRow[entity.Categories](raw)
 	if err != nil {
 		return nil, err
 	}

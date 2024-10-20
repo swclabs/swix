@@ -37,14 +37,14 @@ func (p *Router) Routers(e *echo.Echo) {
 	e.GET("/purchase/orders", p.controllers.GetOrders)
 	e.POST("/purchase/orders", p.controllers.CreateOrder, middleware.Protected)
 
-	e.GET("/address", p.controllers.GetDeliveryAddress)
+	e.GET("/address", p.controllers.GetDeliveryAddress, middleware.Protected)
 	e.POST("/address", p.controllers.CreateDeliveryAddress)
 
 	e.GET("/address/province", p.controllers.AddressProvince)
 	e.GET("/address/district", p.controllers.AddressDistrict)
 	e.GET("/address/ward", p.controllers.AddressWard)
 
-	e.GET("/delivery", p.controllers.GetDelivery)
+	e.GET("/delivery", p.controllers.GetDelivery, middleware.Protected)
 	e.POST("/delivery", p.controllers.CreateDelivery)
 	e.POST("/delivery/order", p.controllers.CreateDeliveryOrder)
 	e.GET("/delivery/order/:code", p.controllers.DeliveryOrderInfo)

@@ -36,7 +36,7 @@ func (account *Accounts) GetByEmail(
 	if err != nil {
 		return nil, err
 	}
-	acc, err := db.CollectOneRow[entity.Account](rows)
+	acc, err := db.CollectRow[entity.Account](rows)
 	if err != nil {
 		return nil, err
 	}

@@ -51,7 +51,7 @@ func (comment *Comments) GetByID(ctx context.Context, ID int64) (*entity.Comment
 		return nil, errors.Repository("query", err)
 	}
 
-	_comment, err := db.CollectOneRow[entity.Comments](row)
+	_comment, err := db.CollectRow[entity.Comments](row)
 	if err != nil {
 		return nil, err
 	}

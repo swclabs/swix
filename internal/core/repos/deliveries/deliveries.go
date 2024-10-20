@@ -36,7 +36,7 @@ func (d *Deliveries) GetByID(ctx context.Context, ID int64) (*entity.Deliveries,
 	if err != nil {
 		return nil, err
 	}
-	result, err := db.CollectOneRow[entity.Deliveries](raw)
+	result, err := db.CollectRow[entity.Deliveries](raw)
 	if err != nil {
 		return nil, err
 	}

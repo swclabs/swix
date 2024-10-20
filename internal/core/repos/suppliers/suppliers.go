@@ -54,7 +54,7 @@ func (supplier *Suppliers) GetByPhone(
 	if err != nil {
 		return nil, err
 	}
-	_supplier, err := db.CollectOneRow[entity.Suppliers](rows)
+	_supplier, err := db.CollectRow[entity.Suppliers](rows)
 	if err != nil {
 		return nil, err
 	}

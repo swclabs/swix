@@ -28,6 +28,16 @@ type Addresses struct {
 	db db.IDatabase
 }
 
+// GetByID implements IAddress.
+func (addr *Addresses) GetByID(ctx context.Context, id int64) (*entity.Addresses, error) {
+	row, err := addr.db.Query(ctx, selectAddressesByID, id)
+	if err != nil {
+		return nil, err
+	}
+	addrData, err := db.CollectRow[entity.Addresses](row)
+	return &addrData, nil
+}
+
 // GetByUserID implements IAddressRepository.
 func (addr *Addresses) GetByUserID(ctx context.Context, userID int64) ([]entity.Addresses, error) {
 	rows, err := addr.db.Query(ctx, selectAddressesByUserID, userID)

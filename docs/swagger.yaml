@@ -1128,12 +1128,6 @@ paths:
       consumes:
       - application/json
       description: get address delivery.
-      parameters:
-      - description: user id
-        in: query
-        name: uid
-        required: true
-        type: string
       produces:
       - application/json
       responses:
@@ -1540,12 +1534,6 @@ paths:
       consumes:
       - application/json
       description: get delivery info by user id.
-      parameters:
-      - description: user id
-        in: query
-        name: uid
-        required: true
-        type: string
       produces:
       - application/json
       responses:

@@ -27,15 +27,6 @@ const docTemplate = `{
                 "tags": [
                     "address"
                 ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "user id",
-                        "name": "uid",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -663,15 +654,6 @@ const docTemplate = `{
                 ],
                 "tags": [
                     "delivery"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "user id",
-                        "name": "uid",
-                        "in": "query",
-                        "required": true
-                    }
                 ],
                 "responses": {
                     "200": {
