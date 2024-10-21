@@ -31,6 +31,6 @@ func (c *_cache) GetByUserID(ctx context.Context, userID int64) ([]entity.Addres
 }
 
 // Insert implements IAddressRepository.
-func (c *_cache) Insert(ctx context.Context, data entity.Addresses) error {
+func (c *_cache) Insert(ctx context.Context, data entity.Addresses) (int64, error) {
 	return c.address.Insert(ctx, data)
 }

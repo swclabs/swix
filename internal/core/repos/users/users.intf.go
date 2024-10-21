@@ -20,7 +20,7 @@ type IUsers interface {
 	GetByID(ctx context.Context, id int64) (*entity.Users, error)
 
 	// Insert inserts a new Users into the database.
-	Insert(ctx context.Context, usr entity.Users) error
+	Insert(ctx context.Context, usr entity.Users) (int64, error)
 
 	// Info retrieves Users information based on email address.
 	Info(ctx context.Context, email string) (*model.Users, error)

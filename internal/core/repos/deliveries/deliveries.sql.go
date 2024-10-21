@@ -2,8 +2,9 @@ package deliveries
 
 const (
 	insert = `
-		INSERT INTO deliveries (user_id, address_id, status, method, note, sent_date, received_date )
-		VALUES ($1, $2, $3, $4, $5, $6, $7)
+		INSERT INTO deliveries (user_id, address_id, status, method, note, sent_date )
+		VALUES ($1, $2, $3, $4, $5, $6)
+		RETURNING id;
 	`
 
 	selectByID = `

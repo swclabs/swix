@@ -28,6 +28,8 @@ type IPurchase interface {
 	// Returns the UUID of the newly created order and an error if any issues occur during the creation process.
 	CreateOrders(ctx context.Context, createOrder dtos.CreateOrderDTO) (string, error)
 
+	CreateOrderForm(ctx context.Context, order dtos.OrderForm) (string, error)
+	
 	// DeleteItemFromCart deletes an item from the shopping cart.
 	// ctx is the context to manage the request's lifecycle.
 	// userID is the user ID of the cart item to delete.

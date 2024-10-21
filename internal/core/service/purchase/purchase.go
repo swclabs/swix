@@ -4,8 +4,11 @@ package purchase
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
+	"strconv"
+	"strings"
 	"swclabs/swix/app"
 	"swclabs/swix/internal/core/domain/dtos"
 	"swclabs/swix/internal/core/domain/entity"
@@ -23,6 +26,7 @@ import (
 	"swclabs/swix/pkg/utils"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/shopspring/decimal"
 )
 
@@ -66,6 +70,144 @@ type Purchase struct {
 	Ghn       ghnx.IGhnx
 }
 
+// CreateOrderForm implements IPurchase.
+func (p *Purchase) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (string, error) {
+	tx, err := db.NewTransaction(ctx)
+	if err != nil {
+		return "", err
+	}
+	var (
+		userRepo           = users.New(tx)
+		addressRepo        = addresses.New(tx)
+		orderRepo          = orders.New(tx)
+		deliveryRepo       = deliveries.New(tx)
+		inventoryRepo      = inventories.New(tx)
+		totalAmount        decimal.Decimal
+		productTotalAmount []decimal.Decimal
+		_uuid              = utils.GenerateOrderCode(16)
+	)
+	user, err := userRepo.GetByEmail(ctx, order.Customer.Email)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			user = &entity.Users{
+				Email:       order.Customer.Email,
+				FirstName:   order.Customer.FirstName,
+				LastName:    order.Customer.LastName,
+				PhoneNumber: order.Customer.Phone,
+			}
+			if user.ID, err = userRepo.Insert(ctx, *user); err != nil {
+				if errTx := tx.Rollback(ctx); errTx != nil {
+					log.Fatal(errTx)
+				}
+			}
+		} else {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				log.Fatal(errTx)
+			}
+		}
+	}
+	addrID, err := addressRepo.Insert(ctx, entity.Addresses{
+		UserID:   user.ID,
+		Street:   order.Address.Street,
+		City:     order.Address.City,
+		Ward:     order.Address.Ward,
+		District: order.Address.District,
+	})
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+	}
+	deliveryID, err := deliveryRepo.Create(ctx, entity.Deliveries{
+		UserID:    user.ID,
+		AddressID: addrID,
+		Status:    order.Delivery.Status,
+		Method:    order.Delivery.Method,
+		Note:      order.Delivery.Note,
+		SentDate:  time.Now().UTC(),
+	})
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+	}
+	for {
+		_order, err := orderRepo.GetByUUID(ctx, _uuid)
+		if err != nil || _order.UUID == "" {
+			break
+		}
+		_uuid = utils.GenerateOrderCode(16)
+	}
+	for _, product := range order.Product {
+		code := strings.Split(product.Code, "#")
+		if len(code) != 2 {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				log.Fatal(errTx)
+			}
+			return "", fmt.Errorf("invalid product code: %s", product.Code)
+		}
+		id, err := strconv.ParseInt(code[1], 10, 64)
+		if err != nil {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				log.Fatal(errTx)
+			}
+			return "", err
+		}
+		inven, err := inventoryRepo.GetByID(ctx, id)
+		if err != nil {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				log.Fatal(errTx)
+			}
+			return "", err
+		}
+		totalAmount = totalAmount.Add(inven.Price)
+		productTotalAmount = append(
+			productTotalAmount,
+			inven.Price.Mul(decimal.NewFromInt32(int32(product.Quantity))))
+	}
+	orderID, err := orderRepo.Create(ctx, entity.Orders{
+		UUID:        _uuid,
+		DeliveryID:  deliveryID,
+		UserID:      user.ID,
+		Status:      "pending",
+		TotalAmount: totalAmount,
+	})
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
+		}
+		return "", err
+	}
+	for idx, product := range order.Product {
+		code := strings.Split(product.Code, "#")
+		if len(code) != 2 {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				log.Fatal(errTx)
+			}
+			return "", fmt.Errorf("invalid product code: %s", product.Code)
+		}
+		id, err := strconv.ParseInt(code[1], 10, 64)
+		if err != nil {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				log.Fatal(errTx)
+			}
+			return "", err
+		}
+		if err := orderRepo.InsertProduct(ctx, entity.ProductInOrder{
+			OrderID:     orderID,
+			InventoryID: id,
+			Quantity:    product.Quantity,
+			TotalAmount: productTotalAmount[idx],
+		}); err != nil {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				log.Fatal(errTx)
+			}
+			return "", err
+		}
+	}
+	return "", tx.Commit(ctx)
+}
+
 // CreateDeliveryOrder implements IPurchase.
 func (p *Purchase) CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error) {
 	return p.Ghn.CreateOrder(ctx, shopID, order)
@@ -97,30 +239,27 @@ func (p *Purchase) CreateDelivery(ctx context.Context, delivery dtos.DeliveryBod
 	if err != nil {
 		sendate = time.Time{}
 	}
-	receivedate, err := time.Parse(time.RFC3339, delivery.ReceivedDate)
-	if err != nil {
-		receivedate = time.Time{}
-	}
-	return p.Delivery.Create(ctx, entity.Deliveries{
-		UserID:       delivery.UserID,
-		AddressID:    delivery.AddressID,
-		Status:       delivery.Status,
-		Method:       delivery.Method,
-		Note:         delivery.Note,
-		SentDate:     sendate,
-		ReceivedDate: receivedate,
+	_, err = p.Delivery.Create(ctx, entity.Deliveries{
+		UserID:    delivery.UserID,
+		AddressID: delivery.AddressID,
+		Status:    delivery.Status,
+		Method:    delivery.Method,
+		Note:      delivery.Note,
+		SentDate:  sendate,
 	})
+	return err
 }
 
 // CreateDeliveryAddress implements IPurchase.
 func (p *Purchase) CreateDeliveryAddress(ctx context.Context, addr dtos.DeliveryAddress) error {
-	return p.Address.Insert(ctx, entity.Addresses{
+	_, err := p.Address.Insert(ctx, entity.Addresses{
 		UserID:   addr.UserID,
 		Street:   addr.Street,
 		City:     addr.City,
 		Ward:     addr.Ward,
 		District: addr.District,
 	})
+	return err
 }
 
 // GetDelivery implements IPurchase.
@@ -137,9 +276,6 @@ func (p *Purchase) GetDelivery(ctx context.Context, userID int64) ([]dtos.Delive
 		)
 		if !del.SentDate.IsZero() {
 			sentdate = del.SentDate.Format(time.RFC3339)
-		}
-		if !del.ReceivedDate.IsZero() {
-			receiveddate = del.ReceivedDate.Format(time.RFC3339)
 		}
 		address, err := p.Address.GetByID(ctx, del.AddressID)
 		if err != nil {
@@ -328,7 +464,6 @@ func (p *Purchase) CreateOrders(ctx context.Context, createOrder dtos.CreateOrde
 			InventoryID: product.InventoryID,
 			Quantity:    product.Quantity,
 			TotalAmount: productTotalAmount[idx],
-			SpecsID:     product.SpecsID,
 		}); err != nil {
 			if errTx := tx.Rollback(ctx); errTx != nil {
 				log.Fatal(errTx)

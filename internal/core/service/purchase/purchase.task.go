@@ -26,6 +26,11 @@ type Task struct {
 	service IPurchase
 }
 
+// CreateOrderForm implements IPurchase.
+func (t *Task) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (string, error) {
+	panic("unimplemented")
+}
+
 // CreateDeliveryOrder implements IPurchase.
 func (t *Task) CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error) {
 	panic("unimplemented")

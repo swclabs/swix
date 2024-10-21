@@ -367,7 +367,7 @@ func (p *Controller) GetItems(c echo.Context) error {
 			Msg: "missing 'limit' or 'limit' is not a number",
 		})
 	}
-	stock, err := p.service.GetAllInv(c.Request().Context(), page, limit)
+	items, err := p.service.GetAllInv(c.Request().Context(), page, limit)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -378,7 +378,7 @@ func (p *Controller) GetItems(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, stock)
+	return c.JSON(http.StatusOK, items)
 }
 
 // UpdateProductInfo .

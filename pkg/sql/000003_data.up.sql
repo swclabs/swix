@@ -46,7 +46,7 @@ INSERT INTO suppliers (id, name, email) VALUES (1, 'Apple', 'exam@example2.com')
 SELECT setval('suppliers_id_seq', (SELECT MAX(id) FROM suppliers));
 
 --
--- TOC entry 3409 (class 0 OID 21219)
+-- TOC entry 3409 (class 0 OID 21481)
 -- Dependencies: 227
 -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: admin
 --
@@ -54,7 +54,6 @@ SELECT setval('suppliers_id_seq', (SELECT MAX(id) FROM suppliers));
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (2, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728571269/swc-storage/g5xyddn9yslxzozdenmn.png', '', 'Từ 22.999.000đ hoặc 936.000đ/th. trong 24 tháng*', 'Siêu mạnh mẽ trên mọi mặt.', 'iPhone 15', 1, 1, '2024-10-10 14:37:26.298902', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "6.71", "display": "Super Retina XDR"}', 'active');
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (3, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728571302/swc-storage/h8skd6ufmiy3x3ciedfi.png', '', 'Từ 19.999.000đ hoặc 814.000đ/th. trong 24 tháng*', 'Luôn tuyệt vời như thế.', 'iPhone 14', 1, 1, '2024-10-10 14:38:02.415319', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "6.71", "display": "Super Retina XDR"}', 'active');
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (4, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728571323/swc-storage/fm6cretpjbzkgwbns9do.png', '', 'Từ 17.299.000đ hoặc 704.000đ/th. trong 24 tháng*', 'Hội tụ mọi điều tuyệt diệu.', 'iPhone 13', 1, 1, '2024-10-10 14:39:12.689638', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "6.71", "display": "Super Retina XDR"}', 'active');
-INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (6, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728635080/swc-storage/fce1xe5tpgchkpoe2jgu.jpg', 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728635169/swc-storage/mreuudhtmybm0pjluspy.jpg,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728635170/swc-storage/rqeksvzxoqy5nemujwme.jpg,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728635171/swc-storage/anaby1wfox1zccuahpi0.jpg', 'Từ 28.999.000đ hoặc 1.181.000đ/th. trong 24 tháng*', 'Một iPhone cực đỉnh.', 'iPhone 15 Pro Max', 1, 1, '2024-10-11 08:22:32.021943', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "Super Retina XDR", "display": "6.71"}', 'active');
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (1, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728571252/swc-storage/k4jskdsqnkwxbdabfne5.png', 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728571470/swc-storage/uasxqatjfu2kopdjljdl.jpg,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728571472/swc-storage/uzdavi6lqcqhc3wkywbz.jpg,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728571474/swc-storage/nl8qic2e0zm5jfz1mtx0.jpg', 'Từ 28.999.000đ hoặc 1.181.000đ/th. trong 24 tháng*', 'Một iPhone cực đỉnh.', 'iPhone 15 Pro', 1, 1, '2024-10-11 08:19:45.449374', '{"RAM": null, "SSD": null, "screen": "6.1 inch", "display": "Super Retina XDR"}', 'active');
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (7, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729393722/swc-storage/ycsfb8cdonhdz3czvj0j.png', 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729406776/swc-storage/precoqtpdgk7cacgfsjt.webp,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729406777/swc-storage/tbkun6bkgweeeqg47h2a.webp,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729406777/swc-storage/kwyl1ahevlgqzbphe5d4.webp', 'Từ 21.199.000đ', 'Trải nghiệm iPad cực đỉnh với công nghệ tiên tiến nhất.', 'iPad Pro', 1, 3, '2024-10-20 03:06:43.091122', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "Super Retina XDR", "display": "6.71"}', 'active');
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (8, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729393790/swc-storage/xigvxeoqyf2abbmiiyzw.png', '', 'Từ 15.599.000đ', 'Hiệu năng mạnh mẽ trong một thiết kế mỏng nhẹ.', 'iPad Air', 1, 3, '2024-10-20 03:09:35.887728', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "Super Retina XDR", "display": "6.71"}', 'active');
@@ -63,6 +62,10 @@ INSERT INTO public.products (id, image, shop_image, price, description, name, su
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (11, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729393973/swc-storage/iz0kvlvmykbua3dxtja2.png', '', 'Từ 12.799.000đ', 'Trọn vẹn trải nghiệm iPad nằm gọn trên tay.', 'iPad mini', 1, 3, '2024-10-20 03:12:42.253262', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "Super Retina XDR", "display": "6.71"}', 'active');
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (5, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728571338/swc-storage/czmjjtvcgcqqc8csxsjx.png', 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729406138/swc-storage/shcwkpuynmqkqwpxgcea.webp,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729406138/swc-storage/bwrbvsbwrgzz8ljgvsic.webp,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729406496/swc-storage/htuygcmdownqvfpzyig7.webp,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729406497/swc-storage/j2lwwhfhwvntydoizwij.webp,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729406498/swc-storage/bkzxusjmufq9vnjro9na.webp', 'Từ 11.999.000đ hoặc 489.000đ/th. trong 24 tháng*', 'Thực sự mạnh mẽ. Thực sự giá trị.', 'iPhone SE', 1, 1, '2024-10-10 14:39:38.656298', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "6.71", "display": "Super Retina XDR"}', 'active');
 INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (12, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729407136/swc-storage/fuj9iif1fmmbllqb9k8e.png', 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729407086/swc-storage/dcgmuvsu0djvbj7kelpy.webp,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729407087/swc-storage/mq94cg2azb0g4txezjov.webp,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729407088/swc-storage/hawnkybu826ogjgalds3.webp', 'Từ 12.799.000đ', 'Trọn vẹn trải nghiệm iPad nằm gọn trên tay.', 'iPad Pro 13 inch', 1, 3, '2024-10-20 06:48:34.985496', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "Super Retina XDR", "display": "6.71"}', 'active');
+INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (6, 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1729409168/swc-storage/miankeryqfd8d6orenf2.png', 'https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728635169/swc-storage/mreuudhtmybm0pjluspy.jpg,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728635170/swc-storage/rqeksvzxoqy5nemujwme.jpg,https://res.cloudinary.com/dqsiqqz7q/image/upload/v1728635171/swc-storage/anaby1wfox1zccuahpi0.jpg', 'Từ 28.999.000đ hoặc 1.181.000đ/th. trong 24 tháng*', 'Một iPhone cực đỉnh.', 'iPhone 15 Pro Max', 1, 1, '2024-10-11 08:22:32.021943', '{"RAM": [4, 8], "SSD": [128, 256, 512], "screen": "Super Retina XDR", "display": "6.71"}', 'active');
+INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (13, '', '', 'Từ 6.399.000đ hoặc 261.000đ/th. trong 24 tháng.', 'Tất cả tính năng bạn cần. Giá nhẹ nhàng.', 'Apple Watch SE', 1, 4, '2024-10-20 14:56:30.774649', '{"RAM": [], "SSD": [], "screen": "", "display": ""}', 'active');
+INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (14, '', '', 'Từ 10.499.000đ hoặc 427.000đ/th. trong 24 tháng.', 'Cảm biến mạnh mẽ, tính năng sức khỏe tiên tiến.', 'Apple Watch Series 9', 1, 4, '2024-10-20 14:57:10.877648', '{"RAM": [], "SSD": [], "screen": "", "display": ""}', 'active');
+INSERT INTO public.products (id, image, shop_image, price, description, name, supplier_id, category_id, created, specs, status) VALUES (15, '', '', 'Từ 21.999.000đ hoặc 896.000đ/th. trong 24 tháng.', 'Ngầu và giàu năng lực nhất.', 'Apple Watch Ultra 2', 1, 4, '2024-10-20 14:57:32.775267', '{"RAM": [], "SSD": [], "screen": "", "display": ""}', 'active');
 
 
 --
@@ -71,7 +74,7 @@ INSERT INTO public.products (id, image, shop_image, price, description, name, su
 -- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
 --
 
-SELECT pg_catalog.setval('public.products_id_seq', 12, true);
+SELECT pg_catalog.setval('public.products_id_seq', 15, true);
 
 --
 -- TOC entry 3416 (class 0 OID 16547)
@@ -90,7 +93,7 @@ INSERT INTO collections (id, created, "position", headline, body) VALUES (6, '20
 SELECT setval('collections_id_seq', (SELECT MAX(id) FROM collections));
 
 --
--- TOC entry 3408 (class 0 OID 21291)
+-- TOC entry 3408 (class 0 OID 21553)
 -- Dependencies: 243
 -- Data for Name: inventories; Type: TABLE DATA; Schema: public; Owner: admin
 --
@@ -204,7 +207,7 @@ SELECT pg_catalog.setval('public.addresses_id_seq', 1, true);
 -- Data for Name: deliveries; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.deliveries (id, user_id, address_id, sent_date, received_date, status, method, note) VALUES (1, 1, 1, '0001-01-01 00:00:00+00', '0001-01-01 00:00:00+00', 'active', 'COD', '');
+INSERT INTO public.deliveries (id, user_id, address_id, sent_date, status, method, note) VALUES (1, 1, 1, '0001-01-01 00:00:00+00', 'active', 'COD', '');
 
 
 --

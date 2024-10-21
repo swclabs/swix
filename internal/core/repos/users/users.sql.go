@@ -4,6 +4,7 @@ const (
 	insertIntoUsers string = `
 		INSERT INTO users (email, phone_number, first_name, last_name, image) 
 		VALUES ($1,$2,$3,$4,$5)
+		RETURNING id;
 	`
 
 	selectUserInfo string = `

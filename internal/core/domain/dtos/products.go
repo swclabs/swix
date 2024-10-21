@@ -120,6 +120,7 @@ type InvItem struct {
 // Inventory response, request
 type Inventory struct {
 	ID           int64    `json:"id"`
+	ItemCode     string   `json:"item_code"`
 	ProductName  string   `json:"product_name"`
 	ProductID    int64    `json:"product_id" validate:"number,required"`
 	Price        string   `json:"price" validate:"number,required"`

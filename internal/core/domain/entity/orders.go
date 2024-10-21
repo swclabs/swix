@@ -22,7 +22,6 @@ type ProductInOrder struct {
 	ID           int64           `json:"id" db:"id"`
 	OrderID      int64           `json:"order_id" db:"order_id"`
 	InventoryID  int64           `json:"inventory_id" db:"inventory_id"`
-	SpecsID      int64           `json:"specs_id" db:"specs_id"`
 	Quantity     int64           `json:"quantity" db:"quantity"`
 	CurrencyCode string          `json:"currency_code" db:"currency_code"`
 	TotalAmount  decimal.Decimal `json:"total_amount" db:"total_amount"`

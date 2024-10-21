@@ -1,6 +1,8 @@
 package dtos
 
-import "swclabs/swix/internal/core/domain/model"
+import (
+	"swclabs/swix/internal/core/domain/model"
+)
 
 // Cart schema request, response
 type Cart struct {
@@ -65,7 +67,6 @@ type OrderDTO struct {
 	Products   []struct {
 		InventoryID int64 `json:"inventory_id" validate:"required"`
 		Quantity    int64 `json:"quantity" validate:"required"`
-		SpecsID     int64 `json:"specs_id"`
 	} `json:"product" validate:"required"`
 }
 
@@ -73,4 +74,36 @@ type OrderDTO struct {
 type CreateOrderDTO struct {
 	Email string `json:"email" validate:"required"`
 	OrderDTO
+}
+
+type OrderFormAddress struct {
+	City     string `json:"city" validate:"required"`
+	Ward     string `json:"ward" validate:"required"`
+	District string `json:"district" validate:"required"`
+	Street   string `json:"street" validate:"required"`
+}
+
+type OrderFormProduct struct {
+	Code     string `json:"code" validate:"required"`
+	Quantity int64  `json:"quantity" validate:"required"`
+}
+
+type OrderFormDelivery struct {
+	Status   string `json:"status" validate:"required"`
+	Method   string `json:"method" validate:"required"`
+	Note     string `json:"note" `
+	SentDate string `json:"sent_date"`
+}
+
+type OrderFormCustomer struct {
+	Email     string `json:"email" validate:"required"`
+	FirstName string `json:"first_name" validate:"required"`
+	LastName  string `json:"last_name" validate:"required"`
+	Phone     string `json:"phone" validate:"required,number"`
+}
+type OrderForm struct {
+	Customer OrderFormCustomer  `json:"customer" validate:"required"`
+	Delivery OrderFormDelivery  `json:"delivery" validate:"required"`
+	Address  OrderFormAddress   `json:"address" validate:"required"`
+	Product  []OrderFormProduct `json:"product" validate:"required"`
 }

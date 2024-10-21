@@ -40,11 +40,44 @@ type IController interface {
 	AddressDistrict(c echo.Context) error
 	CreateDeliveryOrder(c echo.Context) error
 	DeliveryOrderInfo(c echo.Context) error
+	CreateOrderForm(c echo.Context) error
 }
 
 // Controller struct implementation of IPurchase
 type Controller struct {
 	services purchase.IPurchase
+}
+
+// CreateOrderForm .
+// @Description create order.
+// @Tags delivery
+// @Accept json
+// @Produce json
+// @Param order body dtos.OrderForm true "order delivery body request"
+// @Success 200 {object} dtos.OK
+// @Router /purchase/admin/orders [POST]
+func (p *Controller) CreateOrderForm(c echo.Context) error {
+	var order dtos.OrderForm
+	if err := c.Bind(&order); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := valid.Validate(&order); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	msg, err := p.services.CreateOrderForm(c.Request().Context(), order)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, dtos.OK{
+		Msg: fmt.Sprintf("your order %s has been created successfully", msg),
+	})
+
 }
 
 // CreateDeliveryOrder .
@@ -251,31 +284,16 @@ func (p *Controller) CreateDeliveryAddress(e echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param uid query string true "user id"
 // @Param limit query string true "limit order"
 // @Success 200 {object} []dtos.OrderSchema
 // @Router /purchase/orders [GET]
 func (p *Controller) GetOrders(c echo.Context) error {
-	sUserID := c.QueryParam("uid")
-	if sUserID == "" {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "missing 'uid' required",
-		})
-	}
 	sLimit := c.QueryParam("limit")
 	if sLimit == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "missing 'limit' required",
 		})
 	}
-
-	userID, err := strconv.ParseInt(sUserID, 10, 64)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "'uid' must be a positive integer",
-		})
-	}
-
 	limit, err := strconv.ParseInt(sLimit, 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -283,6 +301,7 @@ func (p *Controller) GetOrders(c echo.Context) error {
 		})
 	}
 
+	userID, _, _ := crypto.Authenticate(c)
 	orders, err := p.services.GetOrdersByUserID(c.Request().Context(), userID, int(limit))
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {

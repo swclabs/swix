@@ -276,6 +276,8 @@ definitions:
         items:
           type: string
         type: array
+      item_code:
+        type: string
       price:
         type: string
       product_id:
@@ -343,8 +345,6 @@ definitions:
               type: integer
             quantity:
               type: integer
-            specs_id:
-              type: integer
           required:
           - inventory_id
           - quantity
@@ -353,6 +353,80 @@ definitions:
     required:
     - delevery_id
     - product
+    type: object
+  dtos.OrderForm:
+    properties:
+      address:
+        $ref: '#/definitions/dtos.OrderFormAddress'
+      customer:
+        $ref: '#/definitions/dtos.OrderFormCustomer'
+      delivery:
+        $ref: '#/definitions/dtos.OrderFormDelivery'
+      product:
+        items:
+          $ref: '#/definitions/dtos.OrderFormProduct'
+        type: array
+    required:
+    - address
+    - customer
+    - delivery
+    - product
+    type: object
+  dtos.OrderFormAddress:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      street:
+        type: string
+      ward:
+        type: string
+    required:
+    - city
+    - district
+    - street
+    - ward
+    type: object
+  dtos.OrderFormCustomer:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - phone
+    type: object
+  dtos.OrderFormDelivery:
+    properties:
+      method:
+        type: string
+      note:
+        type: string
+      sent_date:
+        type: string
+      status:
+        type: string
+    required:
+    - method
+    - status
+    type: object
+  dtos.OrderFormProduct:
+    properties:
+      code:
+        type: string
+      quantity:
+        type: integer
+    required:
+    - code
+    - quantity
     type: object
   dtos.OrderSchema:
     properties:
@@ -1945,6 +2019,27 @@ paths:
             $ref: '#/definitions/dtos.Error'
       tags:
       - products
+  /purchase/admin/orders:
+    post:
+      consumes:
+      - application/json
+      description: create order.
+      parameters:
+      - description: order delivery body request
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.OrderForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - delivery
   /purchase/carts:
     get:
       consumes:
@@ -2005,11 +2100,6 @@ paths:
       - application/json
       description: get list of orders.
       parameters:
-      - description: user id
-        in: query
-        name: uid
-        required: true
-        type: string
       - description: limit order
         in: query
         name: limit

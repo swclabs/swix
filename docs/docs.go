@@ -1285,6 +1285,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/purchase/admin/orders": {
+            "post": {
+                "description": "create order.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "description": "order delivery body request",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OrderForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
         "/purchase/carts": {
             "get": {
                 "description": "get list of items from carts",
@@ -1382,13 +1415,6 @@ const docTemplate = `{
                     "purchase"
                 ],
                 "parameters": [
-                    {
-                        "type": "string",
-                        "description": "user id",
-                        "name": "uid",
-                        "in": "query",
-                        "required": true
-                    },
                     {
                         "type": "string",
                         "description": "limit order",
@@ -2109,6 +2135,9 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "item_code": {
+                    "type": "string"
+                },
                 "price": {
                     "type": "string"
                 },
@@ -2210,12 +2239,117 @@ const docTemplate = `{
                             },
                             "quantity": {
                                 "type": "integer"
-                            },
-                            "specs_id": {
-                                "type": "integer"
                             }
                         }
                     }
+                }
+            }
+        },
+        "dtos.OrderForm": {
+            "type": "object",
+            "required": [
+                "address",
+                "customer",
+                "delivery",
+                "product"
+            ],
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "customer": {
+                    "$ref": "#/definitions/dtos.OrderFormCustomer"
+                },
+                "delivery": {
+                    "$ref": "#/definitions/dtos.OrderFormDelivery"
+                },
+                "product": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.OrderFormProduct"
+                    }
+                }
+            }
+        },
+        "dtos.OrderFormAddress": {
+            "type": "object",
+            "required": [
+                "city",
+                "district",
+                "street",
+                "ward"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "ward": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OrderFormCustomer": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "phone"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OrderFormDelivery": {
+            "type": "object",
+            "required": [
+                "method",
+                "status"
+            ],
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "sent_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OrderFormProduct": {
+            "type": "object",
+            "required": [
+                "code",
+                "quantity"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
                 }
             }
         },

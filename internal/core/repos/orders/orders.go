@@ -60,7 +60,7 @@ func (orders *Orders) GetByUUID(ctx context.Context, uuid string) (*entity.Order
 func (orders *Orders) InsertProduct(ctx context.Context, product entity.ProductInOrder) error {
 	return orders.db.SafeWrite(ctx, insertProductToOrder,
 		product.OrderID, product.InventoryID, product.Quantity, "VND",
-		product.TotalAmount.String(), product.SpecsID,
+		product.TotalAmount.String(),
 	)
 }
 

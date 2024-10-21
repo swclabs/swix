@@ -39,9 +39,9 @@ func (u *Mock) Info(ctx context.Context, email string) (*model.Users, error) {
 }
 
 // Insert implements IUserRepository.
-func (u *Mock) Insert(ctx context.Context, usr entity.Users) error {
+func (u *Mock) Insert(ctx context.Context, usr entity.Users) (int64, error) {
 	args := u.Called(ctx, usr)
-	return args.Error(0)
+	return args.Get(1).(int64), args.Error(0)
 }
 
 // OAuth2SaveInfo implements IUserRepository.
