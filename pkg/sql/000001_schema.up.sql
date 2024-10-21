@@ -94,7 +94,6 @@ CREATE TABLE "product_in_order" (
   "id" bigserial PRIMARY KEY,
   "order_id" bigint NOT NULL,
   "inventory_id" bigint NOT NULL,
-  "specs_id" bigint,
   "quantity" bigint NOT NULL,
   "total_amount" NUMERIC(19, 4) NOT NULL,
   "currency_code" varchar(3) NOT NULL
@@ -105,7 +104,6 @@ CREATE TABLE "deliveries" (
   "user_id" bigint NOT NULL,
   "address_id" bigint NOT NULL,
   "sent_date" timestamptz,
-  "received_date" timestamptz,
   "status" varchar NOT NULL,
   "method" varchar NOT NULL,
   "note" varchar

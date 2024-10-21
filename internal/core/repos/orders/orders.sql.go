@@ -8,8 +8,8 @@ const (
 	`
 
 	insertProductToOrder = `
-		INSERT INTO product_in_order (order_id, inventory_id, quantity, currency_code, total_amount, specs_id)
-		VALUES ($1, $2, $3, $4, $5, $6);
+		INSERT INTO product_in_order (order_id, inventory_id, quantity, currency_code, total_amount)
+		VALUES ($1, $2, $3, $4, $5);
 	`
 
 	getOrder = `

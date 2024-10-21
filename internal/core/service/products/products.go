@@ -170,6 +170,7 @@ func (s *Products) GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inv
 			Image:        strings.Split(item.Image, ","),
 			Category:     category.Name,
 			Specs:        specs,
+			ItemCode:     category.Name + "#" + strconv.Itoa(int(item.ID)),
 		}
 	)
 	return &result, nil
@@ -282,51 +283,50 @@ func (s *Products) DeleteInvByID(ctx context.Context, inventoryID int64) error {
 
 // GetAllInv implements IProductService.
 func (s *Products) GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvItems, error) {
-	products, err := s.Products.GetLimit(ctx, limit, page)
+	var invItems dtos.InvItems
+	items, err := s.Inventory.GetLimit(ctx, limit, page)
 	if err != nil {
 		return nil, err
 	}
-	var invItems dtos.InvItems
-	for _, product := range products {
+	for _, item := range items {
+		product, err := s.Products.GetByID(ctx, item.ProductID)
+		if err != nil {
+			return nil, err
+		}
 		category, err := s.Category.GetByID(ctx, product.CategoryID)
 		if err != nil {
 			return nil, err
 		}
-		items, err := s.Inventory.GetByProductID(ctx, product.ID)
-		if err != nil {
+		switch item.Status {
+		case "active":
+			invItems.Header.Active++
+		case "draft":
+			invItems.Header.Draft++
+		case "archived":
+			invItems.Header.Archive++
+		}
+		invItems.Header.All++
+		_item := dtos.Inventory{
+			ID:           item.ID,
+			ProductName:  product.Name,
+			ProductID:    item.ProductID,
+			Price:        item.Price.String(),
+			Available:    strconv.Itoa(int(item.Available)),
+			CurrencyCode: item.CurrencyCode,
+			Status:       item.Status,
+			Color:        item.Color,
+			ColorImg:     item.ColorImg,
+			Image:        strings.Split(item.Image, ","),
+			Category:     category.Name,
+			Specs:        dtos.Specs{},
+			ItemCode:     strings.ToUpper(category.Name) + "#" + strconv.Itoa(int(item.ID)),
+		}
+		var specs dtos.Specs
+		if err := json.Unmarshal([]byte(item.Specs), &specs); err != nil {
 			return nil, err
 		}
-		for _, item := range items {
-			switch item.Status {
-			case "active":
-				invItems.Header.Active++
-			case "draft":
-				invItems.Header.Draft++
-			case "archived":
-				invItems.Header.Archive++
-			}
-			invItems.Header.All++
-			_item := dtos.Inventory{
-				ID:           item.ID,
-				ProductName:  product.Name,
-				ProductID:    item.ProductID,
-				Price:        item.Price.String(),
-				Available:    strconv.Itoa(int(item.Available)),
-				CurrencyCode: item.CurrencyCode,
-				Status:       item.Status,
-				Color:        item.Color,
-				ColorImg:     item.ColorImg,
-				Image:        strings.Split(item.Image, ","),
-				Category:     category.Name,
-				Specs:        dtos.Specs{},
-			}
-			var specs dtos.Specs
-			if err := json.Unmarshal([]byte(item.Specs), &specs); err != nil {
-				return nil, err
-			}
-			_item.Specs = specs
-			invItems.Stock = append(invItems.Stock, _item)
-		}
+		_item.Specs = specs
+		invItems.Stock = append(invItems.Stock, _item)
 	}
 
 	invItems.Page = page

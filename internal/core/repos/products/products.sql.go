@@ -9,21 +9,18 @@ const (
 
 	updateProductImage string = `
 		UPDATE products
-		SET image = CASE
-						WHEN image IS NULL OR image = '' THEN $1
-						ELSE image || ',' || $1
-					END
+		SET image = $1
 		WHERE id = $2;
 	`
 
 	updateShopImage string = `
-	UPDATE products
-	SET shop_image = CASE
-					WHEN shop_image IS NULL OR shop_image = '' THEN $1
-					ELSE shop_image || ',' || $1
-				END
-	WHERE id = $2;
-`
+		UPDATE products
+		SET shop_image = CASE
+						WHEN shop_image IS NULL OR shop_image = '' THEN $1
+						ELSE shop_image || ',' || $1
+					END
+		WHERE id = $2;
+	`
 
 	selectLimit string = `
 		SELECT *

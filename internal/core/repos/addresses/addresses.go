@@ -52,8 +52,8 @@ func (addr *Addresses) GetByUserID(ctx context.Context, userID int64) ([]entity.
 }
 
 // Insert implements IAddressRepository.
-func (addr *Addresses) Insert(ctx context.Context, data entity.Addresses) error {
-	return addr.db.SafeWrite(
+func (addr *Addresses) Insert(ctx context.Context, data entity.Addresses) (int64, error) {
+	return addr.db.SafeWriteReturn(
 		ctx, insertIntoAddresses,
 		data.Street, data.Ward, data.District, data.City, data.UserID,
 	)

@@ -30,7 +30,7 @@ func (a *Mock) GetByUserID(_ context.Context, _ int64) ([]entity.Addresses, erro
 }
 
 // Insert implements entity.IAddressRepository.
-func (a *Mock) Insert(ctx context.Context, data entity.Addresses) error {
+func (a *Mock) Insert(ctx context.Context, data entity.Addresses) (int64, error) {
 	args := a.Called(ctx, data)
-	return args.Error(0)
+	return args.Get(0).(int64), args.Error(1)
 }

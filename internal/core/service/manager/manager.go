@@ -65,7 +65,7 @@ func (manager *Manager) SignUp(ctx context.Context, req dtos.SignUpRequest) erro
 		userRepo    = users.New(tx)
 		accountRepo = accounts.New(tx)
 	)
-	if err := userRepo.Insert(ctx,
+	if _, err := userRepo.Insert(ctx,
 		entity.Users{
 			Email:       req.Email,
 			PhoneNumber: req.PhoneNumber,

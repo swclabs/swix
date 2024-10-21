@@ -34,8 +34,9 @@ func (p *Router) Routers(e *echo.Echo) {
 	e.GET("/purchase/carts", p.controllers.GetCarts, middleware.Protected)
 	e.DELETE("/purchase/carts/:id", p.controllers.DeleteItem)
 
-	e.GET("/purchase/orders", p.controllers.GetOrders)
+	e.GET("/purchase/orders", p.controllers.GetOrders, middleware.Protected)
 	e.POST("/purchase/orders", p.controllers.CreateOrder, middleware.Protected)
+	e.POST("/purchase/admin/orders", p.controllers.CreateOrderForm)
 
 	e.GET("/address", p.controllers.GetDeliveryAddress, middleware.Protected)
 	e.POST("/address", p.controllers.CreateDeliveryAddress)

@@ -57,8 +57,8 @@ func (usr *Users) GetByEmail(ctx context.Context, email string) (*entity.Users, 
 }
 
 // Insert implements IUserRepository.
-func (usr *Users) Insert(ctx context.Context, _usr entity.Users) error {
-	return usr.db.SafeWrite(
+func (usr *Users) Insert(ctx context.Context, _usr entity.Users) (int64, error) {
+	return usr.db.SafeWriteReturn(
 		ctx,
 		insertIntoUsers,
 		_usr.Email, _usr.PhoneNumber, _usr.FirstName, _usr.LastName, _usr.Image,

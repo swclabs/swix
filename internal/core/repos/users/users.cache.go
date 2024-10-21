@@ -37,7 +37,7 @@ func (c *_cache) Info(ctx context.Context, email string) (*model.Users, error) {
 }
 
 // Insert implements IUserRepository.
-func (c *_cache) Insert(ctx context.Context, usr entity.Users) error {
+func (c *_cache) Insert(ctx context.Context, usr entity.Users) (int64, error) {
 	return c.user.Insert(ctx, usr)
 }
 

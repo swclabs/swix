@@ -18,16 +18,22 @@ func Init(_ cache.ICache, db db.IDatabase) IDeliveries {
 	}
 }
 
+func New(db db.IDatabase) IDeliveries {
+	return &Deliveries{
+		db: db,
+	}
+}
+
 // Deliveries struct for delivery repos
 type Deliveries struct {
 	db db.IDatabase
 }
 
 // Create implements IDelivery.
-func (d *Deliveries) Create(ctx context.Context, delivery entity.Deliveries) error {
-	return d.db.SafeWrite(ctx, insert,
+func (d *Deliveries) Create(ctx context.Context, delivery entity.Deliveries) (int64, error) {
+	return d.db.SafeWriteReturn(ctx, insert,
 		delivery.UserID, delivery.AddressID, delivery.Status, delivery.Method, delivery.Note,
-		delivery.SentDate, delivery.ReceivedDate)
+		delivery.SentDate)
 }
 
 // GetByID implements IDelivery.
