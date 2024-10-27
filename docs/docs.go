@@ -168,7 +168,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "manager"
+                    "authentication"
                 ],
                 "parameters": [
                     {
@@ -199,7 +199,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "manager"
+                    "authentication"
                 ],
                 "parameters": [
                     {
@@ -232,7 +232,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "manager"
+                    "authentication"
                 ],
                 "responses": {
                     "200": {
@@ -254,7 +254,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "manager"
+                    "authentication"
                 ],
                 "parameters": [
                     {
@@ -302,7 +302,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.Slices-entity_Categories"
+                            "$ref": "#/definitions/dtos.Slices-entity_Category"
                         }
                     }
                 }
@@ -325,7 +325,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entity.Categories"
+                            "$ref": "#/definitions/entity.Category"
                         }
                     }
                 ],
@@ -792,7 +792,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.InvItems"
+                            "$ref": "#/definitions/dtos.InventoryItems"
                         }
                     }
                 }
@@ -846,7 +846,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.InvItem"
+                            "$ref": "#/definitions/dtos.InventoryDetail"
                         }
                     }
                 ],
@@ -992,7 +992,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "manager"
+                    "authentication"
                 ],
                 "parameters": [
                     {
@@ -1278,7 +1278,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dtos.ProductTypeDTO"
+                                "$ref": "#/definitions/dtos.ProductDTO"
                             }
                         }
                     }
@@ -1402,6 +1402,93 @@ const docTemplate = `{
                 }
             }
         },
+        "/purchase/coupons": {
+            "get": {
+                "description": "get coupon.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.Coupon"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create coupon.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "description": "coupon request",
+                        "name": "coupon",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CreateCoupon"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OrderInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/coupons/{code}": {
+            "get": {
+                "description": "get coupon.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "coupons code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
         "/purchase/orders": {
             "get": {
                 "description": "get list of orders.",
@@ -1453,8 +1540,70 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dtos.OrderDTO"
+                            "$ref": "#/definitions/dtos.Order"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/orders/{code}": {
+            "get": {
+                "description": "get order by code.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "order code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OrderInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/rating/{id}": {
+            "put": {
+                "description": "update inventory image",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "id of product",
+                        "name": "star",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1579,7 +1728,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.Slices-entity_Suppliers"
+                            "$ref": "#/definitions/dtos.Slices-entity_Supplier"
                         }
                     }
                 }
@@ -1626,7 +1775,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "manager"
+                    "authentication"
                 ],
                 "responses": {
                     "200": {
@@ -1646,7 +1795,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "manager"
+                    "authentication"
                 ],
                 "parameters": [
                     {
@@ -1679,7 +1828,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "manager"
+                    "authentication"
                 ],
                 "parameters": [
                     {
@@ -1813,6 +1962,9 @@ const docTemplate = `{
                 "category": {
                     "type": "string"
                 },
+                "code": {
+                    "type": "string"
+                },
                 "color": {
                     "type": "string"
                 },
@@ -1871,6 +2023,32 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.Color": {
+            "type": "object",
+            "properties": {
+                "img": {
+                    "description": "Img of color Nature Titanium",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name Nature Titanium",
+                    "type": "string"
+                },
+                "product": {
+                    "description": "Img of product Nature Titanium",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "specs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.SpecsItem"
+                    }
+                }
+            }
+        },
         "dtos.Comment": {
             "type": "object",
             "required": [
@@ -1916,6 +2094,53 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Coupon": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "discount": {
+                    "type": "integer"
+                },
+                "expired_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.CreateCoupon": {
+            "type": "object",
+            "required": [
+                "description",
+                "discount",
+                "expired_at",
+                "max_use",
+                "status"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "discount": {
+                    "type": "integer"
+                },
+                "expired_at": {
+                    "type": "string"
+                },
+                "max_use": {
+                    "type": "integer"
+                },
+                "status": {
                     "type": "string"
                 }
             }
@@ -1990,89 +2215,11 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.DetailColor": {
-            "type": "object",
-            "properties": {
-                "img": {
-                    "description": "Img of color Nature Titanium",
-                    "type": "string"
-                },
-                "name": {
-                    "description": "Name Nature Titanium",
-                    "type": "string"
-                },
-                "product": {
-                    "description": "Img of product Nature Titanium",
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "specs": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.SpecsItem"
-                    }
-                }
-            }
-        },
         "dtos.Error": {
             "type": "object",
             "properties": {
                 "msg": {
                     "type": "string"
-                }
-            }
-        },
-        "dtos.InvItem": {
-            "type": "object",
-            "required": [
-                "available",
-                "currency_code",
-                "price",
-                "product_id"
-            ],
-            "properties": {
-                "available": {
-                    "type": "string"
-                },
-                "color": {
-                    "type": "string"
-                },
-                "currency_code": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "string"
-                },
-                "product_id": {
-                    "type": "integer"
-                },
-                "specs": {
-                    "$ref": "#/definitions/dtos.Specs"
-                },
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.InvItems": {
-            "type": "object",
-            "properties": {
-                "header": {
-                    "$ref": "#/definitions/dtos.StockHeader"
-                },
-                "limit": {
-                    "type": "integer"
-                },
-                "page": {
-                    "type": "integer"
-                },
-                "stock": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.Inventory"
-                    }
                 }
             }
         },
@@ -2144,6 +2291,9 @@ const docTemplate = `{
                 "product_id": {
                     "type": "integer"
                 },
+                "product_img": {
+                    "type": "string"
+                },
                 "product_name": {
                     "type": "string"
                 },
@@ -2152,6 +2302,67 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "string"
+                }
+            }
+        },
+        "dtos.InventoryDetail": {
+            "type": "object",
+            "required": [
+                "available",
+                "currency_code",
+                "price",
+                "product_id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "color_img": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.Specs"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.InventoryItems": {
+            "type": "object",
+            "properties": {
+                "header": {
+                    "$ref": "#/definitions/dtos.StockHeader"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.Inventory"
+                    }
                 }
             }
         },
@@ -2215,32 +2426,28 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.OrderDTO": {
+        "dtos.Order": {
             "type": "object",
             "required": [
-                "delevery_id",
+                "address",
+                "customer",
+                "delivery",
                 "product"
             ],
             "properties": {
-                "delevery_id": {
-                    "type": "integer"
+                "address": {
+                    "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "customer": {
+                    "$ref": "#/definitions/dtos.OrderFormCustomer"
+                },
+                "delivery": {
+                    "$ref": "#/definitions/dtos.OrderFormDelivery"
                 },
                 "product": {
                     "type": "array",
                     "items": {
-                        "type": "object",
-                        "required": [
-                            "inventory_id",
-                            "quantity"
-                        ],
-                        "properties": {
-                            "inventory_id": {
-                                "type": "integer"
-                            },
-                            "quantity": {
-                                "type": "integer"
-                            }
-                        }
+                        "$ref": "#/definitions/dtos.OrderFormProduct"
                     }
                 }
             }
@@ -2353,6 +2560,32 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.OrderInfo": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "delivery": {
+                    "$ref": "#/definitions/dtos.OrderFormDelivery"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Order"
+                    }
+                },
+                "time": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/dtos.OrderFormCustomer"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
         "dtos.OrderSchema": {
             "type": "object",
             "properties": {
@@ -2385,6 +2618,35 @@ const docTemplate = `{
                 }
             }
         },
+        "dtos.ProductDTO": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                }
+            }
+        },
         "dtos.ProductDetail": {
             "type": "object",
             "properties": {
@@ -2392,7 +2654,7 @@ const docTemplate = `{
                     "description": "Color of product",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.DetailColor"
+                        "$ref": "#/definitions/dtos.Color"
                     }
                 },
                 "display": {
@@ -2412,6 +2674,9 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "string"
+                },
+                "rating": {
+                    "type": "number"
                 },
                 "screen": {
                     "description": "Screen 6.1 inch",
@@ -2504,32 +2769,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.ProductTypeDTO": {
-            "type": "object",
-            "properties": {
-                "category": {
-                    "type": "string"
-                },
-                "desc": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "string"
-                },
-                "specs": {
-                    "$ref": "#/definitions/dtos.ProductSpecs"
-                }
-            }
-        },
         "dtos.SignUpRequest": {
             "type": "object",
             "required": [
@@ -2583,24 +2822,24 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.Slices-entity_Categories": {
+        "dtos.Slices-entity_Category": {
             "type": "object",
             "properties": {
                 "body": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.Categories"
+                        "$ref": "#/definitions/entity.Category"
                     }
                 }
             }
         },
-        "dtos.Slices-entity_Suppliers": {
+        "dtos.Slices-entity_Supplier": {
             "type": "object",
             "properties": {
                 "body": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/entity.Suppliers"
+                        "$ref": "#/definitions/entity.Supplier"
                     }
                 }
             }
@@ -2772,7 +3011,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Categories": {
+        "entity.Category": {
             "type": "object",
             "required": [
                 "description",
@@ -2790,7 +3029,7 @@ const docTemplate = `{
                 }
             }
         },
-        "entity.Suppliers": {
+        "entity.Supplier": {
             "type": "object",
             "properties": {
                 "email": {
@@ -2813,13 +3052,13 @@ const docTemplate = `{
                 "color": {
                     "type": "string"
                 },
-                "content": {
-                    "type": "string"
-                },
                 "currency_code": {
                     "type": "string"
                 },
-                "inventory_image": {
+                "image": {
+                    "type": "string"
+                },
+                "item_specs": {
                     "type": "string"
                 },
                 "name": {
@@ -2828,17 +3067,8 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer"
                 },
-                "time": {
-                    "type": "string"
-                },
                 "total_amount": {
                     "type": "number"
-                },
-                "user_id": {
-                    "type": "integer"
-                },
-                "uuid": {
-                    "type": "string"
                 }
             }
         },

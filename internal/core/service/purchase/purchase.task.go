@@ -3,11 +3,11 @@ package purchase
 
 import (
 	"context"
-	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/xdto"
-	"swclabs/swix/internal/workers/queue"
-	"swclabs/swix/pkg/lib/worker"
+	"swclabs/swipex/internal/config"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/xdto"
+	"swclabs/swipex/internal/workers/queue"
+	"swclabs/swipex/pkg/lib/worker"
 )
 
 var _ IPurchase = (*Task)(nil)
@@ -24,6 +24,26 @@ func UseTask(service IPurchase) IPurchase {
 type Task struct {
 	worker  worker.IWorkerClient
 	service IPurchase
+}
+
+// CreateCoupon implements IPurchase.
+func (t *Task) CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (code string, err error) {
+	panic("unimplemented")
+}
+
+// GetCoupon implements IPurchase.
+func (t *Task) GetCoupon(ctx context.Context) (coupons []dtos.Coupon, err error) {
+	panic("unimplemented")
+}
+
+// UseCoupon implements IPurchase.
+func (t *Task) UseCoupon(ctx context.Context, userID int64, couponCode string) error {
+	panic("unimplemented")
+}
+
+// GetOrderByCode implements IPurchase.
+func (t *Task) GetOrderByCode(ctx context.Context, orderCode string) (*dtos.OrderInfo, error) {
+	panic("unimplemented")
 }
 
 // CreateOrderForm implements IPurchase.
@@ -88,8 +108,8 @@ func (t *Task) AddToCart(ctx context.Context, cart dtos.CartInsertDTO) error {
 }
 
 // CreateOrders implements IPurchaseService.
-func (t *Task) CreateOrders(ctx context.Context, createOrder dtos.CreateOrderDTO) (string, error) {
-	return t.service.CreateOrders(ctx, createOrder)
+func (t *Task) CreateOrders(ctx context.Context, userID int64, createOrder dtos.Order) (string, error) {
+	return t.service.CreateOrders(ctx, userID, createOrder)
 }
 
 // DeleteItemFromCart implements IPurchaseService.
@@ -103,6 +123,6 @@ func (t *Task) GetCart(ctx context.Context, userID int64, limit int) (*dtos.Cart
 }
 
 // GetOrdersByUserID implements IPurchaseService.
-func (t *Task) GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderSchema, error) {
+func (t *Task) GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderInfo, error) {
 	return t.service.GetOrdersByUserID(ctx, userID, limit)
 }

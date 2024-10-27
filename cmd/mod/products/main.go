@@ -13,12 +13,12 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/container/products"
-	"swclabs/swix/pkg/lib/logger"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/container/products"
+	"swclabs/swipex/pkg/lib/logger"
 
-	_ "swclabs/swix/app/init"
-	_ "swclabs/swix/docs"
+	_ "swclabs/swipex/app/init"
+	_ "swclabs/swipex/docs"
 )
 
 func main() {

@@ -3,12 +3,12 @@ package users
 
 import (
 	"context"
-	"swclabs/swix/app"
+	"swclabs/swipex/app"
 
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/model"
-	"swclabs/swix/pkg/infra/cache"
-	"swclabs/swix/pkg/infra/db"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/model"
+	"swclabs/swipex/pkg/infra/cache"
+	"swclabs/swipex/pkg/infra/db"
 )
 
 // New creates a new instance of IUserRepository.
@@ -31,12 +31,12 @@ type Users struct {
 }
 
 // GetByID implements IUserRepository.
-func (usr *Users) GetByID(ctx context.Context, id int64) (*entity.Users, error) {
+func (usr *Users) GetByID(ctx context.Context, id int64) (*entity.User, error) {
 	rows, err := usr.db.Query(ctx, selectByID, id)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectRow[entity.Users](rows)
+	user, err := db.CollectRow[entity.User](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -44,12 +44,12 @@ func (usr *Users) GetByID(ctx context.Context, id int64) (*entity.Users, error) 
 }
 
 // GetByEmail implements IUserRepository.
-func (usr *Users) GetByEmail(ctx context.Context, email string) (*entity.Users, error) {
+func (usr *Users) GetByEmail(ctx context.Context, email string) (*entity.User, error) {
 	rows, err := usr.db.Query(ctx, selectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectRow[entity.Users](rows)
+	user, err := db.CollectRow[entity.User](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (usr *Users) GetByEmail(ctx context.Context, email string) (*entity.Users, 
 }
 
 // Insert implements IUserRepository.
-func (usr *Users) Insert(ctx context.Context, _usr entity.Users) (int64, error) {
+func (usr *Users) Insert(ctx context.Context, _usr entity.User) (int64, error) {
 	return usr.db.SafeWriteReturn(
 		ctx,
 		insertIntoUsers,
@@ -79,7 +79,7 @@ func (usr *Users) Info(ctx context.Context, email string) (*model.Users, error) 
 }
 
 // Save implements IUserRepository.
-func (usr *Users) Save(ctx context.Context, user entity.Users) error {
+func (usr *Users) Save(ctx context.Context, user entity.User) error {
 	return usr.db.SafeWrite(ctx, updateInfo,
 		user.Email,
 		user.FirstName,
@@ -90,7 +90,7 @@ func (usr *Users) Save(ctx context.Context, user entity.Users) error {
 }
 
 // OAuth2SaveInfo implements IUserRepository.
-func (usr *Users) OAuth2SaveInfo(ctx context.Context, user entity.Users) error {
+func (usr *Users) OAuth2SaveInfo(ctx context.Context, user entity.User) error {
 	return usr.db.SafeWrite(
 		ctx, insertUsersConflict, user.Email, user.PhoneNumber,
 		user.FirstName, user.LastName, user.Image,
@@ -98,12 +98,12 @@ func (usr *Users) OAuth2SaveInfo(ctx context.Context, user entity.Users) error {
 }
 
 // GetByPhone implements IUserRepository.
-func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*entity.Users, error) {
+func (usr *Users) GetByPhone(ctx context.Context, nPhone string) (*entity.User, error) {
 	rows, err := usr.db.Query(ctx, selectByPhone, nPhone)
 	if err != nil {
 		return nil, err
 	}
-	user, err := db.CollectRow[entity.Users](rows)
+	user, err := db.CollectRow[entity.User](rows)
 	if err != nil {
 		return nil, err
 	}

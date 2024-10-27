@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"swclabs/swix/internal/config"
+	"swclabs/swipex/internal/config"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"

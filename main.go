@@ -14,11 +14,11 @@ package main
 
 import (
 	"log"
-	"swclabs/swix/internal/apis/container/base"
-	"swclabs/swix/internal/apis/server"
-	service "swclabs/swix/internal/core/service/base"
+	"swclabs/swipex/internal/apis/container/healthcheck"
+	"swclabs/swipex/internal/apis/server"
+	service "swclabs/swipex/internal/core/service/healthcheck"
 
-	_ "swclabs/swix/docs"
+	_ "swclabs/swipex/docs"
 )
 
 // @title Swipe Public API v0.0.1
@@ -29,8 +29,8 @@ import (
 func main() {
 	var (
 		_service    = service.New()
-		_controller = base.NewController(_service)
-		_router     = base.NewRouter(_controller)
+		_controller = healthcheck.NewController(_service)
+		_router     = healthcheck.NewRouter(_controller)
 
 		mux    = server.NewServeMux()
 		server = server.New(mux)

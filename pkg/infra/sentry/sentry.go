@@ -3,7 +3,7 @@ package sentry
 
 import (
 	"fmt"
-	"swclabs/swix/internal/config"
+	"swclabs/swipex/internal/config"
 
 	"github.com/getsentry/sentry-go"
 	sentryecho "github.com/getsentry/sentry-go/echo"

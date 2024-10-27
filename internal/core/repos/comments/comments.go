@@ -3,23 +3,23 @@ package comments
 
 import (
 	"context"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/pkg/infra/cache"
-	"swclabs/swix/pkg/infra/db"
-	"swclabs/swix/pkg/lib/errors"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/pkg/infra/cache"
+	"swclabs/swipex/pkg/infra/db"
+	"swclabs/swipex/pkg/lib/errors"
 )
 
-var _ ICommentRepository = (*Comments)(nil)
+var _ IComments = (*Comments)(nil)
 var _ = app.Repos(Init)
 
-func New(conn db.IDatabase) ICommentRepository {
+func New(conn db.IDatabase) IComments {
 	return &Comments{
 		db: conn,
 	}
 }
 
-func Init(conn db.IDatabase, cache cache.ICache) ICommentRepository {
+func Init(conn db.IDatabase, cache cache.ICache) IComments {
 	return useCache(cache, New(conn))
 }
 
@@ -28,7 +28,7 @@ type Comments struct {
 }
 
 // Insert implements ICommentRepository.
-func (comment *Comments) Insert(ctx context.Context, cmt entity.Comments) (int64, error) {
+func (comment *Comments) Insert(ctx context.Context, cmt entity.Comment) (int64, error) {
 	id, err := comment.db.SafeWriteReturn(ctx, insertIntoComments,
 		cmt.Level,
 		cmt.Content,
@@ -44,14 +44,14 @@ func (comment *Comments) Insert(ctx context.Context, cmt entity.Comments) (int64
 }
 
 // GetByID implements ICommentRepository.
-func (comment *Comments) GetByID(ctx context.Context, ID int64) (*entity.Comments, error) {
+func (comment *Comments) GetByID(ctx context.Context, ID int64) (*entity.Comment, error) {
 	row, err := comment.db.Query(ctx, selectByID, ID)
 
 	if err != nil {
 		return nil, errors.Repository("query", err)
 	}
 
-	_comment, err := db.CollectRow[entity.Comments](row)
+	_comment, err := db.CollectRow[entity.Comment](row)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +59,7 @@ func (comment *Comments) GetByID(ctx context.Context, ID int64) (*entity.Comment
 }
 
 // Update implements ICommentRepository.
-func (comment *Comments) Update(ctx context.Context, cmt entity.Comments) error {
+func (comment *Comments) Update(ctx context.Context, cmt entity.Comment) error {
 	return comment.db.SafeWrite(ctx, updateComments,
 		cmt.ID,
 		cmt.Content,
@@ -69,14 +69,14 @@ func (comment *Comments) Update(ctx context.Context, cmt entity.Comments) error 
 	)
 }
 
-// GetCommentsByProductID implements ICommentRepository.
-func (comment *Comments) GetByProductID(ctx context.Context, productID int64) ([]entity.Comments, error) {
+// GetByProductID implements ICommentRepository.
+func (comment *Comments) GetByProductID(ctx context.Context, productID int64) ([]entity.Comment, error) {
 	rows, err := comment.db.Query(ctx, selectCommentsByProductID, productID)
 	if err != nil {
 		return nil, err
 		// return nil, errors.Repository("500", err)
 	}
-	comments, err := db.CollectRows[entity.Comments](rows)
+	comments, err := db.CollectRows[entity.Comment](rows)
 	if err != nil {
 		// return nil, errors.Repository("500", err)
 		return nil, err

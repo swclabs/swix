@@ -16,9 +16,9 @@ Example:
 package main
 
 import (
-	"swclabs/swix/app"
-	_ "swclabs/swix/app/init"
-	"swclabs/swix/internal/apis"
+	"swclabs/swipex/app"
+	_ "swclabs/swipex/app/init"
+	"swclabs/swipex/internal/apis"
 )
 
 func main() {
@@ -30,5 +30,5 @@ func main() {
 package app
 
 import (
-	_ "swclabs/swix/app/init" // init package deps, like docs, migration
+	_ "swclabs/swipex/app/init" // init package deps, like docs, migration
 )

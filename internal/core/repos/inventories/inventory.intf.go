@@ -2,23 +2,23 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/model"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/model"
 )
 
 // IInventories represents the interface for Inventory repos.
 type IInventories interface {
 	// InsertProduct inserts a product to the inventory.
-	InsertProduct(ctx context.Context, product entity.Inventories) (int64, error)
+	InsertProduct(ctx context.Context, product entity.Inventory) (int64, error)
 
 	// GetByID gets an inventory by its ID.
-	GetByID(ctx context.Context, inventoryID int64) (*entity.Inventories, error)
+	GetByID(ctx context.Context, inventoryID int64) (*entity.Inventory, error)
 
 	// GetByProductID gets inventories by product ID.
-	GetByProductID(ctx context.Context, productID int64) ([]entity.Inventories, error)
+	GetByProductID(ctx context.Context, productID int64) ([]entity.Inventory, error)
 
 	// GetLimit gets inventories with limit and offset.
-	GetLimit(ctx context.Context, limit int, offset int) ([]entity.Inventories, error)
+	GetLimit(ctx context.Context, limit int, offset int) ([]entity.Inventory, error)
 
 	// DeleteByID deletes an inventory by its ID.
 	DeleteByID(ctx context.Context, inventoryID int64) error
@@ -29,9 +29,9 @@ type IInventories interface {
 	UploadColorImage(ctx context.Context, ID int, url string) error
 
 	// Update updates an inventory.
-	Update(ctx context.Context, inventory entity.Inventories) error
+	Update(ctx context.Context, inventory entity.Inventory) error
 
 	GetColor(ctx context.Context, productID int64) ([]model.ColorItem, error)
 
-	GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error)
+	GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventory, error)
 }

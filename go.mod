@@ -1,4 +1,4 @@
-module swclabs/swix
+module swclabs/swipex
 
 go 1.22.5
 

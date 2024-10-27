@@ -2,9 +2,9 @@
 package purchase
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/workers/server"
-	"swclabs/swix/pkg/lib/worker"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/workers/server"
+	"swclabs/swipex/pkg/lib/worker"
 )
 
 var _ = app.Router(NewRouter)

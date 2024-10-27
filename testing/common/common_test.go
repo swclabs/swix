@@ -3,10 +3,10 @@ package test
 import (
 	"fmt"
 	"maps"
-	"swclabs/swix/pkg/lib/crypto"
+	"swclabs/swipex/pkg/lib/crypto"
 	"testing"
 
-	"swclabs/swix/pkg/utils"
+	"swclabs/swipex/pkg/utils"
 )
 
 func TestHash(t *testing.T) {
@@ -61,6 +61,6 @@ func TestStmt(_ *testing.T) {
 }
 
 func TestGenerateOrderCode(t *testing.T) {
-	orderCode := utils.GenerateOrderCode(16)
+	orderCode := utils.GenOrderCode(16)
 	t.Log(orderCode)
 }

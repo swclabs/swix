@@ -57,7 +57,8 @@ CREATE TABLE "products" (
   "category_id" bigint NOT NULL,
   "created" timestamp default (now() at time zone 'utc'),
   "specs" jsonb,
-  "status" varchar NOT NULL
+  "status" varchar NOT NULL,
+  "rating" NUMERIC(3, 1) CHECK ("rating" = -1.0 OR ("rating" >= 0 AND "rating" <= 5)) DEFAULT -1.0
 );
 
 CREATE TABLE "suppliers" (
@@ -109,7 +110,7 @@ CREATE TABLE "deliveries" (
   "note" varchar
 );
 
-CREATE TABLE "favorite_product" (
+CREATE TABLE "favorite" (
   "id" bigserial PRIMARY KEY,
   "user_id" bigint NOT NULL,
   "inventory_id" bigint NOT NULL
@@ -134,4 +135,31 @@ CREATE TABLE "collections" (
   "position" varchar NOT NULL ,
   "headline" varchar,
   "body" jsonb
+);
+
+CREATE TABLE "stars" (
+  "id" bigserial PRIMARY KEY,
+  "user_id" bigint UNIQUE NOT NULL,
+  "product_id" bigint UNIQUE NOT NULL,
+  CONSTRAINT unique_stars UNIQUE (user_id, product_id)
+);
+
+CREATE TABLE "coupons" (
+  "id" bigserial PRIMARY KEY,
+  "code" varchar UNIQUE NOT NULL,
+  "discount" NUMERIC(19, 4) NOT NULL,
+  "status" varchar NOT NULL,
+  "used" int NOT NULL,
+  "max_use" int NOT NULL,
+  "description" varchar NOT NULL,
+  "expired_at" timestamptz NOT NULL
+);
+
+CREATE TABLE "coupons_used" (
+  "id" bigserial PRIMARY KEY,
+  "coupon_code" varchar NOT NULL,
+  "order_id" bigint NOT NULL,
+  "user_id" bigint NOT NULL,
+  "used_at" timestamptz default (timezone('utc', now())),
+  CONSTRAINT unique_coupons_used UNIQUE (user_id, coupon_code)
 );

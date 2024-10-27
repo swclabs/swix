@@ -3,9 +3,9 @@ package products
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/enum"
-	"swclabs/swix/internal/core/domain/model"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/enum"
+	"swclabs/swipex/internal/core/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -22,6 +22,11 @@ type Mock struct {
 	mock.Mock
 }
 
+// Rating implements IProducts.
+func (p *Mock) Rating(ctx context.Context, productID int64, rating float64) error {
+	panic("unimplemented")
+}
+
 // UploadShopImage implements IProducts.
 func (p *Mock) UploadShopImage(ctx context.Context, urlImg string, ID int) error {
 	panic("unimplemented")
@@ -34,12 +39,12 @@ func (p *Mock) GetByCategory(ctx context.Context, types enum.Category, offset in
 }
 
 // Search implements IProductRepository.
-func (p *Mock) Search(_ context.Context, _ string) ([]entity.Products, error) {
+func (p *Mock) Search(_ context.Context, _ string) ([]entity.Product, error) {
 	panic("unimplemented")
 }
 
 // Update implements IProductRepository.
-func (p *Mock) Update(ctx context.Context, product entity.Products) error {
+func (p *Mock) Update(ctx context.Context, product entity.Product) error {
 	args := p.Called(ctx, product)
 	return args.Error(0)
 }
@@ -51,19 +56,19 @@ func (p *Mock) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // GetByID implements IProductRepository.
-func (p *Mock) GetByID(ctx context.Context, productID int64) (*entity.Products, error) {
+func (p *Mock) GetByID(ctx context.Context, productID int64) (*entity.Product, error) {
 	args := p.Called(ctx, productID)
-	return args.Get(0).(*entity.Products), args.Error(1)
+	return args.Get(0).(*entity.Product), args.Error(1)
 }
 
 // GetLimit implements IProductRepository.
-func (p *Mock) GetLimit(ctx context.Context, limit int, offset int) ([]entity.Products, error) {
+func (p *Mock) GetLimit(ctx context.Context, limit int, offset int) ([]entity.Product, error) {
 	args := p.Called(ctx, limit, offset)
-	return args.Get(0).([]entity.Products), args.Error(1)
+	return args.Get(0).([]entity.Product), args.Error(1)
 }
 
 // Insert implements IProductRepository.
-func (p *Mock) Insert(ctx context.Context, prd entity.Products) (int64, error) {
+func (p *Mock) Insert(ctx context.Context, prd entity.Product) (int64, error) {
 	args := p.Called(ctx, prd)
 	return args.Get(0).(int64), args.Error(1)
 }

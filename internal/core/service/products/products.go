@@ -5,21 +5,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"mime/multipart"
 	"net/http"
 	"strconv"
-	"strings"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/enum"
-	"swclabs/swix/internal/core/repos/categories"
-	"swclabs/swix/internal/core/repos/inventories"
-	"swclabs/swix/internal/core/repos/products"
-	"swclabs/swix/pkg/infra/blob"
-	"swclabs/swix/pkg/infra/db"
-	swcerr "swclabs/swix/pkg/lib/errors"
-	"swclabs/swix/pkg/utils"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/enum"
+	"swclabs/swipex/internal/core/repos/categories"
+	"swclabs/swipex/internal/core/repos/inventories"
+	"swclabs/swipex/internal/core/repos/products"
+	"swclabs/swipex/internal/core/repos/stars"
+	"swclabs/swipex/pkg/infra/blob"
+	"swclabs/swipex/pkg/infra/db"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/shopspring/decimal"
@@ -34,12 +31,14 @@ func New(
 	products products.IProducts,
 	inventory inventories.IInventories,
 	category categories.ICategories,
+	star stars.IStar,
 ) IProducts {
 	return &Products{
 		Blob:      blob,
 		Products:  products,
 		Inventory: inventory,
 		Category:  category,
+		Star:      star,
 	}
 }
 
@@ -49,383 +48,7 @@ type Products struct {
 	Products  products.IProducts
 	Inventory inventories.IInventories
 	Category  categories.ICategories
-}
-
-// UploadInvColorImage implements IProducts.
-func (s *Products) UploadInvColorImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
-	if fileHeader == nil {
-		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
-	}
-	file, err := fileHeader[0].Open()
-	if err != nil {
-		return err
-	}
-	resp, err := s.Blob.UploadImages(file)
-	if err == nil {
-		if err = s.Inventory.UploadColorImage(ctx, ID, resp.SecureURL); err == nil {
-			if err = file.Close(); err != nil {
-				return err
-			}
-		}
-	}
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-// UploadProductShopImage implements IProducts.
-func (s *Products) UploadProductShopImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
-	if fileHeader == nil {
-		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
-	}
-	for _, fileheader := range fileHeader {
-		file, err := fileheader.Open()
-		if err != nil {
-			return err
-		}
-		resp, err := s.Blob.UploadImages(file)
-		if err != nil {
-			return err
-		}
-		if err := s.Products.UploadShopImage(ctx, resp.SecureURL, ID); err != nil {
-			return err
-		}
-		if err := file.Close(); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// SearchDetails implements IProducts.
-func (s *Products) SearchDetails(ctx context.Context, keyword string) ([]dtos.ProductDetail, error) {
-	products, err := s.Products.Search(ctx, keyword)
-	if err != nil {
-		return nil, swcerr.Service("keyword error", err)
-	}
-	var details []dtos.ProductDetail
-	for _, product := range products {
-		detail, err := s.ProductDetail(ctx, product.ID)
-		if err != nil {
-			return nil, err
-		}
-		details = append(details, *detail)
-	}
-	return details, nil
-}
-
-// ProductOfType implements IProductService.
-func (s *Products) ProductOfType(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductTypeDTO, error) {
-	products, err := s.Products.GetByCategory(ctx, types, offset)
-	if err != nil {
-		return nil, err
-	}
-	var productView = []dtos.ProductTypeDTO{}
-	for _, p := range products {
-		_view := dtos.ProductTypeDTO{
-			ID:       p.ID,
-			Price:    p.Price,
-			Desc:     p.Description,
-			Name:     p.Name,
-			Image:    p.Image,
-			Category: p.CategoryName,
-		}
-		var specs dtos.ProductSpecs
-		if err := json.Unmarshal([]byte(p.Specs), &specs); err != nil {
-			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-		}
-		_view.Specs = specs
-		productView = append(productView, _view)
-	}
-	return productView, nil
-}
-
-// GetInvByID implements IProductService.
-func (s *Products) GetInvByID(ctx context.Context, inventoryID int64) (*dtos.Inventory, error) {
-	item, err := s.Inventory.GetByID(ctx, inventoryID)
-	if err != nil {
-		return nil, err
-	}
-	product, err := s.Products.GetByID(ctx, item.ProductID)
-	if err != nil {
-		return nil, err
-	}
-	category, _ := s.Category.GetByID(ctx, product.CategoryID)
-	var specs dtos.Specs
-	if err := json.Unmarshal([]byte(item.Specs), &specs); err != nil {
-		return nil, err
-	}
-	var (
-		result = dtos.Inventory{
-			ID:           item.ID,
-			ProductName:  product.Name,
-			ProductID:    item.ProductID,
-			Price:        item.Price.String(),
-			Available:    strconv.Itoa(int(item.Available)),
-			CurrencyCode: item.CurrencyCode,
-			Status:       item.Status,
-			Color:        item.Color,
-			ColorImg:     item.ColorImg,
-			Image:        strings.Split(item.Image, ","),
-			Category:     category.Name,
-			Specs:        specs,
-			ItemCode:     category.Name + "#" + strconv.Itoa(int(item.ID)),
-		}
-	)
-	return &result, nil
-
-}
-
-// ProductDetail implements IProductService.
-func (s *Products) ProductDetail(ctx context.Context, productID int64) (*dtos.ProductDetail, error) {
-	var (
-		productSpecs dtos.ProductSpecs
-		details      dtos.ProductDetail
-	)
-	colors, err := s.Inventory.GetColor(ctx, productID)
-	if err != nil {
-		return nil, err
-	}
-	product, err := s.Products.GetByID(ctx, productID)
-	if err != nil {
-		return nil, err
-	}
-	if err := json.Unmarshal([]byte(product.Specs), &productSpecs); err != nil {
-		return nil, err
-	}
-	details.Name = product.Name
-	details.Screen = productSpecs.Screen
-	details.Display = productSpecs.Display
-	details.Price = product.Price
-	details.Image = strings.Split(product.ShopImage, ",")
-	details.Color = []dtos.DetailColor{}
-
-	for _, color := range colors {
-		items, err := s.Inventory.GetByColor(ctx, productID, color.Color)
-		if err != nil {
-			return nil, err
-		}
-		detailsColor := dtos.DetailColor{
-			Name:    color.Color,
-			Img:     items[0].ColorImg,
-			Product: strings.Split(items[0].Image, ","),
-		}
-		for _, item := range items {
-			var spec dtos.SpecsItem
-			if err := json.Unmarshal([]byte(item.Specs), &spec); err != nil {
-				return nil, err
-			}
-			spec.Price = item.Price.String()
-			spec.InventoryID = item.ID
-			detailsColor.Specs = append(detailsColor.Specs, spec)
-		}
-		details.Color = append(details.Color, detailsColor)
-	}
-	return &details, nil
-}
-
-// UpdateInv implements IProductService.
-func (s *Products) UpdateInv(ctx context.Context, inventory dtos.InvUpdate) error {
-	pid, err := strconv.Atoi(inventory.ProductID)
-	if err != nil {
-		pid = -1
-	}
-	price, err := decimal.NewFromString(inventory.Price)
-	if err != nil {
-		price = decimal.NewFromInt(-1)
-	}
-	avai, err := strconv.ParseInt(inventory.Available, 10, 64)
-	if err != nil {
-		avai = -1
-	}
-	invID, _ := strconv.ParseInt(inventory.ID, 10, 64)
-	return s.Inventory.Update(ctx, entity.Inventories{
-		Price:        price,
-		ID:           invID,
-		Available:    avai,
-		ProductID:    int64(pid),
-		Status:       inventory.Status,
-		CurrencyCode: inventory.CurrencyCode,
-	})
-}
-
-// UploadInvImage implements IProductService.
-func (s *Products) UploadInvImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
-	if fileHeader == nil {
-		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
-	}
-	for _, fileheader := range fileHeader {
-		file, err := fileheader.Open()
-		if err != nil {
-			return err
-		}
-		resp, err := s.Blob.UploadImages(file)
-		if err == nil {
-			if err = s.Inventory.UploadImage(ctx, ID, resp.SecureURL); err == nil {
-				if err = file.Close(); err != nil {
-					return err
-				}
-			}
-		}
-
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// DeleteInvByID implements IProductService.
-func (s *Products) DeleteInvByID(ctx context.Context, inventoryID int64) error {
-	return s.Inventory.DeleteByID(ctx, inventoryID)
-}
-
-// GetAllInv implements IProductService.
-func (s *Products) GetAllInv(ctx context.Context, page int, limit int) (*dtos.InvItems, error) {
-	var invItems dtos.InvItems
-	items, err := s.Inventory.GetLimit(ctx, limit, page)
-	if err != nil {
-		return nil, err
-	}
-	for _, item := range items {
-		product, err := s.Products.GetByID(ctx, item.ProductID)
-		if err != nil {
-			return nil, err
-		}
-		category, err := s.Category.GetByID(ctx, product.CategoryID)
-		if err != nil {
-			return nil, err
-		}
-		switch item.Status {
-		case "active":
-			invItems.Header.Active++
-		case "draft":
-			invItems.Header.Draft++
-		case "archived":
-			invItems.Header.Archive++
-		}
-		invItems.Header.All++
-		_item := dtos.Inventory{
-			ID:           item.ID,
-			ProductName:  product.Name,
-			ProductID:    item.ProductID,
-			Price:        item.Price.String(),
-			Available:    strconv.Itoa(int(item.Available)),
-			CurrencyCode: item.CurrencyCode,
-			Status:       item.Status,
-			Color:        item.Color,
-			ColorImg:     item.ColorImg,
-			Image:        strings.Split(item.Image, ","),
-			Category:     category.Name,
-			Specs:        dtos.Specs{},
-			ItemCode:     strings.ToUpper(category.Name) + "#" + strconv.Itoa(int(item.ID)),
-		}
-		var specs dtos.Specs
-		if err := json.Unmarshal([]byte(item.Specs), &specs); err != nil {
-			return nil, err
-		}
-		_item.Specs = specs
-		invItems.Stock = append(invItems.Stock, _item)
-	}
-
-	invItems.Page = page
-	invItems.Limit = limit
-
-	return &invItems, nil
-}
-
-// GetInv implements IProductService.
-func (s *Products) GetInv(ctx context.Context, productID int64) ([]entity.Inventories, error) {
-	return s.Inventory.GetByProductID(ctx, productID)
-}
-
-// Search implements IProductService.
-func (s *Products) Search(ctx context.Context, keyword string) ([]dtos.ProductResponse, error) {
-	_products, err := s.Products.Search(ctx, keyword)
-	if err != nil {
-		return nil, swcerr.Service("keyword error", err)
-	}
-	var productSchema = []dtos.ProductResponse{}
-	for _, p := range _products {
-		category, err := s.Category.GetByID(ctx, p.CategoryID)
-		if err != nil {
-			return nil, err
-		}
-		resp := dtos.ProductResponse{
-			ID:          p.ID,
-			Price:       p.Price,
-			Description: p.Description,
-			Name:        p.Name,
-			Status:      p.Status,
-			Image:       "",
-			Created:     utils.HanoiTimezone(p.Created),
-			Category:    category.Name,
-		}
-		if strings.Split(p.Image, ",") != nil {
-			resp.Image = strings.Split(p.Image, ",")[0]
-		}
-		productSchema = append(productSchema, resp)
-	}
-	return productSchema, nil
-}
-
-// UpdateProductInfo implements IProductService.
-func (s *Products) UpdateProductInfo(ctx context.Context, product dtos.UpdateProductInfo) error {
-	if product.CategoryID != 0 {
-		_category, err := s.Category.GetByID(ctx, product.CategoryID)
-		if err != nil {
-			return fmt.Errorf("category not found %v", err)
-		}
-		var types enum.Category
-		if err := types.Load(_category.Name); err != nil {
-			return fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-		}
-	}
-	var (
-		sampleSpec, _ = json.Marshal(dtos.ProductSpecs{})
-		spec, _       = json.Marshal(product.Specs)
-		sspec         = ""
-	)
-	if string(sampleSpec) != string(spec) {
-		sspec = string(spec)
-	}
-	_product := entity.Products{
-		ID:          product.ID,
-		Name:        product.Name,
-		Price:       product.Price,
-		Description: product.Description,
-		SupplierID:  product.SupplierID,
-		CategoryID:  product.CategoryID,
-		Status:      product.Status,
-		Specs:       sspec,
-	}
-	return s.Products.Update(ctx, _product)
-
-}
-
-// UploadProductImage implements IProductService.
-func (s *Products) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
-	if fileHeader == nil {
-		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
-	}
-	for _, fileheader := range fileHeader {
-		file, err := fileheader.Open()
-		if err != nil {
-			return err
-		}
-		resp, err := s.Blob.UploadImages(file)
-		if err != nil {
-			return err
-		}
-		if err := s.Products.UploadNewImage(ctx, resp.SecureURL, ID); err != nil {
-			return err
-		}
-		if err := file.Close(); err != nil {
-			return err
-		}
-	}
-	return nil
+	Star      stars.IStar
 }
 
 // CreateProduct implements IProductService.
@@ -439,7 +62,7 @@ func (s *Products) CreateProduct(ctx context.Context, products dtos.Product) (in
 	if err := types.Load(_category.Name); err != nil {
 		return -1, fmt.Errorf("category invalid %v", err)
 	}
-	var prd = entity.Products{
+	var prd = entity.Product{
 		Price:       products.Price,
 		Description: products.Description,
 		Name:        products.Name,
@@ -459,17 +82,12 @@ func (s *Products) CreateProduct(ctx context.Context, products dtos.Product) (in
 	return s.Products.Insert(ctx, prd)
 }
 
-// DelProductByID implements IProductService.
-func (s *Products) DelProductByID(ctx context.Context, productID int64) error {
-	return s.Products.DeleteByID(ctx, productID)
-}
-
-// InsertInv implements IProductService.
-func (s *Products) InsertInv(ctx context.Context, product dtos.Inventory) error {
+// InsertItem implements IProductService.
+func (s *Products) InsertItem(ctx context.Context, product dtos.Inventory) error {
 	var (
 		price, _  = decimal.NewFromString(product.Price)
 		avai, _   = strconv.Atoi(product.Available)
-		inventory = entity.Inventories{
+		inventory = entity.Inventory{
 			Color:        product.Color,
 			ColorImg:     product.ColorImg,
 			ProductID:    product.ProductID,
@@ -487,7 +105,7 @@ func (s *Products) InsertInv(ctx context.Context, product dtos.Inventory) error 
 		inventory.Image = items[0].Image
 		inventory.ColorImg = items[0].ColorImg
 	}
-	tx, err := db.NewTransaction(ctx)
+	tx, err := db.NewTx(ctx)
 	if err != nil {
 		return err
 	}
@@ -502,40 +120,4 @@ func (s *Products) InsertInv(ctx context.Context, product dtos.Inventory) error 
 		return err
 	}
 	return tx.Commit(ctx)
-}
-
-// GetProductsLimit implements IProductService.
-func (s *Products) GetProductsLimit(ctx context.Context, limit int) ([]dtos.ProductResponse, error) {
-	products, err := s.Products.GetLimit(ctx, limit, 1)
-	if err != nil {
-		return nil, err
-	}
-	var productResponse = []dtos.ProductResponse{}
-	for _, p := range products {
-		var (
-			product = dtos.ProductResponse{
-				ID:          p.ID,
-				Price:       p.Price,
-				Description: p.Description,
-				Name:        p.Name,
-				Status:      p.Status,
-				Created:     utils.HanoiTimezone(p.Created),
-				Image:       "",
-			}
-			types enum.Category
-		)
-		if strings.Split(p.Image, ",") != nil {
-			product.Image = strings.Split(p.Image, ",")[0]
-		}
-		category, err := s.Category.GetByID(ctx, p.CategoryID)
-		if err != nil {
-			return nil, err
-		}
-		if err := types.Load(category.Name); err != nil {
-			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
-		}
-		product.Category = category.Name
-		productResponse = append(productResponse, product)
-	}
-	return productResponse, nil
 }

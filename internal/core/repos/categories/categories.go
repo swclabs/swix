@@ -3,11 +3,11 @@ package categories
 
 import (
 	"context"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/pkg/infra/cache"
-	"swclabs/swix/pkg/infra/db"
-	"swclabs/swix/pkg/lib/errors"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/pkg/infra/cache"
+	"swclabs/swipex/pkg/infra/db"
+	"swclabs/swipex/pkg/lib/errors"
 )
 
 // New creates a new Categories object
@@ -28,12 +28,12 @@ type Categories struct {
 }
 
 // GetByID implements ICategoriesRepository.
-func (category *Categories) GetByID(ctx context.Context, ID int64) (*entity.Categories, error) {
+func (category *Categories) GetByID(ctx context.Context, ID int64) (*entity.Category, error) {
 	raw, err := category.db.Query(ctx, selectCategoryByID, ID)
 	if err != nil {
 		return nil, err
 	}
-	result, err := db.CollectRow[entity.Categories](raw)
+	result, err := db.CollectRow[entity.Category](raw)
 	if err != nil {
 		return nil, err
 	}
@@ -41,18 +41,18 @@ func (category *Categories) GetByID(ctx context.Context, ID int64) (*entity.Cate
 }
 
 // Insert implements ICategoriesRepository.
-func (category *Categories) Insert(ctx context.Context, ctg entity.Categories) error {
+func (category *Categories) Insert(ctx context.Context, ctg entity.Category) error {
 	return category.db.SafeWrite(
 		ctx, insertIntoCategory, ctg.Name, ctg.Description)
 }
 
 // GetLimit implements ICategoriesRepository.
-func (category *Categories) GetLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
+func (category *Categories) GetLimit(ctx context.Context, limit string) ([]entity.Category, error) {
 	rows, err := category.db.Query(ctx, selectCategoryLimit, limit)
 	if err != nil {
 		return nil, err
 	}
-	categories, err := db.CollectRows[entity.Categories](rows)
+	categories, err := db.CollectRows[entity.Category](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (category *Categories) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // Update implements IProductRepository.
-func (category *Categories) Update(ctx context.Context, ctg entity.Categories) error {
+func (category *Categories) Update(ctx context.Context, ctg entity.Category) error {
 	return errors.Repository("safely write data",
 		category.db.SafeWrite(ctx, updateCategories,
 			ctg.ID,

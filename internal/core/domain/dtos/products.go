@@ -52,32 +52,6 @@ type CreateProduct struct {
 	ID  int64  `json:"id"`
 }
 
-// InvStorage request, response
-type InvStorage struct {
-	ID  int64  `json:"id"`
-	RAM string `json:"ram"`
-	SSD string `json:"ssd"`
-}
-
-// InvWireless request, response
-type InvWireless struct {
-	ID         int64  `json:"id"`
-	Desc       string `json:"desc"`
-	Connection string `json:"connection"`
-}
-
-// StorageReq request, response
-type StorageReq struct {
-	RAM string `json:"ram"`
-	SSD string `json:"ssd"`
-}
-
-// WirelessReq request, response
-type WirelessReq struct {
-	Desc       string `json:"desc"`
-	Connection string `json:"connection"`
-}
-
 type Specs struct {
 	SSD        string `json:"ssd"`
 	RAM        string `json:"ram"`
@@ -94,8 +68,8 @@ type SpecsItem struct {
 	Price       string `json:"price"`
 }
 
-// InvDetail request, response
-type InvDetail struct {
+// InventoryDetail request, response
+type InventoryDetail struct {
 	ProductID    int64    `json:"product_id" validate:"number,required"`
 	Price        string   `json:"price" validate:"number,required"`
 	Available    string   `json:"available" validate:"number,required"`
@@ -107,19 +81,20 @@ type InvDetail struct {
 	Specs        Specs    `json:"specs"`
 }
 
-type InvItem struct {
-	ProductID    int64  `json:"product_id" validate:"number,required"`
-	Price        string `json:"price" validate:"number,required"`
-	Available    string `json:"available" validate:"number,required"`
-	CurrencyCode string `json:"currency_code" validate:"required"`
-	Color        string `json:"color"`
-	Status       string `json:"status"`
-	Specs        Specs  `json:"specs"`
-}
+//type InventoryItem struct {
+//	ProductID    int64  `json:"product_id" validate:"number,required"`
+//	Price        string `json:"price" validate:"number,required"`
+//	Available    string `json:"available" validate:"number,required"`
+//	CurrencyCode string `json:"currency_code" validate:"required"`
+//	Color        string `json:"color"`
+//	Status       string `json:"status"`
+//	Specs        Specs  `json:"specs"`
+//}
 
 // Inventory response, request
 type Inventory struct {
 	ID           int64    `json:"id"`
+	ProductImg   string   `json:"product_img"`
 	ItemCode     string   `json:"item_code"`
 	ProductName  string   `json:"product_name"`
 	ProductID    int64    `json:"product_id" validate:"number,required"`
@@ -142,8 +117,8 @@ type StockHeader struct {
 	Archive int `json:"archive"`
 }
 
-// InvItems response, request
-type InvItems struct {
+// InventoryItems response, request
+type InventoryItems struct {
 	Page   int         `json:"page"`
 	Limit  int         `json:"limit"`
 	Header StockHeader `json:"header"`
@@ -167,21 +142,25 @@ type ProductSpecs struct {
 	RAM     []int  `json:"RAM"`
 }
 
-// ProductTypeDTO request, response
-type ProductTypeDTO struct {
+// ProductDTO request, response
+type ProductDTO struct {
 	ID       int64        `json:"id"`
 	Name     string       `json:"name"`
 	Price    string       `json:"price"`
 	Desc     string       `json:"desc"`
 	Image    string       `json:"image"`
 	Category string       `json:"category"`
+	Rating   float64      `json:"rating"`
 	Specs    ProductSpecs `json:"specs"`
 }
 
-type InsertSpecsDTO struct {
-	InventoryID int64  `json:"inventory_id" validate:"number,required"`
-	RAM         string `json:"ram" validate:"number"`
-	SSD         string `json:"ssd" validate:"number"`
-	Connection  string `json:"connection"`
-	Desc        string `json:"desc"`
-}
+//type Item struct {
+//	ID           int64  `json:"id"`
+//	ProductImage string `json:"product_image"`
+//	ProductName  string `json:"product_name"`
+//	ItemCode     string `json:"item_code"`
+//	Price        string `json:"price"`
+//	Category     string `json:"category"`
+//	Color        string `json:"color"`
+//	Specs        Specs  `json:"specs"`
+//}

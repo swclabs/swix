@@ -1,7 +1,7 @@
 package dtos
 
 import (
-	"swclabs/swix/internal/core/domain/model"
+	"swclabs/swipex/internal/core/domain/model"
 )
 
 // Cart schema request, response
@@ -12,6 +12,7 @@ type Cart struct {
 	ProductID      int64  `json:"product_id"`
 	Quantity       int64  `json:"quantity"`
 	Color          string `json:"color"`
+	Code           string `json:"code"`
 	InventoryPrice string `json:"price"`
 	CurrencyCode   string `json:"currency_code"`
 	InventoryImage string `json:"image"`
@@ -49,31 +50,20 @@ type ProductOrderSchema struct {
 	TotalAmount    string `json:"total_amount"`
 }
 
-// OrderSchema is the schema response
-type OrderSchema struct {
-	ID        int64         `json:"id"`
-	UUID      string        `json:"uuid"`
-	Time      string        `json:"time"`
-	Status    string        `json:"status"`
-	UserID    int64         `json:"user_id"`
-	Username  string        `json:"user_name"`
-	UserEmail string        `json:"user_email"`
-	Items     []model.Order `json:"items"`
+type OrderInfo struct {
+	UUID      string            `json:"uuid"`
+	CreatedAt string            `json:"time"`
+	User      OrderFormCustomer `json:"user"`
+	Delivery  OrderFormDelivery `json:"delivery"`
+	Address   OrderFormAddress  `json:"address"`
+	Items     []model.Order     `json:"items"`
 }
 
-// OrderDTO is the schema for creating an order request
-type OrderDTO struct {
-	DeleveryID int64 `json:"delevery_id" validate:"required"`
-	Products   []struct {
-		InventoryID int64 `json:"inventory_id" validate:"required"`
-		Quantity    int64 `json:"quantity" validate:"required"`
-	} `json:"product" validate:"required"`
-}
-
-// CreateOrderSchema is the schema for creating an order request
-type CreateOrderDTO struct {
-	Email string `json:"email" validate:"required"`
-	OrderDTO
+type Order struct {
+	Customer OrderFormCustomer  `json:"customer" validate:"required"`
+	Delivery OrderFormDelivery  `json:"delivery" validate:"required"`
+	Address  OrderFormAddress   `json:"address" validate:"required"`
+	Product  []OrderFormProduct `json:"product" validate:"required"`
 }
 
 type OrderFormAddress struct {

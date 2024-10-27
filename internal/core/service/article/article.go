@@ -6,13 +6,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"mime/multipart"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repos/collections"
-	"swclabs/swix/internal/core/repos/comments"
-	"swclabs/swix/pkg/infra/blob"
-	"swclabs/swix/pkg/infra/db"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/repos/collections"
+	"swclabs/swipex/internal/core/repos/comments"
+	"swclabs/swipex/pkg/infra/blob"
+	"swclabs/swipex/pkg/infra/db"
 )
 
 var _ = app.Service(New)
@@ -21,7 +21,7 @@ var _ = app.Service(New)
 func New(
 	blob blob.IBlobStorage,
 	collection collections.ICollections,
-	cmt comments.ICommentRepository,
+	cmt comments.IComments,
 ) IArticle {
 	return &Article{
 		Blob:        blob,
@@ -34,7 +34,7 @@ func New(
 type Article struct {
 	Blob        blob.IBlobStorage
 	Collections collections.ICollections
-	Comments    comments.ICommentRepository
+	Comments    comments.IComments
 }
 
 // GetMessage implements IArticle.
@@ -98,7 +98,7 @@ func (p *Article) GetCarousels(ctx context.Context, position string, limit int) 
 
 // UploadArticle implements IArticle.
 func (p *Article) UploadArticle(ctx context.Context, article dtos.UploadArticle) (int64, error) {
-	tx, err := db.NewTransaction(ctx)
+	tx, err := db.NewTx(ctx)
 	if err != nil {
 		return -1, err
 	}
@@ -196,7 +196,7 @@ func (p *Article) GetComment(ctx context.Context, productID int64) ([]dtos.Comme
 func (p *Article) UploadComment(ctx context.Context, comment dtos.Comment) error {
 	for _, cmt := range comment.Content {
 
-		_, err := p.Comments.Insert(ctx, entity.Comments{
+		_, err := p.Comments.Insert(ctx, entity.Comment{
 			Level:     comment.Level,
 			Content:   cmt,
 			UserID:    comment.UserID,

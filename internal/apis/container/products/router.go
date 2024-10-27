@@ -6,8 +6,9 @@
 package products
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/server"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/middleware"
+	"swclabs/swipex/internal/apis/server"
 
 	"github.com/labstack/echo/v4"
 )
@@ -46,6 +47,7 @@ func (r *Router) Routers(e *echo.Echo) {
 	e.PUT("/products/img", r.controller.UploadProductImage)
 	e.PUT("/products/img/shop", r.controller.UploadProductShopImage)
 	e.GET("/products/:type", r.controller.GetProductByType)
+	e.PUT("/rating/:id", r.controller.Rating, middleware.Protected)
 
 	// endpoint for inventories
 	e.GET("/inventories", r.controller.GetItems)

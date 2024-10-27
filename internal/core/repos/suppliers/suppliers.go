@@ -2,10 +2,10 @@ package suppliers
 
 import (
 	"context"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/pkg/infra/cache"
-	"swclabs/swix/pkg/infra/db"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/pkg/infra/cache"
+	"swclabs/swipex/pkg/infra/db"
 )
 
 // New creates a new Suppliers object.
@@ -26,20 +26,20 @@ type Suppliers struct {
 }
 
 // Insert implements ISuppliersRepository.
-func (supplier *Suppliers) Insert(ctx context.Context, supp entity.Suppliers) error {
+func (supplier *Suppliers) Insert(ctx context.Context, supp entity.Supplier) error {
 	return supplier.db.SafeWrite(
 		ctx, insertIntoSuppliers, supp.Name, supp.Email)
 }
 
 // GetLimit implements ISuppliersRepository.
 func (supplier *Suppliers) GetLimit(
-	ctx context.Context, limit int) ([]entity.Suppliers, error) {
+	ctx context.Context, limit int) ([]entity.Supplier, error) {
 	// var _suppliers []entity.Suppliers
 	rows, err := supplier.db.Query(ctx, selectSupplierByEmailLimit, limit)
 	if err != nil {
 		return nil, err
 	}
-	_suppliers, err := db.CollectRows[entity.Suppliers](rows)
+	_suppliers, err := db.CollectRows[entity.Supplier](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -48,13 +48,13 @@ func (supplier *Suppliers) GetLimit(
 
 // GetByPhone implements ISuppliersRepository.
 func (supplier *Suppliers) GetByPhone(
-	ctx context.Context, email string) (*entity.Suppliers, error) {
+	ctx context.Context, email string) (*entity.Supplier, error) {
 	// var _supplier entity.Suppliers
 	rows, err := supplier.db.Query(ctx, selectByEmail, email)
 	if err != nil {
 		return nil, err
 	}
-	_supplier, err := db.CollectRow[entity.Suppliers](rows)
+	_supplier, err := db.CollectRow[entity.Supplier](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (supplier *Suppliers) GetByPhone(
 }
 
 // Edit implements ISuppliersRepository.
-func (supplier *Suppliers) Edit(ctx context.Context, supp entity.Suppliers) error {
+func (supplier *Suppliers) Edit(ctx context.Context, supp entity.Supplier) error {
 	return supplier.db.SafeWrite(
 		ctx, updateSuppliers, supp.Name, supp.Email)
 }

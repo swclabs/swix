@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	"swclabs/swix/pkg/lib/logger"
+	"swclabs/swipex/pkg/lib/logger"
 )
 
 // Version of the application
@@ -10,7 +10,7 @@ const Version = "0.0.1"
 
 // banner is the banner of the package.
 const banner = ` 
-SWIX - %s                          
+swipex - %s                          
 `
 
 const version = "v0.0.1"

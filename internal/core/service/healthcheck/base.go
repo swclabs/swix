@@ -1,12 +1,12 @@
 // Package base implements base services
-package base
+package healthcheck
 
 import (
 	"context"
 	"fmt"
 	"strconv"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/dtos"
 )
 
 var _ IService = (*Service)(nil)

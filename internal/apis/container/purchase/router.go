@@ -4,9 +4,9 @@
 package purchase
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/middleware"
-	"swclabs/swix/internal/apis/server"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/middleware"
+	"swclabs/swipex/internal/apis/server"
 
 	"github.com/labstack/echo/v4"
 )
@@ -36,7 +36,12 @@ func (p *Router) Routers(e *echo.Echo) {
 
 	e.GET("/purchase/orders", p.controllers.GetOrders, middleware.Protected)
 	e.POST("/purchase/orders", p.controllers.CreateOrder, middleware.Protected)
+	e.GET("/purchase/orders/:code", p.controllers.GetOrdersByCode)
 	e.POST("/purchase/admin/orders", p.controllers.CreateOrderForm)
+
+	e.GET("/purchase/coupons", p.controllers.GetCoupon)
+	e.POST("/purchase/coupons", p.controllers.CreateCoupon)
+	e.GET("/purchase/coupons/:code", p.controllers.UseCoupon, middleware.Protected)
 
 	e.GET("/address", p.controllers.GetDeliveryAddress, middleware.Protected)
 	e.POST("/address", p.controllers.CreateDeliveryAddress)

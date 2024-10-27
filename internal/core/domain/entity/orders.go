@@ -6,8 +6,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// Orders table schema
-type Orders struct {
+// Order table schema
+type Order struct {
 	ID          int64           `json:"id" db:"id"`
 	UUID        string          `json:"uuid" db:"uuid"`
 	UserID      int64           `json:"user_id" db:"user_id"`

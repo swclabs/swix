@@ -2,11 +2,12 @@ package orders
 
 import (
 	"context"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/model"
-	"swclabs/swix/pkg/infra/cache"
-	"swclabs/swix/pkg/infra/db"
+	"fmt"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/model"
+	"swclabs/swipex/pkg/infra/cache"
+	"swclabs/swipex/pkg/infra/db"
 )
 
 // New creates a new Orders object
@@ -30,26 +31,26 @@ type Orders struct {
 	db db.IDatabase
 }
 
-// GetOrderItemByCode implements IOrders.
-func (orders *Orders) GetOrderItemByCode(ctx context.Context, orderCode string) ([]model.Order, error) {
+// GetItemByCode implements IOrders.
+func (orders *Orders) GetItemByCode(ctx context.Context, orderCode string) ([]model.Order, error) {
 	rows, err := orders.db.Query(ctx, getByOrderCode, orderCode)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error getting order items by order code: %w", err)
 	}
 	order, err := db.CollectRows[model.Order](rows)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error collecting order items by order code: %w", err)
 	}
 	return order, nil
 }
 
 // GetByUUID implements IOrders.
-func (orders *Orders) GetByUUID(ctx context.Context, uuid string) (*entity.Orders, error) {
+func (orders *Orders) GetByUUID(ctx context.Context, uuid string) (*entity.Order, error) {
 	rows, err := orders.db.Query(ctx, getByUUID, uuid)
 	if err != nil {
 		return nil, err
 	}
-	order, err := db.CollectRow[entity.Orders](rows)
+	order, err := db.CollectRow[entity.Order](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -65,19 +66,19 @@ func (orders *Orders) InsertProduct(ctx context.Context, product entity.ProductI
 }
 
 // Create implements IOrdersRepository.
-func (orders *Orders) Create(ctx context.Context, order entity.Orders) (int64, error) {
+func (orders *Orders) Create(ctx context.Context, order entity.Order) (int64, error) {
 	return orders.db.SafeWriteReturn(ctx, insertOrder,
 		order.UUID, order.UserID, "active", order.TotalAmount.String(), order.DeliveryID,
 	)
 }
 
 // Get implements IOrdersRepository.
-func (orders *Orders) Get(ctx context.Context, userID int64, limit int) ([]entity.Orders, error) {
+func (orders *Orders) Get(ctx context.Context, userID int64, limit int) ([]entity.Order, error) {
 	rows, err := orders.db.Query(ctx, getOrder, userID, limit)
 	if err != nil {
 		return nil, err
 	}
-	_orders, err := db.CollectRows[entity.Orders](rows)
+	_orders, err := db.CollectRows[entity.Order](rows)
 	if err != nil {
 		return nil, err
 	}

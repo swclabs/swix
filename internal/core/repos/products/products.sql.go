@@ -88,11 +88,16 @@ const (
 			products.id,
 			image, price, products.description, specs,
 			products.name as name, 
-			categories.name as category_name
+			categories.name as category_name,
+			rating
 		FROM 
 			products JOIN categories
 			ON products.category_id = categories.id
 		WHERE categories.name = $1
 		OFFSET $2;
+	`
+
+	updateRating = `
+		UPDATE products SET rating = $1 WHERE id = $2;
 	`
 )

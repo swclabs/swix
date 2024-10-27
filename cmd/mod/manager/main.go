@@ -12,13 +12,13 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/container/manager"
-	managerWorker "swclabs/swix/internal/workers/container/manager"
-	"swclabs/swix/pkg/lib/logger"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/container/authentication"
+	authWorker "swclabs/swipex/internal/workers/container/authentication"
+	"swclabs/swipex/pkg/lib/logger"
 
-	_ "swclabs/swix/app/init"
-	_ "swclabs/swix/docs"
+	_ "swclabs/swipex/app/init"
+	_ "swclabs/swipex/docs"
 )
 
 func main() {
@@ -31,10 +31,10 @@ func main() {
 
 	switch *cmd {
 	case "worker":
-		app := app.Builder(managerWorker.New)
+		app := app.Builder(authWorker.New)
 		log.Fatal(app.Run())
 	case "server":
-		app := app.Builder(manager.New)
+		app := app.Builder(authentication.New)
 		log.Fatal(app.Run())
 	default:
 		logger.Error("unknown flag: " + *cmd)

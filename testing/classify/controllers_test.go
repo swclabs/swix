@@ -4,10 +4,10 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
-	classifyContainer "swclabs/swix/internal/apis/container/classify"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repos/suppliers"
-	classifyService "swclabs/swix/internal/core/service/classify"
+	classifyContainer "swclabs/swipex/internal/apis/container/classify"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/repos/suppliers"
+	classifyService "swclabs/swipex/internal/core/service/classify"
 	"testing"
 
 	"github.com/labstack/echo/v4"
@@ -19,7 +19,7 @@ var e = echo.New()
 func TestGetSuppliers(t *testing.T) {
 	// repos layers
 	repos := suppliers.Mock{}
-	repos.On("GetLimit", context.Background(), 10).Return([]entity.Suppliers{
+	repos.On("GetLimit", context.Background(), 10).Return([]entity.Supplier{
 		{
 			ID:    1,
 			Name:  "apple",

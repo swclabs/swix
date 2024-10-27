@@ -3,8 +3,8 @@ package purchase
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/xdto"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/xdto"
 )
 
 // IPurchase : Module for Purchasing.
@@ -26,10 +26,10 @@ type IPurchase interface {
 	// ctx is the context to manage the request's lifecycle.
 	// createOrder contains the order information to be created.
 	// Returns the UUID of the newly created order and an error if any issues occur during the creation process.
-	CreateOrders(ctx context.Context, createOrder dtos.CreateOrderDTO) (string, error)
+	CreateOrders(ctx context.Context, userID int64, createOrder dtos.Order) (string, error)
 
 	CreateOrderForm(ctx context.Context, order dtos.OrderForm) (string, error)
-	
+
 	// DeleteItemFromCart deletes an item from the shopping cart.
 	// ctx is the context to manage the request's lifecycle.
 	// userID is the user ID of the cart item to delete.
@@ -42,7 +42,9 @@ type IPurchase interface {
 	// userID is the user ID of the orders to retrieve.
 	// limit is the maximum number of orders to retrieve.
 	// Returns a slice of OrderSchema objects and an error if any issues occur during the retrieval process.
-	GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderSchema, error)
+	GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderInfo, error)
+
+	GetOrderByCode(ctx context.Context, orderCode string) (*dtos.OrderInfo, error)
 
 	DeliveryOrderInfo(ctx context.Context, orderCode string) (*xdto.OrderInfoDTO, error)
 
@@ -73,6 +75,12 @@ type IPurchase interface {
 	GetDelivery(ctx context.Context, userID int64) ([]dtos.Delivery, error)
 
 	AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error)
+
 	AddressWard(ctx context.Context, districtID int) (*xdto.WardDTO, error)
+
 	AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error)
+
+	UseCoupon(ctx context.Context, userID int64, couponCode string) error
+	CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (code string, err error)
+	GetCoupon(ctx context.Context) (coupons []dtos.Coupon, err error)
 }

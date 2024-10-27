@@ -1,22 +1,22 @@
-package manager
+package authentication
 
 import (
 	"fmt"
 	"net/http"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/service/manager"
-	"swclabs/swix/internal/core/x/oauth2"
-	"swclabs/swix/pkg/lib/crypto"
-	"swclabs/swix/pkg/lib/valid"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/service/authentication"
+	"swclabs/swipex/internal/core/x/oauth2"
+	"swclabs/swipex/pkg/lib/crypto"
+	"swclabs/swipex/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )
 
 var _ = app.Controller(NewController)
 
-// NewController creates a new Manager object
-func NewController(services manager.IManager) IController {
+// NewController creates a new Authentication object
+func NewController(services authentication.IAuthentication) IController {
 	return &Controller{
 		service: services,
 	}
@@ -35,18 +35,18 @@ type IController interface {
 	OAuth2(c echo.Context) error
 }
 
-// Controller struct implementation of IManager
+// Controller struct implementation of IAuthentication
 type Controller struct {
-	service manager.IManager
+	service authentication.IAuthentication
 }
 
-// Auth implements IManager.
-func (manager *Controller) Auth(c echo.Context) error {
+// Auth implements IAuthentication.
+func (auth *Controller) Auth(c echo.Context) error {
 	var (
 		email    = c.FormValue("email")
 		password = c.FormValue("password")
 	)
-	_, err := manager.service.Login(c.Request().Context(), dtos.LoginRequest{
+	_, err := auth.service.Login(c.Request().Context(), dtos.LoginRequest{
 		Email:    email,
 		Password: password,
 	})
@@ -61,13 +61,13 @@ func (manager *Controller) Auth(c echo.Context) error {
 
 // Login .
 // @Description Login account.
-// @Tags manager
+// @Tags authentication
 // @Accept json
 // @Produce json
 // @Param login body dtos.LoginRequest true "Login"
 // @Success 200 {object} dtos.LoginResponse
 // @Router /auth/login [POST]
-func (manager *Controller) Login(c echo.Context) error {
+func (auth *Controller) Login(c echo.Context) error {
 	_, email, _ := crypto.Authenticate(c)
 	fmt.Println(email)
 	var request dtos.LoginRequest
@@ -82,7 +82,7 @@ func (manager *Controller) Login(c echo.Context) error {
 		})
 	}
 	// var account = service.New()
-	accessToken, err := manager.service.Login(c.Request().Context(), request)
+	accessToken, err := auth.service.Login(c.Request().Context(), request)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -109,13 +109,13 @@ func (manager *Controller) Login(c echo.Context) error {
 
 // SignUp .
 // @Description Register account for admin.
-// @Tags manager
+// @Tags authentication
 // @Accept json
 // @Produce json
 // @Param sign_up body dtos.SignUpRequest true "Sign Up"
 // @Success 200 {object} dtos.SignUpResponse
 // @Router /auth/signup [POST]
-func (manager *Controller) SignUp(c echo.Context) error {
+func (auth *Controller) SignUp(c echo.Context) error {
 	var request dtos.SignUpRequest
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -127,7 +127,7 @@ func (manager *Controller) SignUp(c echo.Context) error {
 			Msg: _valid.Error(),
 		})
 	}
-	if err := manager.service.SignUp(c.Request().Context(), request); err != nil {
+	if err := auth.service.SignUp(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: "user data invalid",
 		})
@@ -140,12 +140,12 @@ func (manager *Controller) SignUp(c echo.Context) error {
 
 // Logout .
 // @Description logout user from the service
-// @Tags manager
+// @Tags authentication
 // @Accept json
 // @Produce json
 // @Success 200 {object} dtos.OK
 // @Router /auth/logout [GET]
-func (manager *Controller) Logout(c echo.Context) error {
+func (auth *Controller) Logout(c echo.Context) error {
 	// session := sessions.Default(c)
 	// session.Delete("access_token")
 	// if err := session.Save(); err != nil {
@@ -163,14 +163,14 @@ func (manager *Controller) Logout(c echo.Context) error {
 
 // GetMe .
 // @Description get information for users.
-// @Tags manager
+// @Tags authentication
 // @Accept json
 // @Produce json
 // @Success 200 {object} model.Users
 // @Router /users [GET]
-func (manager *Controller) GetMe(c echo.Context) error {
+func (auth *Controller) GetMe(c echo.Context) error {
 	_, email, _ := crypto.Authenticate(c)
-	response, err := manager.service.UserInfo(c.Request().Context(), email)
+	response, err := auth.service.UserInfo(c.Request().Context(), email)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -181,13 +181,13 @@ func (manager *Controller) GetMe(c echo.Context) error {
 
 // UpdateUserInfo .
 // @Description update information for users.
-// @Tags manager
+// @Tags authentication
 // @Accept json
 // @Produce json
 // @Param UserSchema body dtos.UserUpdate true "Update Users"
 // @Success 200 {object} dtos.OK
 // @Router /users [PUT]
-func (manager *Controller) UpdateUserInfo(c echo.Context) error {
+func (auth *Controller) UpdateUserInfo(c echo.Context) error {
 	var request dtos.UserUpdate
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -199,7 +199,7 @@ func (manager *Controller) UpdateUserInfo(c echo.Context) error {
 			Msg: _valid.Error(),
 		})
 	}
-	if err := manager.service.UpdateUserInfo(c.Request().Context(), request); err != nil {
+	if err := auth.service.UpdateUserInfo(c.Request().Context(), request); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -212,13 +212,13 @@ func (manager *Controller) UpdateUserInfo(c echo.Context) error {
 
 // UpdateUserImage .
 // @Description update information for users.
-// @Tags manager
+// @Tags authentication
 // @Accept json
 // @Produce json
 // @Param img formData file true "image of collections"
 // @Success 200 {object} dtos.OK
 // @Router /users/image [PUT]
-func (manager *Controller) UpdateUserImage(c echo.Context) error {
+func (auth *Controller) UpdateUserImage(c echo.Context) error {
 	// session := sessions.Default(c)
 	// email := session.Get("email").(string)
 	_, email, _ := crypto.Authenticate(c)
@@ -228,7 +228,7 @@ func (manager *Controller) UpdateUserImage(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	if err := manager.service.UploadAvatar(email, file); err != nil {
+	if err := auth.service.UploadAvatar(email, file); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})
@@ -240,20 +240,20 @@ func (manager *Controller) UpdateUserImage(c echo.Context) error {
 
 // CheckLoginEmail .
 // @Description check email address before login
-// @Tags manager
+// @Tags authentication
 // @Accept json
 // @Produce json
 // @Param email query string true "email address"
 // @Success 200 {object} dtos.OK
 // @Router /auth/email [GET]
-func (manager *Controller) CheckLoginEmail(c echo.Context) error {
+func (auth *Controller) CheckLoginEmail(c echo.Context) error {
 	email := c.QueryParam("email")
 	if email == "" {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "missing query parameter: email",
 		})
 	}
-	if err := manager.service.CheckLoginEmail(c.Request().Context(), email); err != nil {
+	if err := auth.service.CheckLoginEmail(c.Request().Context(), email); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.OK{
 			Msg: "email invalid " + err.Error(),
 		})
@@ -265,13 +265,13 @@ func (manager *Controller) CheckLoginEmail(c echo.Context) error {
 
 // OAuth2 .
 // @Description Auth0 verify token.
-// @Tags manager
+// @Tags authentication
 // @Accept json
 // @Produce json
 // @Param access_token query string true "google access token"
 // @Success 200
 // @Router /oauth2/google [GET]
-func (manager *Controller) OAuth2(c echo.Context) error {
+func (auth *Controller) OAuth2(c echo.Context) error {
 	oauth2 := oauth2.New()
 	accessToken := c.QueryParam("access_token")
 	profile, err := oauth2.VerifyAccessToken(accessToken)
@@ -280,7 +280,7 @@ func (manager *Controller) OAuth2(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	userID, err := manager.service.OAuth2SaveUser(c.Request().Context(), dtos.OAuth2SaveUser{
+	userID, err := auth.service.OAuth2SaveUser(c.Request().Context(), dtos.OAuth2SaveUser{
 		Email:     profile.Email,
 		FirstName: profile.Name,
 		LastName:  profile.FamilyName,

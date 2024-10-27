@@ -1,22 +1,22 @@
 package apis
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/container/article"
-	"swclabs/swix/internal/apis/container/base"
-	"swclabs/swix/internal/apis/container/classify"
-	"swclabs/swix/internal/apis/container/manager"
-	"swclabs/swix/internal/apis/container/products"
-	"swclabs/swix/internal/apis/container/purchase"
-	"swclabs/swix/internal/apis/server"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/container/article"
+	"swclabs/swipex/internal/apis/container/authentication"
+	"swclabs/swipex/internal/apis/container/classify"
+	"swclabs/swipex/internal/apis/container/healthcheck"
+	"swclabs/swipex/internal/apis/container/products"
+	"swclabs/swipex/internal/apis/container/purchase"
+	"swclabs/swipex/internal/apis/server"
 )
 
 func NewApp(
-	base base.IRouter,
+	base healthcheck.IRouter,
 	article article.IRouter,
 	purchase purchase.IRouter,
 	classify classify.IRouter,
-	manager manager.IRouter,
+	auth authentication.IRouter,
 	products products.IRouter,
 ) app.IApplication {
 	mux := server.NewServeMux()
@@ -24,7 +24,7 @@ func NewApp(
 	mux.Handle(article)
 	mux.Handle(purchase)
 	mux.Handle(classify)
-	mux.Handle(manager)
+	mux.Handle(auth)
 	mux.Handle(products)
 	return server.New(mux)
 }

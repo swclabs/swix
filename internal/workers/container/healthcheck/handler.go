@@ -1,19 +1,19 @@
 // Package handler implements handler of worker
-package base
+package healthcheck
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/service/base"
-	"swclabs/swix/pkg/lib/worker"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/service/healthcheck"
+	"swclabs/swipex/pkg/lib/worker"
 )
 
 var _ = app.Controller(NewHandler)
 
 // NewHandler creates a new base object
-func NewHandler(_base base.IService) *Handler {
+func NewHandler(_base healthcheck.IService) *Handler {
 	return &Handler{
 		handler: _base,
 	}
@@ -21,7 +21,7 @@ func NewHandler(_base base.IService) *Handler {
 
 // Handler struct define the base object
 type Handler struct {
-	handler base.IService // create handler for services
+	handler healthcheck.IService // create handler for services
 }
 
 // HandleHealthCheck handle health check

@@ -2,8 +2,8 @@ package entity
 
 import "time"
 
-// Products Table
-type Products struct {
+// Product Table
+type Product struct {
 	ID          int64     `json:"id" db:"id"`
 	Image       string    `json:"image" db:"image"`
 	ShopImage   string    `json:"shop_image" db:"shop_image"`
@@ -15,10 +15,11 @@ type Products struct {
 	Specs       string    `json:"specs" db:"specs"`
 	Status      string    `json:"status" db:"status"`
 	Created     time.Time `json:"created" db:"created"`
+	Rating      float64   `json:"rating" db:"rating"`
 }
 
-// FavoriteProduct Table
-type FavoriteProduct struct {
+// Favorite Table
+type Favorite struct {
 	ID        int64 `json:"id" db:"id"`
 	UserID    int64 `json:"user_id" db:"user_id"`
 	ProductID int64 `json:"product_id" db:"product_id"`

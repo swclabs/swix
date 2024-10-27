@@ -1,8 +1,8 @@
-package base
+package healthcheck
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/dtos"
 )
 
 // IService : base utility methods for the service.

@@ -1,7 +1,7 @@
 package test
 
 import (
-	"swclabs/swix/internal/core/x/mail"
+	"swclabs/swipex/internal/core/x/mail"
 	"testing"
 )
 
