@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/service/classify"
-	"swclabs/swix/pkg/lib/valid"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/service/classify"
+	"swclabs/swipex/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )
@@ -44,7 +44,7 @@ type Controller struct {
 // @Accept json
 // @Produce json
 // @Param limit query number true "limit number"
-// @Success 200 {object} dtos.Slices[entity.Categories]
+// @Success 200 {object} dtos.Slices[entity.Category]
 // @Router /categories [GET]
 func (classify *Controller) GetCategories(c echo.Context) error {
 	limit := c.QueryParam("limit")
@@ -61,7 +61,7 @@ func (classify *Controller) GetCategories(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, dtos.Slices[entity.Categories]{
+	return c.JSON(http.StatusOK, dtos.Slices[entity.Category]{
 		Body: resp,
 	})
 }
@@ -72,7 +72,7 @@ func (classify *Controller) GetCategories(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query int true "limit number of suppliers"
-// @Success 200 {object} dtos.Slices[entity.Suppliers]
+// @Success 200 {object} dtos.Slices[entity.Supplier]
 // @Router /suppliers [GET]
 func (classify *Controller) GetSupplier(c echo.Context) error {
 	_limit, err := strconv.Atoi(c.QueryParam("limit"))
@@ -87,7 +87,7 @@ func (classify *Controller) GetSupplier(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusOK, dtos.Slices[entity.Suppliers]{
+	return c.JSON(http.StatusOK, dtos.Slices[entity.Supplier]{
 		Body: _supp,
 	})
 }
@@ -97,11 +97,11 @@ func (classify *Controller) GetSupplier(c echo.Context) error {
 // @Tags categories
 // @Accept json
 // @Produce json
-// @Param login body entity.Categories true "Categories Request"
+// @Param login body entity.Category true "Categories Request"
 // @Success 201 {object} dtos.OK
 // @Router /categories [POST]
 func (classify *Controller) InsertCategory(c echo.Context) error {
-	var request entity.Categories
+	var request entity.Category
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),

@@ -2,9 +2,9 @@ package carts
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/model"
-	"swclabs/swix/pkg/infra/cache"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/model"
+	"swclabs/swipex/pkg/infra/cache"
 )
 
 func useCache(cache cache.ICache, repo ICarts) ICarts {
@@ -21,22 +21,27 @@ type _cache struct {
 	cart  ICarts
 }
 
+// RemoveByItemID implements ICarts.
+func (c *_cache) RemoveByItemID(ctx context.Context, userID int64, itemID int64) error {
+	return c.cart.RemoveByItemID(ctx, userID, itemID)
+}
+
 // GetCartInfo implements ICarts.
 func (c *_cache) GetCartInfo(ctx context.Context, userID int64) ([]model.Carts, error) {
 	return c.cart.GetCartInfo(ctx, userID)
 }
 
 // GetCartByUserID implements ICartRepository.
-func (c *_cache) GetCartByUserID(ctx context.Context, userID int64, limit int) ([]entity.Carts, error) {
+func (c *_cache) GetCartByUserID(ctx context.Context, userID int64, limit int) ([]entity.Cart, error) {
 	return c.cart.GetCartByUserID(ctx, userID, limit)
 }
 
 // Insert implements ICartRepository.
-func (c *_cache) Insert(ctx context.Context, cart entity.Carts) error {
+func (c *_cache) Insert(ctx context.Context, cart entity.Cart) error {
 	return c.cart.Insert(ctx, cart)
 }
 
-// RemoveItem implements ICartRepository.
-func (c *_cache) RemoveItem(ctx context.Context, ID int64) error {
-	return c.cart.RemoveItem(ctx, ID)
+// RemoveByID implements ICartRepository.
+func (c *_cache) RemoveByID(ctx context.Context, ID int64) error {
+	return c.cart.RemoveByID(ctx, ID)
 }

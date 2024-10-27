@@ -1,7 +1,7 @@
 package entity
 
 // Comment Table
-type Comments struct {
+type Comment struct {
 	ID        int64  `json:"id" db:"id"`
 	Level     int64  `json:"level" db:"level"`
 	Content   string `json:"content" db:"content"`

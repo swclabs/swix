@@ -5,9 +5,9 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"swclabs/swix/internal/config"
+	"swclabs/swipex/internal/config"
 
-	"swclabs/swix/pkg/utils"
+	"swclabs/swipex/pkg/utils"
 
 	"github.com/coreos/go-oidc/v3/oidc"
 	"golang.org/x/oauth2"

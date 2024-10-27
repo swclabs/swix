@@ -1,12 +1,12 @@
 package products
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/container/base"
-	"swclabs/swix/internal/apis/server"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/container/healthcheck"
+	"swclabs/swipex/internal/apis/server"
 )
 
-func New(base base.IRouter, router IRouter) app.IApplication {
+func New(base healthcheck.IRouter, router IRouter) app.IApplication {
 	mux := server.NewServeMux()
 	mux.Handle(base)
 	mux.Handle(router)

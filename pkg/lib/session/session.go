@@ -2,7 +2,7 @@
 package session
 
 import (
-	"swclabs/swix/internal/config"
+	"swclabs/swipex/internal/config"
 	"sync"
 
 	"github.com/gorilla/sessions"

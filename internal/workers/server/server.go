@@ -2,9 +2,9 @@
 package server
 
 import (
-	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/workers/queue"
-	"swclabs/swix/pkg/lib/worker"
+	"swclabs/swipex/internal/config"
+	"swclabs/swipex/internal/workers/queue"
+	"swclabs/swipex/pkg/lib/worker"
 )
 
 // IWorker interface for Worker objects

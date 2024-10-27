@@ -2,5 +2,5 @@
 package init
 
 import (
-	_ "swclabs/swix/docs" // start swagger
+	_ "swclabs/swipex/docs" // start swagger
 )

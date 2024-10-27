@@ -3,8 +3,8 @@ package collections
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/pkg/infra/cache"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/pkg/infra/cache"
 )
 
 type _cache struct {

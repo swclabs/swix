@@ -7,9 +7,9 @@ package main
 
 import (
 	"log"
-	"swclabs/swix/app"
-	_ "swclabs/swix/app/init"
-	"swclabs/swix/internal/apis"
+	"swclabs/swipex/app"
+	_ "swclabs/swipex/app/init"
+	"swclabs/swipex/internal/apis"
 )
 
 func main() {

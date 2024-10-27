@@ -4,13 +4,13 @@ package classify
 import (
 	"context"
 	"log"
-	"swclabs/swix/app"
+	"swclabs/swipex/app"
 
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/repos/categories"
-	"swclabs/swix/internal/core/repos/suppliers"
-	"swclabs/swix/pkg/infra/db"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/repos/categories"
+	"swclabs/swipex/internal/core/repos/suppliers"
+	"swclabs/swipex/pkg/infra/db"
 )
 
 var _ = app.Service(New)
@@ -33,18 +33,18 @@ type Classify struct {
 }
 
 // CreateCategory implements IClassify.
-func (c *Classify) CreateCategory(ctx context.Context, ctg entity.Categories) error {
+func (c *Classify) CreateCategory(ctx context.Context, ctg entity.Category) error {
 	return c.Category.Insert(ctx, ctg)
 }
 
 // CreateSuppliers implements IClassify.
 func (c *Classify) CreateSuppliers(ctx context.Context, supplierReq dtos.Supplier) error {
-	tx, err := db.NewTransaction(ctx)
+	tx, err := db.NewTx(ctx)
 	if err != nil {
 		return err
 	}
 	var (
-		supplier = entity.Suppliers{
+		supplier = entity.Supplier{
 			Name:  supplierReq.Name,
 			Email: supplierReq.Email,
 		}
@@ -60,12 +60,12 @@ func (c *Classify) CreateSuppliers(ctx context.Context, supplierReq dtos.Supplie
 }
 
 // GetCategoriesLimit implements IClassify.
-func (c *Classify) GetCategoriesLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
+func (c *Classify) GetCategoriesLimit(ctx context.Context, limit string) ([]entity.Category, error) {
 	return c.Category.GetLimit(ctx, limit)
 }
 
 // GetSuppliersLimit implements IClassify.
-func (c *Classify) GetSuppliersLimit(ctx context.Context, limit int) ([]entity.Suppliers, error) {
+func (c *Classify) GetSuppliersLimit(ctx context.Context, limit int) ([]entity.Supplier, error) {
 	return c.Supplier.GetLimit(ctx, limit)
 }
 
@@ -77,7 +77,7 @@ func (c *Classify) DelCategoryByID(ctx context.Context, categoryID int64) error 
 // UpdateCategoryInfo implements IProductService.
 func (c *Classify) UpdateCategoryInfo(ctx context.Context, category dtos.UpdateCategories) error {
 
-	_category := entity.Categories{
+	_category := entity.Category{
 		ID:          category.ID,
 		Name:        category.Name,
 		Description: category.Description,

@@ -6,9 +6,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/xdto"
-	"swclabs/swix/pkg/lib/valid"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/xdto"
+	"swclabs/swipex/pkg/lib/valid"
 )
 
 type IGhnx interface {

@@ -24,7 +24,31 @@ ALTER TABLE "carts" ADD FOREIGN KEY ("inventory_id") REFERENCES "inventories" ("
 ALTER TABLE "product_in_order" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "product_in_order" ADD FOREIGN KEY ("inventory_id") REFERENCES "inventories" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
-ALTER TABLE "favorite_product" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
-ALTER TABLE "favorite_product" ADD FOREIGN KEY ("inventory_id") REFERENCES "inventories" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "favorite" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "favorite" ADD FOREIGN KEY ("inventory_id") REFERENCES "inventories" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE "inventories" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "stars" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "stars" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "coupons_used" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "coupons_used" ADD FOREIGN KEY ("coupon_code") REFERENCES "coupons" ("code") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "coupons_used" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+CREATE OR REPLACE FUNCTION update_product_rating()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF OLD.rating <> -1.0 AND NEW.rating IS DISTINCT FROM OLD.rating THEN
+    NEW.rating := (OLD.rating + NEW.rating) / 2;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER recalculate_rating
+BEFORE UPDATE ON products
+FOR EACH ROW
+EXECUTE FUNCTION update_product_rating();

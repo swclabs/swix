@@ -2,12 +2,12 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/model"
-	"swclabs/swix/pkg/infra/cache"
-	"swclabs/swix/pkg/infra/db"
-	"swclabs/swix/pkg/lib/errors"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/model"
+	"swclabs/swipex/pkg/infra/cache"
+	"swclabs/swipex/pkg/infra/db"
+	"swclabs/swipex/pkg/lib/errors"
 )
 
 var _ IInventories = (*Inventory)(nil)
@@ -36,12 +36,12 @@ func (w *Inventory) UploadColorImage(ctx context.Context, ID int, url string) er
 }
 
 // GetByColor implements IInventories.
-func (w *Inventory) GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventories, error) {
+func (w *Inventory) GetByColor(ctx context.Context, productID int64, color string) ([]entity.Inventory, error) {
 	rows, err := w.db.Query(ctx, getByColor, productID, color)
 	if err != nil {
 		return nil, errors.Repository("500", err)
 	}
-	inventories, err := db.CollectRows[entity.Inventories](rows)
+	inventories, err := db.CollectRows[entity.Inventory](rows)
 	if err != nil {
 		return nil, errors.Repository("500", err)
 	}
@@ -62,7 +62,7 @@ func (w *Inventory) GetColor(ctx context.Context, productID int64) ([]model.Colo
 }
 
 // Update implements IInventoryRepository.
-func (w *Inventory) Update(ctx context.Context, inventory entity.Inventories) error {
+func (w *Inventory) Update(ctx context.Context, inventory entity.Inventory) error {
 	return w.db.SafeWrite(ctx, update,
 		inventory.ID,
 		inventory.ProductID,
@@ -87,7 +87,7 @@ func (w *Inventory) DeleteByID(ctx context.Context, inventoryID int64) error {
 }
 
 // GetLimit implements IInventoryRepository.
-func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]entity.Inventories, error) {
+func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]entity.Inventory, error) {
 	if offset < 1 {
 		offset = 1
 	}
@@ -95,16 +95,16 @@ func (w *Inventory) GetLimit(ctx context.Context, limit int, offset int) ([]enti
 	if err != nil {
 		return nil, err
 	}
-	return db.CollectRows[entity.Inventories](rows)
+	return db.CollectRows[entity.Inventory](rows)
 }
 
 // GetByProductID implements IInventoryRepository.
-func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]entity.Inventories, error) {
+func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]entity.Inventory, error) {
 	rows, err := w.db.Query(ctx, getByProductID, productID)
 	if err != nil {
 		return nil, errors.Repository("500", err)
 	}
-	inventories, err := db.CollectRows[entity.Inventories](rows)
+	inventories, err := db.CollectRows[entity.Inventory](rows)
 	if err != nil {
 		return nil, errors.Repository("500", err)
 	}
@@ -112,12 +112,12 @@ func (w *Inventory) GetByProductID(ctx context.Context, productID int64) ([]enti
 }
 
 // GetByID implements IInventoryRepository.
-func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*entity.Inventories, error) {
+func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*entity.Inventory, error) {
 	rows, err := w.db.Query(ctx, getByID, inventoryID)
 	if err != nil {
 		return nil, err
 	}
-	inventory, err := db.CollectRow[entity.Inventories](rows)
+	inventory, err := db.CollectRow[entity.Inventory](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +125,7 @@ func (w *Inventory) GetByID(ctx context.Context, inventoryID int64) (*entity.Inv
 }
 
 // InsertProduct implements IInventoryRepository.
-func (w *Inventory) InsertProduct(ctx context.Context, product entity.Inventories) (int64, error) {
+func (w *Inventory) InsertProduct(ctx context.Context, product entity.Inventory) (int64, error) {
 	return w.db.SafeWriteReturn(ctx, insertIntoInventory,
 		product.ProductID, product.Price,
 		product.Available, product.CurrencyCode,

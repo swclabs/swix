@@ -2,7 +2,7 @@ package crypto
 
 import (
 	"strconv"
-	"swclabs/swix/internal/config"
+	"swclabs/swipex/internal/config"
 
 	"golang.org/x/crypto/bcrypt"
 )

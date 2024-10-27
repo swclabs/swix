@@ -28,15 +28,15 @@ type LoginResponse struct {
 	Email   string `json:"email" validate:"email,required"`
 }
 
-// User schema
-type User struct {
-	ID          int64  `json:"id" validate:"required"`
-	Email       string `json:"email" validate:"email,required"`
-	PhoneNumber string `json:"phone_number" validate:"number,required"`
-	FirstName   string `json:"first_name" validate:"required"`
-	LastName    string `json:"last_name" validate:"required"`
-	Username    string `json:"username" validate:"required"`
-}
+//// User schema
+//type User struct {
+//	ID          int64  `json:"id" validate:"required"`
+//	Email       string `json:"email" validate:"email,required"`
+//	PhoneNumber string `json:"phone_number" validate:"number,required"`
+//	FirstName   string `json:"first_name" validate:"required"`
+//	LastName    string `json:"last_name" validate:"required"`
+//	Username    string `json:"username" validate:"required"`
+//}
 
 // UserUpdate request, response
 type UserUpdate struct {

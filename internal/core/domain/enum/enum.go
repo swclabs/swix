@@ -52,7 +52,7 @@ func (c Category) String() string {
 	case c&Earphone != 0:
 		return "earphone"
 	case c&Desktop != 0:
-		return "computer"
+		return "desktop"
 	case c&Accessories != 0:
 		return "accessories"
 	case c&Watch != 0:

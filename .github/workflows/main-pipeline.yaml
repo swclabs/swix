@@ -6,7 +6,7 @@ on:
       - staging
 
 env:
-  IMAGE_NAME: swix
+  IMAGE_NAME: swipex
 
 jobs:
   build:

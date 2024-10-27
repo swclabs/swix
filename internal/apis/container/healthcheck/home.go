@@ -1,7 +1,7 @@
-package base
+package healthcheck
 
 import (
-	"swclabs/swix/pkg/components"
+	"swclabs/swipex/pkg/components"
 
 	"github.com/labstack/echo/v4"
 )

@@ -19,6 +19,11 @@ const (
 		WHERE id = $1;
 	`
 
+	deleteByItemID = `
+		DELETE FROM carts
+		WHERE user_id = $1 AND inventory_id = $2;
+	`
+
 	getCartInfo = `
 		SELECT
 			cart_id,

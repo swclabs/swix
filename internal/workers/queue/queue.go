@@ -2,8 +2,8 @@
 package queue
 
 import (
-	"swclabs/swix/internal/config"
-	"swclabs/swix/pkg/lib/worker"
+	"swclabs/swipex/internal/config"
+	"swclabs/swipex/pkg/lib/worker"
 )
 
 var (

@@ -1,10 +1,10 @@
 // Package router define tasks - queue
-package base
+package healthcheck
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/workers/server"
-	"swclabs/swix/pkg/lib/worker"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/workers/server"
+	"swclabs/swipex/pkg/lib/worker"
 )
 
 var _ = app.Router(NewRouter)
@@ -28,5 +28,5 @@ type Router struct {
 
 // Register register the queue
 func (b *Router) Register(eng worker.IEngine) {
-	eng.HandlerFunc("base.WorkerCheckResult", b.handlers.WorkerCheckResult)
+	eng.HandlerFunc("healthcheck.WorkerCheckResult", b.handlers.WorkerCheckResult)
 }

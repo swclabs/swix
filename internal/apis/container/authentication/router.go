@@ -1,28 +1,28 @@
-package manager
+package authentication
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/middleware"
-	"swclabs/swix/internal/apis/server"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/middleware"
+	"swclabs/swipex/internal/apis/server"
 
 	"github.com/labstack/echo/v4"
 )
 
 var _ = app.Router(NewRouter)
 
-// NewManager creates a new Manager router object
+// NewRouter creates a new Manager router object
 func NewRouter(controllers IController) IRouter {
 	return &Router{
 		controller: controllers,
 	}
 }
 
-// IManager interface for manager
+// IRouter interface for manager
 type IRouter interface {
 	server.IRouter
 }
 
-// Manager struct	implementation of IManager
+// Router struct implementation of IManager
 type Router struct {
 	controller IController
 }

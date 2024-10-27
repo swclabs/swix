@@ -17,8 +17,8 @@ type Transaction struct {
 
 var _ ITransaction = (*Transaction)(nil)
 
-// NewTransaction implements IDatabase.
-func NewTransaction(ctx context.Context) (ITransaction, error) {
+// NewTx implements IDatabase.
+func NewTx(ctx context.Context) (ITransaction, error) {
 	tx, err := pgxConnection.Begin(ctx)
 	if err != nil {
 		return nil, err

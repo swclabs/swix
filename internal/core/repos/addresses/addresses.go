@@ -3,10 +3,10 @@ package addresses
 
 import (
 	"context"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/pkg/infra/cache"
-	"swclabs/swix/pkg/infra/db"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/pkg/infra/cache"
+	"swclabs/swipex/pkg/infra/db"
 )
 
 var _ = app.Repos(Init)
@@ -29,22 +29,22 @@ type Addresses struct {
 }
 
 // GetByID implements IAddress.
-func (addr *Addresses) GetByID(ctx context.Context, id int64) (*entity.Addresses, error) {
+func (addr *Addresses) GetByID(ctx context.Context, id int64) (*entity.Address, error) {
 	row, err := addr.db.Query(ctx, selectAddressesByID, id)
 	if err != nil {
 		return nil, err
 	}
-	addrData, err := db.CollectRow[entity.Addresses](row)
+	addrData, err := db.CollectRow[entity.Address](row)
 	return &addrData, nil
 }
 
 // GetByUserID implements IAddressRepository.
-func (addr *Addresses) GetByUserID(ctx context.Context, userID int64) ([]entity.Addresses, error) {
+func (addr *Addresses) GetByUserID(ctx context.Context, userID int64) ([]entity.Address, error) {
 	rows, err := addr.db.Query(ctx, selectAddressesByUserID, userID)
 	if err != nil {
 		return nil, err
 	}
-	addrData, err := db.CollectRows[entity.Addresses](rows)
+	addrData, err := db.CollectRows[entity.Address](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (addr *Addresses) GetByUserID(ctx context.Context, userID int64) ([]entity.
 }
 
 // Insert implements IAddressRepository.
-func (addr *Addresses) Insert(ctx context.Context, data entity.Addresses) (int64, error) {
+func (addr *Addresses) Insert(ctx context.Context, data entity.Address) (int64, error) {
 	return addr.db.SafeWriteReturn(
 		ctx, insertIntoAddresses,
 		data.Street, data.Ward, data.District, data.City, data.UserID,

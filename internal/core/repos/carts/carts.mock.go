@@ -3,15 +3,22 @@ package carts
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/model"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
 
+var _ ICarts = (*Mock)(nil)
+
 // Mock struct for carts repos
 type Mock struct {
 	mock.Mock
+}
+
+// RemoveByItemID implements ICarts.
+func (c *Mock) RemoveByItemID(ctx context.Context, userID int64, itemID int64) error {
+	panic("unimplemented")
 }
 
 // GetCartInfo implements ICarts.
@@ -19,24 +26,22 @@ func (c *Mock) GetCartInfo(ctx context.Context, userID int64) ([]model.Carts, er
 	panic("unimplemented")
 }
 
-var _ ICarts = (*Mock)(nil)
-
 // NewCartsMock returns a new Mock object
 func NewCartsMock() *Mock {
 	return &Mock{}
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Mock) GetCartByUserID(_ context.Context, _ int64, _ int) ([]entity.Carts, error) {
+func (c *Mock) GetCartByUserID(_ context.Context, _ int64, _ int) ([]entity.Cart, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.ICartRepository.
-func (c *Mock) Insert(_ context.Context, _ entity.Carts) error {
+func (c *Mock) Insert(_ context.Context, _ entity.Cart) error {
 	panic("unimplemented")
 }
 
-// RemoveItem implements domain.ICartRepository.
-func (c *Mock) RemoveItem(_ context.Context, _ int64) error {
+// RemoveByID implements domain.ICartRepository.
+func (c *Mock) RemoveByID(_ context.Context, _ int64) error {
 	panic("unimplemented")
 }

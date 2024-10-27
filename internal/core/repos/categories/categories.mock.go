@@ -2,7 +2,7 @@ package categories
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/entity"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -20,19 +20,19 @@ func NewCategoriesMock() *Mock {
 }
 
 // GetByID implements ICategoriesRepository.
-func (c *Mock) GetByID(ctx context.Context, ID int64) (*entity.Categories, error) {
+func (c *Mock) GetByID(ctx context.Context, ID int64) (*entity.Category, error) {
 	args := c.Called(ctx, ID)
-	return args.Get(0).(*entity.Categories), args.Error(1)
+	return args.Get(0).(*entity.Category), args.Error(1)
 }
 
 // GetLimit implements ICategoriesRepository.
-func (c *Mock) GetLimit(ctx context.Context, limit string) ([]entity.Categories, error) {
+func (c *Mock) GetLimit(ctx context.Context, limit string) ([]entity.Category, error) {
 	args := c.Called(ctx, limit)
-	return args.Get(0).([]entity.Categories), args.Error(1)
+	return args.Get(0).([]entity.Category), args.Error(1)
 }
 
 // Insert implements ICategoriesRepository.
-func (c *Mock) Insert(ctx context.Context, ctg entity.Categories) error {
+func (c *Mock) Insert(ctx context.Context, ctg entity.Category) error {
 	args := c.Called(ctx, ctg)
 	return args.Error(0)
 }
@@ -44,7 +44,7 @@ func (c *Mock) DeleteByID(ctx context.Context, ID int64) error {
 }
 
 // Update implements IProductRepository.
-func (c *Mock) Update(ctx context.Context, category entity.Categories) error {
+func (c *Mock) Update(ctx context.Context, category entity.Category) error {
 	args := c.Called(ctx, category)
 	return args.Error(0)
 }

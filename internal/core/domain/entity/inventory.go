@@ -2,8 +2,8 @@ package entity
 
 import "github.com/shopspring/decimal"
 
-// Inventories table
-type Inventories struct {
+// Inventory table
+type Inventory struct {
 	ID           int64           `json:"id" db:"id"`
 	ProductID    int64           `json:"product_id" db:"product_id"`
 	Available    int64           `json:"available" db:"available"`

@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/enum"
-	"swclabs/swix/internal/core/service/products"
-	"swclabs/swix/pkg/lib/valid"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/enum"
+	"swclabs/swipex/internal/core/service/products"
+	"swclabs/swipex/pkg/lib/crypto"
+	"swclabs/swipex/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )
@@ -35,6 +36,7 @@ type IController interface {
 	UpdateProductInfo(c echo.Context) error
 	GetProductDetails(c echo.Context) error
 	GetProductByType(c echo.Context) error
+	Rating(c echo.Context) error
 
 	GetInvDetails(c echo.Context) error
 	InsertInv(c echo.Context) error
@@ -48,6 +50,36 @@ type IController interface {
 // Controller struct implementation of IProducts
 type Controller struct {
 	service products.IProducts
+}
+
+// Rating .
+// @Description update inventory image
+// @Tags inventories
+// @Accept json
+// @Produce json
+// @Param star query number true "id of product"
+// @Success 200 {object} dtos.OK
+// @Router /rating/{id} [PUT]
+func (p *Controller) Rating(c echo.Context) error {
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'id' query",
+		})
+	}
+	start, err := strconv.ParseFloat(c.QueryParam("star"), 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'star' query parameter",
+		})
+	}
+	userID, _, _ := crypto.Authenticate(c)
+	if err := p.service.Rating(c.Request().Context(), userID, id, start); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.OK{Msg: "your rating has been updated successfully"})
 }
 
 // UploadInvColorImage .
@@ -73,7 +105,7 @@ func (p *Controller) UploadInvColorImage(c echo.Context) error {
 			Msg: "Invalid 'id' query parameter",
 		})
 	}
-	if err := p.service.UploadInvColorImage(c.Request().Context(), id, files); err != nil {
+	if err := p.service.UploadItemColorImage(c.Request().Context(), id, files); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -188,7 +220,7 @@ func (p *Controller) Search(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param type path string true "product type"
-// @Success 200 {object} []dtos.ProductTypeDTO
+// @Success 200 {object} []dtos.ProductDTO
 // @Router /products/{type} [GET]
 func (p *Controller) GetProductByType(c echo.Context) error {
 	var types enum.Category
@@ -197,7 +229,7 @@ func (p *Controller) GetProductByType(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	product, err := p.service.ProductOfType(c.Request().Context(), types, 0)
+	product, err := p.service.ProductOf(c.Request().Context(), types, 0)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -227,7 +259,7 @@ func (p *Controller) GetProductDetails(c echo.Context) error {
 		})
 	}
 
-	product, err := p.service.ProductDetail(c.Request().Context(), int64(ID))
+	product, err := p.service.Detail(c.Request().Context(), int64(ID))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -256,7 +288,7 @@ func (p *Controller) UpdateInv(c echo.Context) error {
 			Msg: _valid.Error(),
 		})
 	}
-	if err := p.service.UpdateInv(c.Request().Context(), inventory); err != nil {
+	if err := p.service.UpdateItem(c.Request().Context(), inventory); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -294,7 +326,7 @@ func (p *Controller) UploadInvImage(c echo.Context) error {
 			Msg: "Invalid 'id' query parameter",
 		})
 	}
-	if err := p.service.UploadInvImage(c.Request().Context(), id, files); err != nil {
+	if err := p.service.UploadItemImage(c.Request().Context(), id, files); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -330,7 +362,7 @@ func (p *Controller) DeleteInv(c echo.Context) error {
 			Msg: "param 'id' must be integer",
 		})
 	}
-	if err := p.service.DeleteInvByID(c.Request().Context(), id); err != nil {
+	if err := p.service.DeleteItem(c.Request().Context(), id); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -352,7 +384,7 @@ func (p *Controller) DeleteInv(c echo.Context) error {
 // @Produce json
 // @Param page query number true "page"
 // @Param limit query number true "limit"
-// @Success 200 {object} dtos.InvItems
+// @Success 200 {object} dtos.InventoryItems
 // @Router /inventories [GET]
 func (p *Controller) GetItems(c echo.Context) error {
 	page, err := strconv.Atoi(c.QueryParam("page"))
@@ -367,7 +399,7 @@ func (p *Controller) GetItems(c echo.Context) error {
 			Msg: "missing 'limit' or 'limit' is not a number",
 		})
 	}
-	items, err := p.service.GetAllInv(c.Request().Context(), page, limit)
+	items, err := p.service.GetInvItems(c.Request().Context(), page, limit)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -432,7 +464,7 @@ func (p *Controller) GetInvDetails(c echo.Context) error {
 		})
 	}
 
-	product, err := p.service.GetInvByID(c.Request().Context(), int64(ID))
+	product, err := p.service.GetItem(c.Request().Context(), int64(ID))
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -461,7 +493,7 @@ func (p *Controller) GetProductLimit(c echo.Context) error {
 			Msg: "Invalid 'limit' query parameter",
 		})
 	}
-	prd, err := p.service.GetProductsLimit(c.Request().Context(), _limit)
+	prd, err := p.service.GetProducts(c.Request().Context(), _limit)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -498,7 +530,7 @@ func (p *Controller) DeleteProduct(c echo.Context) error {
 			Msg: "param 'pid' must be integer",
 		})
 	}
-	if err := p.service.DelProductByID(c.Request().Context(), id); err != nil {
+	if err := p.service.DelProduct(c.Request().Context(), id); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -608,13 +640,13 @@ func (p *Controller) CreateProduct(c echo.Context) error {
 // @Tags inventories
 // @Accept json
 // @Produce json
-// @Param InvDetail body dtos.InvItem true "Inventories Request"
+// @Param InvDetail body dtos.InventoryDetail true "Inventories Request"
 // @Success 201 {object} dtos.OK
 // @Router /inventories [POST]
 func (p *Controller) InsertInv(c echo.Context) error {
 	var (
 		inv dtos.Inventory
-		req dtos.InvDetail
+		req dtos.InventoryDetail
 	)
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -637,7 +669,7 @@ func (p *Controller) InsertInv(c echo.Context) error {
 		Image:        req.Image,
 		Specs:        req.Specs,
 	}
-	if err := p.service.InsertInv(c.Request().Context(), inv); err != nil {
+	if err := p.service.InsertItem(c.Request().Context(), inv); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),

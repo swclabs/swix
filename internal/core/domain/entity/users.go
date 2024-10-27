@@ -1,7 +1,7 @@
 package entity
 
-// Users :Table users
-type Users struct {
+// User :Table users
+type User struct {
 	ID          int64  `json:"id" db:"id"`
 	Email       string `json:"email" db:"email"`
 	PhoneNumber string `json:"phone_number" db:"phone_number"`

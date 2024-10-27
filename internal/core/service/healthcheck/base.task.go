@@ -1,11 +1,11 @@
-package base
+package healthcheck
 
 import (
 	"context"
-	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/workers/queue"
-	"swclabs/swix/pkg/lib/worker"
+	"swclabs/swipex/internal/config"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/workers/queue"
+	"swclabs/swipex/pkg/lib/worker"
 )
 
 var _ IService = (*Task)(nil)
@@ -34,7 +34,7 @@ func (t *Task) HealthCheck(_ context.Context) dtos.HealthCheck {
 // WorkerCheck implements IbaseService.
 func (t *Task) WorkerCheck(ctx context.Context, _ int64) error {
 	return t.worker.Exec(ctx, queue.DefaultQueue, worker.NewTask(
-		"base.WorkerCheck",
+		"healthcheck.WorkerCheck",
 		1,
 	))
 }
@@ -42,7 +42,7 @@ func (t *Task) WorkerCheck(ctx context.Context, _ int64) error {
 // WorkerCheckResult implements IbaseService.
 func (t *Task) WorkerCheckResult(ctx context.Context, num int64) (string, error) {
 	result, err := t.worker.ExecGetResult(ctx, queue.DefaultQueue, worker.NewTask(
-		"base.WorkerCheckResult",
+		"healthcheck.WorkerCheckResult",
 		num,
 	))
 	if err != nil {

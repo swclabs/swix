@@ -3,7 +3,7 @@ package utils
 
 import (
 	"fmt"
-	"swclabs/swix/internal/config"
+	"swclabs/swipex/internal/config"
 )
 
 // ConnectionURLBuilder func for building URL connection.

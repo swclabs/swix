@@ -62,6 +62,8 @@ definitions:
         type: integer
       category:
         type: string
+      code:
+        type: string
       color:
         type: string
       currency_code:
@@ -100,6 +102,24 @@ definitions:
       user_id:
         type: integer
     type: object
+  dtos.Color:
+    properties:
+      img:
+        description: Img of color Nature Titanium
+        type: string
+      name:
+        description: Name Nature Titanium
+        type: string
+      product:
+        description: Img of product Nature Titanium
+        items:
+          type: string
+        type: array
+      specs:
+        items:
+          $ref: '#/definitions/dtos.SpecsItem'
+        type: array
+    type: object
   dtos.Comment:
     properties:
       content:
@@ -134,6 +154,38 @@ definitions:
     - like
     - rating
     - username
+    type: object
+  dtos.Coupon:
+    properties:
+      code:
+        type: string
+      description:
+        type: string
+      discount:
+        type: integer
+      expired_at:
+        type: string
+      id:
+        type: integer
+    type: object
+  dtos.CreateCoupon:
+    properties:
+      description:
+        type: string
+      discount:
+        type: integer
+      expired_at:
+        type: string
+      max_use:
+        type: integer
+      status:
+        type: string
+    required:
+    - description
+    - discount
+    - expired_at
+    - max_use
+    - status
     type: object
   dtos.CreateProduct:
     properties:
@@ -183,63 +235,10 @@ definitions:
     - status
     - user_id
     type: object
-  dtos.DetailColor:
-    properties:
-      img:
-        description: Img of color Nature Titanium
-        type: string
-      name:
-        description: Name Nature Titanium
-        type: string
-      product:
-        description: Img of product Nature Titanium
-        items:
-          type: string
-        type: array
-      specs:
-        items:
-          $ref: '#/definitions/dtos.SpecsItem'
-        type: array
-    type: object
   dtos.Error:
     properties:
       msg:
         type: string
-    type: object
-  dtos.InvItem:
-    properties:
-      available:
-        type: string
-      color:
-        type: string
-      currency_code:
-        type: string
-      price:
-        type: string
-      product_id:
-        type: integer
-      specs:
-        $ref: '#/definitions/dtos.Specs'
-      status:
-        type: string
-    required:
-    - available
-    - currency_code
-    - price
-    - product_id
-    type: object
-  dtos.InvItems:
-    properties:
-      header:
-        $ref: '#/definitions/dtos.StockHeader'
-      limit:
-        type: integer
-      page:
-        type: integer
-      stock:
-        items:
-          $ref: '#/definitions/dtos.Inventory'
-        type: array
     type: object
   dtos.InvUpdate:
     properties:
@@ -282,6 +281,8 @@ definitions:
         type: string
       product_id:
         type: integer
+      product_img:
+        type: string
       product_name:
         type: string
       specs:
@@ -293,6 +294,47 @@ definitions:
     - currency_code
     - price
     - product_id
+    type: object
+  dtos.InventoryDetail:
+    properties:
+      available:
+        type: string
+      color:
+        type: string
+      color_img:
+        type: string
+      currency_code:
+        type: string
+      image:
+        items:
+          type: string
+        type: array
+      price:
+        type: string
+      product_id:
+        type: integer
+      specs:
+        $ref: '#/definitions/dtos.Specs'
+      status:
+        type: string
+    required:
+    - available
+    - currency_code
+    - price
+    - product_id
+    type: object
+  dtos.InventoryItems:
+    properties:
+      header:
+        $ref: '#/definitions/dtos.StockHeader'
+      limit:
+        type: integer
+      page:
+        type: integer
+      stock:
+        items:
+          $ref: '#/definitions/dtos.Inventory'
+        type: array
     type: object
   dtos.LoginRequest:
     properties:
@@ -334,24 +376,22 @@ definitions:
       msg:
         type: string
     type: object
-  dtos.OrderDTO:
+  dtos.Order:
     properties:
-      delevery_id:
-        type: integer
+      address:
+        $ref: '#/definitions/dtos.OrderFormAddress'
+      customer:
+        $ref: '#/definitions/dtos.OrderFormCustomer'
+      delivery:
+        $ref: '#/definitions/dtos.OrderFormDelivery'
       product:
         items:
-          properties:
-            inventory_id:
-              type: integer
-            quantity:
-              type: integer
-          required:
-          - inventory_id
-          - quantity
-          type: object
+          $ref: '#/definitions/dtos.OrderFormProduct'
         type: array
     required:
-    - delevery_id
+    - address
+    - customer
+    - delivery
     - product
     type: object
   dtos.OrderForm:
@@ -428,6 +468,23 @@ definitions:
     - code
     - quantity
     type: object
+  dtos.OrderInfo:
+    properties:
+      address:
+        $ref: '#/definitions/dtos.OrderFormAddress'
+      delivery:
+        $ref: '#/definitions/dtos.OrderFormDelivery'
+      items:
+        items:
+          $ref: '#/definitions/model.Order'
+        type: array
+      time:
+        type: string
+      user:
+        $ref: '#/definitions/dtos.OrderFormCustomer'
+      uuid:
+        type: string
+    type: object
   dtos.OrderSchema:
     properties:
       id:
@@ -449,12 +506,31 @@ definitions:
       uuid:
         type: string
     type: object
+  dtos.ProductDTO:
+    properties:
+      category:
+        type: string
+      desc:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      rating:
+        type: number
+      specs:
+        $ref: '#/definitions/dtos.ProductSpecs'
+    type: object
   dtos.ProductDetail:
     properties:
       color:
         description: Color of product
         items:
-          $ref: '#/definitions/dtos.DetailColor'
+          $ref: '#/definitions/dtos.Color'
         type: array
       display:
         description: Display Super AMOLED
@@ -469,6 +545,8 @@ definitions:
         type: string
       price:
         type: string
+      rating:
+        type: number
       screen:
         description: Screen 6.1 inch
         type: string
@@ -530,23 +608,6 @@ definitions:
       screen:
         type: string
     type: object
-  dtos.ProductTypeDTO:
-    properties:
-      category:
-        type: string
-      desc:
-        type: string
-      id:
-        type: integer
-      image:
-        type: string
-      name:
-        type: string
-      price:
-        type: string
-      specs:
-        $ref: '#/definitions/dtos.ProductSpecs'
-    type: object
   dtos.SignUpRequest:
     properties:
       email:
@@ -583,18 +644,18 @@ definitions:
           $ref: '#/definitions/dtos.ProductResponse'
         type: array
     type: object
-  dtos.Slices-entity_Categories:
+  dtos.Slices-entity_Category:
     properties:
       body:
         items:
-          $ref: '#/definitions/entity.Categories'
+          $ref: '#/definitions/entity.Category'
         type: array
     type: object
-  dtos.Slices-entity_Suppliers:
+  dtos.Slices-entity_Supplier:
     properties:
       body:
         items:
-          $ref: '#/definitions/entity.Suppliers'
+          $ref: '#/definitions/entity.Supplier'
         type: array
     type: object
   dtos.Specs:
@@ -707,7 +768,7 @@ definitions:
     required:
     - email
     type: object
-  entity.Categories:
+  entity.Category:
     properties:
       description:
         type: string
@@ -719,7 +780,7 @@ definitions:
     - description
     - name
     type: object
-  entity.Suppliers:
+  entity.Supplier:
     properties:
       email:
         type: string
@@ -734,24 +795,18 @@ definitions:
         type: integer
       color:
         type: string
-      content:
-        type: string
       currency_code:
         type: string
-      inventory_image:
+      image:
+        type: string
+      item_specs:
         type: string
       name:
         type: string
       quantity:
         type: integer
-      time:
-        type: string
       total_amount:
         type: number
-      user_id:
-        type: integer
-      uuid:
-        type: string
     type: object
   model.Users:
     properties:
@@ -1308,7 +1363,7 @@ paths:
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
-      - manager
+      - authentication
   /auth/login:
     post:
       consumes:
@@ -1329,7 +1384,7 @@ paths:
           schema:
             $ref: '#/definitions/dtos.LoginResponse'
       tags:
-      - manager
+      - authentication
   /auth/logout:
     get:
       consumes:
@@ -1343,7 +1398,7 @@ paths:
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
-      - manager
+      - authentication
   /auth/signup:
     post:
       consumes:
@@ -1364,7 +1419,7 @@ paths:
           schema:
             $ref: '#/definitions/dtos.SignUpResponse'
       tags:
-      - manager
+      - authentication
   /categories:
     get:
       consumes:
@@ -1382,7 +1437,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.Slices-entity_Categories'
+            $ref: '#/definitions/dtos.Slices-entity_Category'
       tags:
       - categories
     post:
@@ -1395,7 +1450,7 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/entity.Categories'
+          $ref: '#/definitions/entity.Category'
       produces:
       - application/json
       responses:
@@ -1719,7 +1774,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.InvItems'
+            $ref: '#/definitions/dtos.InventoryItems'
       tags:
       - inventories
     post:
@@ -1732,7 +1787,7 @@ paths:
         name: InvDetail
         required: true
         schema:
-          $ref: '#/definitions/dtos.InvItem'
+          $ref: '#/definitions/dtos.InventoryDetail'
       produces:
       - application/json
       responses:
@@ -1839,7 +1894,7 @@ paths:
         "200":
           description: OK
       tags:
-      - manager
+      - authentication
   /products:
     delete:
       consumes:
@@ -1937,7 +1992,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dtos.ProductTypeDTO'
+              $ref: '#/definitions/dtos.ProductDTO'
             type: array
       tags:
       - products
@@ -2094,6 +2149,62 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - purchase
+  /purchase/coupons:
+    get:
+      consumes:
+      - application/json
+      description: get coupon.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Coupon'
+            type: array
+      tags:
+      - purchase
+    post:
+      consumes:
+      - application/json
+      description: create coupon.
+      parameters:
+      - description: coupon request
+        in: body
+        name: coupon
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateCoupon'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OrderInfo'
+      tags:
+      - purchase
+  /purchase/coupons/{code}:
+    get:
+      consumes:
+      - application/json
+      description: get coupon.
+      parameters:
+      - description: coupons code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - purchase
   /purchase/orders:
     get:
       consumes:
@@ -2126,7 +2237,7 @@ paths:
         name: login
         required: true
         schema:
-          $ref: '#/definitions/dtos.OrderDTO'
+          $ref: '#/definitions/dtos.Order'
       produces:
       - application/json
       responses:
@@ -2136,6 +2247,46 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - purchase
+  /purchase/orders/{code}:
+    get:
+      consumes:
+      - application/json
+      description: get order by code.
+      parameters:
+      - description: order code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OrderInfo'
+      tags:
+      - delivery
+  /rating/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update inventory image
+      parameters:
+      - description: id of product
+        in: query
+        name: star
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
   /search:
     get:
       consumes:
@@ -2209,7 +2360,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.Slices-entity_Suppliers'
+            $ref: '#/definitions/dtos.Slices-entity_Supplier'
       tags:
       - suppliers
     post:
@@ -2245,7 +2396,7 @@ paths:
           schema:
             $ref: '#/definitions/model.Users'
       tags:
-      - manager
+      - authentication
     put:
       consumes:
       - application/json
@@ -2265,7 +2416,7 @@ paths:
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
-      - manager
+      - authentication
   /users/image:
     put:
       consumes:
@@ -2285,7 +2436,7 @@ paths:
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
-      - manager
+      - authentication
   /worker:
     get:
       consumes:

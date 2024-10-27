@@ -3,11 +3,11 @@ package carts
 
 import (
 	"context"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/model"
-	"swclabs/swix/pkg/infra/cache"
-	"swclabs/swix/pkg/infra/db"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/model"
+	"swclabs/swipex/pkg/infra/cache"
+	"swclabs/swipex/pkg/infra/db"
 )
 
 var _ ICarts = (*Carts)(nil)
@@ -30,6 +30,11 @@ type Carts struct {
 	db db.IDatabase
 }
 
+// RemoveByItemID implements ICarts.
+func (c *Carts) RemoveByItemID(ctx context.Context, userID int64, itemID int64) error {
+	return c.db.SafeWrite(ctx, deleteByItemID, userID, itemID)
+}
+
 // GetCartInfo implements ICarts.
 func (c *Carts) GetCartInfo(ctx context.Context, userID int64) ([]model.Carts, error) {
 	rows, err := c.db.Query(ctx, getCartInfo, userID)
@@ -44,12 +49,12 @@ func (c *Carts) GetCartInfo(ctx context.Context, userID int64) ([]model.Carts, e
 }
 
 // GetCartByUserID implements domain.ICartRepository.
-func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) ([]entity.Carts, error) {
+func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) ([]entity.Cart, error) {
 	rows, err := c.db.Query(ctx, selectByUserID, userID, limit)
 	if err != nil {
 		return nil, err
 	}
-	cartItems, err := db.CollectRows[entity.Carts](rows)
+	cartItems, err := db.CollectRows[entity.Cart](rows)
 	if err != nil {
 		return nil, err
 	}
@@ -57,13 +62,13 @@ func (c *Carts) GetCartByUserID(ctx context.Context, userID int64, limit int) ([
 }
 
 // Insert implements domain.ICartRepository.
-func (c *Carts) Insert(ctx context.Context, cart entity.Carts) error {
+func (c *Carts) Insert(ctx context.Context, cart entity.Cart) error {
 	return c.db.SafeWrite(ctx, insertItemToCart,
 		cart.UserID, cart.InventoryID, cart.Quantity,
 	)
 }
 
-// RemoveItem implements domain.ICartRepository.
-func (c *Carts) RemoveItem(ctx context.Context, ID int64) error {
+// RemoveByID implements domain.ICartRepository.
+func (c *Carts) RemoveByID(ctx context.Context, ID int64) error {
 	return c.db.SafeWrite(ctx, deleteItem, ID)
 }

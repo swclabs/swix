@@ -9,7 +9,7 @@ Designed for the final thesis at HCMUT-VNUHCM
 
 # Swipe
 
-Swipe (code: `swix`) is a api server for [Swipe](https://github.com/swclabs/swipe). `swix` provides functions, and services through API and microservices. Designed for server, `swix` provides cli commands to run api services and redis-based distributed systems cluster.
+Swipe (code: `swipex`) is a api server for [Swipe](https://github.com/swclabs/swipe). `swipex` provides functions, and services through API and microservices. Designed for server, `swipex` provides cli commands to run api services and redis-based distributed systems cluster.
 
 The project is designed for the final thesis at the University of Technology, Vietnam National University, Ho Chi Minh City.
 

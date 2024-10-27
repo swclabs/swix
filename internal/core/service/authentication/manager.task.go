@@ -1,26 +1,26 @@
-package manager
+package authentication
 
 import (
 	"context"
 	"mime/multipart"
 	"strconv"
-	"swclabs/swix/internal/config"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/model"
-	"swclabs/swix/internal/workers/queue"
-	"swclabs/swix/pkg/lib/worker"
+	"swclabs/swipex/internal/config"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/model"
+	"swclabs/swipex/internal/workers/queue"
+	"swclabs/swipex/pkg/lib/worker"
 )
 
-var _ IManager = (*Task)(nil)
+var _ IAuthentication = (*Task)(nil)
 
-// Task struct for manager service
+// Task struct for auth service
 type Task struct {
 	worker  worker.IWorkerClient
-	service IManager
+	service IAuthentication
 }
 
 // UseTask creates a new Task object wrapping the provided service
-func UseTask(service IManager) IManager {
+func UseTask(service IAuthentication) IAuthentication {
 	return &Task{
 		worker:  worker.NewClient(config.RedisHost, config.RedisPort, config.RedisPassword),
 		service: service,
@@ -32,7 +32,7 @@ func (t *Task) SignUp(ctx context.Context, req dtos.SignUpRequest) error {
 	return t.worker.Exec(ctx,
 		queue.DefaultQueue,
 		worker.NewTask(
-			"manager.SignUp",
+			"auth.SignUp",
 			req,
 		),
 	)
@@ -43,7 +43,7 @@ func (t *Task) UpdateUserInfo(ctx context.Context, req dtos.UserUpdate) error {
 	return t.worker.Exec(ctx,
 		queue.DefaultQueue,
 		worker.NewTask(
-			"manager.UpdateUserInfo",
+			"auth.UpdateUserInfo",
 			req,
 		),
 	)
@@ -54,7 +54,7 @@ func (t *Task) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2SaveUser) (int
 	result, err := t.worker.ExecGetResult(ctx,
 		queue.DefaultQueue,
 		worker.NewTask(
-			"manager.OAuth2SaveUser",
+			"auth.OAuth2SaveUser",
 			req,
 		),
 	)

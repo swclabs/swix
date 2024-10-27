@@ -2,7 +2,7 @@ package addresses
 
 import (
 	"context"
-	"swclabs/swix/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/entity"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -20,17 +20,17 @@ type Mock struct {
 }
 
 // GetByID implements IAddress.
-func (a *Mock) GetByID(ctx context.Context, id int64) (*entity.Addresses, error) {
+func (a *Mock) GetByID(ctx context.Context, id int64) (*entity.Address, error) {
 	panic("unimplemented")
 }
 
 // GetByUserID implements IAddressRepository.
-func (a *Mock) GetByUserID(_ context.Context, _ int64) ([]entity.Addresses, error) {
+func (a *Mock) GetByUserID(_ context.Context, _ int64) ([]entity.Address, error) {
 	panic("unimplemented")
 }
 
 // Insert implements entity.IAddressRepository.
-func (a *Mock) Insert(ctx context.Context, data entity.Addresses) (int64, error) {
+func (a *Mock) Insert(ctx context.Context, data entity.Address) (int64, error) {
 	args := a.Called(ctx, data)
 	return args.Get(0).(int64), args.Error(1)
 }

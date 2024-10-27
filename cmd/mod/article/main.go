@@ -2,8 +2,8 @@ package main
 
 import (
 	"log"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/container/article"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/container/article"
 )
 
 func main() {

@@ -6,13 +6,13 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	productContainer "swclabs/swix/internal/apis/container/products"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/enum"
-	"swclabs/swix/internal/core/domain/model"
-	productRepo "swclabs/swix/internal/core/repos/products"
-	productService "swclabs/swix/internal/core/service/products"
-	"swclabs/swix/pkg/lib/logger"
+	productContainer "swclabs/swipex/internal/apis/container/products"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/enum"
+	"swclabs/swipex/internal/core/domain/model"
+	productRepo "swclabs/swipex/internal/core/repos/products"
+	productService "swclabs/swipex/internal/core/service/products"
+	"swclabs/swipex/pkg/lib/logger"
 	"testing"
 
 	"go.uber.org/zap"
@@ -85,7 +85,7 @@ func TestProductView(t *testing.T) {
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body []dtos.ProductTypeDTO
+	var body []dtos.ProductDTO
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}
@@ -149,7 +149,7 @@ func TestProductViewAccessory(t *testing.T) {
 	e.ServeHTTP(rr, req)
 
 	responseBody := rr.Body.Bytes()
-	var body []dtos.ProductTypeDTO
+	var body []dtos.ProductDTO
 	if err := json.Unmarshal(responseBody, &body); err != nil {
 		t.Fail()
 	}

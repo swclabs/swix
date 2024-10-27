@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	productContainer "swclabs/swix/internal/apis/container/products"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/entity"
-	"swclabs/swix/internal/core/domain/model"
-	"swclabs/swix/internal/core/repos/categories"
-	"swclabs/swix/internal/core/repos/inventories"
-	productRepo "swclabs/swix/internal/core/repos/products"
-	productService "swclabs/swix/internal/core/service/products"
-	"swclabs/swix/pkg/lib/logger"
+	productContainer "swclabs/swipex/internal/apis/container/products"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/entity"
+	"swclabs/swipex/internal/core/domain/model"
+	"swclabs/swipex/internal/core/repos/categories"
+	"swclabs/swipex/internal/core/repos/inventories"
+	productRepo "swclabs/swipex/internal/core/repos/products"
+	productService "swclabs/swipex/internal/core/service/products"
+	"swclabs/swipex/pkg/lib/logger"
 	"testing"
 
 	"github.com/shopspring/decimal"
@@ -42,7 +42,7 @@ func TestProductDetails(t *testing.T) {
 		SSD: "256",
 		RAM: "128",
 	})
-	category.On("GetByID", context.Background(), int64(1)).Return(&entity.Categories{
+	category.On("GetByID", context.Background(), int64(1)).Return(&entity.Category{
 		ID:          int64(1),
 		Name:        "phone",
 		Description: "phone",
@@ -55,7 +55,7 @@ func TestProductDetails(t *testing.T) {
 	}, nil)
 
 	// sInventorySpec, _ := json.Marshal(inventorySpec)
-	inventory.On("GetByColor", context.Background(), int64(1), "Black Titanium").Return([]entity.Inventories{
+	inventory.On("GetByColor", context.Background(), int64(1), "Black Titanium").Return([]entity.Inventory{
 		{
 			ID:           1,
 			ProductID:    1,
@@ -70,7 +70,7 @@ func TestProductDetails(t *testing.T) {
 		},
 	}, nil)
 
-	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Products{
+	product.On("GetByID", context.Background(), int64(1)).Return(&entity.Product{
 		Name:       "iPhone 12",
 		Image:      "/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-1-202309.jpg,/img/shop/iphone-15-pro/unselect/iphone-15-pro-model-unselect-gallery-2-202309.jpg,/img/shop/iphone-15-pro/iphone-15-pro-finish-select.jpg",
 		Price:      "17.000.000 - 18.000.000",

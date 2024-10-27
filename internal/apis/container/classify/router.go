@@ -1,8 +1,8 @@
 package classify
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/server"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/server"
 
 	"github.com/labstack/echo/v4"
 )

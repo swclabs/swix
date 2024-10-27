@@ -1,10 +1,10 @@
 // Package controller implements the controller interface
-package base
+package healthcheck
 
 import (
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/service/base"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/service/healthcheck"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,7 +12,7 @@ import (
 var _ = app.Controller(NewController)
 
 // NewController creates a new Base object
-func NewController(services base.IService) IController {
+func NewController(services healthcheck.IService) IController {
 	return &Controller{
 		service: services,
 	}
@@ -26,7 +26,7 @@ type IController interface {
 
 // Controller struct implementation of IBase
 type Controller struct {
-	service base.IService
+	service healthcheck.IService
 }
 
 // HealthCheck .
@@ -48,7 +48,7 @@ func (b *Controller) HealthCheck(c echo.Context) error {
 // @Success 200
 // @Router /worker [GET]
 func (b *Controller) WorkerCheck(c echo.Context) error {
-	results, err := base.UseTask(b.service).WorkerCheckResult(c.Request().Context(), 10)
+	results, err := healthcheck.UseTask(b.service).WorkerCheckResult(c.Request().Context(), 10)
 	if err != nil {
 		return c.JSON(400, dtos.Error{
 			Msg: err.Error(),

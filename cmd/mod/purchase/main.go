@@ -5,10 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/apis/container/purchase"
-	purchaseWorker "swclabs/swix/internal/workers/container/purchase"
-	"swclabs/swix/pkg/lib/logger"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/apis/container/purchase"
+	purchaseWorker "swclabs/swipex/internal/workers/container/purchase"
+	"swclabs/swipex/pkg/lib/logger"
 )
 
 func main() {

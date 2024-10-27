@@ -1,15 +1,15 @@
-package manager
+package authentication
 
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/model"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/model"
 )
 
-// IManager : Module for manager with use-cases.
+// IAuthentication : Module for manager with use-cases.
 // Actor: Admin & Customer (Users)
-type IManager interface {
+type IAuthentication interface {
 	// SignUp registers a new user.
 	// ctx is the context to manage the request's lifecycle.
 	// req contains the sign-up request details.

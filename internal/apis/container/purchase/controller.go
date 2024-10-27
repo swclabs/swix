@@ -6,12 +6,12 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"swclabs/swix/app"
-	"swclabs/swix/internal/core/domain/dtos"
-	"swclabs/swix/internal/core/domain/xdto"
-	"swclabs/swix/internal/core/service/purchase"
-	"swclabs/swix/pkg/lib/crypto"
-	"swclabs/swix/pkg/lib/valid"
+	"swclabs/swipex/app"
+	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/xdto"
+	"swclabs/swipex/internal/core/service/purchase"
+	"swclabs/swipex/pkg/lib/crypto"
+	"swclabs/swipex/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )
@@ -41,11 +41,98 @@ type IController interface {
 	CreateDeliveryOrder(c echo.Context) error
 	DeliveryOrderInfo(c echo.Context) error
 	CreateOrderForm(c echo.Context) error
+	GetOrdersByCode(c echo.Context) error
+	GetCoupon(c echo.Context) error
+	CreateCoupon(c echo.Context) error
+	UseCoupon(c echo.Context) error
 }
 
 // Controller struct implementation of IPurchase
 type Controller struct {
 	services purchase.IPurchase
+}
+
+// CreateCoupon .
+// @Description create coupon.
+// @Tags purchase
+// @Accept json
+// @Produce json
+// @Param coupon body dtos.CreateCoupon true "coupon request"
+// @Success 200 {object} dtos.OrderInfo
+// @Router /purchase/coupons [POST]
+func (p *Controller) CreateCoupon(c echo.Context) error {
+	var coupon dtos.CreateCoupon
+	if err := c.Bind(&coupon); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if _, err := p.services.CreateCoupon(c.Request().Context(), coupon); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, dtos.OK{
+		Msg: "your coupon has been created successfully",
+	})
+}
+
+// GetCoupon .
+// @Description get coupon.
+// @Tags purchase
+// @Accept json
+// @Produce json
+// @Success 200 {object} []dtos.Coupon
+// @Router /purchase/coupons [GET]
+func (p *Controller) GetCoupon(c echo.Context) error {
+	coupons, err := p.services.GetCoupon(c.Request().Context())
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, coupons)
+}
+
+// GetCoupon .
+// @Description get coupon.
+// @Tags purchase
+// @Accept json
+// @Produce json
+// @Param code path string true "coupons code"
+// @Success 200 {object} dtos.OK
+// @Router /purchase/coupons/{code} [GET]
+func (p *Controller) UseCoupon(c echo.Context) error {
+	code := c.Param("code")
+	userID, _, _ := crypto.Authenticate(c)
+	if err := p.services.UseCoupon(c.Request().Context(), userID, code); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.OK{
+		Msg: "your coupon has been used successfully",
+	})
+}
+
+// GetOrdersByCode .
+// @Description get order by code.
+// @Tags delivery
+// @Accept json
+// @Produce json
+// @Param code path string true "order code"
+// @Success 200 {object} dtos.OrderInfo
+// @Router /purchase/orders/{code} [GET]
+func (p *Controller) GetOrdersByCode(c echo.Context) error {
+	code := c.Param("code")
+	// print(code)
+	orders, err := p.services.GetOrderByCode(c.Request().Context(), code)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, orders)
 }
 
 // CreateOrderForm .
@@ -321,11 +408,11 @@ func (p *Controller) GetOrders(c echo.Context) error {
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param login body dtos.OrderDTO true "order insert request"
+// @Param login body dtos.Order true "order insert request"
 // @Success 200 {object} dtos.OK
 // @Router /purchase/orders [POST]
 func (p *Controller) CreateOrder(c echo.Context) error {
-	var orderReq dtos.OrderDTO
+	var orderReq dtos.Order
 	if err := c.Bind(&orderReq); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -336,9 +423,13 @@ func (p *Controller) CreateOrder(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	_, email, _ := crypto.Authenticate(c)
-	msg, err := p.services.CreateOrders(
-		c.Request().Context(), dtos.CreateOrderDTO{OrderDTO: orderReq, Email: email})
+	userID, email, _ := crypto.Authenticate(c)
+	if orderReq.Customer.Email != email {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "email must be the same as the login user",
+		})
+	}
+	msg, err := p.services.CreateOrders(c.Request().Context(), userID, orderReq)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
