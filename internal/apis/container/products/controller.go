@@ -279,7 +279,7 @@ func (p *Controller) GetProductByType(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	product, err := p.service.ProductOf(c.Request().Context(), types, 0)
+	product, err := p.service.ProductType(c.Request().Context(), types, 0)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{

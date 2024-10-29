@@ -22,8 +22,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var e = echo.New()
-
 func TestGetInventory(t *testing.T) {
 	var (
 		inventory  inventories.Mock
@@ -60,7 +58,7 @@ func TestGetInventory(t *testing.T) {
 		CategoryID: 1,
 		ID:         1,
 	}, nil)
-
+	var e = echo.New()
 	e.GET("/inventories/details", controller.GetInvDetails)
 	req := httptest.NewRequest(http.MethodGet, "/inventories/details?id=1", nil)
 	rr := httptest.NewRecorder()

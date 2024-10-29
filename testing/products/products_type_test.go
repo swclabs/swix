@@ -15,41 +15,17 @@ import (
 	"swclabs/swipex/pkg/lib/logger"
 	"testing"
 
+	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
 
-func TestProductView(t *testing.T) {
+func TestProductType(t *testing.T) {
 	var (
-		product productRepo.Mock
-		service = productService.Products{
-			Products: &product,
-		}
+		product    productRepo.Mock
+		service    = productService.Products{Products: &product}
 		controller = productContainer.NewController(&service)
-		specs      = []dtos.ProductSpecs{
-			{
-				Screen:  "6.1 inch",
-				Display: "Super Retina XDR display",
-			},
-			{
-				Screen:  "6.7 inch",
-				Display: "Super Retina XDR display",
-			},
-			{
-				Screen:  "5.4 inch",
-				Display: "Super Retina XDR display",
-			},
-		}
-
-		sspecs []string
-	)
-
-	for _, spec := range specs {
-		specs, _ := json.Marshal(spec)
-		sspecs = append(sspecs, string(specs))
-	}
-
-	product.On("GetByCategory", context.Background(), enum.Phone, 0).Return(
-		[]model.ProductXCategory{
+		specs, _   = json.Marshal(dtos.ProductSpecs{})
+		products   = []model.ProductXCategory{
 			{
 				ID:           1,
 				Name:         "iPhone 12",
@@ -57,7 +33,7 @@ func TestProductView(t *testing.T) {
 				Price:        "1.000.000 - 2.000.000",
 				Image:        "https://example.com/iphone-12.jpg",
 				CategoryName: enum.Phone.String(),
-				Specs:        sspecs[0],
+				Specs:        string(specs),
 			},
 			{
 				ID:           2,
@@ -66,7 +42,7 @@ func TestProductView(t *testing.T) {
 				Price:        "2.000.000 - 3.000.000",
 				Image:        "https://example.com/iphone-12-pro.jpg",
 				CategoryName: enum.Phone.String(),
-				Specs:        sspecs[1],
+				Specs:        string(specs),
 			},
 			{
 				ID:           3,
@@ -75,10 +51,14 @@ func TestProductView(t *testing.T) {
 				Price:        "1.000.000 - 2.000.000",
 				Image:        "https://example.com/iphone-12-mini.jpg",
 				CategoryName: enum.Phone.String(),
-				Specs:        sspecs[2],
+				Specs:        string(specs),
 			},
-		},
-		nil)
+		}
+	)
+
+	product.On("GetByCategory", context.Background(), enum.Phone, 0).Return(products, nil)
+
+	var e = echo.New()
 	e.GET("/products/:type", controller.GetProductByType)
 	req := httptest.NewRequest(http.MethodGet, "/products/phone", nil)
 	rr := httptest.NewRecorder()
@@ -87,7 +67,7 @@ func TestProductView(t *testing.T) {
 	responseBody := rr.Body.Bytes()
 	var body []dtos.ProductDTO
 	if err := json.Unmarshal(responseBody, &body); err != nil {
-		t.Fail()
+		t.Fatal(err)
 	}
 
 	file, err := os.Create("./products_type_out.json")
@@ -103,18 +83,16 @@ func TestProductView(t *testing.T) {
 	logger.Info("Response body", zap.Any("body", body), zap.Int("status", rr.Code))
 }
 
-func TestProductViewAccessory(t *testing.T) {
+func TestProductTypeAccessory(t *testing.T) {
 	var (
-		product productRepo.Mock
-		service = productService.Products{
-			Products: &product,
-		}
+		product    productRepo.Mock
+		service    = productService.Products{Products: &product}
 		controller = productContainer.NewController(&service)
-		specs, _   = json.Marshal(dtos.ProductSpecs{})
-	)
-
-	product.On("GetByCategory", context.Background(), enum.Accessories, 0).Return(
-		[]model.ProductXCategory{
+		specs, _   = json.Marshal(dtos.ProductSpecs{
+			SSD: []int{},
+			RAM: []int{},
+		})
+		products = []model.ProductXCategory{
 			{
 				ID:           1,
 				Name:         "Apple iPhone Adapter",
@@ -142,8 +120,12 @@ func TestProductViewAccessory(t *testing.T) {
 				Specs:        string(specs),
 				CategoryName: enum.Accessories.String(),
 			},
-		},
-		nil)
+		}
+	)
+
+	product.On("GetByCategory", context.Background(), enum.Accessories, 0).Return(products, nil)
+
+	var e = echo.New()
 	e.GET("/products/:type", controller.GetProductByType)
 	req := httptest.NewRequest(http.MethodGet, "/products/accessories", nil)
 	rr := httptest.NewRecorder()
