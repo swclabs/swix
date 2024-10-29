@@ -158,125 +158,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/email": {
-            "get": {
-                "description": "check email address before login",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "email address",
-                        "name": "email",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/login": {
-            "post": {
-                "description": "Login account.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "parameters": [
-                    {
-                        "description": "Login",
-                        "name": "login",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.LoginRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.LoginResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/logout": {
-            "get": {
-                "description": "logout user from the service",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/signup": {
-            "post": {
-                "description": "Register account for admin.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "parameters": [
-                    {
-                        "description": "Sign Up",
-                        "name": "sign_up",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.SignUpRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.SignUpResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/categories": {
             "get": {
                 "description": "get categories",
@@ -760,6 +641,91 @@ const docTemplate = `{
                 }
             }
         },
+        "/favorite": {
+            "get": {
+                "description": "get product from favorite",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorite"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.Bookmark"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/favorite/{id}": {
+            "post": {
+                "description": "add product to favorite",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorite"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "remove product from favorite",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorite"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
         "/inventories": {
             "get": {
                 "description": "get all product from inventory",
@@ -978,34 +944,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/dtos.OK"
                         }
-                    }
-                }
-            }
-        },
-        "/oauth2/google": {
-            "get": {
-                "description": "Auth0 verify token.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "google access token",
-                        "name": "access_token",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
                     }
                 }
             }
@@ -1516,7 +1454,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/dtos.OrderSchema"
+                                "$ref": "#/definitions/dtos.OrderInfo"
                             }
                         }
                     }
@@ -1595,7 +1533,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "inventories"
+                    "ratings"
                 ],
                 "parameters": [
                     {
@@ -1765,90 +1703,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/users": {
-            "get": {
-                "description": "get information for users.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/model.Users"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "update information for users.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "parameters": [
-                    {
-                        "description": "Update Users",
-                        "name": "UserSchema",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.UserUpdate"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
-        "/users/image": {
-            "put": {
-                "description": "update information for users.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authentication"
-                ],
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "image of collections",
-                        "name": "img",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
         "/worker": {
             "get": {
                 "description": "health check worker consume server.",
@@ -1912,6 +1766,67 @@ const docTemplate = `{
                 },
                 "headline": {
                     "type": "string"
+                }
+            }
+        },
+        "dtos.Bookmark": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Color of product",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.BookmarkItem"
+                        }
+                    ]
+                },
+                "display": {
+                    "description": "Display Super AMOLED",
+                    "type": "string"
+                },
+                "image": {
+                    "description": "Image of product",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "Name of product",
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "screen": {
+                    "description": "Screen 6.1 inch",
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.BookmarkItem": {
+            "type": "object",
+            "properties": {
+                "color_img": {
+                    "description": "ColorImage of color Nature Titanium",
+                    "type": "string"
+                },
+                "color_name": {
+                    "description": "ColorName Nature Titanium",
+                    "type": "string"
+                },
+                "images": {
+                    "description": "Img of product Nature Titanium",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.SpecsItem"
                 }
             }
         },
@@ -2027,7 +1942,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "img": {
-                    "description": "Img of color Nature Titanium",
+                    "description": "ImageColor of color Nature Titanium",
                     "type": "string"
                 },
                 "name": {
@@ -2366,40 +2281,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.LoginRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "password"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.LoginResponse": {
-            "type": "object",
-            "required": [
-                "email",
-                "success",
-                "token"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                },
-                "token": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.Message": {
             "type": "object",
             "required": [
@@ -2586,38 +2467,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.OrderSchema": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.Order"
-                    }
-                },
-                "status": {
-                    "type": "string"
-                },
-                "time": {
-                    "type": "string"
-                },
-                "user_email": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "integer"
-                },
-                "user_name": {
-                    "type": "string"
-                },
-                "uuid": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.ProductDTO": {
             "type": "object",
             "properties": {
@@ -2769,48 +2618,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.SignUpRequest": {
-            "type": "object",
-            "required": [
-                "email",
-                "first_name",
-                "last_name",
-                "password",
-                "phone_number"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.SignUpResponse": {
-            "type": "object",
-            "required": [
-                "msg",
-                "success"
-            ],
-            "properties": {
-                "msg": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
         "dtos.Slices-dtos_ProductResponse": {
             "type": "object",
             "properties": {
@@ -2869,6 +2676,9 @@ const docTemplate = `{
                 },
                 "desc": {
                     "type": "string"
+                },
+                "favorite": {
+                    "type": "boolean"
                 },
                 "inventory_id": {
                     "type": "integer"
@@ -2988,29 +2798,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.UserUpdate": {
-            "type": "object",
-            "required": [
-                "email"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                }
-            }
-        },
         "entity.Category": {
             "type": "object",
             "required": [
@@ -3069,45 +2856,6 @@ const docTemplate = `{
                 },
                 "total_amount": {
                     "type": "number"
-                }
-            }
-        },
-        "model.Users": {
-            "type": "object",
-            "required": [
-                "email",
-                "first_name",
-                "id",
-                "image",
-                "last_name",
-                "phone_number",
-                "role",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },

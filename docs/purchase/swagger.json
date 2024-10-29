@@ -1,0 +1,1623 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a documentation for the Swipe API",
+        "title": "Swipe Public API v0.0.1",
+        "contact": {},
+        "version": "0.0.1"
+    },
+    "basePath": "/",
+    "paths": {
+        "/address": {
+            "get": {
+                "description": "get address delivery.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.Address"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create address delivery.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "parameters": [
+                    {
+                        "description": "address request",
+                        "name": "addr",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.DeliveryAddress"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.ProductResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/address/district": {
+            "get": {
+                "description": "get district by province ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "province id",
+                        "name": "province_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.DistrictDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/province": {
+            "get": {
+                "description": "get province",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.ProvinceDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/ward": {
+            "get": {
+                "description": "get ward by district ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "address"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "district id",
+                        "name": "district_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.WardDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/delivery": {
+            "get": {
+                "description": "get delivery info by user id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create delivery info.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "description": "delivery info request",
+                        "name": "addr",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.DeliveryBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/delivery/order": {
+            "post": {
+                "description": "create order delivery.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "description": "order delivery body request",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/xdto.CreateOrderDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.OrderDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/delivery/order/{code}": {
+            "get": {
+                "description": "get delivery order details by order code.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "delivery order code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/xdto.OrderInfoDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/admin/orders": {
+            "post": {
+                "description": "create order.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "description": "order delivery body request",
+                        "name": "order",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OrderForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/carts": {
+            "get": {
+                "description": "get list of items from carts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Carts"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "add item to carts.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "description": "cart insert request",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CartDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/carts/{type}": {
+            "delete": {
+                "description": "delete item from carts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "product type",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/coupons": {
+            "get": {
+                "description": "get coupon.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.Coupon"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create coupon.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "description": "coupon request",
+                        "name": "coupon",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CreateCoupon"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OrderInfo"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/coupons/{code}": {
+            "get": {
+                "description": "get coupon.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "coupons code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/orders": {
+            "get": {
+                "description": "get list of orders.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "limit order",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.OrderInfo"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create order.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "description": "order insert request",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Order"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/orders/{code}": {
+            "get": {
+                "description": "get order by code.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "delivery"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "order code",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OrderInfo"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dtos.Address": {
+            "type": "object",
+            "required": [
+                "city",
+                "district",
+                "id",
+                "street",
+                "ward"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "ward": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Cart": {
+            "type": "object",
+            "properties": {
+                "cart_id": {
+                    "type": "integer"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "inventory_id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.Specs"
+                }
+            }
+        },
+        "dtos.CartDTO": {
+            "type": "object",
+            "required": [
+                "inventory_id",
+                "quantity"
+            ],
+            "properties": {
+                "inventory_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.Carts": {
+            "type": "object",
+            "properties": {
+                "products": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.Cart"
+                    }
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.Coupon": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "discount": {
+                    "type": "integer"
+                },
+                "expired_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.CreateCoupon": {
+            "type": "object",
+            "required": [
+                "description",
+                "discount",
+                "expired_at",
+                "max_use",
+                "status"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "discount": {
+                    "type": "integer"
+                },
+                "expired_at": {
+                    "type": "string"
+                },
+                "max_use": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.DeliveryAddress": {
+            "type": "object",
+            "required": [
+                "city",
+                "district",
+                "street",
+                "user_id",
+                "ward"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "ward": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.DeliveryBody": {
+            "type": "object",
+            "required": [
+                "address_id",
+                "method",
+                "status",
+                "user_id"
+            ],
+            "properties": {
+                "address_id": {
+                    "type": "integer"
+                },
+                "method": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "received_date": {
+                    "type": "string"
+                },
+                "sent_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.OK": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Order": {
+            "type": "object",
+            "required": [
+                "address",
+                "customer",
+                "delivery",
+                "product"
+            ],
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "customer": {
+                    "$ref": "#/definitions/dtos.OrderFormCustomer"
+                },
+                "delivery": {
+                    "$ref": "#/definitions/dtos.OrderFormDelivery"
+                },
+                "product": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.OrderFormProduct"
+                    }
+                }
+            }
+        },
+        "dtos.OrderForm": {
+            "type": "object",
+            "required": [
+                "address",
+                "customer",
+                "delivery",
+                "product"
+            ],
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "customer": {
+                    "$ref": "#/definitions/dtos.OrderFormCustomer"
+                },
+                "delivery": {
+                    "$ref": "#/definitions/dtos.OrderFormDelivery"
+                },
+                "product": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.OrderFormProduct"
+                    }
+                }
+            }
+        },
+        "dtos.OrderFormAddress": {
+            "type": "object",
+            "required": [
+                "city",
+                "district",
+                "street",
+                "ward"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                },
+                "ward": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OrderFormCustomer": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "last_name",
+                "phone"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OrderFormDelivery": {
+            "type": "object",
+            "required": [
+                "method",
+                "status"
+            ],
+            "properties": {
+                "method": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "sent_date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OrderFormProduct": {
+            "type": "object",
+            "required": [
+                "code",
+                "quantity"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.OrderInfo": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "delivery": {
+                    "$ref": "#/definitions/dtos.OrderFormDelivery"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Order"
+                    }
+                },
+                "time": {
+                    "type": "string"
+                },
+                "user": {
+                    "$ref": "#/definitions/dtos.OrderFormCustomer"
+                },
+                "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProductResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Specs": {
+            "type": "object",
+            "properties": {
+                "connection": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Order": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "item_specs": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "total_amount": {
+                    "type": "number"
+                }
+            }
+        },
+        "xdto.CreateOrderDTO": {
+            "type": "object",
+            "required": [
+                "from_address",
+                "from_district_name",
+                "from_name",
+                "from_phone",
+                "from_province_name",
+                "from_ward_name",
+                "height",
+                "items",
+                "length",
+                "payment_type_id",
+                "required_note",
+                "service_type_id",
+                "shop_id",
+                "to_address",
+                "to_district_id",
+                "to_name",
+                "to_phone",
+                "to_ward_code",
+                "token",
+                "weight",
+                "width"
+            ],
+            "properties": {
+                "client_order_code": {
+                    "type": "string",
+                    "maxLength": 50
+                },
+                "cod_amount": {
+                    "type": "integer",
+                    "maximum": 50000000
+                },
+                "content": {
+                    "type": "string",
+                    "maxLength": 2000
+                },
+                "coupon": {
+                    "type": "string"
+                },
+                "from_address": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "from_district_name": {
+                    "type": "string"
+                },
+                "from_name": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "from_phone": {
+                    "type": "string"
+                },
+                "from_province_name": {
+                    "type": "string"
+                },
+                "from_ward_name": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "integer",
+                    "maximum": 200
+                },
+                "insurance_value": {
+                    "type": "integer",
+                    "maximum": 5000000
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.OrderItem"
+                    }
+                },
+                "length": {
+                    "type": "integer",
+                    "maximum": 200
+                },
+                "note": {
+                    "type": "string",
+                    "maxLength": 5000
+                },
+                "payment_type_id": {
+                    "type": "integer"
+                },
+                "pick_shift": {
+                    "type": "string"
+                },
+                "pick_station_id": {
+                    "type": "integer"
+                },
+                "required_note": {
+                    "type": "string",
+                    "enum": [
+                        "CHOTHUHANG",
+                        "CHOXEMHANGKHONGTHU",
+                        "KHONGCHOXEMHANG"
+                    ]
+                },
+                "return_address": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "return_district_id": {
+                    "type": "integer"
+                },
+                "return_phone": {
+                    "type": "string"
+                },
+                "return_ward_code": {
+                    "type": "string"
+                },
+                "service_type_id": {
+                    "type": "integer"
+                },
+                "shop_id": {
+                    "type": "integer"
+                },
+                "to_address": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "to_district_id": {
+                    "type": "integer"
+                },
+                "to_name": {
+                    "type": "string",
+                    "maxLength": 1024
+                },
+                "to_phone": {
+                    "type": "string"
+                },
+                "to_ward_code": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "integer",
+                    "maximum": 50000
+                },
+                "width": {
+                    "type": "integer",
+                    "maximum": 200
+                }
+            }
+        },
+        "xdto.Data": {
+            "type": "object",
+            "properties": {
+                "district_encode": {
+                    "type": "string"
+                },
+                "expected_delivery_time": {
+                    "type": "string"
+                },
+                "fee": {
+                    "$ref": "#/definitions/xdto.Fee"
+                },
+                "order_code": {
+                    "type": "string"
+                },
+                "sort_code": {
+                    "type": "string"
+                },
+                "total_fee": {
+                    "type": "string"
+                },
+                "trans_type": {
+                    "type": "string"
+                },
+                "ward_encode": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.District": {
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "type": "string"
+                },
+                "DistrictID": {
+                    "type": "integer"
+                },
+                "DistrictName": {
+                    "type": "string"
+                },
+                "ProvinceID": {
+                    "type": "integer"
+                },
+                "SupportType": {
+                    "type": "integer"
+                },
+                "Type": {
+                    "type": "integer"
+                }
+            }
+        },
+        "xdto.DistrictDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.District"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.Fee": {
+            "type": "object",
+            "properties": {
+                "coupon": {
+                    "type": "integer"
+                },
+                "insurance": {
+                    "type": "integer"
+                },
+                "main_service": {
+                    "type": "integer"
+                },
+                "r2s": {
+                    "type": "integer"
+                },
+                "return": {
+                    "type": "integer"
+                },
+                "station_do": {
+                    "type": "integer"
+                },
+                "station_pu": {
+                    "type": "integer"
+                }
+            }
+        },
+        "xdto.Log": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string"
+                },
+                "updated_date": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.OrderDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/xdto.Data"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.OrderInfo": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string"
+                },
+                "client_id": {
+                    "type": "integer"
+                },
+                "client_order_code": {
+                    "type": "string"
+                },
+                "cod_amount": {
+                    "type": "integer"
+                },
+                "cod_collect_date": {
+                    "type": "string"
+                },
+                "cod_failed_amount": {
+                    "type": "integer"
+                },
+                "cod_failed_collect_date": {
+                    "type": "string"
+                },
+                "cod_transfer_date": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "converted_weight": {
+                    "type": "integer"
+                },
+                "coupon": {
+                    "type": "string"
+                },
+                "created_client": {
+                    "type": "integer"
+                },
+                "created_date": {
+                    "type": "string"
+                },
+                "created_employee": {
+                    "type": "integer"
+                },
+                "created_ip": {
+                    "type": "string"
+                },
+                "created_source": {
+                    "type": "string"
+                },
+                "current_warehouse_id": {
+                    "type": "integer"
+                },
+                "custom_service_fee": {
+                    "type": "integer"
+                },
+                "deliver_station_id": {
+                    "type": "integer"
+                },
+                "deliver_warehouse_id": {
+                    "type": "integer"
+                },
+                "employee_note": {
+                    "type": "string"
+                },
+                "finish_date": {
+                    "type": "string"
+                },
+                "from_address": {
+                    "type": "string"
+                },
+                "from_district_id": {
+                    "type": "integer"
+                },
+                "from_name": {
+                    "type": "string"
+                },
+                "from_phone": {
+                    "type": "string"
+                },
+                "from_ward_code": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "integer"
+                },
+                "insurance_value": {
+                    "type": "integer"
+                },
+                "is_cod_collected": {
+                    "type": "boolean"
+                },
+                "is_cod_transferred": {
+                    "type": "boolean"
+                },
+                "leadtime": {
+                    "type": "string"
+                },
+                "length": {
+                    "type": "integer"
+                },
+                "log": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.Log"
+                    }
+                },
+                "next_warehouse_id": {
+                    "type": "integer"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "order_code": {
+                    "type": "string"
+                },
+                "order_date": {
+                    "type": "string"
+                },
+                "order_value": {
+                    "type": "integer"
+                },
+                "payment_type_id": {
+                    "type": "integer"
+                },
+                "pick_station_id": {
+                    "type": "integer"
+                },
+                "pick_warehouse_id": {
+                    "type": "integer"
+                },
+                "required_note": {
+                    "type": "string"
+                },
+                "return_address": {
+                    "type": "string"
+                },
+                "return_district_id": {
+                    "type": "integer"
+                },
+                "return_name": {
+                    "type": "string"
+                },
+                "return_phone": {
+                    "type": "string"
+                },
+                "return_ward_code": {
+                    "type": "string"
+                },
+                "return_warehouse_id": {
+                    "type": "integer"
+                },
+                "service_id": {
+                    "type": "integer"
+                },
+                "service_type_id": {
+                    "type": "integer"
+                },
+                "shop_id": {
+                    "type": "integer"
+                },
+                "soc_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tag": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "to_address": {
+                    "type": "string"
+                },
+                "to_district_id": {
+                    "type": "integer"
+                },
+                "to_name": {
+                    "type": "string"
+                },
+                "to_phone": {
+                    "type": "string"
+                },
+                "to_ward_code": {
+                    "type": "string"
+                },
+                "updated_client": {
+                    "type": "integer"
+                },
+                "updated_date": {
+                    "type": "string"
+                },
+                "updated_employee": {
+                    "type": "integer"
+                },
+                "updated_ip": {
+                    "type": "string"
+                },
+                "updated_source": {
+                    "type": "string"
+                },
+                "updated_warehouse": {
+                    "type": "integer"
+                },
+                "version_no": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "integer"
+                },
+                "width": {
+                    "type": "integer"
+                }
+            }
+        },
+        "xdto.OrderInfoDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.OrderInfo"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.OrderItem": {
+            "type": "object",
+            "required": [
+                "name",
+                "quantity",
+                "weight"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "integer"
+                },
+                "length": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "weight": {
+                    "type": "integer"
+                },
+                "width": {
+                    "type": "integer"
+                }
+            }
+        },
+        "xdto.Province": {
+            "type": "object",
+            "properties": {
+                "Code": {
+                    "type": "string"
+                },
+                "ProvinceID": {
+                    "type": "integer"
+                },
+                "ProvinceName": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.ProvinceDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.Province"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.Ward": {
+            "type": "object",
+            "properties": {
+                "DistrictID": {
+                    "type": "integer"
+                },
+                "WardCode": {
+                    "type": "string"
+                },
+                "WardName": {
+                    "type": "string"
+                }
+            }
+        },
+        "xdto.WardDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/xdto.Ward"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

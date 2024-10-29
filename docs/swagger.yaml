@@ -31,6 +31,47 @@ definitions:
     - cards
     - headline
     type: object
+  dtos.Bookmark:
+    properties:
+      color:
+        allOf:
+        - $ref: '#/definitions/dtos.BookmarkItem'
+        description: Color of product
+      display:
+        description: Display Super AMOLED
+        type: string
+      image:
+        description: Image of product
+        items:
+          type: string
+        type: array
+      name:
+        description: Name of product
+        type: string
+      price:
+        type: string
+      rating:
+        type: number
+      screen:
+        description: Screen 6.1 inch
+        type: string
+    type: object
+  dtos.BookmarkItem:
+    properties:
+      color_img:
+        description: ColorImage of color Nature Titanium
+        type: string
+      color_name:
+        description: ColorName Nature Titanium
+        type: string
+      images:
+        description: Img of product Nature Titanium
+        items:
+          type: string
+        type: array
+      specs:
+        $ref: '#/definitions/dtos.SpecsItem'
+    type: object
   dtos.CardContent:
     properties:
       content:
@@ -105,7 +146,7 @@ definitions:
   dtos.Color:
     properties:
       img:
-        description: Img of color Nature Titanium
+        description: ImageColor of color Nature Titanium
         type: string
       name:
         description: Name Nature Titanium
@@ -336,29 +377,6 @@ definitions:
           $ref: '#/definitions/dtos.Inventory'
         type: array
     type: object
-  dtos.LoginRequest:
-    properties:
-      email:
-        type: string
-      password:
-        type: string
-    required:
-    - email
-    - password
-    type: object
-  dtos.LoginResponse:
-    properties:
-      email:
-        type: string
-      success:
-        type: boolean
-      token:
-        type: string
-    required:
-    - email
-    - success
-    - token
-    type: object
   dtos.Message:
     properties:
       content:
@@ -485,27 +503,6 @@ definitions:
       uuid:
         type: string
     type: object
-  dtos.OrderSchema:
-    properties:
-      id:
-        type: integer
-      items:
-        items:
-          $ref: '#/definitions/model.Order'
-        type: array
-      status:
-        type: string
-      time:
-        type: string
-      user_email:
-        type: string
-      user_id:
-        type: integer
-      user_name:
-        type: string
-      uuid:
-        type: string
-    type: object
   dtos.ProductDTO:
     properties:
       category:
@@ -608,35 +605,6 @@ definitions:
       screen:
         type: string
     type: object
-  dtos.SignUpRequest:
-    properties:
-      email:
-        type: string
-      first_name:
-        type: string
-      last_name:
-        type: string
-      password:
-        type: string
-      phone_number:
-        type: string
-    required:
-    - email
-    - first_name
-    - last_name
-    - password
-    - phone_number
-    type: object
-  dtos.SignUpResponse:
-    properties:
-      msg:
-        type: string
-      success:
-        type: boolean
-    required:
-    - msg
-    - success
-    type: object
   dtos.Slices-dtos_ProductResponse:
     properties:
       body:
@@ -675,6 +643,8 @@ definitions:
         type: string
       desc:
         type: string
+      favorite:
+        type: boolean
       inventory_id:
         type: integer
       price:
@@ -753,21 +723,6 @@ definitions:
     - headline
     - position
     type: object
-  dtos.UserUpdate:
-    properties:
-      email:
-        type: string
-      first_name:
-        type: string
-      image:
-        type: string
-      last_name:
-        type: string
-      phone_number:
-        type: string
-    required:
-    - email
-    type: object
   entity.Category:
     properties:
       description:
@@ -807,34 +762,6 @@ definitions:
         type: integer
       total_amount:
         type: number
-    type: object
-  model.Users:
-    properties:
-      email:
-        type: string
-      first_name:
-        type: string
-      id:
-        type: integer
-      image:
-        type: string
-      last_name:
-        type: string
-      phone_number:
-        type: string
-      role:
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - first_name
-    - id
-    - image
-    - last_name
-    - phone_number
-    - role
-    - username
     type: object
   xdto.CreateOrderDTO:
     properties:
@@ -1344,82 +1271,6 @@ paths:
             $ref: '#/definitions/xdto.WardDTO'
       tags:
       - address
-  /auth/email:
-    get:
-      consumes:
-      - application/json
-      description: check email address before login
-      parameters:
-      - description: email address
-        in: query
-        name: email
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - authentication
-  /auth/login:
-    post:
-      consumes:
-      - application/json
-      description: Login account.
-      parameters:
-      - description: Login
-        in: body
-        name: login
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.LoginResponse'
-      tags:
-      - authentication
-  /auth/logout:
-    get:
-      consumes:
-      - application/json
-      description: logout user from the service
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - authentication
-  /auth/signup:
-    post:
-      consumes:
-      - application/json
-      description: Register account for admin.
-      parameters:
-      - description: Sign Up
-        in: body
-        name: sign_up
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.SignUpRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.SignUpResponse'
-      tags:
-      - authentication
   /categories:
     get:
       consumes:
@@ -1733,6 +1584,61 @@ paths:
             $ref: '#/definitions/xdto.OrderInfoDTO'
       tags:
       - delivery
+  /favorite:
+    get:
+      consumes:
+      - application/json
+      description: get product from favorite
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Bookmark'
+            type: array
+      tags:
+      - favorite
+  /favorite/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: remove product from favorite
+      parameters:
+      - description: inventory id
+        in: path
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - favorite
+    post:
+      consumes:
+      - application/json
+      description: add product to favorite
+      parameters:
+      - description: inventory id
+        in: path
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - favorite
   /inventories:
     delete:
       consumes:
@@ -1877,24 +1783,6 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
-  /oauth2/google:
-    get:
-      consumes:
-      - application/json
-      description: Auth0 verify token.
-      parameters:
-      - description: google access token
-        in: query
-        name: access_token
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-      tags:
-      - authentication
   /products:
     delete:
       consumes:
@@ -2223,7 +2111,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/dtos.OrderSchema'
+              $ref: '#/definitions/dtos.OrderInfo'
             type: array
       tags:
       - purchase
@@ -2286,7 +2174,7 @@ paths:
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
-      - inventories
+      - ratings
   /search:
     get:
       consumes:
@@ -2383,60 +2271,6 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - suppliers
-  /users:
-    get:
-      consumes:
-      - application/json
-      description: get information for users.
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/model.Users'
-      tags:
-      - authentication
-    put:
-      consumes:
-      - application/json
-      description: update information for users.
-      parameters:
-      - description: Update Users
-        in: body
-        name: UserSchema
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.UserUpdate'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - authentication
-  /users/image:
-    put:
-      consumes:
-      - application/json
-      description: update information for users.
-      parameters:
-      - description: image of collections
-        in: formData
-        name: img
-        required: true
-        type: file
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - authentication
   /worker:
     get:
       consumes:

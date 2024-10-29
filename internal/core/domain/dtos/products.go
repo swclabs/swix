@@ -60,6 +60,7 @@ type Specs struct {
 }
 
 type SpecsItem struct {
+	Favorite    bool   `json:"favorite"`
 	InventoryID int64  `json:"inventory_id"`
 	SSD         string `json:"ssd"`
 	RAM         string `json:"ram"`

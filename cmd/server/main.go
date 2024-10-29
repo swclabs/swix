@@ -8,7 +8,8 @@ package main
 import (
 	"log"
 	"swclabs/swipex/app"
-	_ "swclabs/swipex/app/init"
+	_ "swclabs/swipex/docs"
+
 	"swclabs/swipex/internal/apis"
 )
 

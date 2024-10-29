@@ -17,8 +17,7 @@ import (
 	"swclabs/swipex/internal/apis/container/products"
 	"swclabs/swipex/pkg/lib/logger"
 
-	_ "swclabs/swipex/app/init"
-	_ "swclabs/swipex/docs"
+	_ "swclabs/swipex/docs/products"
 )
 
 func main() {

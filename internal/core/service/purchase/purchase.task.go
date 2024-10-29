@@ -113,8 +113,8 @@ func (t *Task) CreateOrders(ctx context.Context, userID int64, createOrder dtos.
 }
 
 // DeleteItemFromCart implements IPurchaseService.
-func (t *Task) DeleteItemFromCart(ctx context.Context, cartID int64) error {
-	return t.service.DeleteItemFromCart(ctx, cartID)
+func (t *Task) DeleteItemFromCart(ctx context.Context, inventoryID int64, userID int64) error {
+	return t.service.DeleteItemFromCart(ctx, inventoryID, userID)
 }
 
 // GetCart implements IPurchaseService.

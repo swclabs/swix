@@ -7,11 +7,13 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"swclabs/swipex/app"
 	"swclabs/swipex/internal/core/domain/dtos"
 	"swclabs/swipex/internal/core/domain/entity"
 	"swclabs/swipex/internal/core/domain/enum"
 	"swclabs/swipex/internal/core/repos/categories"
+	"swclabs/swipex/internal/core/repos/favorite"
 	"swclabs/swipex/internal/core/repos/inventories"
 	"swclabs/swipex/internal/core/repos/products"
 	"swclabs/swipex/internal/core/repos/stars"
@@ -32,6 +34,7 @@ func New(
 	inventory inventories.IInventories,
 	category categories.ICategories,
 	star stars.IStar,
+	favorite favorite.IFavorite,
 ) IProducts {
 	return &Products{
 		Blob:      blob,
@@ -39,6 +42,7 @@ func New(
 		Inventory: inventory,
 		Category:  category,
 		Star:      star,
+		Favorite:  favorite,
 	}
 }
 
@@ -49,6 +53,72 @@ type Products struct {
 	Inventory inventories.IInventories
 	Category  categories.ICategories
 	Star      stars.IStar
+	Favorite  favorite.IFavorite
+}
+
+// AddBookmark implements IProducts.
+func (s *Products) AddBookmark(ctx context.Context, userID int64, inventoryID int64) error {
+	return s.Favorite.Create(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
+}
+
+// GetBookmarks implements IProducts.
+func (s *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookmark, error) {
+	favories, err := s.Favorite.GetByUserID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	var bookmarks = []dtos.Bookmark{}
+	for _, fav := range favories {
+		inv, err := s.Inventory.GetByID(ctx, fav.InventoryID)
+		if err != nil {
+			return nil, err
+		}
+		prod, err := s.Products.GetByID(ctx, inv.ProductID)
+		if err != nil {
+			return nil, err
+		}
+		var (
+			pSpecs dtos.ProductSpecs
+			specs  dtos.Specs
+		)
+		if err := json.Unmarshal([]byte(prod.Specs), &pSpecs); err != nil {
+			return nil, err
+		}
+		if err := json.Unmarshal([]byte(inv.Specs), &specs); err != nil {
+			return nil, err
+		}
+		bookmark := dtos.Bookmark{
+			Name:    prod.Name,
+			Screen:  pSpecs.Screen,
+			Display: pSpecs.Display,
+			Price:   prod.Price,
+			Rating:  prod.Rating,
+			Image:   strings.Split(prod.ShopImage, ","),
+			Color: dtos.BookmarkItem{
+				ColorName:  inv.Color,
+				ColorImage: inv.ColorImg,
+				Images:     strings.Split(inv.Image, ","),
+				Specs: dtos.SpecsItem{
+					InventoryID: inv.ID,
+					SSD:         specs.SSD,
+					RAM:         specs.RAM,
+					Desc:        specs.Desc,
+					Connection:  specs.Connection,
+					Price:       inv.Price.String(),
+				},
+			},
+		}
+		if fav.InventoryID == inv.ID {
+			bookmark.Color.Specs.Favorite = true
+		}
+		bookmarks = append(bookmarks, bookmark)
+	}
+	return bookmarks, nil
+}
+
+// RemoveBookmark implements IProducts.
+func (s *Products) RemoveBookmark(ctx context.Context, userID int64, inventoryID int64) error {
+	return s.Favorite.Delete(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
 }
 
 // CreateProduct implements IProductService.

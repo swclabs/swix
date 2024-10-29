@@ -17,10 +17,3 @@ type Product struct {
 	Created     time.Time `json:"created" db:"created"`
 	Rating      float64   `json:"rating" db:"rating"`
 }
-
-// Favorite Table
-type Favorite struct {
-	ID        int64 `json:"id" db:"id"`
-	UserID    int64 `json:"user_id" db:"user_id"`
-	ProductID int64 `json:"product_id" db:"product_id"`
-}

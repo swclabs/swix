@@ -452,8 +452,8 @@ func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit in
 }
 
 // DeleteItemFromCart implements IPurchaseService.
-func (p *Purchase) DeleteItemFromCart(ctx context.Context, cartID int64) error {
-	return p.Cart.RemoveByID(ctx, cartID)
+func (p *Purchase) DeleteItemFromCart(ctx context.Context, inventoryID int64, userID int64) error {
+	return p.Cart.RemoveByItemID(ctx, userID, inventoryID)
 }
 
 // AddToCart implements IPurchaseService.

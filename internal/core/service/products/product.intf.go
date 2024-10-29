@@ -72,7 +72,7 @@ type IProducts interface {
 	// ctx is the context to manage the request's lifecycle.
 	// keyword is the search keyword.
 	// Returns a slice of ProductDetail objects and an error if any issues occur during the retrieval process.
-	SearchDetails(ctx context.Context, keyword string) ([]dtos.ProductDetail, error)
+	SearchDetails(ctx context.Context, userID int64, keyword string) ([]dtos.ProductDetail, error)
 
 	// GetInvItems retrieves a list of all stock.
 	// ctx is the context to manage the request's lifecycle.
@@ -109,7 +109,7 @@ type IProducts interface {
 	// ctx is the context to manage the request's lifecycle.
 	// productID is the ID of the product to retrieve details for.
 	// Returns a pointer to the Detail object and an error if any issues occur during the retrieval
-	Detail(ctx context.Context, productID int64) (*dtos.ProductDetail, error)
+	Detail(ctx context.Context, userID int64, productID int64) (*dtos.ProductDetail, error)
 
 	// GetItem retrieves an inventory by its ID.
 	// ctx is the context to manage the request's lifecycle.
@@ -129,4 +129,8 @@ type IProducts interface {
 	// rating is the new rating of the product.
 	// Returns an error if any issues occur during the update process.
 	Rating(ctx context.Context, userID, productID int64, rating float64) error
+
+	AddBookmark(ctx context.Context, userID, inventoryID int64) error
+	RemoveBookmark(ctx context.Context, userID, inventoryID int64) error
+	GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookmark, error)
 }

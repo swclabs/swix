@@ -1,0 +1,268 @@
+basePath: /
+definitions:
+  dtos.Article:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/dtos.CardInArticle'
+        type: array
+      headline:
+        type: string
+    required:
+    - cards
+    - headline
+    type: object
+  dtos.CardContent:
+    properties:
+      content:
+        type: string
+      src:
+        type: string
+    required:
+    - content
+    type: object
+  dtos.CardInArticle:
+    properties:
+      category:
+        type: string
+      content:
+        items:
+          $ref: '#/definitions/dtos.CardContent'
+        type: array
+      src:
+        type: string
+      title:
+        type: string
+    required:
+    - category
+    - title
+    type: object
+  dtos.Comment:
+    properties:
+      content:
+        items:
+          type: string
+        type: array
+      dislike:
+        type: integer
+      id:
+        description: Position string   `json:"position" validate:"required"`
+        type: integer
+      level:
+        description: '0: parent, 1: child'
+        type: integer
+      like:
+        type: integer
+      parent_id:
+        type: integer
+      product_id:
+        type: integer
+      rating:
+        type: integer
+      user_id:
+        type: integer
+      username:
+        type: string
+    required:
+    - content
+    - dislike
+    - id
+    - level
+    - like
+    - rating
+    - username
+    type: object
+  dtos.Message:
+    properties:
+      content:
+        items:
+          type: string
+        type: array
+      position:
+        type: string
+    required:
+    - content
+    - position
+    type: object
+  dtos.OK:
+    properties:
+      msg:
+        type: string
+    type: object
+  dtos.UploadArticle:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/dtos.CardInArticle'
+        type: array
+      headline:
+        type: string
+      position:
+        type: string
+    required:
+    - cards
+    - headline
+    - position
+    type: object
+info:
+  contact: {}
+  description: This is a documentation for the Swipe API
+  title: Swipe Public API v0.0.1
+  version: 0.0.1
+paths:
+  /collections:
+    get:
+      consumes:
+      - application/json
+      description: get collections
+      parameters:
+      - description: position of collections
+        in: query
+        name: position
+        required: true
+        type: string
+      - description: limit of cards carousel
+        in: query
+        name: limit
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Article'
+      tags:
+      - collections
+    post:
+      consumes:
+      - application/json
+      description: create collections
+      parameters:
+      - description: collections Request
+        in: body
+        name: collection
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UploadArticle'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.Message'
+      tags:
+      - collections
+  /collections/img:
+    put:
+      consumes:
+      - application/json
+      description: update collections image
+      parameters:
+      - description: image of collections
+        in: formData
+        name: img
+        required: true
+        type: file
+      - description: collections identifier
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - collections
+  /collections/message:
+    get:
+      consumes:
+      - application/json
+      description: get list of headline banner
+      parameters:
+      - description: position of collections
+        in: query
+        name: position
+        required: true
+        type: string
+      - description: limit headline of collections
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Message'
+      tags:
+      - collections
+    post:
+      consumes:
+      - application/json
+      description: create headline banner into collections
+      parameters:
+      - description: headline banner data request
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.Message'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - collections
+  /comment:
+    get:
+      consumes:
+      - application/json
+      description: get all comments of product
+      parameters:
+      - description: id of products
+        in: query
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Comment'
+      tags:
+      - comments
+    post:
+      consumes:
+      - application/json
+      description: create comment into products
+      parameters:
+      - description: comment data request
+        in: body
+        name: banner
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.Comment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - collections
+swagger: "2.0"
