@@ -1,0 +1,405 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a documentation for the Swipe API",
+        "title": "Swipe Public API v0.0.1",
+        "contact": {},
+        "version": "0.0.1"
+    },
+    "basePath": "/",
+    "paths": {
+        "/collections": {
+            "get": {
+                "description": "get collections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position of collections",
+                        "name": "position",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "limit of cards carousel",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Article"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create collections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "description": "collections Request",
+                        "name": "collection",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UploadArticle"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Message"
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/img": {
+            "put": {
+                "description": "update collections image",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "image of collections",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "collections identifier",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/collections/message": {
+            "get": {
+                "description": "get list of headline banner",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position of collections",
+                        "name": "position",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "limit headline of collections",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Message"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create headline banner into collections",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "description": "headline banner data request",
+                        "name": "banner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/comment": {
+            "get": {
+                "description": "get all comments of product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "comments"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id of products",
+                        "name": "product_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Comment"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create comment into products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "collections"
+                ],
+                "parameters": [
+                    {
+                        "description": "comment data request",
+                        "name": "banner",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Comment"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dtos.Article": {
+            "type": "object",
+            "required": [
+                "cards",
+                "headline"
+            ],
+            "properties": {
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardInArticle"
+                    }
+                },
+                "headline": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CardContent": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "src": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CardInArticle": {
+            "type": "object",
+            "required": [
+                "category",
+                "title"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardContent"
+                    }
+                },
+                "src": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Comment": {
+            "type": "object",
+            "required": [
+                "content",
+                "dislike",
+                "id",
+                "level",
+                "like",
+                "rating",
+                "username"
+            ],
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "dislike": {
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "Position string   `json:\"position\" validate:\"required\"`",
+                    "type": "integer"
+                },
+                "level": {
+                    "description": "0: parent, 1: child",
+                    "type": "integer"
+                },
+                "like": {
+                    "type": "integer"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Message": {
+            "type": "object",
+            "required": [
+                "content",
+                "position"
+            ],
+            "properties": {
+                "content": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "position": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OK": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.UploadArticle": {
+            "type": "object",
+            "required": [
+                "cards",
+                "headline",
+                "position"
+            ],
+            "properties": {
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardInArticle"
+                    }
+                },
+                "headline": {
+                    "type": "string"
+                },
+                "position": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

@@ -41,4 +41,4 @@ jobs:
           go-version: 1.21
 
       - name: Unit test - products
-        run: bash hack/swipe run -t products
+        run: go test -v ./testing/products

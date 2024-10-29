@@ -35,7 +35,7 @@ type IPurchase interface {
 	// userID is the user ID of the cart item to delete.
 	// inventoryID is the inventory ID of the cart item to delete.
 	// Returns an error if any issues occur during the deletion process.
-	DeleteItemFromCart(ctx context.Context, cartID int64) error
+	DeleteItemFromCart(ctx context.Context, inventoryID int64, userID int64) error
 
 	// GetOrdersByUserID retrieves orders by user ID with a specified limit.
 	// ctx is the context to manage the request's lifecycle.

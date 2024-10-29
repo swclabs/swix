@@ -26,8 +26,11 @@ func NewController(services products.IProducts) IController {
 
 // IController interface for products controller
 type IController interface {
+	Rating(c echo.Context) error
+
 	Search(c echo.Context) error
 	SearchDetails(c echo.Context) error
+
 	GetProductLimit(c echo.Context) error
 	UploadProductImage(c echo.Context) error
 	UploadProductShopImage(c echo.Context) error
@@ -36,7 +39,6 @@ type IController interface {
 	UpdateProductInfo(c echo.Context) error
 	GetProductDetails(c echo.Context) error
 	GetProductByType(c echo.Context) error
-	Rating(c echo.Context) error
 
 	GetInvDetails(c echo.Context) error
 	InsertInv(c echo.Context) error
@@ -45,6 +47,10 @@ type IController interface {
 	UploadInvColorImage(c echo.Context) error
 	GetItems(c echo.Context) error
 	UpdateInv(c echo.Context) error
+
+	AddBookmark(c echo.Context) error
+	GetBookmark(c echo.Context) error
+	DeleteBookmark(c echo.Context) error
 }
 
 // Controller struct implementation of IProducts
@@ -52,9 +58,79 @@ type Controller struct {
 	service products.IProducts
 }
 
+// AddBookmark .
+// @Description add product to favorite
+// @Tags favorite
+// @Accept json
+// @Produce json
+// @Param id path number true "inventory id"
+// @Success 200 {object} dtos.OK
+// @Router /favorite/{id} [POST]
+func (p *Controller) AddBookmark(c echo.Context) error {
+	userID, _, _ := crypto.Authenticate(c)
+	inventoryID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'id' param",
+		})
+	}
+	if err := p.service.AddBookmark(c.Request().Context(), userID, inventoryID); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.OK{
+		Msg: "your product has been added to favorite",
+	})
+}
+
+// DeleteBookmark .
+// @Description remove product from favorite
+// @Tags favorite
+// @Accept json
+// @Produce json
+// @Param id path number true "inventory id"
+// @Success 200 {object} dtos.OK
+// @Router /favorite/{id} [DELETE]
+func (p *Controller) DeleteBookmark(c echo.Context) error {
+	userID, _, _ := crypto.Authenticate(c)
+	inventoryID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'id' param",
+		})
+	}
+	if err := p.service.RemoveBookmark(c.Request().Context(), userID, inventoryID); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.OK{
+		Msg: "your product has been removed from favorite",
+	})
+}
+
+// GetBookmark .
+// @Description get product from favorite
+// @Tags favorite
+// @Accept json
+// @Produce json
+// @Success 200 {object} []dtos.Bookmark
+// @Router /favorite [GET]
+func (p *Controller) GetBookmark(c echo.Context) error {
+	userID, _, _ := crypto.Authenticate(c)
+	bookmarks, err := p.service.GetBookmarks(c.Request().Context(), userID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, bookmarks)
+}
+
 // Rating .
 // @Description update inventory image
-// @Tags inventories
+// @Tags ratings
 // @Accept json
 // @Produce json
 // @Param star query number true "id of product"
@@ -176,7 +252,8 @@ func (p *Controller) SearchDetails(c echo.Context) error {
 			Msg: "missing 'keyword' query parameter",
 		})
 	}
-	product, err := p.service.SearchDetails(c.Request().Context(), keyword)
+	userID, _, _ := crypto.Authenticate(c)
+	product, err := p.service.SearchDetails(c.Request().Context(), userID, keyword)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
@@ -258,8 +335,8 @@ func (p *Controller) GetProductDetails(c echo.Context) error {
 			Msg: "Invalid 'id' query parameter",
 		})
 	}
-
-	product, err := p.service.Detail(c.Request().Context(), int64(ID))
+	userID, _, _ := crypto.Authenticate(c)
+	product, err := p.service.Detail(c.Request().Context(), userID, int64(ID))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),

@@ -3,6 +3,7 @@ package products
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -12,17 +13,19 @@ import (
 	"swclabs/swipex/internal/core/domain/enum"
 	swcerr "swclabs/swipex/pkg/lib/errors"
 	"swclabs/swipex/pkg/utils"
+
+	"github.com/jackc/pgx/v5"
 )
 
 // SearchDetails implements IProducts.
-func (s *Products) SearchDetails(ctx context.Context, keyword string) ([]dtos.ProductDetail, error) {
+func (s *Products) SearchDetails(ctx context.Context, userID int64, keyword string) ([]dtos.ProductDetail, error) {
 	products, err := s.Products.Search(ctx, keyword)
 	if err != nil {
 		return nil, swcerr.Service("keyword error", err)
 	}
 	var details []dtos.ProductDetail
 	for _, product := range products {
-		detail, err := s.Detail(ctx, product.ID)
+		detail, err := s.Detail(ctx, userID, product.ID)
 		if err != nil {
 			return nil, err
 		}
@@ -95,7 +98,7 @@ func (s *Products) GetItem(ctx context.Context, inventoryID int64) (*dtos.Invent
 }
 
 // Detail implements IProductService.
-func (s *Products) Detail(ctx context.Context, productID int64) (*dtos.ProductDetail, error) {
+func (s *Products) Detail(ctx context.Context, userID int64, productID int64) (*dtos.ProductDetail, error) {
 	var (
 		productSpecs dtos.ProductSpecs
 		details      dtos.ProductDetail
@@ -125,14 +128,23 @@ func (s *Products) Detail(ctx context.Context, productID int64) (*dtos.ProductDe
 			return nil, err
 		}
 		detailsColor := dtos.Color{
-			Name:    color.Color,
-			Img:     items[0].ColorImg,
-			Product: strings.Split(items[0].Image, ","),
+			Name:       color.Color,
+			ImageColor: items[0].ColorImg,
+			Product:    strings.Split(items[0].Image, ","),
 		}
 		for _, item := range items {
 			var spec dtos.SpecsItem
 			if err := json.Unmarshal([]byte(item.Specs), &spec); err != nil {
 				return nil, err
+			}
+			if userID != -1 {
+				favorite, err := s.Favorite.GetByInventoryID(ctx, item.ID, userID)
+				if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+					return nil, err
+				}
+				if favorite != nil && favorite.InventoryID == item.ID {
+					spec.Favorite = true
+				}
 			}
 			spec.Price = item.Price.String()
 			spec.InventoryID = item.ID

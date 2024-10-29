@@ -28,20 +28,25 @@ func NewController(services purchase.IPurchase) IController {
 type IController interface {
 	AddToCarts(c echo.Context) error
 	GetCarts(c echo.Context) error
-	DeleteItem(c echo.Context) error
+	DeleteCartItem(c echo.Context) error
+
 	CreateOrder(c echo.Context) error
+	CreateOrderForm(c echo.Context) error
 	GetOrders(c echo.Context) error
+	GetOrdersByCode(c echo.Context) error
+
 	CreateDeliveryAddress(c echo.Context) error
 	GetDeliveryAddress(c echo.Context) error
 	CreateDelivery(c echo.Context) error
 	GetDelivery(c echo.Context) error
+
 	AddressProvince(c echo.Context) error
 	AddressWard(c echo.Context) error
 	AddressDistrict(c echo.Context) error
+
 	CreateDeliveryOrder(c echo.Context) error
 	DeliveryOrderInfo(c echo.Context) error
-	CreateOrderForm(c echo.Context) error
-	GetOrdersByCode(c echo.Context) error
+
 	GetCoupon(c echo.Context) error
 	CreateCoupon(c echo.Context) error
 	UseCoupon(c echo.Context) error
@@ -372,7 +377,7 @@ func (p *Controller) CreateDeliveryAddress(e echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param limit query string true "limit order"
-// @Success 200 {object} []dtos.OrderSchema
+// @Success 200 {object} []dtos.OrderInfo
 // @Router /purchase/orders [GET]
 func (p *Controller) GetOrders(c echo.Context) error {
 	sLimit := c.QueryParam("limit")
@@ -510,22 +515,23 @@ func (p *Controller) GetCarts(c echo.Context) error {
 	return c.JSON(http.StatusOK, *items)
 }
 
-// DeleteItem .
+// DeleteCartItem .
 // @Description delete item from carts
 // @Tags purchase
 // @Accept json
 // @Produce json
-// @Param type path string true "product type"
+// @Param id path string true "inventory id"
 // @Success 200 {object} dtos.OK
-// @Router /purchase/carts/{type} [DELETE]
-func (p *Controller) DeleteItem(c echo.Context) error {
-	cID, err := strconv.ParseInt(c.Param("id"), 10, 64)
+// @Router /purchase/carts/{id} [DELETE]
+func (p *Controller) DeleteCartItem(c echo.Context) error {
+	itemID, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "'id' must be a positive integer",
 		})
 	}
-	if err := p.services.DeleteItemFromCart(c.Request().Context(), cID); err != nil {
+	userID, _, _ := crypto.Authenticate(c)
+	if err := p.services.DeleteItemFromCart(c.Request().Context(), userID, itemID); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),

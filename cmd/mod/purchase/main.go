@@ -9,6 +9,8 @@ import (
 	"swclabs/swipex/internal/apis/container/purchase"
 	purchaseWorker "swclabs/swipex/internal/workers/container/purchase"
 	"swclabs/swipex/pkg/lib/logger"
+
+	_ "swclabs/swipex/docs/purchase"
 )
 
 func main() {

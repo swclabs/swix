@@ -1,0 +1,1206 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a documentation for the Swipe API",
+        "title": "Swipe Public API v0.0.1",
+        "contact": {},
+        "version": "0.0.1"
+    },
+    "basePath": "/",
+    "paths": {
+        "/favorite": {
+            "get": {
+                "description": "get product from favorite",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorite"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.Bookmark"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/favorite/{id}": {
+            "post": {
+                "description": "add product to favorite",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorite"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "remove product from favorite",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "favorite"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventories": {
+            "get": {
+                "description": "get all product from inventory",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.InventoryItems"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update inventory",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "description": "Inventory Request",
+                        "name": "inventory",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.InvUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "add product to inventories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "description": "Inventories Request",
+                        "name": "InvDetail",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.InventoryDetail"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete inventory by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventories/details": {
+            "get": {
+                "description": "get product availability in inventories",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Inventory"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventories/image": {
+            "put": {
+                "description": "update inventory image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "stock image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/inventories/image/color": {
+            "put": {
+                "description": "update inventory image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "inventories"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "stock image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "description": "get product information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "limit number of products",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Slices-dtos_ProductResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "update product information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "description": "Product Information Request",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.UpdateProductInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create new product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "description": "Product Request",
+                        "name": "product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CreateProduct"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete product by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "product id",
+                        "name": "pid",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/details": {
+            "get": {
+                "description": "get product details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "product id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProductDetail"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/img": {
+            "put": {
+                "description": "insert new product image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id of product",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "image of product",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/img/shop": {
+            "put": {
+                "description": "insert new product image",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id of product",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "image of product",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{type}": {
+            "get": {
+                "description": "get product view",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "product type",
+                        "name": "type",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.ProductDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/rating/{id}": {
+            "put": {
+                "description": "update inventory image",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ratings"
+                ],
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "id of product",
+                        "name": "star",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/search": {
+            "get": {
+                "description": "get product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "search"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "keyword",
+                        "name": "keyword",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.ProductResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/search/details": {
+            "get": {
+                "description": "get product",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "search"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "keyword",
+                        "name": "key",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.ProductDetail"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dtos.Bookmark": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Color of product",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/dtos.BookmarkItem"
+                        }
+                    ]
+                },
+                "display": {
+                    "description": "Display Super AMOLED",
+                    "type": "string"
+                },
+                "image": {
+                    "description": "Image of product",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "Name of product",
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "screen": {
+                    "description": "Screen 6.1 inch",
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.BookmarkItem": {
+            "type": "object",
+            "properties": {
+                "color_img": {
+                    "description": "ColorImage of color Nature Titanium",
+                    "type": "string"
+                },
+                "color_name": {
+                    "description": "ColorName Nature Titanium",
+                    "type": "string"
+                },
+                "images": {
+                    "description": "Img of product Nature Titanium",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.SpecsItem"
+                }
+            }
+        },
+        "dtos.Color": {
+            "type": "object",
+            "properties": {
+                "img": {
+                    "description": "ImageColor of color Nature Titanium",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name Nature Titanium",
+                    "type": "string"
+                },
+                "product": {
+                    "description": "Img of product Nature Titanium",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "specs": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.SpecsItem"
+                    }
+                }
+            }
+        },
+        "dtos.CreateProduct": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Error": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.InvUpdate": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Inventory": {
+            "type": "object",
+            "required": [
+                "available",
+                "currency_code",
+                "price",
+                "product_id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "color_img": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "item_code": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_img": {
+                    "type": "string"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.Specs"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.InventoryDetail": {
+            "type": "object",
+            "required": [
+                "available",
+                "currency_code",
+                "price",
+                "product_id"
+            ],
+            "properties": {
+                "available": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "color_img": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "price": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.Specs"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.InventoryItems": {
+            "type": "object",
+            "properties": {
+                "header": {
+                    "$ref": "#/definitions/dtos.StockHeader"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.Inventory"
+                    }
+                }
+            }
+        },
+        "dtos.OK": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProductDTO": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                }
+            }
+        },
+        "dtos.ProductDetail": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "Color of product",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.Color"
+                    }
+                },
+                "display": {
+                    "description": "Display Super AMOLED",
+                    "type": "string"
+                },
+                "image": {
+                    "description": "Image of product",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "name": {
+                    "description": "Name of product",
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "screen": {
+                    "description": "Screen 6.1 inch",
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProductRequest": {
+            "type": "object",
+            "required": [
+                "category_id",
+                "description",
+                "name",
+                "price",
+                "supplier_id"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "supplier_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.ProductResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "created": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.ProductSpecs": {
+            "type": "object",
+            "properties": {
+                "RAM": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "SSD": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "display": {
+                    "type": "string"
+                },
+                "screen": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.Slices-dtos_ProductResponse": {
+            "type": "object",
+            "properties": {
+                "body": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.ProductResponse"
+                    }
+                }
+            }
+        },
+        "dtos.Specs": {
+            "type": "object",
+            "properties": {
+                "connection": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.SpecsItem": {
+            "type": "object",
+            "properties": {
+                "connection": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "favorite": {
+                    "type": "boolean"
+                },
+                "inventory_id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "ram": {
+                    "type": "string"
+                },
+                "ssd": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.StockHeader": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "integer"
+                },
+                "all": {
+                    "type": "integer"
+                },
+                "archive": {
+                    "type": "integer"
+                },
+                "draft": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dtos.UpdateProductInfo": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "specs": {
+                    "$ref": "#/definitions/dtos.ProductSpecs"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "supplier_id": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

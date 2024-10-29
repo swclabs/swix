@@ -30,18 +30,18 @@ type Router struct {
 
 // Routers define route endpoint
 func (p *Router) Routers(e *echo.Echo) {
-	e.POST("/purchase/carts", p.controllers.AddToCarts, middleware.Protected)
 	e.GET("/purchase/carts", p.controllers.GetCarts, middleware.Protected)
-	e.DELETE("/purchase/carts/:id", p.controllers.DeleteItem)
+	e.POST("/purchase/carts", p.controllers.AddToCarts, middleware.Protected)
+	e.DELETE("/purchase/carts/:id", p.controllers.DeleteCartItem, middleware.Protected)
 
 	e.GET("/purchase/orders", p.controllers.GetOrders, middleware.Protected)
-	e.POST("/purchase/orders", p.controllers.CreateOrder, middleware.Protected)
 	e.GET("/purchase/orders/:code", p.controllers.GetOrdersByCode)
+	e.POST("/purchase/orders", p.controllers.CreateOrder, middleware.Protected)
 	e.POST("/purchase/admin/orders", p.controllers.CreateOrderForm)
 
 	e.GET("/purchase/coupons", p.controllers.GetCoupon)
-	e.POST("/purchase/coupons", p.controllers.CreateCoupon)
 	e.GET("/purchase/coupons/:code", p.controllers.UseCoupon, middleware.Protected)
+	e.POST("/purchase/coupons", p.controllers.CreateCoupon)
 
 	e.GET("/address", p.controllers.GetDeliveryAddress, middleware.Protected)
 	e.POST("/address", p.controllers.CreateDeliveryAddress)
@@ -51,7 +51,7 @@ func (p *Router) Routers(e *echo.Echo) {
 	e.GET("/address/ward", p.controllers.AddressWard)
 
 	e.GET("/delivery", p.controllers.GetDelivery, middleware.Protected)
+	e.GET("/delivery/order/:code", p.controllers.DeliveryOrderInfo)
 	e.POST("/delivery", p.controllers.CreateDelivery)
 	e.POST("/delivery/order", p.controllers.CreateDeliveryOrder)
-	e.GET("/delivery/order/:code", p.controllers.DeliveryOrderInfo)
 }

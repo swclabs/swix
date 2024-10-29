@@ -46,7 +46,7 @@ jobs:
         run: go mod download
 
       - name: Unit test - common
-        run: bash hack/swipe run -t common
+        run: go test -v ./testing/common
 
   test-classify:
     needs: [build]
@@ -66,7 +66,7 @@ jobs:
         run: go mod download
 
       - name: Unit test - classify
-        run: bash hack/swipe run -t classify
+        run: go test -v ./testing/classify
 
   test-products:
     needs: [build]
@@ -86,7 +86,7 @@ jobs:
         run: go mod download
 
       - name: Unit test - products
-        run: bash hack/swipe run -t products
+        run: go test -v ./testing/products
 
   test-article:
     needs: [build]
@@ -103,7 +103,7 @@ jobs:
           go-version: 1.21
 
       - name: Unit test - article
-        run: bash hack/swipe run -t article
+        run: go test -v ./testing/article
 
   build-docker:
     needs: [test-common, test-classify, test-products]

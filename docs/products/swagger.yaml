@@ -1,0 +1,792 @@
+basePath: /
+definitions:
+  dtos.Bookmark:
+    properties:
+      color:
+        allOf:
+        - $ref: '#/definitions/dtos.BookmarkItem'
+        description: Color of product
+      display:
+        description: Display Super AMOLED
+        type: string
+      image:
+        description: Image of product
+        items:
+          type: string
+        type: array
+      name:
+        description: Name of product
+        type: string
+      price:
+        type: string
+      rating:
+        type: number
+      screen:
+        description: Screen 6.1 inch
+        type: string
+    type: object
+  dtos.BookmarkItem:
+    properties:
+      color_img:
+        description: ColorImage of color Nature Titanium
+        type: string
+      color_name:
+        description: ColorName Nature Titanium
+        type: string
+      images:
+        description: Img of product Nature Titanium
+        items:
+          type: string
+        type: array
+      specs:
+        $ref: '#/definitions/dtos.SpecsItem'
+    type: object
+  dtos.Color:
+    properties:
+      img:
+        description: ImageColor of color Nature Titanium
+        type: string
+      name:
+        description: Name Nature Titanium
+        type: string
+      product:
+        description: Img of product Nature Titanium
+        items:
+          type: string
+        type: array
+      specs:
+        items:
+          $ref: '#/definitions/dtos.SpecsItem'
+        type: array
+    type: object
+  dtos.CreateProduct:
+    properties:
+      id:
+        type: integer
+      msg:
+        type: string
+    type: object
+  dtos.Error:
+    properties:
+      msg:
+        type: string
+    type: object
+  dtos.InvUpdate:
+    properties:
+      available:
+        type: string
+      currency_code:
+        type: string
+      id:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: string
+      status:
+        type: string
+    required:
+    - id
+    type: object
+  dtos.Inventory:
+    properties:
+      available:
+        type: string
+      category:
+        type: string
+      color:
+        type: string
+      color_img:
+        type: string
+      currency_code:
+        type: string
+      id:
+        type: integer
+      image:
+        items:
+          type: string
+        type: array
+      item_code:
+        type: string
+      price:
+        type: string
+      product_id:
+        type: integer
+      product_img:
+        type: string
+      product_name:
+        type: string
+      specs:
+        $ref: '#/definitions/dtos.Specs'
+      status:
+        type: string
+    required:
+    - available
+    - currency_code
+    - price
+    - product_id
+    type: object
+  dtos.InventoryDetail:
+    properties:
+      available:
+        type: string
+      color:
+        type: string
+      color_img:
+        type: string
+      currency_code:
+        type: string
+      image:
+        items:
+          type: string
+        type: array
+      price:
+        type: string
+      product_id:
+        type: integer
+      specs:
+        $ref: '#/definitions/dtos.Specs'
+      status:
+        type: string
+    required:
+    - available
+    - currency_code
+    - price
+    - product_id
+    type: object
+  dtos.InventoryItems:
+    properties:
+      header:
+        $ref: '#/definitions/dtos.StockHeader'
+      limit:
+        type: integer
+      page:
+        type: integer
+      stock:
+        items:
+          $ref: '#/definitions/dtos.Inventory'
+        type: array
+    type: object
+  dtos.OK:
+    properties:
+      msg:
+        type: string
+    type: object
+  dtos.ProductDTO:
+    properties:
+      category:
+        type: string
+      desc:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      rating:
+        type: number
+      specs:
+        $ref: '#/definitions/dtos.ProductSpecs'
+    type: object
+  dtos.ProductDetail:
+    properties:
+      color:
+        description: Color of product
+        items:
+          $ref: '#/definitions/dtos.Color'
+        type: array
+      display:
+        description: Display Super AMOLED
+        type: string
+      image:
+        description: Image of product
+        items:
+          type: string
+        type: array
+      name:
+        description: Name of product
+        type: string
+      price:
+        type: string
+      rating:
+        type: number
+      screen:
+        description: Screen 6.1 inch
+        type: string
+    type: object
+  dtos.ProductRequest:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      specs:
+        $ref: '#/definitions/dtos.ProductSpecs'
+      status:
+        type: string
+      supplier_id:
+        type: integer
+    required:
+    - category_id
+    - description
+    - name
+    - price
+    - supplier_id
+    type: object
+  dtos.ProductResponse:
+    properties:
+      category:
+        type: string
+      created:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      status:
+        type: string
+    type: object
+  dtos.ProductSpecs:
+    properties:
+      RAM:
+        items:
+          type: integer
+        type: array
+      SSD:
+        items:
+          type: integer
+        type: array
+      display:
+        type: string
+      screen:
+        type: string
+    type: object
+  dtos.Slices-dtos_ProductResponse:
+    properties:
+      body:
+        items:
+          $ref: '#/definitions/dtos.ProductResponse'
+        type: array
+    type: object
+  dtos.Specs:
+    properties:
+      connection:
+        type: string
+      desc:
+        type: string
+      ram:
+        type: string
+      ssd:
+        type: string
+    type: object
+  dtos.SpecsItem:
+    properties:
+      connection:
+        type: string
+      desc:
+        type: string
+      favorite:
+        type: boolean
+      inventory_id:
+        type: integer
+      price:
+        type: string
+      ram:
+        type: string
+      ssd:
+        type: string
+    type: object
+  dtos.StockHeader:
+    properties:
+      active:
+        type: integer
+      all:
+        type: integer
+      archive:
+        type: integer
+      draft:
+        type: integer
+    type: object
+  dtos.UpdateProductInfo:
+    properties:
+      category_id:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: string
+      specs:
+        $ref: '#/definitions/dtos.ProductSpecs'
+      status:
+        type: string
+      supplier_id:
+        type: integer
+    required:
+    - id
+    type: object
+info:
+  contact: {}
+  description: This is a documentation for the Swipe API
+  title: Swipe Public API v0.0.1
+  version: 0.0.1
+paths:
+  /favorite:
+    get:
+      consumes:
+      - application/json
+      description: get product from favorite
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.Bookmark'
+            type: array
+      tags:
+      - favorite
+  /favorite/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: remove product from favorite
+      parameters:
+      - description: inventory id
+        in: path
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - favorite
+    post:
+      consumes:
+      - application/json
+      description: add product to favorite
+      parameters:
+      - description: inventory id
+        in: path
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - favorite
+  /inventories:
+    delete:
+      consumes:
+      - application/json
+      description: delete inventory by id
+      parameters:
+      - description: inventory id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
+    get:
+      consumes:
+      - application/json
+      description: get all product from inventory
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: number
+      - description: limit
+        in: query
+        name: limit
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.InventoryItems'
+      tags:
+      - inventories
+    post:
+      consumes:
+      - application/json
+      description: add product to inventories
+      parameters:
+      - description: Inventories Request
+        in: body
+        name: InvDetail
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.InventoryDetail'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
+    put:
+      consumes:
+      - application/json
+      description: update inventory
+      parameters:
+      - description: Inventory Request
+        in: body
+        name: inventory
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.InvUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
+  /inventories/details:
+    get:
+      consumes:
+      - application/json
+      description: get product availability in inventories
+      parameters:
+      - description: inventory id
+        in: query
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Inventory'
+      tags:
+      - inventories
+  /inventories/image:
+    put:
+      consumes:
+      - multipart/form-data
+      description: update inventory image
+      parameters:
+      - description: stock image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
+  /inventories/image/color:
+    put:
+      consumes:
+      - multipart/form-data
+      description: update inventory image
+      parameters:
+      - description: stock image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - inventories
+  /products:
+    delete:
+      consumes:
+      - application/json
+      description: delete product by id
+      parameters:
+      - description: product id
+        in: query
+        name: pid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      description: get product information
+      parameters:
+      - description: limit number of products
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.Slices-dtos_ProductResponse'
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: create new product
+      parameters:
+      - description: Product Request
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.ProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.CreateProduct'
+      tags:
+      - products
+    put:
+      consumes:
+      - application/json
+      description: update product information
+      parameters:
+      - description: Product Information Request
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateProductInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - products
+  /products/{type}:
+    get:
+      consumes:
+      - application/json
+      description: get product view
+      parameters:
+      - description: product type
+        in: path
+        name: type
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ProductDTO'
+            type: array
+      tags:
+      - products
+  /products/details:
+    get:
+      consumes:
+      - application/json
+      description: get product details
+      parameters:
+      - description: product id
+        in: query
+        name: id
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.ProductDetail'
+      tags:
+      - products
+  /products/img:
+    put:
+      consumes:
+      - multipart/form-data
+      description: insert new product image
+      parameters:
+      - description: id of product
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: image of product
+        in: formData
+        name: img
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.Error'
+      tags:
+      - products
+  /products/img/shop:
+    put:
+      consumes:
+      - multipart/form-data
+      description: insert new product image
+      parameters:
+      - description: id of product
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: image of product
+        in: formData
+        name: img
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dtos.Error'
+      tags:
+      - products
+  /rating/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update inventory image
+      parameters:
+      - description: id of product
+        in: query
+        name: star
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - ratings
+  /search:
+    get:
+      consumes:
+      - application/json
+      description: get product
+      parameters:
+      - description: keyword
+        in: query
+        name: keyword
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ProductResponse'
+            type: array
+      tags:
+      - search
+  /search/details:
+    get:
+      consumes:
+      - application/json
+      description: get product
+      parameters:
+      - description: keyword
+        in: query
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.ProductDetail'
+            type: array
+      tags:
+      - search
+swagger: "2.0"

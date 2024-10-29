@@ -16,8 +16,15 @@ import (
 	"swclabs/swipex/internal/apis"
 	"swclabs/swipex/internal/workers"
 	"swclabs/swipex/pkg/lib/logger"
+
+	_ "swclabs/swipex/docs"
 )
 
+// @title Swipe Public API v0.0.1
+// @version 0.0.1
+// @description This is a documentation for the Swipe API
+// @host
+// @basePath /
 func main() {
 	cmd := flag.String("start", "server", "start server or worker")
 	flag.Usage = func() {

@@ -29,7 +29,7 @@ func TestGetInventory(t *testing.T) {
 		inventory  inventories.Mock
 		product    productRepo.Mock
 		category   categories.Mock
-		service    = productService.New(nil, &product, &inventory, &category, nil)
+		service    = productService.New(nil, &product, &inventory, &category, nil, nil)
 		controller = productContainer.NewController(service)
 	)
 	specs, _ := json.Marshal(dtos.Specs{
