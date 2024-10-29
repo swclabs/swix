@@ -34,13 +34,13 @@ func (s *Products) SearchDetails(ctx context.Context, userID int64, keyword stri
 	return details, nil
 }
 
-// ProductOf implements IProductService.
-func (s *Products) ProductOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductDTO, error) {
+// ProductType implements IProductService.
+func (s *Products) ProductType(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductDTO, error) {
 	products, err := s.Products.GetByCategory(ctx, types, offset)
 	if err != nil {
 		return nil, err
 	}
-	var productView = []dtos.ProductDTO{}
+	var productView []dtos.ProductDTO
 	for _, p := range products {
 		_view := dtos.ProductDTO{
 			ID:       p.ID,
@@ -126,6 +126,9 @@ func (s *Products) Detail(ctx context.Context, userID int64, productID int64) (*
 		items, err := s.Inventory.GetByColor(ctx, productID, color.Color)
 		if err != nil {
 			return nil, err
+		}
+		if len(items) == 0 {
+			continue
 		}
 		detailsColor := dtos.Color{
 			Name:       color.Color,
@@ -237,7 +240,7 @@ func (s *Products) Search(ctx context.Context, keyword string) ([]dtos.ProductRe
 			Created:     utils.HanoiTimezone(p.Created),
 			Category:    category.Name,
 		}
-		if strings.Split(p.Image, ",") != nil {
+		if len(strings.Split(p.Image, ",")) > 0 {
 			resp.Image = strings.Split(p.Image, ",")[0]
 		}
 		productSchema = append(productSchema, resp)
@@ -265,7 +268,7 @@ func (s *Products) GetProducts(ctx context.Context, limit int) ([]dtos.ProductRe
 			}
 			types enum.Category
 		)
-		if strings.Split(p.Image, ",") != nil {
+		if len(strings.Split(p.Image, ",")) > 0 {
 			product.Image = strings.Split(p.Image, ",")[0]
 		}
 		category, err := s.Category.GetByID(ctx, p.CategoryID)

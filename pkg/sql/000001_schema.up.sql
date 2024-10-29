@@ -113,7 +113,8 @@ CREATE TABLE "deliveries" (
 CREATE TABLE "favorite" (
   "id" bigserial PRIMARY KEY,
   "user_id" bigint NOT NULL,
-  "inventory_id" bigint NOT NULL
+  "inventory_id" bigint NOT NULL,
+  CONSTRAINT unique_favorite UNIQUE (user_id, inventory_id)
 );
 
 CREATE TABLE "inventories" (

@@ -17,8 +17,8 @@ type Favorite struct {
 	db db.IDatabase
 }
 
-// Create implements IFavorite.
-func (f *Favorite) Create(ctx context.Context, favorite entity.Favorite) error {
+// Save implements IFavorite.
+func (f *Favorite) Save(ctx context.Context, favorite entity.Favorite) error {
 	return f.db.SafeWrite(ctx, insert, favorite.UserID, favorite.InventoryID)
 }
 

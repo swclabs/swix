@@ -9,7 +9,9 @@ package favorite
 const (
 	insert = `
 		INSERT INTO favorite (user_id, inventory_id)
-		VALUES ($1, $2);
+		VALUES ($1, $2)
+		ON CONFLICT (user_id, inventory_id)
+		DO NOTHING;
 	`
 
 	delete = `

@@ -17,6 +17,7 @@ import (
 	"swclabs/swipex/pkg/lib/logger"
 	"testing"
 
+	"github.com/labstack/echo/v4"
 	"github.com/shopspring/decimal"
 	"go.uber.org/zap"
 )
@@ -78,7 +79,7 @@ func TestProductDetails(t *testing.T) {
 		Status:     "active",
 		CategoryID: 1,
 	}, nil)
-
+	var e = echo.New()
 	e.GET("/products/details", controller.GetProductDetails)
 	req := httptest.NewRequest(http.MethodGet, "/products/details?id=1", nil)
 	rr := httptest.NewRecorder()

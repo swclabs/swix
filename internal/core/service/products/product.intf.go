@@ -117,11 +117,11 @@ type IProducts interface {
 	// Returns a pointer to the Inventory object and an error if any issues occur during the retrieval process.
 	GetItem(ctx context.Context, inventoryID int64) (*dtos.Inventory, error)
 
-	// ProductOf retrieves the data of a product.
+	// ProductType retrieves the data of a product.
 	// ctx is the context to manage the request's lifecycle.
 	// types is the category of the product.
 	// Returns a slice of ProductView objects and an error if any issues occur during the retrieval process.
-	ProductOf(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductDTO, error)
+	ProductType(ctx context.Context, types enum.Category, offset int) ([]dtos.ProductDTO, error)
 
 	// Rating updates the rating of a product.
 	// ctx is the context to manage the request's lifecycle.

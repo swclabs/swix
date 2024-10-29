@@ -1,6 +1,10 @@
 package dtos
 
 type Bookmark struct {
+	ProductID int64 `json:"product_id"`
+
+	Category string `json:"category"`
+
 	// Name of product
 	Name string `json:"name"`
 
