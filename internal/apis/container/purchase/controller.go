@@ -531,7 +531,7 @@ func (p *Controller) DeleteCartItem(c echo.Context) error {
 		})
 	}
 	userID, _, _ := crypto.Authenticate(c)
-	if err := p.services.DeleteItemFromCart(c.Request().Context(), userID, itemID); err != nil {
+	if err := p.services.DeleteItemFromCart(c.Request().Context(), itemID, userID); err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),

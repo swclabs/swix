@@ -58,7 +58,14 @@ type Products struct {
 
 // AddBookmark implements IProducts.
 func (s *Products) AddBookmark(ctx context.Context, userID int64, inventoryID int64) error {
-	return s.Favorite.Create(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
+	fav, err := s.Favorite.GetByInventoryID(ctx, inventoryID, userID)
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return err
+	}
+	if errors.Is(err, pgx.ErrNoRows) {
+		return s.Favorite.Save(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
+	}
+	return s.Favorite.Delete(ctx, entity.Favorite{UserID: fav.UserID, InventoryID: fav.InventoryID})
 }
 
 // GetBookmarks implements IProducts.
@@ -77,6 +84,10 @@ func (s *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookm
 		if err != nil {
 			return nil, err
 		}
+		category, err := s.Category.GetByID(ctx, prod.CategoryID)
+		if err != nil {
+			return nil, err
+		}
 		var (
 			pSpecs dtos.ProductSpecs
 			specs  dtos.Specs
@@ -88,12 +99,14 @@ func (s *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookm
 			return nil, err
 		}
 		bookmark := dtos.Bookmark{
-			Name:    prod.Name,
-			Screen:  pSpecs.Screen,
-			Display: pSpecs.Display,
-			Price:   prod.Price,
-			Rating:  prod.Rating,
-			Image:   strings.Split(prod.ShopImage, ","),
+			ProductID: prod.ID,
+			Category:  category.Name,
+			Name:      prod.Name,
+			Screen:    pSpecs.Screen,
+			Display:   pSpecs.Display,
+			Price:     prod.Price,
+			Rating:    prod.Rating,
+			Image:     strings.Split(prod.ShopImage, ","),
 			Color: dtos.BookmarkItem{
 				ColorName:  inv.Color,
 				ColorImage: inv.ColorImg,

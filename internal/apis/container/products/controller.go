@@ -50,7 +50,6 @@ type IController interface {
 
 	AddBookmark(c echo.Context) error
 	GetBookmark(c echo.Context) error
-	DeleteBookmark(c echo.Context) error
 }
 
 // Controller struct implementation of IProducts
@@ -80,33 +79,7 @@ func (p *Controller) AddBookmark(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, dtos.OK{
-		Msg: "your product has been added to favorite",
-	})
-}
-
-// DeleteBookmark .
-// @Description remove product from favorite
-// @Tags favorite
-// @Accept json
-// @Produce json
-// @Param id path number true "inventory id"
-// @Success 200 {object} dtos.OK
-// @Router /favorite/{id} [DELETE]
-func (p *Controller) DeleteBookmark(c echo.Context) error {
-	userID, _, _ := crypto.Authenticate(c)
-	inventoryID, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "Invalid 'id' param",
-		})
-	}
-	if err := p.service.RemoveBookmark(c.Request().Context(), userID, inventoryID); err != nil {
-		return c.JSON(http.StatusInternalServerError, dtos.Error{
-			Msg: err.Error(),
-		})
-	}
-	return c.JSON(http.StatusOK, dtos.OK{
-		Msg: "your product has been removed from favorite",
+		Msg: "save favorite state successfully",
 	})
 }
 

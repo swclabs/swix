@@ -40,6 +40,6 @@ func TestGetSuppliers(t *testing.T) {
 
 	e.ServeHTTP(rr, req)
 
-	expected := "{\"body\":[{\"id\":\"1\",\"name\":\"apple\",\"email\":\"apple@example.com\"}]}\n"
+	expected := "{\"body\":[{\"id\":1,\"name\":\"apple\",\"email\":\"apple@example.com\"}]}\n"
 	assert.Equal(t, expected, rr.Body.String(), "response body should match expected")
 }

@@ -40,7 +40,6 @@ func (r *Router) Routers(e *echo.Echo) {
 
 	e.GET("/favorite", r.controller.GetBookmark, middleware.Protected)
 	e.POST("/favorite/:id", r.controller.AddBookmark, middleware.Protected)
-	e.DELETE("/favorite/:id", r.controller.DeleteBookmark, middleware.Protected)
 
 	e.PUT("/rating/:id", r.controller.Rating, middleware.Protected)
 

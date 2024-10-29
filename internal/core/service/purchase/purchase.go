@@ -95,6 +95,7 @@ func (p *Purchase) CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (
 
 // GetCoupon implements IPurchase.
 func (p *Purchase) GetCoupon(ctx context.Context) (coupons []dtos.Coupon, err error) {
+	coupons = []dtos.Coupon{}
 	_coupons, err := p.Coupon.GetAll(ctx)
 	if err != nil {
 		return nil, err

@@ -110,6 +110,7 @@ func TestProductViewAccessory(t *testing.T) {
 			Products: &product,
 		}
 		controller = productContainer.NewController(&service)
+		specs, _   = json.Marshal(dtos.ProductSpecs{})
 	)
 
 	product.On("GetByCategory", context.Background(), enum.Accessories, 0).Return(
@@ -120,7 +121,7 @@ func TestProductViewAccessory(t *testing.T) {
 				Description:  "Apple iPhone Adapter 20W",
 				Price:        "500.000",
 				Image:        "https://example.com/apple-iphone-adapter.jpg",
-				Specs:        "",
+				Specs:        string(specs),
 				CategoryName: enum.Accessories.String(),
 			},
 			{
@@ -129,7 +130,7 @@ func TestProductViewAccessory(t *testing.T) {
 				Description:  "Apple iPhone Case",
 				Price:        "500.000",
 				Image:        "https://example.com/apple-iphone-case.jpg",
-				Specs:        "",
+				Specs:        string(specs),
 				CategoryName: enum.Accessories.String(),
 			},
 			{
@@ -138,7 +139,7 @@ func TestProductViewAccessory(t *testing.T) {
 				Description:  "Apple iPhone Screen Protector",
 				Price:        "500.000",
 				Image:        "https://example.com/apple-iphone-screen-protector.jpg",
-				Specs:        "",
+				Specs:        string(specs),
 				CategoryName: enum.Accessories.String(),
 			},
 		},
@@ -151,7 +152,7 @@ func TestProductViewAccessory(t *testing.T) {
 	responseBody := rr.Body.Bytes()
 	var body []dtos.ProductDTO
 	if err := json.Unmarshal(responseBody, &body); err != nil {
-		t.Fail()
+		t.Fatal(rr.Body.String())
 	}
 
 	file, err := os.Create("./products_type_accessory_out.json")
