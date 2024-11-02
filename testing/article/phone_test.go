@@ -22,7 +22,7 @@ import (
 func TestPhoneCarousel(t *testing.T) {
 	var (
 		repos      = collections.Mock{}
-		service    = articleService.New(nil, &repos, nil)
+		service    = articleService.New(nil, &repos, nil, nil)
 		controller = articleContainer.NewController(service)
 		e          = echo.New()
 
@@ -40,7 +40,7 @@ func TestPhoneCarousel(t *testing.T) {
 				Src:     "/img/posts/8.jpg",
 			},
 		}
-		cards = []dtos.CardInArticle{
+		cards = []dtos.CardArticle{
 			{
 				Category: "Artificial Intelligence",
 				Title:    "You can do more with AI.",

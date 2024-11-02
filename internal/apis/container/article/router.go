@@ -30,7 +30,11 @@ type Router struct {
 func (r *Router) Routers(e *echo.Echo) {
 	e.GET("/collections", r.controller.GetArticleData)
 	e.POST("/collections", r.controller.UploadArticle)
-	e.PUT("/collections/img", r.controller.UpdateCollectionsImage)
+	e.PUT("/collections/image", r.controller.UpdateCollectionsImage)
+
+	e.GET("/news", r.controller.GetNews)
+	e.POST("/news", r.controller.UploadNews)
+	e.PUT("/news/img", r.controller.UpdateNewsImage)
 
 	e.GET("/collections/message", r.controller.GetMessage)
 	e.POST("/collections/message", r.controller.UploadMessage)

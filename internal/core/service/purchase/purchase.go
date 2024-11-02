@@ -12,7 +12,7 @@ import (
 	"swclabs/swipex/app"
 	"swclabs/swipex/internal/core/domain/dtos"
 	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/xdto"
+	"swclabs/swipex/internal/core/domain/x/ghn"
 	"swclabs/swipex/internal/core/repos/addresses"
 	"swclabs/swipex/internal/core/repos/carts"
 	"swclabs/swipex/internal/core/repos/categories"
@@ -321,27 +321,27 @@ func (p *Purchase) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (s
 }
 
 // CreateDeliveryOrder implements IPurchase.
-func (p *Purchase) CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error) {
+func (p *Purchase) CreateDeliveryOrder(ctx context.Context, shopID int, order ghn.CreateOrderDTO) (*ghn.OrderDTO, error) {
 	return p.Ghn.CreateOrder(ctx, shopID, order)
 }
 
 // DeliveryOrderInfo implements IPurchase.
-func (p *Purchase) DeliveryOrderInfo(ctx context.Context, orderCode string) (*xdto.OrderInfoDTO, error) {
+func (p *Purchase) DeliveryOrderInfo(ctx context.Context, orderCode string) (*ghn.OrderInfoDTO, error) {
 	return p.Ghn.OrderInfo(ctx, orderCode)
 }
 
 // AddressDistrict implements IPurchase.
-func (p *Purchase) AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error) {
+func (p *Purchase) AddressDistrict(ctx context.Context, provinceID int) (*ghn.DistrictDTO, error) {
 	return p.Ghn.District(ctx, provinceID)
 }
 
 // AddressProvince implements IPurchase.
-func (p *Purchase) AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error) {
+func (p *Purchase) AddressProvince(ctx context.Context) (*ghn.ProvinceDTO, error) {
 	return p.Ghn.Province(ctx)
 }
 
 // AddressWard implements IPurchase.
-func (p *Purchase) AddressWard(ctx context.Context, districtID int) (*xdto.WardDTO, error) {
+func (p *Purchase) AddressWard(ctx context.Context, districtID int) (*ghn.WardDTO, error) {
 	return p.Ghn.Ward(ctx, districtID)
 }
 

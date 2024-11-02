@@ -26,6 +26,10 @@ type IController interface {
 	UpdateCollectionsImage(c echo.Context) error
 	GetArticleData(c echo.Context) error
 
+	UploadNews(c echo.Context) error
+	UpdateNewsImage(c echo.Context) error
+	GetNews(c echo.Context) error
+
 	UploadMessage(c echo.Context) error
 	GetMessage(c echo.Context) error
 	GetComment(c echo.Context) error
@@ -35,6 +39,106 @@ type IController interface {
 // Controller struct implementation of IArticle
 type Controller struct {
 	Services article.IArticle
+}
+
+// GetNews .
+// @Description get news
+// @Tags news
+// @Accept json
+// @Produce json
+// @Param position query string true "position of news"
+// @Param limit query number true "limit of cards carousel"
+// @Success 200 {object} dtos.News
+// @Router /news [GET]
+func (p *Controller) GetNews(c echo.Context) error {
+	category := c.QueryParam("category")
+	limit := c.QueryParam("limit")
+	if category == "" || limit == "" {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "missing 'category' or 'limit' field",
+		})
+	}
+
+	_limit, err := strconv.Atoi(limit)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+
+	carousel, err := p.Services.GetNews(c.Request().Context(), category, _limit)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, *carousel)
+}
+
+// UpdateNewsImage .
+// @Description update news image
+// @Tags news
+// @Accept json
+// @Produce json
+// @Param img formData file true "image of news"
+// @Param id formData string true "news identifier"
+// @Success 200 {object} dtos.OK
+// @Router /news/image [PUT]
+func (p *Controller) UpdateNewsImage(c echo.Context) error {
+	file, err := c.FormFile("img")
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	id, err := strconv.ParseInt(c.FormValue("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "'id' field invalid",
+		})
+	}
+
+	if err := p.Services.UploadNewsImage(c.Request().Context(), id, file); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, dtos.OK{
+		Msg: "upload image of collection successfully",
+	})
+}
+
+// UploadNews .
+// @Description create news
+// @Tags news
+// @Accept json
+// @Produce json
+// @Param collection body dtos.NewsDTO true "news Request"
+// @Success 201 {object} dtos.CollectionUpload
+// @Router /news [POST]
+func (p *Controller) UploadNews(c echo.Context) error {
+	var news dtos.NewsDTO
+	if err := c.Bind(&news); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if _valid := valid.Validate(&news); _valid != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: _valid.Error(),
+		})
+	}
+	id, err := p.Services.UploadNews(c.Request().Context(), news)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusCreated, dtos.CollectionUpload{
+		Msg: "collection uploaded successfully",
+		ID:  id,
+	})
 }
 
 // GetMessage .
@@ -157,7 +261,7 @@ func (p *Controller) UpdateCollectionsImage(c echo.Context) error {
 		})
 	}
 
-	return c.JSON(http.StatusOK, dtos.Error{
+	return c.JSON(http.StatusOK, dtos.OK{
 		Msg: "upload image of collection successfully",
 	})
 }

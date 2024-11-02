@@ -99,7 +99,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.DistrictDTO"
+                            "$ref": "#/definitions/ghn.DistrictDTO"
                         }
                     }
                 }
@@ -121,7 +121,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.ProvinceDTO"
+                            "$ref": "#/definitions/ghn.ProvinceDTO"
                         }
                     }
                 }
@@ -152,7 +152,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.WardDTO"
+                            "$ref": "#/definitions/ghn.WardDTO"
                         }
                     }
                 }
@@ -715,7 +715,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/xdto.CreateOrderDTO"
+                            "$ref": "#/definitions/ghn.CreateOrderDTO"
                         }
                     }
                 ],
@@ -723,7 +723,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.OrderDTO"
+                            "$ref": "#/definitions/ghn.OrderDTO"
                         }
                     }
                 }
@@ -754,7 +754,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.OrderInfoDTO"
+                            "$ref": "#/definitions/ghn.OrderInfoDTO"
                         }
                     }
                 }
@@ -1024,6 +1024,113 @@ const docTemplate = `{
                         "type": "file",
                         "description": "stock image",
                         "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/news": {
+            "get": {
+                "description": "get news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "position of news",
+                        "name": "position",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "limit of cards carousel",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.News"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "description": "news Request",
+                        "name": "collection",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.NewsDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CollectionUpload"
+                        }
+                    }
+                }
+            }
+        },
+        "/news/image": {
+            "put": {
+                "description": "update news image",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "image of news",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "news identifier",
+                        "name": "id",
                         "in": "formData",
                         "required": true
                     }
@@ -1963,7 +2070,7 @@ const docTemplate = `{
                 "cards": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.CardInArticle"
+                        "$ref": "#/definitions/dtos.CardArticle"
                     }
                 },
                 "headline": {
@@ -2003,6 +2110,9 @@ const docTemplate = `{
                 "price": {
                     "type": "string"
                 },
+                "product_id": {
+                    "type": "integer"
+                },
                 "rating": {
                     "type": "number"
                 },
@@ -2035,21 +2145,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.CardContent": {
-            "type": "object",
-            "required": [
-                "content"
-            ],
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "src": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.CardInArticle": {
+        "dtos.CardArticle": {
             "type": "object",
             "required": [
                 "category",
@@ -2069,6 +2165,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CardContent": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "src": {
                     "type": "string"
                 }
             }
@@ -2140,6 +2250,17 @@ const docTemplate = `{
                 },
                 "user_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "dtos.CollectionUpload": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "msg": {
+                    "type": "string"
                 }
             }
         },
@@ -2534,6 +2655,46 @@ const docTemplate = `{
                     }
                 },
                 "position": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.News": {
+            "type": "object",
+            "required": [
+                "cards",
+                "header"
+            ],
+            "properties": {
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardArticle"
+                    }
+                },
+                "header": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.NewsDTO": {
+            "type": "object",
+            "required": [
+                "cards",
+                "category",
+                "header"
+            ],
+            "properties": {
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardArticle"
+                    }
+                },
+                "category": {
+                    "type": "string"
+                },
+                "header": {
                     "type": "string"
                 }
             }
@@ -3068,7 +3229,7 @@ const docTemplate = `{
                 "cards": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/dtos.CardInArticle"
+                        "$ref": "#/definitions/dtos.CardArticle"
                     }
                 },
                 "headline": {
@@ -3134,75 +3295,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Order": {
-            "type": "object",
-            "properties": {
-                "category_id": {
-                    "type": "integer"
-                },
-                "color": {
-                    "type": "string"
-                },
-                "currency_code": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "item_specs": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "total_amount": {
-                    "type": "number"
-                }
-            }
-        },
-        "model.Users": {
-            "type": "object",
-            "required": [
-                "email",
-                "first_name",
-                "id",
-                "image",
-                "last_name",
-                "phone_number",
-                "role",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "xdto.CreateOrderDTO": {
+        "ghn.CreateOrderDTO": {
             "type": "object",
             "required": [
                 "from_address",
@@ -3274,7 +3367,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.OrderItem"
+                        "$ref": "#/definitions/ghn.OrderItem"
                     }
                 },
                 "length": {
@@ -3351,7 +3444,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Data": {
+        "ghn.Data": {
             "type": "object",
             "properties": {
                 "district_encode": {
@@ -3361,7 +3454,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "fee": {
-                    "$ref": "#/definitions/xdto.Fee"
+                    "$ref": "#/definitions/ghn.Fee"
                 },
                 "order_code": {
                     "type": "string"
@@ -3380,7 +3473,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.District": {
+        "ghn.District": {
             "type": "object",
             "properties": {
                 "Code": {
@@ -3403,7 +3496,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.DistrictDTO": {
+        "ghn.DistrictDTO": {
             "type": "object",
             "properties": {
                 "code": {
@@ -3412,7 +3505,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.District"
+                        "$ref": "#/definitions/ghn.District"
                     }
                 },
                 "message": {
@@ -3420,7 +3513,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Fee": {
+        "ghn.Fee": {
             "type": "object",
             "properties": {
                 "coupon": {
@@ -3446,7 +3539,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Log": {
+        "ghn.Log": {
             "type": "object",
             "properties": {
                 "status": {
@@ -3457,21 +3550,21 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderDTO": {
+        "ghn.OrderDTO": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/xdto.Data"
+                    "$ref": "#/definitions/ghn.Data"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "xdto.OrderInfo": {
+        "ghn.OrderInfo": {
             "type": "object",
             "properties": {
                 "_id": {
@@ -3576,7 +3669,7 @@ const docTemplate = `{
                 "log": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.Log"
+                        "$ref": "#/definitions/ghn.Log"
                     }
                 },
                 "next_warehouse_id": {
@@ -3689,7 +3782,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderInfoDTO": {
+        "ghn.OrderInfoDTO": {
             "type": "object",
             "properties": {
                 "code": {
@@ -3698,7 +3791,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.OrderInfo"
+                        "$ref": "#/definitions/ghn.OrderInfo"
                     }
                 },
                 "message": {
@@ -3706,7 +3799,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderItem": {
+        "ghn.OrderItem": {
             "type": "object",
             "required": [
                 "name",
@@ -3743,7 +3836,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Province": {
+        "ghn.Province": {
             "type": "object",
             "properties": {
                 "Code": {
@@ -3757,7 +3850,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.ProvinceDTO": {
+        "ghn.ProvinceDTO": {
             "type": "object",
             "properties": {
                 "code": {
@@ -3766,7 +3859,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.Province"
+                        "$ref": "#/definitions/ghn.Province"
                     }
                 },
                 "message": {
@@ -3774,7 +3867,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Ward": {
+        "ghn.Ward": {
             "type": "object",
             "properties": {
                 "DistrictID": {
@@ -3788,7 +3881,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.WardDTO": {
+        "ghn.WardDTO": {
             "type": "object",
             "properties": {
                 "code": {
@@ -3797,10 +3890,78 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.Ward"
+                        "$ref": "#/definitions/ghn.Ward"
                     }
                 },
                 "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Order": {
+            "type": "object",
+            "properties": {
+                "category_id": {
+                    "type": "integer"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "item_specs": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "total_amount": {
+                    "type": "number"
+                }
+            }
+        },
+        "model.Users": {
+            "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "id",
+                "image",
+                "last_name",
+                "phone_number",
+                "role",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

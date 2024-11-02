@@ -5,7 +5,7 @@ import (
 	"context"
 	"swclabs/swipex/internal/config"
 	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/xdto"
+	"swclabs/swipex/internal/core/domain/x/ghn"
 	"swclabs/swipex/internal/workers/queue"
 	"swclabs/swipex/pkg/lib/worker"
 )
@@ -52,27 +52,27 @@ func (t *Task) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (strin
 }
 
 // CreateDeliveryOrder implements IPurchase.
-func (t *Task) CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error) {
+func (t *Task) CreateDeliveryOrder(ctx context.Context, shopID int, order ghn.CreateOrderDTO) (*ghn.OrderDTO, error) {
 	panic("unimplemented")
 }
 
 // DeliveryOrderInfo implements IPurchase.
-func (t *Task) DeliveryOrderInfo(ctx context.Context, orderCode string) (*xdto.OrderInfoDTO, error) {
+func (t *Task) DeliveryOrderInfo(ctx context.Context, orderCode string) (*ghn.OrderInfoDTO, error) {
 	panic("unimplemented")
 }
 
 // AddressDistrict implements IPurchase.
-func (t *Task) AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error) {
+func (t *Task) AddressDistrict(ctx context.Context, provinceID int) (*ghn.DistrictDTO, error) {
 	panic("unimplemented")
 }
 
 // AddressProvince implements IPurchase.
-func (t *Task) AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error) {
+func (t *Task) AddressProvince(ctx context.Context) (*ghn.ProvinceDTO, error) {
 	panic("unimplemented")
 }
 
 // AddressWard implements IPurchase.
-func (t *Task) AddressWard(ctx context.Context, districtID int) (*xdto.WardDTO, error) {
+func (t *Task) AddressWard(ctx context.Context, districtID int) (*ghn.WardDTO, error) {
 	panic("unimplemented")
 }
 

@@ -28,8 +28,8 @@ type CardContent struct {
 	Src     string `json:"src"`
 }
 
-// CardInArticle used to bind from json mapping to structure
-type CardInArticle struct {
+// CardArticle used to bind from json mapping to structure
+type CardArticle struct {
 	Category string        `json:"category" validate:"required"`
 	Title    string        `json:"title" validate:"required"`
 	Src      string        `json:"src"`
@@ -38,14 +38,25 @@ type CardInArticle struct {
 
 // Article request, response
 type Article struct {
-	Headline string          `json:"headline" validate:"required"`
-	Cards    []CardInArticle `json:"cards" validate:"required"`
+	Headline string        `json:"headline" validate:"required"`
+	Cards    []CardArticle `json:"cards" validate:"required"`
 }
 
 // UploadArticle request, response
 type UploadArticle struct {
 	Position string `json:"position" validate:"required"`
 	Article
+}
+
+type News struct {
+	Header string        `json:"header" validate:"required"`
+	Cards  []CardArticle `json:"cards" validate:"required"`
+}
+
+type NewsDTO struct {
+	Header   string        `json:"header" validate:"required"`
+	Cards    []CardArticle `json:"cards" validate:"required"`
+	Category string        `json:"category" validate:"required"`
 }
 
 type Comment struct {

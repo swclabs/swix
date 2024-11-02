@@ -11,6 +11,7 @@ import (
 	"swclabs/swipex/internal/core/domain/entity"
 	"swclabs/swipex/internal/core/repos/collections"
 	"swclabs/swipex/internal/core/repos/comments"
+	"swclabs/swipex/internal/core/repos/news"
 	"swclabs/swipex/pkg/infra/blob"
 	"swclabs/swipex/pkg/infra/db"
 )
@@ -22,11 +23,13 @@ func New(
 	blob blob.IBlobStorage,
 	collection collections.ICollections,
 	cmt comments.IComments,
+	news news.INews,
 ) IArticle {
 	return &Article{
 		Blob:        blob,
 		Collections: collection,
 		Comments:    cmt,
+		News:        news,
 	}
 }
 
@@ -35,6 +38,69 @@ type Article struct {
 	Blob        blob.IBlobStorage
 	Collections collections.ICollections
 	Comments    comments.IComments
+	News        news.INews
+}
+
+func (p *Article) UploadNews(ctx context.Context, newsDTO dtos.NewsDTO) (int64, error) {
+	tx, err := db.NewTx(ctx)
+	if err != nil {
+		return -1, err
+	}
+	var newsRepo = news.New(tx)
+	for _, card := range newsDTO.Cards {
+		body, err := json.Marshal(card)
+		if err != nil {
+			return -1, err
+		}
+		_, err = newsRepo.Create(ctx, entity.News{
+			Category: newsDTO.Category,
+			Header:   newsDTO.Header,
+			Body:     string(body),
+		})
+		if err != nil {
+			err = tx.Rollback(ctx)
+			if err != nil {
+				return -1, err
+			}
+		}
+	}
+	if err = tx.Commit(ctx); err != nil {
+		return -1, err
+	}
+	return 0, nil
+}
+
+func (p *Article) UploadNewsImage(ctx context.Context, newsID int64, file *multipart.FileHeader) error {
+	f, err := file.Open()
+	if err != nil {
+		return err
+	}
+	resp, err := p.Blob.UploadImages(f)
+	if err != nil {
+		return err
+	}
+	return p.News.UploadNewsImage(ctx, newsID, resp.SecureURL)
+}
+
+func (p *Article) GetNews(ctx context.Context, category string, limit int) (*dtos.News, error) {
+	newss, err := p.News.GetMany(ctx, category, limit)
+	if err != nil {
+		return nil, err
+	}
+	if len(newss) == 0 {
+		return &dtos.News{}, nil
+	}
+	var nnews dtos.News
+	nnews.Header = newss[0].Header
+
+	for _, _collection := range newss {
+		var body dtos.CardArticle
+		if err := json.Unmarshal([]byte(_collection.Body), &body); err != nil {
+			return nil, err
+		}
+		nnews.Cards = append(nnews.Cards, body)
+	}
+	return &nnews, nil
 }
 
 // GetMessage implements IArticle.
@@ -87,7 +153,7 @@ func (p *Article) GetCarousels(ctx context.Context, position string, limit int) 
 	carousels.Headline = collectionSlice[0].Headline
 
 	for _, _collection := range collectionSlice {
-		var body dtos.CardInArticle
+		var body dtos.CardArticle
 		if err := json.Unmarshal([]byte(_collection.Body), &body); err != nil {
 			return nil, err
 		}

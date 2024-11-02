@@ -4,7 +4,7 @@ package purchase
 import (
 	"context"
 	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/xdto"
+	"swclabs/swipex/internal/core/domain/x/ghn"
 )
 
 // IPurchase : Module for Purchasing.
@@ -46,9 +46,9 @@ type IPurchase interface {
 
 	GetOrderByCode(ctx context.Context, orderCode string) (*dtos.OrderInfo, error)
 
-	DeliveryOrderInfo(ctx context.Context, orderCode string) (*xdto.OrderInfoDTO, error)
+	DeliveryOrderInfo(ctx context.Context, orderCode string) (*ghn.OrderInfoDTO, error)
 
-	CreateDeliveryOrder(ctx context.Context, shopID int, order xdto.CreateOrderDTO) (*xdto.OrderDTO, error)
+	CreateDeliveryOrder(ctx context.Context, shopID int, order ghn.CreateOrderDTO) (*ghn.OrderDTO, error)
 
 	// CreateDeliveryAddress creates a new delivery address.
 	// ctx is the context to manage the request's lifecycle.
@@ -74,11 +74,11 @@ type IPurchase interface {
 	// Returns a slice of Delivery objects and an error if any issues occur during the retrieval process.
 	GetDelivery(ctx context.Context, userID int64) ([]dtos.Delivery, error)
 
-	AddressProvince(ctx context.Context) (*xdto.ProvinceDTO, error)
+	AddressProvince(ctx context.Context) (*ghn.ProvinceDTO, error)
 
-	AddressWard(ctx context.Context, districtID int) (*xdto.WardDTO, error)
+	AddressWard(ctx context.Context, districtID int) (*ghn.WardDTO, error)
 
-	AddressDistrict(ctx context.Context, provinceID int) (*xdto.DistrictDTO, error)
+	AddressDistrict(ctx context.Context, provinceID int) (*ghn.DistrictDTO, error)
 
 	UseCoupon(ctx context.Context, userID int64, couponCode string) error
 	CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (code string, err error)

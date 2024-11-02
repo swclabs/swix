@@ -23,7 +23,7 @@ definitions:
     properties:
       cards:
         items:
-          $ref: '#/definitions/dtos.CardInArticle'
+          $ref: '#/definitions/dtos.CardArticle'
         type: array
       headline:
         type: string
@@ -52,6 +52,8 @@ definitions:
         type: string
       price:
         type: string
+      product_id:
+        type: integer
       rating:
         type: number
       screen:
@@ -74,16 +76,7 @@ definitions:
       specs:
         $ref: '#/definitions/dtos.SpecsItem'
     type: object
-  dtos.CardContent:
-    properties:
-      content:
-        type: string
-      src:
-        type: string
-    required:
-    - content
-    type: object
-  dtos.CardInArticle:
+  dtos.CardArticle:
     properties:
       category:
         type: string
@@ -98,6 +91,15 @@ definitions:
     required:
     - category
     - title
+    type: object
+  dtos.CardContent:
+    properties:
+      content:
+        type: string
+      src:
+        type: string
+    required:
+    - content
     type: object
   dtos.Cart:
     properties:
@@ -144,6 +146,13 @@ definitions:
         type: array
       user_id:
         type: integer
+    type: object
+  dtos.CollectionUpload:
+    properties:
+      id:
+        type: integer
+      msg:
+        type: string
     type: object
   dtos.Color:
     properties:
@@ -413,6 +422,33 @@ definitions:
     required:
     - content
     - position
+    type: object
+  dtos.News:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/dtos.CardArticle'
+        type: array
+      header:
+        type: string
+    required:
+    - cards
+    - header
+    type: object
+  dtos.NewsDTO:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/dtos.CardArticle'
+        type: array
+      category:
+        type: string
+      header:
+        type: string
+    required:
+    - cards
+    - category
+    - header
     type: object
   dtos.OK:
     properties:
@@ -766,7 +802,7 @@ definitions:
     properties:
       cards:
         items:
-          $ref: '#/definitions/dtos.CardInArticle'
+          $ref: '#/definitions/dtos.CardArticle'
         type: array
       headline:
         type: string
@@ -813,54 +849,7 @@ definitions:
       name:
         type: string
     type: object
-  model.Order:
-    properties:
-      category_id:
-        type: integer
-      color:
-        type: string
-      currency_code:
-        type: string
-      image:
-        type: string
-      item_specs:
-        type: string
-      name:
-        type: string
-      quantity:
-        type: integer
-      total_amount:
-        type: number
-    type: object
-  model.Users:
-    properties:
-      email:
-        type: string
-      first_name:
-        type: string
-      id:
-        type: integer
-      image:
-        type: string
-      last_name:
-        type: string
-      phone_number:
-        type: string
-      role:
-        type: string
-      username:
-        type: string
-    required:
-    - email
-    - first_name
-    - id
-    - image
-    - last_name
-    - phone_number
-    - role
-    - username
-    type: object
-  xdto.CreateOrderDTO:
+  ghn.CreateOrderDTO:
     properties:
       client_order_code:
         maxLength: 50
@@ -895,7 +884,7 @@ definitions:
         type: integer
       items:
         items:
-          $ref: '#/definitions/xdto.OrderItem'
+          $ref: '#/definitions/ghn.OrderItem'
         type: array
       length:
         maximum: 200
@@ -971,14 +960,14 @@ definitions:
     - weight
     - width
     type: object
-  xdto.Data:
+  ghn.Data:
     properties:
       district_encode:
         type: string
       expected_delivery_time:
         type: string
       fee:
-        $ref: '#/definitions/xdto.Fee'
+        $ref: '#/definitions/ghn.Fee'
       order_code:
         type: string
       sort_code:
@@ -990,7 +979,7 @@ definitions:
       ward_encode:
         type: string
     type: object
-  xdto.District:
+  ghn.District:
     properties:
       Code:
         type: string
@@ -1005,18 +994,18 @@ definitions:
       Type:
         type: integer
     type: object
-  xdto.DistrictDTO:
+  ghn.DistrictDTO:
     properties:
       code:
         type: integer
       data:
         items:
-          $ref: '#/definitions/xdto.District'
+          $ref: '#/definitions/ghn.District'
         type: array
       message:
         type: string
     type: object
-  xdto.Fee:
+  ghn.Fee:
     properties:
       coupon:
         type: integer
@@ -1033,23 +1022,23 @@ definitions:
       station_pu:
         type: integer
     type: object
-  xdto.Log:
+  ghn.Log:
     properties:
       status:
         type: string
       updated_date:
         type: string
     type: object
-  xdto.OrderDTO:
+  ghn.OrderDTO:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/xdto.Data'
+        $ref: '#/definitions/ghn.Data'
       message:
         type: string
     type: object
-  xdto.OrderInfo:
+  ghn.OrderInfo:
     properties:
       _id:
         type: string
@@ -1119,7 +1108,7 @@ definitions:
         type: integer
       log:
         items:
-          $ref: '#/definitions/xdto.Log'
+          $ref: '#/definitions/ghn.Log'
         type: array
       next_warehouse_id:
         type: integer
@@ -1194,18 +1183,18 @@ definitions:
       width:
         type: integer
     type: object
-  xdto.OrderInfoDTO:
+  ghn.OrderInfoDTO:
     properties:
       code:
         type: integer
       data:
         items:
-          $ref: '#/definitions/xdto.OrderInfo'
+          $ref: '#/definitions/ghn.OrderInfo'
         type: array
       message:
         type: string
     type: object
-  xdto.OrderItem:
+  ghn.OrderItem:
     properties:
       category:
         type: string
@@ -1230,7 +1219,7 @@ definitions:
     - quantity
     - weight
     type: object
-  xdto.Province:
+  ghn.Province:
     properties:
       Code:
         type: string
@@ -1239,18 +1228,18 @@ definitions:
       ProvinceName:
         type: string
     type: object
-  xdto.ProvinceDTO:
+  ghn.ProvinceDTO:
     properties:
       code:
         type: integer
       data:
         items:
-          $ref: '#/definitions/xdto.Province'
+          $ref: '#/definitions/ghn.Province'
         type: array
       message:
         type: string
     type: object
-  xdto.Ward:
+  ghn.Ward:
     properties:
       DistrictID:
         type: integer
@@ -1259,16 +1248,63 @@ definitions:
       WardName:
         type: string
     type: object
-  xdto.WardDTO:
+  ghn.WardDTO:
     properties:
       code:
         type: integer
       data:
         items:
-          $ref: '#/definitions/xdto.Ward'
+          $ref: '#/definitions/ghn.Ward'
         type: array
       message:
         type: string
+    type: object
+  model.Order:
+    properties:
+      category_id:
+        type: integer
+      color:
+        type: string
+      currency_code:
+        type: string
+      image:
+        type: string
+      item_specs:
+        type: string
+      name:
+        type: string
+      quantity:
+        type: integer
+      total_amount:
+        type: number
+    type: object
+  model.Users:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      last_name:
+        type: string
+      phone_number:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - first_name
+    - id
+    - image
+    - last_name
+    - phone_number
+    - role
+    - username
     type: object
 info:
   contact: {}
@@ -1331,7 +1367,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.DistrictDTO'
+            $ref: '#/definitions/ghn.DistrictDTO'
       tags:
       - address
   /address/province:
@@ -1345,7 +1381,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.ProvinceDTO'
+            $ref: '#/definitions/ghn.ProvinceDTO'
       tags:
       - address
   /address/ward:
@@ -1365,7 +1401,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.WardDTO'
+            $ref: '#/definitions/ghn.WardDTO'
       tags:
       - address
   /auth/email:
@@ -1727,14 +1763,14 @@ paths:
         name: order
         required: true
         schema:
-          $ref: '#/definitions/xdto.CreateOrderDTO'
+          $ref: '#/definitions/ghn.CreateOrderDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.OrderDTO'
+            $ref: '#/definitions/ghn.OrderDTO'
       tags:
       - delivery
   /delivery/order/{code}:
@@ -1754,7 +1790,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.OrderInfoDTO'
+            $ref: '#/definitions/ghn.OrderInfoDTO'
       tags:
       - delivery
   /favorite:
@@ -1937,6 +1973,76 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - inventories
+  /news:
+    get:
+      consumes:
+      - application/json
+      description: get news
+      parameters:
+      - description: position of news
+        in: query
+        name: position
+        required: true
+        type: string
+      - description: limit of cards carousel
+        in: query
+        name: limit
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.News'
+      tags:
+      - news
+    post:
+      consumes:
+      - application/json
+      description: create news
+      parameters:
+      - description: news Request
+        in: body
+        name: collection
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.NewsDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.CollectionUpload'
+      tags:
+      - news
+  /news/image:
+    put:
+      consumes:
+      - application/json
+      description: update news image
+      parameters:
+      - description: image of news
+        in: formData
+        name: img
+        required: true
+        type: file
+      - description: news identifier
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - news
   /oauth2/google:
     get:
       consumes:

@@ -15,6 +15,8 @@ type IArticle interface {
 	// Returns id of collection was uploaded and error if any issues occur during the upload process.
 	UploadArticle(ctx context.Context, banner dtos.UploadArticle) (int64, error)
 
+	UploadNews(ctx context.Context, newsDTO dtos.NewsDTO) (int64, error)
+
 	// UploadCollectionsImage uploads a new image of collection.
 	// ctx is the context to manage the request's lifecycle.
 	// cardBannerID contains the id of collection to be uploaded.
@@ -22,12 +24,16 @@ type IArticle interface {
 	// Returns an error if any issues occur during the upload process.
 	UploadCollectionsImage(ctx context.Context, cardBannerID string, fileHeader *multipart.FileHeader) error
 
+	UploadNewsImage(ctx context.Context, newsID int64, file *multipart.FileHeader) error
+
 	// GetCarousels return a slices of carousel.
 	// ctx is the context to manage the request's lifecycle.
 	// cardBannerID contains the id of collection to be returns.
 	// limit is the maximum number of Collection to retrieve.
 	// Returns an error if any issues occur during the upload process.
 	GetCarousels(ctx context.Context, position string, limit int) (*dtos.Article, error)
+
+	GetNews(ctx context.Context, category string, limit int) (*dtos.News, error)
 
 	// UploadMessage uploads a new message.
 	// ctx is the context to manage the request's lifecycle.

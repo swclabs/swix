@@ -17,14 +17,6 @@ CREATE TABLE "users" (
   "image" varchar
 );
 
-CREATE TABLE "payments" (
-  "id" bigserial PRIMARY KEY,
-  "type" varchar NOT NULL,
-  "card_number" varchar NOT NULL,
-  "cvc_code" varchar NOT NULL,
-  "owner" varchar NOT NULL
-);
-
 CREATE TABLE "addresses" (
   "id" bigserial PRIMARY KEY,
   "city" varchar NOT NULL,
@@ -135,6 +127,14 @@ CREATE TABLE "collections" (
   "created" timestamp default (timezone('utc', now())),
   "position" varchar NOT NULL ,
   "headline" varchar,
+  "body" jsonb
+);
+
+CREATE TABLE "news" (
+  "id" bigserial PRIMARY KEY,
+  "created" timestamp default (timezone('utc', now())),
+  "category" varchar NOT NULL,
+  "header" varchar,
   "body" jsonb
 );
 

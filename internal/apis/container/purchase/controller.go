@@ -8,7 +8,7 @@ import (
 	"strings"
 	"swclabs/swipex/app"
 	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/xdto"
+	"swclabs/swipex/internal/core/domain/x/ghn"
 	"swclabs/swipex/internal/core/service/purchase"
 	"swclabs/swipex/pkg/lib/crypto"
 	"swclabs/swipex/pkg/lib/valid"
@@ -177,11 +177,11 @@ func (p *Controller) CreateOrderForm(c echo.Context) error {
 // @Tags delivery
 // @Accept json
 // @Produce json
-// @Param order body xdto.CreateOrderDTO true "order delivery body request"
-// @Success 200 {object} xdto.OrderDTO
+// @Param order body ghn.CreateOrderDTO true "order delivery body request"
+// @Success 200 {object} ghn.OrderDTO
 // @Router /delivery/order [POST]
 func (p *Controller) CreateDeliveryOrder(c echo.Context) error {
-	var order xdto.CreateOrderDTO
+	var order ghn.CreateOrderDTO
 	if err := c.Bind(&order); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -207,7 +207,7 @@ func (p *Controller) CreateDeliveryOrder(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param code path string true "delivery order code"
-// @Success 200 {object} xdto.OrderInfoDTO
+// @Success 200 {object} ghn.OrderInfoDTO
 // @Router /delivery/order/{code} [GET]
 func (p *Controller) DeliveryOrderInfo(c echo.Context) error {
 	orderCode := c.Param("code")
@@ -226,7 +226,7 @@ func (p *Controller) DeliveryOrderInfo(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param province_id query number true "province id"
-// @Success 200 {object} xdto.DistrictDTO
+// @Success 200 {object} ghn.DistrictDTO
 // @Router /address/district [GET]
 func (p *Controller) AddressDistrict(c echo.Context) error {
 	provinceID, err := strconv.Atoi(c.QueryParam("province_id"))
@@ -249,7 +249,7 @@ func (p *Controller) AddressDistrict(c echo.Context) error {
 // @Tags address
 // @Accept json
 // @Produce json
-// @Success 200 {object} xdto.ProvinceDTO
+// @Success 200 {object} ghn.ProvinceDTO
 // @Router /address/province [GET]
 func (p *Controller) AddressProvince(c echo.Context) error {
 	resp, err := p.services.AddressProvince(c.Request().Context())
@@ -267,7 +267,7 @@ func (p *Controller) AddressProvince(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param district_id query number true "district id"
-// @Success 200 {object} xdto.WardDTO
+// @Success 200 {object} ghn.WardDTO
 // @Router /address/ward [GET]
 func (p *Controller) AddressWard(c echo.Context) error {
 	districtID, err := strconv.Atoi(c.QueryParam("district_id"))
