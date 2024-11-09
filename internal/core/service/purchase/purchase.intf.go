@@ -4,6 +4,7 @@ package purchase
 import (
 	"context"
 	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/entity"
 	"swclabs/swipex/internal/core/domain/x/ghn"
 )
 
@@ -44,6 +45,8 @@ type IPurchase interface {
 	// Returns a slice of OrderSchema objects and an error if any issues occur during the retrieval process.
 	GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderInfo, error)
 
+	GetUsersByAdmin(ctx context.Context, limit int) ([]dtos.OrderInfo, error)
+
 	GetOrderByCode(ctx context.Context, orderCode string) (*dtos.OrderInfo, error)
 
 	DeliveryOrderInfo(ctx context.Context, orderCode string) (*ghn.OrderInfoDTO, error)
@@ -74,11 +77,11 @@ type IPurchase interface {
 	// Returns a slice of Delivery objects and an error if any issues occur during the retrieval process.
 	GetDelivery(ctx context.Context, userID int64) ([]dtos.Delivery, error)
 
-	AddressProvince(ctx context.Context) (*ghn.ProvinceDTO, error)
+	AddressProvince(ctx context.Context) ([]entity.Province, error)
 
-	AddressWard(ctx context.Context, districtID int) (*ghn.WardDTO, error)
+	AddressWard(ctx context.Context, districtID string) ([]entity.Commune, error)
 
-	AddressDistrict(ctx context.Context, provinceID int) (*ghn.DistrictDTO, error)
+	AddressDistrict(ctx context.Context, provinceID string) ([]entity.District, error)
 
 	UseCoupon(ctx context.Context, userID int64, couponCode string) error
 	CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (code string, err error)

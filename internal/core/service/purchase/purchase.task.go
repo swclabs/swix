@@ -5,6 +5,7 @@ import (
 	"context"
 	"swclabs/swipex/internal/config"
 	"swclabs/swipex/internal/core/domain/dtos"
+	"swclabs/swipex/internal/core/domain/entity"
 	"swclabs/swipex/internal/core/domain/x/ghn"
 	"swclabs/swipex/internal/workers/queue"
 	"swclabs/swipex/pkg/lib/worker"
@@ -24,6 +25,26 @@ func UseTask(service IPurchase) IPurchase {
 type Task struct {
 	worker  worker.IWorkerClient
 	service IPurchase
+}
+
+func (t *Task) GetUsersByAdmin(ctx context.Context, limit int) ([]dtos.OrderInfo, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+// AddressDistrict implements IPurchase.
+func (t *Task) AddressDistrict(ctx context.Context, provinceID string) ([]entity.District, error) {
+	panic("unimplemented")
+}
+
+// AddressProvince implements IPurchase.
+func (t *Task) AddressProvince(ctx context.Context) ([]entity.Province, error) {
+	panic("unimplemented")
+}
+
+// AddressWard implements IPurchase.
+func (t *Task) AddressWard(ctx context.Context, districtID string) ([]entity.Commune, error) {
+	panic("unimplemented")
 }
 
 // CreateCoupon implements IPurchase.
@@ -58,21 +79,6 @@ func (t *Task) CreateDeliveryOrder(ctx context.Context, shopID int, order ghn.Cr
 
 // DeliveryOrderInfo implements IPurchase.
 func (t *Task) DeliveryOrderInfo(ctx context.Context, orderCode string) (*ghn.OrderInfoDTO, error) {
-	panic("unimplemented")
-}
-
-// AddressDistrict implements IPurchase.
-func (t *Task) AddressDistrict(ctx context.Context, provinceID int) (*ghn.DistrictDTO, error) {
-	panic("unimplemented")
-}
-
-// AddressProvince implements IPurchase.
-func (t *Task) AddressProvince(ctx context.Context) (*ghn.ProvinceDTO, error) {
-	panic("unimplemented")
-}
-
-// AddressWard implements IPurchase.
-func (t *Task) AddressWard(ctx context.Context, districtID int) (*ghn.WardDTO, error) {
 	panic("unimplemented")
 }
 

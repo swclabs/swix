@@ -50,6 +50,7 @@ func (c *Classify) CreateSuppliers(ctx context.Context, supplierReq dtos.Supplie
 		}
 		supplierRepo = suppliers.New(tx)
 	)
+	
 	if err := supplierRepo.Insert(ctx, supplier); err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)

@@ -282,26 +282,38 @@ definitions:
       ssd:
         type: string
     type: object
-  model.Order:
+  entity.Commune:
     properties:
-      category_id:
-        type: integer
-      color:
+      district_id:
         type: string
-      currency_code:
-        type: string
-      image:
-        type: string
-      item_specs:
+      id:
         type: string
       name:
         type: string
-      quantity:
+      pid:
         type: integer
-      total_amount:
-        type: number
     type: object
-  xdto.CreateOrderDTO:
+  entity.District:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
+      province_id:
+        type: string
+    type: object
+  entity.Province:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
+    type: object
+  ghn.CreateOrderDTO:
     properties:
       client_order_code:
         maxLength: 50
@@ -336,7 +348,7 @@ definitions:
         type: integer
       items:
         items:
-          $ref: '#/definitions/xdto.OrderItem'
+          $ref: '#/definitions/ghn.OrderItem'
         type: array
       length:
         maximum: 200
@@ -412,14 +424,14 @@ definitions:
     - weight
     - width
     type: object
-  xdto.Data:
+  ghn.Data:
     properties:
       district_encode:
         type: string
       expected_delivery_time:
         type: string
       fee:
-        $ref: '#/definitions/xdto.Fee'
+        $ref: '#/definitions/ghn.Fee'
       order_code:
         type: string
       sort_code:
@@ -431,33 +443,7 @@ definitions:
       ward_encode:
         type: string
     type: object
-  xdto.District:
-    properties:
-      Code:
-        type: string
-      DistrictID:
-        type: integer
-      DistrictName:
-        type: string
-      ProvinceID:
-        type: integer
-      SupportType:
-        type: integer
-      Type:
-        type: integer
-    type: object
-  xdto.DistrictDTO:
-    properties:
-      code:
-        type: integer
-      data:
-        items:
-          $ref: '#/definitions/xdto.District'
-        type: array
-      message:
-        type: string
-    type: object
-  xdto.Fee:
+  ghn.Fee:
     properties:
       coupon:
         type: integer
@@ -474,23 +460,23 @@ definitions:
       station_pu:
         type: integer
     type: object
-  xdto.Log:
+  ghn.Log:
     properties:
       status:
         type: string
       updated_date:
         type: string
     type: object
-  xdto.OrderDTO:
+  ghn.OrderDTO:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/xdto.Data'
+        $ref: '#/definitions/ghn.Data'
       message:
         type: string
     type: object
-  xdto.OrderInfo:
+  ghn.OrderInfo:
     properties:
       _id:
         type: string
@@ -560,7 +546,7 @@ definitions:
         type: integer
       log:
         items:
-          $ref: '#/definitions/xdto.Log'
+          $ref: '#/definitions/ghn.Log'
         type: array
       next_warehouse_id:
         type: integer
@@ -635,18 +621,18 @@ definitions:
       width:
         type: integer
     type: object
-  xdto.OrderInfoDTO:
+  ghn.OrderInfoDTO:
     properties:
       code:
         type: integer
       data:
         items:
-          $ref: '#/definitions/xdto.OrderInfo'
+          $ref: '#/definitions/ghn.OrderInfo'
         type: array
       message:
         type: string
     type: object
-  xdto.OrderItem:
+  ghn.OrderItem:
     properties:
       category:
         type: string
@@ -671,45 +657,24 @@ definitions:
     - quantity
     - weight
     type: object
-  xdto.Province:
+  model.Order:
     properties:
-      Code:
-        type: string
-      ProvinceID:
+      category_id:
         type: integer
-      ProvinceName:
+      color:
         type: string
-    type: object
-  xdto.ProvinceDTO:
-    properties:
-      code:
+      currency_code:
+        type: string
+      image:
+        type: string
+      item_specs:
+        type: string
+      name:
+        type: string
+      quantity:
         type: integer
-      data:
-        items:
-          $ref: '#/definitions/xdto.Province'
-        type: array
-      message:
-        type: string
-    type: object
-  xdto.Ward:
-    properties:
-      DistrictID:
-        type: integer
-      WardCode:
-        type: string
-      WardName:
-        type: string
-    type: object
-  xdto.WardDTO:
-    properties:
-      code:
-        type: integer
-      data:
-        items:
-          $ref: '#/definitions/xdto.Ward'
-        type: array
-      message:
-        type: string
+      total_amount:
+        type: number
     type: object
 info:
   contact: {}
@@ -772,7 +737,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.DistrictDTO'
+            items:
+              $ref: '#/definitions/entity.District'
+            type: array
       tags:
       - address
   /address/province:
@@ -786,7 +753,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.ProvinceDTO'
+            items:
+              $ref: '#/definitions/entity.Province'
+            type: array
       tags:
       - address
   /address/ward:
@@ -806,7 +775,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.WardDTO'
+            items:
+              $ref: '#/definitions/entity.Commune'
+            type: array
       tags:
       - address
   /delivery:
@@ -854,14 +825,14 @@ paths:
         name: order
         required: true
         schema:
-          $ref: '#/definitions/xdto.CreateOrderDTO'
+          $ref: '#/definitions/ghn.CreateOrderDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.OrderDTO'
+            $ref: '#/definitions/ghn.OrderDTO'
       tags:
       - delivery
   /delivery/order/{code}:
@@ -881,7 +852,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/xdto.OrderInfoDTO'
+            $ref: '#/definitions/ghn.OrderInfoDTO'
       tags:
       - delivery
   /purchase/admin/orders:
@@ -939,15 +910,15 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - purchase
-  /purchase/carts/{type}:
+  /purchase/carts/{id}:
     delete:
       consumes:
       - application/json
       description: delete item from carts
       parameters:
-      - description: product type
+      - description: inventory id
         in: path
-        name: type
+        name: id
         required: true
         type: string
       produces:

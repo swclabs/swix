@@ -51,19 +51,21 @@ type ProductOrderSchema struct {
 }
 
 type OrderInfo struct {
-	UUID      string            `json:"uuid"`
-	CreatedAt string            `json:"time"`
-	User      OrderFormCustomer `json:"user"`
-	Delivery  OrderFormDelivery `json:"delivery"`
-	Address   OrderFormAddress  `json:"address"`
-	Items     []model.Order     `json:"items"`
+	UUID        string            `json:"uuid"`
+	CreatedAt   string            `json:"time"`
+	User        OrderFormCustomer `json:"user"`
+	Delivery    OrderFormDelivery `json:"delivery"`
+	Address     OrderFormAddress  `json:"address"`
+	TotalAmount string            `json:"total_amount"`
+	Items       []model.Order     `json:"items"`
 }
 
 type Order struct {
-	Customer OrderFormCustomer  `json:"customer" validate:"required"`
-	Delivery OrderFormDelivery  `json:"delivery" validate:"required"`
-	Address  OrderFormAddress   `json:"address" validate:"required"`
-	Product  []OrderFormProduct `json:"product" validate:"required"`
+	CouponCode string             `json:"coupon_code"`
+	Customer   OrderFormCustomer  `json:"customer" validate:"required"`
+	Delivery   OrderFormDelivery  `json:"delivery" validate:"required"`
+	Address    OrderFormAddress   `json:"address" validate:"required"`
+	Product    []OrderFormProduct `json:"product" validate:"required"`
 }
 
 type OrderFormAddress struct {
@@ -92,8 +94,9 @@ type OrderFormCustomer struct {
 	Phone     string `json:"phone" validate:"required,number"`
 }
 type OrderForm struct {
-	Customer OrderFormCustomer  `json:"customer" validate:"required"`
-	Delivery OrderFormDelivery  `json:"delivery" validate:"required"`
-	Address  OrderFormAddress   `json:"address" validate:"required"`
-	Product  []OrderFormProduct `json:"product" validate:"required"`
+	CouponCode string             `json:"coupon_code"`
+	Customer   OrderFormCustomer  `json:"customer" validate:"required"`
+	Delivery   OrderFormDelivery  `json:"delivery" validate:"required"`
+	Address    OrderFormAddress   `json:"address" validate:"required"`
+	Product    []OrderFormProduct `json:"product" validate:"required"`
 }

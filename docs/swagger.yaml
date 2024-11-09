@@ -19,18 +19,6 @@ definitions:
     - street
     - ward
     type: object
-  dtos.Article:
-    properties:
-      cards:
-        items:
-          $ref: '#/definitions/dtos.CardArticle'
-        type: array
-      headline:
-        type: string
-    required:
-    - cards
-    - headline
-    type: object
   dtos.Bookmark:
     properties:
       category:
@@ -147,13 +135,6 @@ definitions:
       user_id:
         type: integer
     type: object
-  dtos.CollectionUpload:
-    properties:
-      id:
-        type: integer
-      msg:
-        type: string
-    type: object
   dtos.Color:
     properties:
       img:
@@ -226,8 +207,8 @@ definitions:
         type: string
       discount:
         type: integer
-      expired_at:
-        type: string
+      max_day:
+        type: integer
       max_use:
         type: integer
       status:
@@ -235,7 +216,7 @@ definitions:
     required:
     - description
     - discount
-    - expired_at
+    - max_day
     - max_use
     - status
     type: object
@@ -411,18 +392,6 @@ definitions:
     - success
     - token
     type: object
-  dtos.Message:
-    properties:
-      content:
-        items:
-          type: string
-        type: array
-      position:
-        type: string
-    required:
-    - content
-    - position
-    type: object
   dtos.News:
     properties:
       cards:
@@ -459,6 +428,8 @@ definitions:
     properties:
       address:
         $ref: '#/definitions/dtos.OrderFormAddress'
+      coupon_code:
+        type: string
       customer:
         $ref: '#/definitions/dtos.OrderFormCustomer'
       delivery:
@@ -477,6 +448,8 @@ definitions:
     properties:
       address:
         $ref: '#/definitions/dtos.OrderFormAddress'
+      coupon_code:
+        type: string
       customer:
         $ref: '#/definitions/dtos.OrderFormCustomer'
       delivery:
@@ -558,6 +531,8 @@ definitions:
           $ref: '#/definitions/model.Order'
         type: array
       time:
+        type: string
+      total_amount:
         type: string
       user:
         $ref: '#/definitions/dtos.OrderFormCustomer'
@@ -798,21 +773,6 @@ definitions:
     required:
     - id
     type: object
-  dtos.UploadArticle:
-    properties:
-      cards:
-        items:
-          $ref: '#/definitions/dtos.CardArticle'
-        type: array
-      headline:
-        type: string
-      position:
-        type: string
-    required:
-    - cards
-    - headline
-    - position
-    type: object
   dtos.UserUpdate:
     properties:
       email:
@@ -839,6 +799,37 @@ definitions:
     required:
     - description
     - name
+    type: object
+  entity.Commune:
+    properties:
+      district_id:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
+    type: object
+  entity.District:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
+      province_id:
+        type: string
+    type: object
+  entity.Province:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      pid:
+        type: integer
     type: object
   entity.Supplier:
     properties:
@@ -977,32 +968,6 @@ definitions:
       trans_type:
         type: string
       ward_encode:
-        type: string
-    type: object
-  ghn.District:
-    properties:
-      Code:
-        type: string
-      DistrictID:
-        type: integer
-      DistrictName:
-        type: string
-      ProvinceID:
-        type: integer
-      SupportType:
-        type: integer
-      Type:
-        type: integer
-    type: object
-  ghn.DistrictDTO:
-    properties:
-      code:
-        type: integer
-      data:
-        items:
-          $ref: '#/definitions/ghn.District'
-        type: array
-      message:
         type: string
     type: object
   ghn.Fee:
@@ -1219,46 +1184,6 @@ definitions:
     - quantity
     - weight
     type: object
-  ghn.Province:
-    properties:
-      Code:
-        type: string
-      ProvinceID:
-        type: integer
-      ProvinceName:
-        type: string
-    type: object
-  ghn.ProvinceDTO:
-    properties:
-      code:
-        type: integer
-      data:
-        items:
-          $ref: '#/definitions/ghn.Province'
-        type: array
-      message:
-        type: string
-    type: object
-  ghn.Ward:
-    properties:
-      DistrictID:
-        type: integer
-      WardCode:
-        type: string
-      WardName:
-        type: string
-    type: object
-  ghn.WardDTO:
-    properties:
-      code:
-        type: integer
-      data:
-        items:
-          $ref: '#/definitions/ghn.Ward'
-        type: array
-      message:
-        type: string
-    type: object
   model.Order:
     properties:
       category_id:
@@ -1367,7 +1292,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ghn.DistrictDTO'
+            items:
+              $ref: '#/definitions/entity.District'
+            type: array
       tags:
       - address
   /address/province:
@@ -1381,7 +1308,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ghn.ProvinceDTO'
+            items:
+              $ref: '#/definitions/entity.Province'
+            type: array
       tags:
       - address
   /address/ward:
@@ -1401,7 +1330,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/ghn.WardDTO'
+            items:
+              $ref: '#/definitions/entity.Commune'
+            type: array
       tags:
       - address
   /auth/email:
@@ -1563,121 +1494,6 @@ paths:
             $ref: '#/definitions/dtos.OK'
       tags:
       - categories
-  /collections:
-    get:
-      consumes:
-      - application/json
-      description: get collections
-      parameters:
-      - description: position of collections
-        in: query
-        name: position
-        required: true
-        type: string
-      - description: limit of cards carousel
-        in: query
-        name: limit
-        required: true
-        type: number
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.Article'
-      tags:
-      - collections
-    post:
-      consumes:
-      - application/json
-      description: create collections
-      parameters:
-      - description: collections Request
-        in: body
-        name: collection
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.UploadArticle'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/dtos.Message'
-      tags:
-      - collections
-  /collections/img:
-    put:
-      consumes:
-      - application/json
-      description: update collections image
-      parameters:
-      - description: image of collections
-        in: formData
-        name: img
-        required: true
-        type: file
-      - description: collections identifier
-        in: formData
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - collections
-  /collections/message:
-    get:
-      consumes:
-      - application/json
-      description: get list of headline banner
-      parameters:
-      - description: position of collections
-        in: query
-        name: position
-        required: true
-        type: string
-      - description: limit headline of collections
-        in: query
-        name: limit
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.Message'
-      tags:
-      - collections
-    post:
-      consumes:
-      - application/json
-      description: create headline banner into collections
-      parameters:
-      - description: headline banner data request
-        in: body
-        name: banner
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.Message'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - collections
   /comment:
     get:
       consumes:
@@ -1717,7 +1533,7 @@ paths:
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
-      - collections
+      - comment
   /delivery:
     get:
       consumes:
@@ -1979,9 +1795,9 @@ paths:
       - application/json
       description: get news
       parameters:
-      - description: position of news
+      - description: category of news
         in: query
-        name: position
+        name: category
         required: true
         type: string
       - description: limit of cards carousel
@@ -2015,7 +1831,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/dtos.CollectionUpload'
+            $ref: '#/definitions/dtos.OK'
       tags:
       - news
   /news/image:
@@ -2241,6 +2057,27 @@ paths:
       tags:
       - products
   /purchase/admin/orders:
+    get:
+      consumes:
+      - application/json
+      description: get list of orders.
+      parameters:
+      - description: limit order
+        in: query
+        name: limit
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dtos.OrderInfo'
+            type: array
+      tags:
+      - purchase
     post:
       consumes:
       - application/json
@@ -2589,7 +2426,7 @@ paths:
       - application/json
       description: update information for users.
       parameters:
-      - description: image of collections
+      - description: image of user
         in: formData
         name: img
         required: true

@@ -7,6 +7,10 @@ const (
 		RETURNING id;
 	`
 
+	getLimit = `
+		SELECT * FROM orders LIMIT $1;
+	`
+
 	insertProductToOrder = `
 		INSERT INTO product_in_order (order_id, inventory_id, quantity, currency_code, total_amount)
 		VALUES ($1, $2, $3, $4, $5);

@@ -10,3 +10,23 @@ type Address struct {
 	District string `json:"district" db:"district"`
 	Street   string `json:"street" db:"street"`
 }
+
+type Province struct {
+	PID  int64  `json:"pid" db:"pid"`
+	ID   string `json:"id" db:"id"`
+	Name string `json:"name" db:"name"`
+}
+
+type District struct {
+	PID        int64  `json:"pid" db:"pid"`
+	ID         string `json:"id" db:"id"`
+	ProvinceID string `json:"province_id" db:"province_id"`
+	Name       string `json:"name" db:"name"`
+}
+
+type Commune struct {
+	PID        int64  `json:"pid" db:"pid"`
+	ID         string `json:"id" db:"id"`
+	DistrictID string `json:"district_id" db:"district_id"`
+	Name       string `json:"name" db:"name"`
+}

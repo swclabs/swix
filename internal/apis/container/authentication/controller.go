@@ -215,12 +215,12 @@ func (auth *Controller) UpdateUserInfo(c echo.Context) error {
 // @Tags authentication
 // @Accept json
 // @Produce json
-// @Param img formData file true "image of collections"
+// @Param img formData file true "image of user"
 // @Success 200 {object} dtos.OK
 // @Router /users/image [PUT]
 func (auth *Controller) UpdateUserImage(c echo.Context) error {
 	// session := sessions.Default(c)
-	// email := session.Get("email").(string)
+	// email := session.GetByUserID("email").(string)
 	_, email, _ := crypto.Authenticate(c)
 	file, err := c.FormFile("img")
 	if err != nil {

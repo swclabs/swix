@@ -122,14 +122,6 @@ CREATE TABLE "inventories" (
   "specs" jsonb
 );
 
-CREATE TABLE "collections" (
-  "id" bigserial PRIMARY KEY,
-  "created" timestamp default (timezone('utc', now())),
-  "position" varchar NOT NULL ,
-  "headline" varchar,
-  "body" jsonb
-);
-
 CREATE TABLE "news" (
   "id" bigserial PRIMARY KEY,
   "created" timestamp default (timezone('utc', now())),
@@ -163,4 +155,24 @@ CREATE TABLE "coupons_used" (
   "user_id" bigint NOT NULL,
   "used_at" timestamptz default (timezone('utc', now())),
   CONSTRAINT unique_coupons_used UNIQUE (user_id, coupon_code)
+);
+
+CREATE TABLE "province" (
+  "pid" bigserial PRIMARY KEY,
+  "id" varchar,
+  "name" varchar
+);
+
+CREATE TABLE "district" (
+  "pid" bigserial PRIMARY KEY,
+  "id" varchar,
+  "province_id" varchar,
+  "name" varchar
+);
+
+CREATE TABLE "commune" (
+  "pid" bigserial PRIMARY KEY,
+  "id" varchar,
+  "district_id" varchar,
+  "name" varchar
 );

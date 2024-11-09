@@ -99,7 +99,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ghn.DistrictDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.District"
+                            }
                         }
                     }
                 }
@@ -121,7 +124,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ghn.ProvinceDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Province"
+                            }
                         }
                     }
                 }
@@ -152,7 +158,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ghn.WardDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Commune"
+                            }
                         }
                     }
                 }
@@ -405,182 +414,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/collections": {
-            "get": {
-                "description": "get collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "position of collections",
-                        "name": "position",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "limit of cards carousel",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Article"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "description": "collections Request",
-                        "name": "collection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.UploadArticle"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                }
-            }
-        },
-        "/collections/img": {
-            "put": {
-                "description": "update collections image",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "image of collections",
-                        "name": "img",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "collections identifier",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
-        "/collections/message": {
-            "get": {
-                "description": "get list of headline banner",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "position of collections",
-                        "name": "position",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "limit headline of collections",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create headline banner into collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "description": "headline banner data request",
-                        "name": "banner",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
         "/comment": {
             "get": {
                 "description": "get all comments of product",
@@ -620,7 +453,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "collections"
+                    "comment"
                 ],
                 "parameters": [
                     {
@@ -1053,8 +886,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "position of news",
-                        "name": "position",
+                        "description": "category of news",
+                        "name": "category",
                         "in": "query",
                         "required": true
                     },
@@ -1101,7 +934,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/dtos.CollectionUpload"
+                            "$ref": "#/definitions/dtos.OK"
                         }
                     }
                 }
@@ -1449,6 +1282,38 @@ const docTemplate = `{
             }
         },
         "/purchase/admin/orders": {
+            "get": {
+                "description": "get list of orders.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "limit order",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.OrderInfo"
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create order.",
                 "consumes": [
@@ -1996,7 +1861,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "file",
-                        "description": "image of collections",
+                        "description": "image of user",
                         "name": "img",
                         "in": "formData",
                         "required": true
@@ -2056,24 +1921,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ward": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.Article": {
-            "type": "object",
-            "required": [
-                "cards",
-                "headline"
-            ],
-            "properties": {
-                "cards": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.CardArticle"
-                    }
-                },
-                "headline": {
                     "type": "string"
                 }
             }
@@ -2253,17 +2100,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.CollectionUpload": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer"
-                },
-                "msg": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.Color": {
             "type": "object",
             "properties": {
@@ -2364,7 +2200,7 @@ const docTemplate = `{
             "required": [
                 "description",
                 "discount",
-                "expired_at",
+                "max_day",
                 "max_use",
                 "status"
             ],
@@ -2375,8 +2211,8 @@ const docTemplate = `{
                 "discount": {
                     "type": "integer"
                 },
-                "expired_at": {
-                    "type": "string"
+                "max_day": {
+                    "type": "integer"
                 },
                 "max_use": {
                     "type": "integer"
@@ -2641,24 +2477,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.Message": {
-            "type": "object",
-            "required": [
-                "content",
-                "position"
-            ],
-            "properties": {
-                "content": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "position": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.News": {
             "type": "object",
             "required": [
@@ -2719,6 +2537,9 @@ const docTemplate = `{
                 "address": {
                     "$ref": "#/definitions/dtos.OrderFormAddress"
                 },
+                "coupon_code": {
+                    "type": "string"
+                },
                 "customer": {
                     "$ref": "#/definitions/dtos.OrderFormCustomer"
                 },
@@ -2744,6 +2565,9 @@ const docTemplate = `{
             "properties": {
                 "address": {
                     "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "coupon_code": {
+                    "type": "string"
                 },
                 "customer": {
                     "$ref": "#/definitions/dtos.OrderFormCustomer"
@@ -2857,6 +2681,9 @@ const docTemplate = `{
                     }
                 },
                 "time": {
+                    "type": "string"
+                },
+                "total_amount": {
                     "type": "string"
                 },
                 "user": {
@@ -3218,28 +3045,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.UploadArticle": {
-            "type": "object",
-            "required": [
-                "cards",
-                "headline",
-                "position"
-            ],
-            "properties": {
-                "cards": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.CardArticle"
-                    }
-                },
-                "headline": {
-                    "type": "string"
-                },
-                "position": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.UserUpdate": {
             "type": "object",
             "required": [
@@ -3278,6 +3083,54 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "entity.Commune": {
+            "type": "object",
+            "properties": {
+                "district_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.District": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "province_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.Province": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
                 }
             }
         },
@@ -3469,46 +3322,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "ward_encode": {
-                    "type": "string"
-                }
-            }
-        },
-        "ghn.District": {
-            "type": "object",
-            "properties": {
-                "Code": {
-                    "type": "string"
-                },
-                "DistrictID": {
-                    "type": "integer"
-                },
-                "DistrictName": {
-                    "type": "string"
-                },
-                "ProvinceID": {
-                    "type": "integer"
-                },
-                "SupportType": {
-                    "type": "integer"
-                },
-                "Type": {
-                    "type": "integer"
-                }
-            }
-        },
-        "ghn.DistrictDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ghn.District"
-                    }
-                },
-                "message": {
                     "type": "string"
                 }
             }
@@ -3833,68 +3646,6 @@ const docTemplate = `{
                 },
                 "width": {
                     "type": "integer"
-                }
-            }
-        },
-        "ghn.Province": {
-            "type": "object",
-            "properties": {
-                "Code": {
-                    "type": "string"
-                },
-                "ProvinceID": {
-                    "type": "integer"
-                },
-                "ProvinceName": {
-                    "type": "string"
-                }
-            }
-        },
-        "ghn.ProvinceDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ghn.Province"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "ghn.Ward": {
-            "type": "object",
-            "properties": {
-                "DistrictID": {
-                    "type": "integer"
-                },
-                "WardCode": {
-                    "type": "string"
-                },
-                "WardName": {
-                    "type": "string"
-                }
-            }
-        },
-        "ghn.WardDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ghn.Ward"
-                    }
-                },
-                "message": {
-                    "type": "string"
                 }
             }
         },

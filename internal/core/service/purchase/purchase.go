@@ -16,11 +16,14 @@ import (
 	"swclabs/swipex/internal/core/repos/addresses"
 	"swclabs/swipex/internal/core/repos/carts"
 	"swclabs/swipex/internal/core/repos/categories"
+	"swclabs/swipex/internal/core/repos/commune"
 	"swclabs/swipex/internal/core/repos/coupons"
 	"swclabs/swipex/internal/core/repos/deliveries"
+	"swclabs/swipex/internal/core/repos/district"
 	"swclabs/swipex/internal/core/repos/inventories"
 	"swclabs/swipex/internal/core/repos/orders"
 	"swclabs/swipex/internal/core/repos/products"
+	"swclabs/swipex/internal/core/repos/province"
 	"swclabs/swipex/internal/core/repos/users"
 	"swclabs/swipex/internal/core/x/ghnx"
 	"swclabs/swipex/pkg/infra/db"
@@ -28,7 +31,6 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/shopspring/decimal"
 )
 
 // New creates a new Purchase object
@@ -42,8 +44,10 @@ var New = app.Service(
 		category categories.ICategories,
 		address addresses.IAddress,
 		delivery deliveries.IDeliveries,
-		ghn ghnx.IGhnx,
 		coupon coupons.ICoupons,
+		province province.IProvince,
+		district district.IDistrict,
+		commune commune.ICommune,
 	) IPurchase {
 		return &Purchase{
 			Coupon:    coupon,
@@ -55,7 +59,9 @@ var New = app.Service(
 			Category:  category,
 			Address:   address,
 			Delivery:  delivery,
-			Ghn:       ghn,
+			Province:  province,
+			District:  district,
+			Commune:   commune,
 		}
 	},
 )
@@ -72,15 +78,38 @@ type Purchase struct {
 	Address   addresses.IAddress
 	Delivery  deliveries.IDeliveries
 	Ghn       ghnx.IGhnx
+	Commune   commune.ICommune
+	Province  province.IProvince
+	District  district.IDistrict
+}
+
+func (p *Purchase) GetUsersByAdmin(ctx context.Context, limit int) ([]dtos.OrderInfo, error) {
+	orderList, err := p.Order.GetLimit(ctx, limit)
+	if err != nil {
+		return nil, err
+	}
+	return p.getListOrder(ctx, orderList)
+}
+
+// AddressDistrict implements IPurchase.
+func (p *Purchase) AddressDistrict(ctx context.Context, provinceID string) ([]entity.District, error) {
+	return p.District.GetByProvinceID(ctx, provinceID)
+}
+
+// AddressProvince implements IPurchase.
+func (p *Purchase) AddressProvince(ctx context.Context) ([]entity.Province, error) {
+	return p.Province.GetAll(ctx)
+}
+
+// AddressWard implements IPurchase.
+func (p *Purchase) AddressWard(ctx context.Context, districtID string) ([]entity.Commune, error) {
+	return p.Commune.GetByDistrictID(ctx, districtID)
 }
 
 // CreateCoupon implements IPurchase.
 func (p *Purchase) CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (code string, err error) {
 	code = utils.GenCouponsCode(10)
-	exp, err := time.Parse(time.RFC3339, coupon.ExpiredAt)
-	if err != nil {
-		return "", err
-	}
+	exp := time.Now().UTC().Add(time.Hour * 24 * time.Duration(coupon.MaxDay))
 	err = p.Coupon.Create(ctx, entity.Coupons{
 		Code:        code,
 		Discount:    coupon.Discount,
@@ -136,23 +165,28 @@ func (p *Purchase) GetOrderByCode(ctx context.Context, orderCode string) (*dtos.
 	if err != nil {
 		return nil, fmt.Errorf("error getting order by UUID: %w", err)
 	}
+
 	order, err := p.Order.GetByUUID(ctx, orderCode)
 	if err != nil {
 		return nil, err
 	}
+
 	if len(items) >= 1 {
 		user, err := p.User.GetByID(ctx, order.UserID)
 		if err != nil {
 			return nil, err
 		}
+
 		delivery, err := p.Delivery.GetByID(ctx, order.DeliveryID)
 		if err != nil {
 			return nil, err
 		}
+
 		address, err := p.Address.GetByID(ctx, delivery.AddressID)
 		if err != nil {
 			return nil, err
 		}
+
 		return &dtos.OrderInfo{
 			Items:     items,
 			UUID:      order.UUID,
@@ -175,6 +209,7 @@ func (p *Purchase) GetOrderByCode(ctx context.Context, orderCode string) (*dtos.
 				District: address.District,
 				Street:   address.Street,
 			},
+			TotalAmount: order.TotalAmount.String(),
 		}, nil
 	}
 	return nil, errors.New("order not found")
@@ -193,31 +228,29 @@ func (p *Purchase) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (s
 		deliveryRepo  = deliveries.New(tx)
 		inventoryRepo = inventories.New(tx)
 	)
-	var (
-		totalAmount        decimal.Decimal
-		productTotalAmount []decimal.Decimal
-		_uuid              = utils.GenOrderCode(16)
-	)
+
 	user, err := userRepo.GetByEmail(ctx, order.Customer.Email)
 	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			user = &entity.User{
-				Email:       order.Customer.Email,
-				FirstName:   order.Customer.FirstName,
-				LastName:    order.Customer.LastName,
-				PhoneNumber: order.Customer.Phone,
-			}
-			if user.ID, err = userRepo.Insert(ctx, *user); err != nil {
-				if errTx := tx.Rollback(ctx); errTx != nil {
-					log.Fatal(errTx)
-				}
-			}
-		} else {
+		if !errors.Is(err, pgx.ErrNoRows) {
 			if errTx := tx.Rollback(ctx); errTx != nil {
 				log.Fatal(errTx)
 			}
+			return "", err
+		}
+		user = &entity.User{
+			Email:       order.Customer.Email,
+			FirstName:   order.Customer.FirstName,
+			LastName:    order.Customer.LastName,
+			PhoneNumber: order.Customer.Phone,
+		}
+		if user.ID, err = userRepo.Insert(ctx, *user); err != nil {
+			if errTx := tx.Rollback(ctx); errTx != nil {
+				log.Fatal(errTx)
+			}
+			return "", err
 		}
 	}
+
 	addrID, err := addressRepo.Insert(ctx, entity.Address{
 		UserID:   user.ID,
 		Street:   order.Address.Street,
@@ -229,7 +262,9 @@ func (p *Purchase) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (s
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}
+		return "", err
 	}
+
 	deliveryID, err := deliveryRepo.Create(ctx, entity.Delivery{
 		UserID:    user.ID,
 		AddressID: addrID,
@@ -242,43 +277,31 @@ func (p *Purchase) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (s
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)
 		}
+		return "", err
 	}
-	for {
-		_order, err := orderRepo.GetByUUID(ctx, _uuid)
-		if err != nil || _order.UUID == "" {
-			break
+
+	totalAmount, listTotalAmount, err := p.calculateTotalAmount(ctx, inventoryRepo, order)
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
 		}
-		_uuid = utils.GenOrderCode(16)
+		return "", err
 	}
-	for _, product := range order.Product {
-		code := strings.Split(product.Code, "#")
-		if len(code) != 2 {
-			if errTx := tx.Rollback(ctx); errTx != nil {
-				log.Fatal(errTx)
-			}
-			return "", fmt.Errorf("invalid product code : %s", product.Code)
+
+	print("totalAmount", totalAmount.String())
+
+	totalAmount, err = p.useCoupon(ctx, totalAmount, order, order.CouponCode)
+	if err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
 		}
-		id, err := strconv.ParseInt(code[1], 10, 64)
-		if err != nil {
-			if errTx := tx.Rollback(ctx); errTx != nil {
-				log.Fatal(errTx)
-			}
-			return "", err
-		}
-		inven, err := inventoryRepo.GetByID(ctx, id)
-		if err != nil {
-			if errTx := tx.Rollback(ctx); errTx != nil {
-				log.Fatal(errTx)
-			}
-			return "", err
-		}
-		totalAmount = totalAmount.Add(inven.Price)
-		productTotalAmount = append(
-			productTotalAmount,
-			inven.Price.Mul(decimal.NewFromInt32(int32(product.Quantity))))
+		return "", err
 	}
+
+	uuid := p.genUUID(ctx, orderRepo)
+
 	orderID, err := orderRepo.Create(ctx, entity.Order{
-		UUID:        _uuid,
+		UUID:        uuid,
 		DeliveryID:  deliveryID,
 		UserID:      user.ID,
 		Status:      "pending",
@@ -290,32 +313,12 @@ func (p *Purchase) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (s
 		}
 		return "", err
 	}
-	for idx, product := range order.Product {
-		code := strings.Split(product.Code, "#")
-		if len(code) != 2 {
-			if errTx := tx.Rollback(ctx); errTx != nil {
-				log.Fatal(errTx)
-			}
-			return "", fmt.Errorf("invalid product code: %s", product.Code)
+
+	if err := p.saveProductOrder(ctx, orderRepo, orderID, order, listTotalAmount); err != nil {
+		if errTx := tx.Rollback(ctx); errTx != nil {
+			log.Fatal(errTx)
 		}
-		id, err := strconv.ParseInt(code[1], 10, 64)
-		if err != nil {
-			if errTx := tx.Rollback(ctx); errTx != nil {
-				log.Fatal(errTx)
-			}
-			return "", err
-		}
-		if err := orderRepo.InsertProduct(ctx, entity.ProductInOrder{
-			OrderID:     orderID,
-			InventoryID: id,
-			Quantity:    product.Quantity,
-			TotalAmount: productTotalAmount[idx],
-		}); err != nil {
-			if errTx := tx.Rollback(ctx); errTx != nil {
-				log.Fatal(errTx)
-			}
-			return "", err
-		}
+		return "", err
 	}
 	return "", tx.Commit(ctx)
 }
@@ -328,21 +331,6 @@ func (p *Purchase) CreateDeliveryOrder(ctx context.Context, shopID int, order gh
 // DeliveryOrderInfo implements IPurchase.
 func (p *Purchase) DeliveryOrderInfo(ctx context.Context, orderCode string) (*ghn.OrderInfoDTO, error) {
 	return p.Ghn.OrderInfo(ctx, orderCode)
-}
-
-// AddressDistrict implements IPurchase.
-func (p *Purchase) AddressDistrict(ctx context.Context, provinceID int) (*ghn.DistrictDTO, error) {
-	return p.Ghn.District(ctx, provinceID)
-}
-
-// AddressProvince implements IPurchase.
-func (p *Purchase) AddressProvince(ctx context.Context) (*ghn.ProvinceDTO, error) {
-	return p.Ghn.Province(ctx)
-}
-
-// AddressWard implements IPurchase.
-func (p *Purchase) AddressWard(ctx context.Context, districtID int) (*ghn.WardDTO, error) {
-	return p.Ghn.Ward(ctx, districtID)
 }
 
 // CreateDelivery implements IPurchase.
@@ -434,22 +422,12 @@ func (p *Purchase) GetDeliveryAddress(ctx context.Context, userID int64) ([]dtos
 
 // GetOrdersByUserID implements IPurchaseService.
 func (p *Purchase) GetOrdersByUserID(ctx context.Context, userID int64, limit int) ([]dtos.OrderInfo, error) {
-	// Get orders by user ID
-	orders, err := p.Order.Get(ctx, userID, limit)
+	// GetByUserID orders by user ID
+	orders, err := p.Order.GetByUserID(ctx, userID, limit)
 	if err != nil {
 		return nil, err
 	}
-	var orderInfo = []dtos.OrderInfo{}
-	for _, order := range orders {
-		// Get products by order code
-		order, err := p.GetOrderByCode(ctx, order.UUID)
-		if err != nil {
-			return nil, fmt.Errorf("error getting order by UUID: %w", err)
-		}
-		// Merge product and order schema
-		orderInfo = append(orderInfo, *order)
-	}
-	return orderInfo, nil
+	return p.getListOrder(ctx, orders)
 }
 
 // DeleteItemFromCart implements IPurchaseService.

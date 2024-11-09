@@ -15,182 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/collections": {
-            "get": {
-                "description": "get collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "position of collections",
-                        "name": "position",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "limit of cards carousel",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Article"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "description": "collections Request",
-                        "name": "collection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.UploadArticle"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                }
-            }
-        },
-        "/collections/img": {
-            "put": {
-                "description": "update collections image",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "image of collections",
-                        "name": "img",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "collections identifier",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
-        "/collections/message": {
-            "get": {
-                "description": "get list of headline banner",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "position of collections",
-                        "name": "position",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "limit headline of collections",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create headline banner into collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "description": "headline banner data request",
-                        "name": "banner",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
         "/comment": {
             "get": {
                 "description": "get all comments of product",
@@ -230,7 +54,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "collections"
+                    "comment"
                 ],
                 "parameters": [
                     {
@@ -252,42 +76,117 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/news": {
+            "get": {
+                "description": "get news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "category of news",
+                        "name": "category",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "limit of cards carousel",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.News"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "description": "news Request",
+                        "name": "collection",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.NewsDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.CollectionUpload"
+                        }
+                    }
+                }
+            }
+        },
+        "/news/image": {
+            "put": {
+                "description": "update news image",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "image of news",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "news identifier",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "dtos.Article": {
-            "type": "object",
-            "required": [
-                "cards",
-                "headline"
-            ],
-            "properties": {
-                "cards": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.CardInArticle"
-                    }
-                },
-                "headline": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.CardContent": {
-            "type": "object",
-            "required": [
-                "content"
-            ],
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "src": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.CardInArticle": {
+        "dtos.CardArticle": {
             "type": "object",
             "required": [
                 "category",
@@ -307,6 +206,31 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CardContent": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "src": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CollectionUpload": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "msg": {
                     "type": "string"
                 }
             }
@@ -360,20 +284,42 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.Message": {
+        "dtos.News": {
             "type": "object",
             "required": [
-                "content",
-                "position"
+                "cards",
+                "header"
             ],
             "properties": {
-                "content": {
+                "cards": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/dtos.CardArticle"
                     }
                 },
-                "position": {
+                "header": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.NewsDTO": {
+            "type": "object",
+            "required": [
+                "cards",
+                "category",
+                "header"
+            ],
+            "properties": {
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardArticle"
+                    }
+                },
+                "category": {
+                    "type": "string"
+                },
+                "header": {
                     "type": "string"
                 }
             }
@@ -382,28 +328,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "msg": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.UploadArticle": {
-            "type": "object",
-            "required": [
-                "cards",
-                "headline",
-                "position"
-            ],
-            "properties": {
-                "cards": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.CardInArticle"
-                    }
-                },
-                "headline": {
-                    "type": "string"
-                },
-                "position": {
                     "type": "string"
                 }
             }

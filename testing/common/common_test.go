@@ -7,6 +7,8 @@ import (
 	"testing"
 
 	"swclabs/swipex/pkg/utils"
+
+	"github.com/shopspring/decimal"
 )
 
 func TestHash(t *testing.T) {
@@ -63,4 +65,12 @@ func TestStmt(_ *testing.T) {
 func TestGenerateOrderCode(t *testing.T) {
 	orderCode := utils.GenOrderCode(16)
 	t.Log(orderCode)
+}
+
+func TestDecimal(t *testing.T) {
+	totalAmount := decimal.NewFromInt32(int32(1000))
+	discount := decimal.NewFromInt32(int32(50)).Div(decimal.NewFromInt32(100)).Mul(totalAmount)
+	newAmount := totalAmount.Copy().Sub(discount)
+	fmt.Println(totalAmount, newAmount)
+	t.Log(totalAmount, newAmount)
 }

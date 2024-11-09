@@ -240,7 +240,7 @@ paths:
       - application/json
       description: update information for users.
       parameters:
-      - description: image of collections
+      - description: image of user
         in: formData
         name: img
         required: true

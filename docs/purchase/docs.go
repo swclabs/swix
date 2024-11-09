@@ -99,7 +99,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.DistrictDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.District"
+                            }
                         }
                     }
                 }
@@ -121,7 +124,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.ProvinceDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Province"
+                            }
                         }
                     }
                 }
@@ -152,7 +158,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.WardDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Commune"
+                            }
                         }
                     }
                 }
@@ -230,7 +239,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/xdto.CreateOrderDTO"
+                            "$ref": "#/definitions/ghn.CreateOrderDTO"
                         }
                     }
                 ],
@@ -238,7 +247,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.OrderDTO"
+                            "$ref": "#/definitions/ghn.OrderDTO"
                         }
                     }
                 }
@@ -269,7 +278,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.OrderInfoDTO"
+                            "$ref": "#/definitions/ghn.OrderInfoDTO"
                         }
                     }
                 }
@@ -361,7 +370,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/purchase/carts/{type}": {
+        "/purchase/carts/{id}": {
             "delete": {
                 "description": "delete item from carts",
                 "consumes": [
@@ -376,8 +385,8 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "product type",
-                        "name": "type",
+                        "description": "inventory id",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }
@@ -994,36 +1003,55 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Order": {
+        "entity.Commune": {
             "type": "object",
             "properties": {
-                "category_id": {
-                    "type": "integer"
-                },
-                "color": {
+                "district_id": {
                     "type": "string"
                 },
-                "currency_code": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "item_specs": {
+                "id": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
                 },
-                "quantity": {
+                "pid": {
                     "type": "integer"
-                },
-                "total_amount": {
-                    "type": "number"
                 }
             }
         },
-        "xdto.CreateOrderDTO": {
+        "entity.District": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "province_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.Province": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "ghn.CreateOrderDTO": {
             "type": "object",
             "required": [
                 "from_address",
@@ -1095,7 +1123,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.OrderItem"
+                        "$ref": "#/definitions/ghn.OrderItem"
                     }
                 },
                 "length": {
@@ -1172,7 +1200,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Data": {
+        "ghn.Data": {
             "type": "object",
             "properties": {
                 "district_encode": {
@@ -1182,7 +1210,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "fee": {
-                    "$ref": "#/definitions/xdto.Fee"
+                    "$ref": "#/definitions/ghn.Fee"
                 },
                 "order_code": {
                     "type": "string"
@@ -1201,47 +1229,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.District": {
-            "type": "object",
-            "properties": {
-                "Code": {
-                    "type": "string"
-                },
-                "DistrictID": {
-                    "type": "integer"
-                },
-                "DistrictName": {
-                    "type": "string"
-                },
-                "ProvinceID": {
-                    "type": "integer"
-                },
-                "SupportType": {
-                    "type": "integer"
-                },
-                "Type": {
-                    "type": "integer"
-                }
-            }
-        },
-        "xdto.DistrictDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/xdto.District"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "xdto.Fee": {
+        "ghn.Fee": {
             "type": "object",
             "properties": {
                 "coupon": {
@@ -1267,7 +1255,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Log": {
+        "ghn.Log": {
             "type": "object",
             "properties": {
                 "status": {
@@ -1278,21 +1266,21 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderDTO": {
+        "ghn.OrderDTO": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/xdto.Data"
+                    "$ref": "#/definitions/ghn.Data"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "xdto.OrderInfo": {
+        "ghn.OrderInfo": {
             "type": "object",
             "properties": {
                 "_id": {
@@ -1397,7 +1385,7 @@ const docTemplate = `{
                 "log": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.Log"
+                        "$ref": "#/definitions/ghn.Log"
                     }
                 },
                 "next_warehouse_id": {
@@ -1510,7 +1498,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderInfoDTO": {
+        "ghn.OrderInfoDTO": {
             "type": "object",
             "properties": {
                 "code": {
@@ -1519,7 +1507,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.OrderInfo"
+                        "$ref": "#/definitions/ghn.OrderInfo"
                     }
                 },
                 "message": {
@@ -1527,7 +1515,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderItem": {
+        "ghn.OrderItem": {
             "type": "object",
             "required": [
                 "name",
@@ -1564,65 +1552,32 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Province": {
+        "model.Order": {
             "type": "object",
             "properties": {
-                "Code": {
-                    "type": "string"
-                },
-                "ProvinceID": {
+                "category_id": {
                     "type": "integer"
                 },
-                "ProvinceName": {
+                "color": {
                     "type": "string"
-                }
-            }
-        },
-        "xdto.ProvinceDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "item_specs": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "quantity": {
                     "type": "integer"
                 },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/xdto.Province"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "xdto.Ward": {
-            "type": "object",
-            "properties": {
-                "DistrictID": {
-                    "type": "integer"
-                },
-                "WardCode": {
-                    "type": "string"
-                },
-                "WardName": {
-                    "type": "string"
-                }
-            }
-        },
-        "xdto.WardDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/xdto.Ward"
-                    }
-                },
-                "message": {
-                    "type": "string"
+                "total_amount": {
+                    "type": "number"
                 }
             }
         }

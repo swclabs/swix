@@ -1,27 +1,6 @@
 basePath: /
 definitions:
-  dtos.Article:
-    properties:
-      cards:
-        items:
-          $ref: '#/definitions/dtos.CardInArticle'
-        type: array
-      headline:
-        type: string
-    required:
-    - cards
-    - headline
-    type: object
-  dtos.CardContent:
-    properties:
-      content:
-        type: string
-      src:
-        type: string
-    required:
-    - content
-    type: object
-  dtos.CardInArticle:
+  dtos.CardArticle:
     properties:
       category:
         type: string
@@ -36,6 +15,22 @@ definitions:
     required:
     - category
     - title
+    type: object
+  dtos.CardContent:
+    properties:
+      content:
+        type: string
+      src:
+        type: string
+    required:
+    - content
+    type: object
+  dtos.CollectionUpload:
+    properties:
+      id:
+        type: integer
+      msg:
+        type: string
     type: object
   dtos.Comment:
     properties:
@@ -72,37 +67,37 @@ definitions:
     - rating
     - username
     type: object
-  dtos.Message:
+  dtos.News:
     properties:
-      content:
+      cards:
         items:
-          type: string
+          $ref: '#/definitions/dtos.CardArticle'
         type: array
-      position:
+      header:
         type: string
     required:
-    - content
-    - position
+    - cards
+    - header
+    type: object
+  dtos.NewsDTO:
+    properties:
+      cards:
+        items:
+          $ref: '#/definitions/dtos.CardArticle'
+        type: array
+      category:
+        type: string
+      header:
+        type: string
+    required:
+    - cards
+    - category
+    - header
     type: object
   dtos.OK:
     properties:
       msg:
         type: string
-    type: object
-  dtos.UploadArticle:
-    properties:
-      cards:
-        items:
-          $ref: '#/definitions/dtos.CardInArticle'
-        type: array
-      headline:
-        type: string
-      position:
-        type: string
-    required:
-    - cards
-    - headline
-    - position
     type: object
 info:
   contact: {}
@@ -110,121 +105,6 @@ info:
   title: Swipe Public API v0.0.1
   version: 0.0.1
 paths:
-  /collections:
-    get:
-      consumes:
-      - application/json
-      description: get collections
-      parameters:
-      - description: position of collections
-        in: query
-        name: position
-        required: true
-        type: string
-      - description: limit of cards carousel
-        in: query
-        name: limit
-        required: true
-        type: number
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.Article'
-      tags:
-      - collections
-    post:
-      consumes:
-      - application/json
-      description: create collections
-      parameters:
-      - description: collections Request
-        in: body
-        name: collection
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.UploadArticle'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/dtos.Message'
-      tags:
-      - collections
-  /collections/img:
-    put:
-      consumes:
-      - application/json
-      description: update collections image
-      parameters:
-      - description: image of collections
-        in: formData
-        name: img
-        required: true
-        type: file
-      - description: collections identifier
-        in: formData
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - collections
-  /collections/message:
-    get:
-      consumes:
-      - application/json
-      description: get list of headline banner
-      parameters:
-      - description: position of collections
-        in: query
-        name: position
-        required: true
-        type: string
-      - description: limit headline of collections
-        in: query
-        name: limit
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.Message'
-      tags:
-      - collections
-    post:
-      consumes:
-      - application/json
-      description: create headline banner into collections
-      parameters:
-      - description: headline banner data request
-        in: body
-        name: banner
-        required: true
-        schema:
-          $ref: '#/definitions/dtos.Message'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - collections
   /comment:
     get:
       consumes:
@@ -264,5 +144,75 @@ paths:
           schema:
             $ref: '#/definitions/dtos.OK'
       tags:
-      - collections
+      - comment
+  /news:
+    get:
+      consumes:
+      - application/json
+      description: get news
+      parameters:
+      - description: category of news
+        in: query
+        name: category
+        required: true
+        type: string
+      - description: limit of cards carousel
+        in: query
+        name: limit
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.News'
+      tags:
+      - news
+    post:
+      consumes:
+      - application/json
+      description: create news
+      parameters:
+      - description: news Request
+        in: body
+        name: collection
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.NewsDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.CollectionUpload'
+      tags:
+      - news
+  /news/image:
+    put:
+      consumes:
+      - application/json
+      description: update news image
+      parameters:
+      - description: image of news
+        in: formData
+        name: img
+        required: true
+        type: file
+      - description: news identifier
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - news
 swagger: "2.0"
