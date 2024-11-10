@@ -22,6 +22,10 @@ type _Cache struct {
 	orders IOrders
 }
 
+func (c *_Cache) GetLimit(ctx context.Context, limit int) ([]entity.Order, error) {
+	return c.orders.GetLimit(ctx, limit)
+}
+
 // GetItemByCode implements IOrders.
 func (c *_Cache) GetItemByCode(ctx context.Context, orderCode string) ([]model.Order, error) {
 	return c.orders.GetItemByCode(ctx, orderCode)
@@ -37,12 +41,12 @@ func (c *_Cache) Create(ctx context.Context, order entity.Order) (int64, error) 
 	return c.orders.Create(ctx, order)
 }
 
-// Get implements IOrdersRepository.
-func (c *_Cache) Get(ctx context.Context, userID int64, limit int) ([]entity.Order, error) {
-	key := crypto.HashOf(fmt.Sprintf("IOrdersRepository.Get:%d:%d", userID, limit))
+// GetByUserID implements IOrdersRepository.
+func (c *_Cache) GetByUserID(ctx context.Context, userID int64, limit int) ([]entity.Order, error) {
+	key := crypto.HashOf(fmt.Sprintf("IOrdersRepository.GetByUserID:%d:%d", userID, limit))
 	result, err := cache.GetSlice[entity.Order](ctx, c.cache, key)
 	if err != nil {
-		result, err = c.orders.Get(ctx, userID, limit)
+		result, err = c.orders.GetByUserID(ctx, userID, limit)
 		if err != nil {
 			return nil, err
 		}

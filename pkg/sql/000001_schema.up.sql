@@ -17,14 +17,6 @@ CREATE TABLE "users" (
   "image" varchar
 );
 
-CREATE TABLE "payments" (
-  "id" bigserial PRIMARY KEY,
-  "type" varchar NOT NULL,
-  "card_number" varchar NOT NULL,
-  "cvc_code" varchar NOT NULL,
-  "owner" varchar NOT NULL
-);
-
 CREATE TABLE "addresses" (
   "id" bigserial PRIMARY KEY,
   "city" varchar NOT NULL,
@@ -130,11 +122,11 @@ CREATE TABLE "inventories" (
   "specs" jsonb
 );
 
-CREATE TABLE "collections" (
+CREATE TABLE "news" (
   "id" bigserial PRIMARY KEY,
   "created" timestamp default (timezone('utc', now())),
-  "position" varchar NOT NULL ,
-  "headline" varchar,
+  "category" varchar NOT NULL,
+  "header" varchar,
   "body" jsonb
 );
 
@@ -163,4 +155,24 @@ CREATE TABLE "coupons_used" (
   "user_id" bigint NOT NULL,
   "used_at" timestamptz default (timezone('utc', now())),
   CONSTRAINT unique_coupons_used UNIQUE (user_id, coupon_code)
+);
+
+CREATE TABLE "province" (
+  "pid" bigserial PRIMARY KEY,
+  "id" varchar,
+  "name" varchar
+);
+
+CREATE TABLE "district" (
+  "pid" bigserial PRIMARY KEY,
+  "id" varchar,
+  "province_id" varchar,
+  "name" varchar
+);
+
+CREATE TABLE "commune" (
+  "pid" bigserial PRIMARY KEY,
+  "id" varchar,
+  "district_id" varchar,
+  "name" varchar
 );

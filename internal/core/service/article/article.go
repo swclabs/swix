@@ -4,13 +4,12 @@ package article
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"mime/multipart"
 	"swclabs/swipex/app"
 	"swclabs/swipex/internal/core/domain/dtos"
 	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/repos/collections"
 	"swclabs/swipex/internal/core/repos/comments"
+	"swclabs/swipex/internal/core/repos/news"
 	"swclabs/swipex/pkg/infra/blob"
 	"swclabs/swipex/pkg/infra/db"
 )
@@ -20,97 +19,40 @@ var _ = app.Service(New)
 // New creates a new Article object
 func New(
 	blob blob.IBlobStorage,
-	collection collections.ICollections,
 	cmt comments.IComments,
+	news news.INews,
 ) IArticle {
 	return &Article{
-		Blob:        blob,
-		Collections: collection,
-		Comments:    cmt,
+		Blob:     blob,
+		Comments: cmt,
+		News:     news,
 	}
 }
 
 // Article struct for article service
 type Article struct {
-	Blob        blob.IBlobStorage
-	Collections collections.ICollections
-	Comments    comments.IComments
+	Blob     blob.IBlobStorage
+	Comments comments.IComments
+	News     news.INews
 }
 
-// GetMessage implements IArticle.
-func (p *Article) GetMessage(ctx context.Context, position string, limit int) (*dtos.Message, error) {
-	collecs, err := p.Collections.GetMany(ctx, position, limit)
-	if err != nil {
-		return nil, err
-	}
-	var msg = dtos.Message{
-		Position: position,
-	}
-	for _, collect := range collecs {
-		var content dtos.HeadlineContent
-		if err := json.Unmarshal([]byte(collect.Body), &content); err != nil {
-			return nil, err
-		}
-		msg.Content = append(msg.Content, content.Content)
-	}
-	return &msg, nil
-}
-
-// UploadMessage implements IArticle.
-func (p *Article) UploadMessage(ctx context.Context, message dtos.Message) error {
-	for _, msg := range message.Content {
-		json, _ := json.Marshal(dtos.HeadlineContent{
-			Content: msg,
-		})
-		_, err := p.Collections.Create(ctx, entity.Collection{
-			Position: message.Position,
-			Body:     string(json),
-		})
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// GetCarousels implements IArticle.
-func (p *Article) GetCarousels(ctx context.Context, position string, limit int) (*dtos.Article, error) {
-	collectionSlice, err := p.Collections.GetMany(ctx, position, limit)
-	if err != nil {
-		return nil, err
-	}
-	if len(collectionSlice) == 0 {
-		return nil, fmt.Errorf("no collection found")
-	}
-
-	var carousels dtos.Article
-	carousels.Headline = collectionSlice[0].Headline
-
-	for _, _collection := range collectionSlice {
-		var body dtos.CardInArticle
-		if err := json.Unmarshal([]byte(_collection.Body), &body); err != nil {
-			return nil, err
-		}
-		carousels.Cards = append(carousels.Cards, body)
-	}
-	return &carousels, nil
-}
-
-// UploadArticle implements IArticle.
-func (p *Article) UploadArticle(ctx context.Context, article dtos.UploadArticle) (int64, error) {
+func (p *Article) UploadNews(ctx context.Context, newsDTO dtos.NewsDTO) (int64, error) {
 	tx, err := db.NewTx(ctx)
 	if err != nil {
 		return -1, err
 	}
-	var collection = collections.New(tx)
-	for _, card := range article.Cards {
+
+	var newsRepo = news.New(tx)
+	for _, card := range newsDTO.Cards {
+
 		body, err := json.Marshal(card)
 		if err != nil {
 			return -1, err
 		}
-		_, err = collection.Create(ctx, entity.Collection{
-			Position: article.Position,
-			Headline: article.Headline,
+
+		_, err = newsRepo.Create(ctx, entity.News{
+			Category: newsDTO.Category,
+			Header:   newsDTO.Header,
 			Body:     string(body),
 		})
 		if err != nil {
@@ -120,24 +62,49 @@ func (p *Article) UploadArticle(ctx context.Context, article dtos.UploadArticle)
 			}
 		}
 	}
+
 	if err = tx.Commit(ctx); err != nil {
 		return -1, err
 	}
 	return 0, nil
 }
 
-// UploadCollectionsImage implements IArticle.
-func (p *Article) UploadCollectionsImage(ctx context.Context, cardBannerID string, fileHeader *multipart.FileHeader) error {
-	file, err := fileHeader.Open()
+func (p *Article) UploadNewsImage(ctx context.Context, newsID int64, file *multipart.FileHeader) error {
+	f, err := file.Open()
 	if err != nil {
 		return err
 	}
-	resp, err := p.Blob.UploadImages(file)
+
+	resp, err := p.Blob.UploadImages(f)
 	if err != nil {
 		return err
 	}
-	return p.Collections.UploadCollectionImage(
-		ctx, cardBannerID, resp.SecureURL)
+
+	return p.News.UploadNewsImage(ctx, newsID, resp.SecureURL)
+}
+
+func (p *Article) GetNews(ctx context.Context, category string, limit int) (*dtos.News, error) {
+	newss, err := p.News.GetMany(ctx, category, limit)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(newss) == 0 {
+		return &dtos.News{}, nil
+	}
+
+	var nnews dtos.News
+	nnews.Header = newss[0].Header
+
+	for _, _collection := range newss {
+		var body dtos.CardArticle
+		if err := json.Unmarshal([]byte(_collection.Body), &body); err != nil {
+			return nil, err
+		}
+
+		nnews.Cards = append(nnews.Cards, body)
+	}
+	return &nnews, nil
 }
 
 // GetComment implements IArticle.
@@ -165,16 +132,19 @@ func (p *Article) GetComment(ctx context.Context, productID int64) ([]dtos.Comme
 			level    int64
 			parentID int64
 		)
+
 		if cmt.Level == 0 {
 			// Add your code here
 			level = cmt.Level
 			parentID = 0
 		}
+
 		if cmt.Level == 1 {
 			// Add your code here
 			level = cmt.Level
 			parentID = cmt.ParentID
 		}
+		
 		comment = append(comment, dtos.Comment{
 			ID:      cmt.ID,
 			Level:   level,

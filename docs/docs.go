@@ -99,7 +99,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.DistrictDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.District"
+                            }
                         }
                     }
                 }
@@ -121,7 +124,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.ProvinceDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Province"
+                            }
                         }
                     }
                 }
@@ -152,7 +158,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.WardDTO"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Commune"
+                            }
                         }
                     }
                 }
@@ -405,182 +414,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/collections": {
-            "get": {
-                "description": "get collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "position of collections",
-                        "name": "position",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "number",
-                        "description": "limit of cards carousel",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Article"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "description": "collections Request",
-                        "name": "collection",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.UploadArticle"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                }
-            }
-        },
-        "/collections/img": {
-            "put": {
-                "description": "update collections image",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "image of collections",
-                        "name": "img",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "collections identifier",
-                        "name": "id",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
-        "/collections/message": {
-            "get": {
-                "description": "get list of headline banner",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "position of collections",
-                        "name": "position",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "limit headline of collections",
-                        "name": "limit",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "create headline banner into collections",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "collections"
-                ],
-                "parameters": [
-                    {
-                        "description": "headline banner data request",
-                        "name": "banner",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dtos.Message"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
         "/comment": {
             "get": {
                 "description": "get all comments of product",
@@ -620,7 +453,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "collections"
+                    "comment"
                 ],
                 "parameters": [
                     {
@@ -715,7 +548,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/xdto.CreateOrderDTO"
+                            "$ref": "#/definitions/ghn.CreateOrderDTO"
                         }
                     }
                 ],
@@ -723,7 +556,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.OrderDTO"
+                            "$ref": "#/definitions/ghn.OrderDTO"
                         }
                     }
                 }
@@ -754,7 +587,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/xdto.OrderInfoDTO"
+                            "$ref": "#/definitions/ghn.OrderInfoDTO"
                         }
                     }
                 }
@@ -1024,6 +857,113 @@ const docTemplate = `{
                         "type": "file",
                         "description": "stock image",
                         "name": "image",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/news": {
+            "get": {
+                "description": "get news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "category of news",
+                        "name": "category",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "description": "limit of cards carousel",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.News"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create news",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "description": "news Request",
+                        "name": "collection",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.NewsDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/news/image": {
+            "put": {
+                "description": "update news image",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "news"
+                ],
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "image of news",
+                        "name": "img",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "news identifier",
+                        "name": "id",
                         "in": "formData",
                         "required": true
                     }
@@ -1342,6 +1282,38 @@ const docTemplate = `{
             }
         },
         "/purchase/admin/orders": {
+            "get": {
+                "description": "get list of orders.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "limit order",
+                        "name": "limit",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dtos.OrderInfo"
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create order.",
                 "consumes": [
@@ -1889,7 +1861,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "file",
-                        "description": "image of collections",
+                        "description": "image of user",
                         "name": "img",
                         "in": "formData",
                         "required": true
@@ -1953,24 +1925,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.Article": {
-            "type": "object",
-            "required": [
-                "cards",
-                "headline"
-            ],
-            "properties": {
-                "cards": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.CardInArticle"
-                    }
-                },
-                "headline": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.Bookmark": {
             "type": "object",
             "properties": {
@@ -2002,6 +1956,9 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
                 },
                 "rating": {
                     "type": "number"
@@ -2035,21 +1992,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.CardContent": {
-            "type": "object",
-            "required": [
-                "content"
-            ],
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "src": {
-                    "type": "string"
-                }
-            }
-        },
-        "dtos.CardInArticle": {
+        "dtos.CardArticle": {
             "type": "object",
             "required": [
                 "category",
@@ -2069,6 +2012,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.CardContent": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "src": {
                     "type": "string"
                 }
             }
@@ -2243,7 +2200,7 @@ const docTemplate = `{
             "required": [
                 "description",
                 "discount",
-                "expired_at",
+                "max_day",
                 "max_use",
                 "status"
             ],
@@ -2254,8 +2211,8 @@ const docTemplate = `{
                 "discount": {
                     "type": "integer"
                 },
-                "expired_at": {
-                    "type": "string"
+                "max_day": {
+                    "type": "integer"
                 },
                 "max_use": {
                     "type": "integer"
@@ -2520,20 +2477,42 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.Message": {
+        "dtos.News": {
             "type": "object",
             "required": [
-                "content",
-                "position"
+                "cards",
+                "header"
             ],
             "properties": {
-                "content": {
+                "cards": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/dtos.CardArticle"
                     }
                 },
-                "position": {
+                "header": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.NewsDTO": {
+            "type": "object",
+            "required": [
+                "cards",
+                "category",
+                "header"
+            ],
+            "properties": {
+                "cards": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dtos.CardArticle"
+                    }
+                },
+                "category": {
+                    "type": "string"
+                },
+                "header": {
                     "type": "string"
                 }
             }
@@ -2557,6 +2536,9 @@ const docTemplate = `{
             "properties": {
                 "address": {
                     "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "coupon_code": {
+                    "type": "string"
                 },
                 "customer": {
                     "$ref": "#/definitions/dtos.OrderFormCustomer"
@@ -2583,6 +2565,9 @@ const docTemplate = `{
             "properties": {
                 "address": {
                     "$ref": "#/definitions/dtos.OrderFormAddress"
+                },
+                "coupon_code": {
+                    "type": "string"
                 },
                 "customer": {
                     "$ref": "#/definitions/dtos.OrderFormCustomer"
@@ -2696,6 +2681,9 @@ const docTemplate = `{
                     }
                 },
                 "time": {
+                    "type": "string"
+                },
+                "total_amount": {
                     "type": "string"
                 },
                 "user": {
@@ -3057,28 +3045,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dtos.UploadArticle": {
-            "type": "object",
-            "required": [
-                "cards",
-                "headline",
-                "position"
-            ],
-            "properties": {
-                "cards": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dtos.CardInArticle"
-                    }
-                },
-                "headline": {
-                    "type": "string"
-                },
-                "position": {
-                    "type": "string"
-                }
-            }
-        },
         "dtos.UserUpdate": {
             "type": "object",
             "required": [
@@ -3120,6 +3086,54 @@ const docTemplate = `{
                 }
             }
         },
+        "entity.Commune": {
+            "type": "object",
+            "properties": {
+                "district_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                }
+            }
+        },
+        "entity.District": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                },
+                "province_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "entity.Province": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pid": {
+                    "type": "integer"
+                }
+            }
+        },
         "entity.Supplier": {
             "type": "object",
             "properties": {
@@ -3134,75 +3148,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.Order": {
-            "type": "object",
-            "properties": {
-                "category_id": {
-                    "type": "integer"
-                },
-                "color": {
-                    "type": "string"
-                },
-                "currency_code": {
-                    "type": "string"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "item_specs": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "total_amount": {
-                    "type": "number"
-                }
-            }
-        },
-        "model.Users": {
-            "type": "object",
-            "required": [
-                "email",
-                "first_name",
-                "id",
-                "image",
-                "last_name",
-                "phone_number",
-                "role",
-                "username"
-            ],
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "first_name": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "image": {
-                    "type": "string"
-                },
-                "last_name": {
-                    "type": "string"
-                },
-                "phone_number": {
-                    "type": "string"
-                },
-                "role": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                }
-            }
-        },
-        "xdto.CreateOrderDTO": {
+        "ghn.CreateOrderDTO": {
             "type": "object",
             "required": [
                 "from_address",
@@ -3274,7 +3220,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.OrderItem"
+                        "$ref": "#/definitions/ghn.OrderItem"
                     }
                 },
                 "length": {
@@ -3351,7 +3297,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Data": {
+        "ghn.Data": {
             "type": "object",
             "properties": {
                 "district_encode": {
@@ -3361,7 +3307,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "fee": {
-                    "$ref": "#/definitions/xdto.Fee"
+                    "$ref": "#/definitions/ghn.Fee"
                 },
                 "order_code": {
                     "type": "string"
@@ -3380,47 +3326,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.District": {
-            "type": "object",
-            "properties": {
-                "Code": {
-                    "type": "string"
-                },
-                "DistrictID": {
-                    "type": "integer"
-                },
-                "DistrictName": {
-                    "type": "string"
-                },
-                "ProvinceID": {
-                    "type": "integer"
-                },
-                "SupportType": {
-                    "type": "integer"
-                },
-                "Type": {
-                    "type": "integer"
-                }
-            }
-        },
-        "xdto.DistrictDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/xdto.District"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "xdto.Fee": {
+        "ghn.Fee": {
             "type": "object",
             "properties": {
                 "coupon": {
@@ -3446,7 +3352,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Log": {
+        "ghn.Log": {
             "type": "object",
             "properties": {
                 "status": {
@@ -3457,21 +3363,21 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderDTO": {
+        "ghn.OrderDTO": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/xdto.Data"
+                    "$ref": "#/definitions/ghn.Data"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "xdto.OrderInfo": {
+        "ghn.OrderInfo": {
             "type": "object",
             "properties": {
                 "_id": {
@@ -3576,7 +3482,7 @@ const docTemplate = `{
                 "log": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.Log"
+                        "$ref": "#/definitions/ghn.Log"
                     }
                 },
                 "next_warehouse_id": {
@@ -3689,7 +3595,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderInfoDTO": {
+        "ghn.OrderInfoDTO": {
             "type": "object",
             "properties": {
                 "code": {
@@ -3698,7 +3604,7 @@ const docTemplate = `{
                 "data": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/xdto.OrderInfo"
+                        "$ref": "#/definitions/ghn.OrderInfo"
                     }
                 },
                 "message": {
@@ -3706,7 +3612,7 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.OrderItem": {
+        "ghn.OrderItem": {
             "type": "object",
             "required": [
                 "name",
@@ -3743,64 +3649,70 @@ const docTemplate = `{
                 }
             }
         },
-        "xdto.Province": {
+        "model.Order": {
             "type": "object",
             "properties": {
-                "Code": {
-                    "type": "string"
-                },
-                "ProvinceID": {
+                "category_id": {
                     "type": "integer"
                 },
-                "ProvinceName": {
+                "color": {
                     "type": "string"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "item_specs": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "total_amount": {
+                    "type": "number"
                 }
             }
         },
-        "xdto.ProvinceDTO": {
+        "model.Users": {
             "type": "object",
+            "required": [
+                "email",
+                "first_name",
+                "id",
+                "image",
+                "last_name",
+                "phone_number",
+                "role",
+                "username"
+            ],
             "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/xdto.Province"
-                    }
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "xdto.Ward": {
-            "type": "object",
-            "properties": {
-                "DistrictID": {
-                    "type": "integer"
-                },
-                "WardCode": {
+                "email": {
                     "type": "string"
                 },
-                "WardName": {
+                "first_name": {
                     "type": "string"
-                }
-            }
-        },
-        "xdto.WardDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
+                },
+                "id": {
                     "type": "integer"
                 },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/xdto.Ward"
-                    }
+                "image": {
+                    "type": "string"
                 },
-                "message": {
+                "last_name": {
+                    "type": "string"
+                },
+                "phone_number": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

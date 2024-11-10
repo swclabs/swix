@@ -58,10 +58,12 @@ type Products struct {
 
 // AddBookmark implements IProducts.
 func (s *Products) AddBookmark(ctx context.Context, userID int64, inventoryID int64) error {
+	
 	fav, err := s.Favorite.GetByInventoryID(ctx, inventoryID, userID)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return err
 	}
+
 	if errors.Is(err, pgx.ErrNoRows) {
 		return s.Favorite.Save(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
 	}
@@ -70,34 +72,43 @@ func (s *Products) AddBookmark(ctx context.Context, userID int64, inventoryID in
 
 // GetBookmarks implements IProducts.
 func (s *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookmark, error) {
+
 	favories, err := s.Favorite.GetByUserID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
+
 	var bookmarks = []dtos.Bookmark{}
 	for _, fav := range favories {
+
 		inv, err := s.Inventory.GetByID(ctx, fav.InventoryID)
 		if err != nil {
 			return nil, err
 		}
+
 		prod, err := s.Products.GetByID(ctx, inv.ProductID)
 		if err != nil {
 			return nil, err
 		}
+
 		category, err := s.Category.GetByID(ctx, prod.CategoryID)
 		if err != nil {
 			return nil, err
 		}
+
 		var (
 			pSpecs dtos.ProductSpecs
 			specs  dtos.Specs
 		)
+
 		if err := json.Unmarshal([]byte(prod.Specs), &pSpecs); err != nil {
 			return nil, err
 		}
+
 		if err := json.Unmarshal([]byte(inv.Specs), &specs); err != nil {
 			return nil, err
 		}
+
 		bookmark := dtos.Bookmark{
 			ProductID: prod.ID,
 			Category:  category.Name,
@@ -121,9 +132,11 @@ func (s *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookm
 				},
 			},
 		}
+
 		if fav.InventoryID == inv.ID {
 			bookmark.Color.Specs.Favorite = true
 		}
+
 		bookmarks = append(bookmarks, bookmark)
 	}
 	return bookmarks, nil
@@ -145,6 +158,7 @@ func (s *Products) CreateProduct(ctx context.Context, products dtos.Product) (in
 	if err := types.Load(_category.Name); err != nil {
 		return -1, fmt.Errorf("category invalid %v", err)
 	}
+
 	var prd = entity.Product{
 		Price:       products.Price,
 		Description: products.Description,
@@ -154,6 +168,7 @@ func (s *Products) CreateProduct(ctx context.Context, products dtos.Product) (in
 		Status:      products.Status,
 		Specs:       "{}",
 	}
+
 	if products.Specs != nil {
 		var specs, ok = products.Specs.(dtos.ProductSpecs)
 		if !ok {
@@ -162,6 +177,7 @@ func (s *Products) CreateProduct(ctx context.Context, products dtos.Product) (in
 		specsByte, _ := json.Marshal(specs)
 		prd.Specs = string(specsByte)
 	}
+
 	return s.Products.Insert(ctx, prd)
 }
 
@@ -180,21 +196,26 @@ func (s *Products) InsertItem(ctx context.Context, product dtos.Inventory) error
 			Status:       "active",
 		}
 	)
+
 	items, err := s.Inventory.GetByColor(ctx, product.ProductID, product.Color)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return err
 	}
+
 	if len(items) > 0 {
 		inventory.Image = items[0].Image
 		inventory.ColorImg = items[0].ColorImg
 	}
+	
 	tx, err := db.NewTx(ctx)
 	if err != nil {
 		return err
 	}
+
 	var invRepo = inventories.New(tx)
 	specs, _ := json.Marshal(product.Specs)
 	inventory.Specs = string(specs)
+
 	_, err = invRepo.InsertProduct(ctx, inventory)
 	if err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {

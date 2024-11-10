@@ -8,7 +8,7 @@ import (
 	"strings"
 	"swclabs/swipex/app"
 	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/xdto"
+	"swclabs/swipex/internal/core/domain/x/ghn"
 	"swclabs/swipex/internal/core/service/purchase"
 	"swclabs/swipex/pkg/lib/crypto"
 	"swclabs/swipex/pkg/lib/valid"
@@ -34,6 +34,7 @@ type IController interface {
 	CreateOrderForm(c echo.Context) error
 	GetOrders(c echo.Context) error
 	GetOrdersByCode(c echo.Context) error
+	GetOrdersByAdmin(c echo.Context) error
 
 	CreateDeliveryAddress(c echo.Context) error
 	GetDeliveryAddress(c echo.Context) error
@@ -55,6 +56,30 @@ type IController interface {
 // Controller struct implementation of IPurchase
 type Controller struct {
 	services purchase.IPurchase
+}
+
+// GetOrdersByAdmin .
+// @Description get list of orders.
+// @Tags purchase
+// @Accept json
+// @Produce json
+// @Param limit query string true "limit order"
+// @Success 200 {object} []dtos.OrderInfo
+// @Router /purchase/admin/orders [GET]
+func (p *Controller) GetOrdersByAdmin(c echo.Context) error {
+	limit, err := strconv.Atoi(c.QueryParam("limit"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	orderList, err := p.services.GetUsersByAdmin(c.Request().Context(), limit)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, orderList)
 }
 
 // CreateCoupon .
@@ -99,7 +124,7 @@ func (p *Controller) GetCoupon(c echo.Context) error {
 	return c.JSON(http.StatusOK, coupons)
 }
 
-// GetCoupon .
+// UseCoupon .
 // @Description get coupon.
 // @Tags purchase
 // @Accept json
@@ -177,11 +202,11 @@ func (p *Controller) CreateOrderForm(c echo.Context) error {
 // @Tags delivery
 // @Accept json
 // @Produce json
-// @Param order body xdto.CreateOrderDTO true "order delivery body request"
-// @Success 200 {object} xdto.OrderDTO
+// @Param order body ghn.CreateOrderDTO true "order delivery body request"
+// @Success 200 {object} ghn.OrderDTO
 // @Router /delivery/order [POST]
 func (p *Controller) CreateDeliveryOrder(c echo.Context) error {
-	var order xdto.CreateOrderDTO
+	var order ghn.CreateOrderDTO
 	if err := c.Bind(&order); err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: err.Error(),
@@ -207,7 +232,7 @@ func (p *Controller) CreateDeliveryOrder(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param code path string true "delivery order code"
-// @Success 200 {object} xdto.OrderInfoDTO
+// @Success 200 {object} ghn.OrderInfoDTO
 // @Router /delivery/order/{code} [GET]
 func (p *Controller) DeliveryOrderInfo(c echo.Context) error {
 	orderCode := c.Param("code")
@@ -226,15 +251,10 @@ func (p *Controller) DeliveryOrderInfo(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param province_id query number true "province id"
-// @Success 200 {object} xdto.DistrictDTO
+// @Success 200 {object} []entity.District
 // @Router /address/district [GET]
 func (p *Controller) AddressDistrict(c echo.Context) error {
-	provinceID, err := strconv.Atoi(c.QueryParam("province_id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "[province_id] invalid query params",
-		})
-	}
+	provinceID := c.QueryParam("province_id")
 	resp, err := p.services.AddressDistrict(c.Request().Context(), provinceID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
@@ -249,7 +269,7 @@ func (p *Controller) AddressDistrict(c echo.Context) error {
 // @Tags address
 // @Accept json
 // @Produce json
-// @Success 200 {object} xdto.ProvinceDTO
+// @Success 200 {object} []entity.Province
 // @Router /address/province [GET]
 func (p *Controller) AddressProvince(c echo.Context) error {
 	resp, err := p.services.AddressProvince(c.Request().Context())
@@ -267,15 +287,10 @@ func (p *Controller) AddressProvince(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param district_id query number true "district id"
-// @Success 200 {object} xdto.WardDTO
+// @Success 200 {object} []entity.Commune
 // @Router /address/ward [GET]
 func (p *Controller) AddressWard(c echo.Context) error {
-	districtID, err := strconv.Atoi(c.QueryParam("district_id"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, dtos.Error{
-			Msg: "[district_id] invalid query params",
-		})
-	}
+	districtID := c.QueryParam("district_id")
 	resp, err := p.services.AddressWard(c.Request().Context(), districtID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{

@@ -31,12 +31,25 @@ type Orders struct {
 	db db.IDatabase
 }
 
+func (orders *Orders) GetLimit(ctx context.Context, limit int) ([]entity.Order, error) {
+	rows, err := orders.db.Query(ctx, getLimit, limit)
+	if err != nil {
+		return nil, err
+	}
+	ords, err := db.CollectRows[entity.Order](rows)
+	if err != nil {
+		return nil, err
+	}
+	return ords, nil
+}
+
 // GetItemByCode implements IOrders.
 func (orders *Orders) GetItemByCode(ctx context.Context, orderCode string) ([]model.Order, error) {
 	rows, err := orders.db.Query(ctx, getByOrderCode, orderCode)
 	if err != nil {
 		return nil, fmt.Errorf("error getting order items by order code: %w", err)
 	}
+
 	order, err := db.CollectRows[model.Order](rows)
 	if err != nil {
 		return nil, fmt.Errorf("error collecting order items by order code: %w", err)
@@ -72,8 +85,8 @@ func (orders *Orders) Create(ctx context.Context, order entity.Order) (int64, er
 	)
 }
 
-// Get implements IOrdersRepository.
-func (orders *Orders) Get(ctx context.Context, userID int64, limit int) ([]entity.Order, error) {
+// GetByUserID implements IOrdersRepository.
+func (orders *Orders) GetByUserID(ctx context.Context, userID int64, limit int) ([]entity.Order, error) {
 	rows, err := orders.db.Query(ctx, getOrder, userID, limit)
 	if err != nil {
 		return nil, err

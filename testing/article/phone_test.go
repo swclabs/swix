@@ -9,7 +9,7 @@ import (
 	articleContainer "swclabs/swipex/internal/apis/container/article"
 	"swclabs/swipex/internal/core/domain/dtos"
 	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/repos/collections"
+	"swclabs/swipex/internal/core/repos/news"
 	articleService "swclabs/swipex/internal/core/service/article"
 	"swclabs/swipex/pkg/lib/logger"
 	"testing"
@@ -21,8 +21,8 @@ import (
 
 func TestPhoneCarousel(t *testing.T) {
 	var (
-		repos      = collections.Mock{}
-		service    = articleService.New(nil, &repos, nil)
+		repos      = news.Mock{}
+		service    = articleService.New(nil, nil, &repos)
 		controller = articleContainer.NewController(service)
 		e          = echo.New()
 
@@ -40,7 +40,7 @@ func TestPhoneCarousel(t *testing.T) {
 				Src:     "/img/posts/8.jpg",
 			},
 		}
-		cards = []dtos.CardInArticle{
+		cards = []dtos.CardArticle{
 			{
 				Category: "Artificial Intelligence",
 				Title:    "You can do more with AI.",
@@ -78,24 +78,24 @@ func TestPhoneCarousel(t *testing.T) {
 				Content:  content,
 			},
 		}
-		collection []entity.Collection
+		news []entity.News
 	)
 
 	for idx, card := range cards {
 		json, _ := json.Marshal(card)
-		collection = append(collection, entity.Collection{
+		news = append(news, entity.News{
 			ID:       int64(idx),
-			Position: "mac_1",
-			Headline: "Get to know your iPhone.",
+			Category: "mac",
+			Header:   "GetByUserID to know your iPhone.",
 			Body:     string(json),
 			Created:  time.Now().UTC(),
 		})
 	}
 
-	repos.On("GetMany", context.Background(), "mac_1", 6).Return(collection, nil)
+	repos.On("GetMany", context.Background(), "mac", 6).Return(news, nil)
 
-	e.GET("/collections", controller.GetArticleData)
-	req := httptest.NewRequest(http.MethodGet, "/collections?position=mac_1&limit=6", nil)
+	e.GET("/news", controller.GetNews)
+	req := httptest.NewRequest(http.MethodGet, "/news?category=mac&limit=6", nil)
 	rr := httptest.NewRecorder()
 	e.ServeHTTP(rr, req)
 

@@ -21,7 +21,7 @@ RUN rm -r *
 RUN go clean -modcache
 
 # Stage run
-FROM alpine:edge as runner
+FROM alpine:edge AS runner
 WORKDIR /app
 
 ENV HOST 0.0.0.0

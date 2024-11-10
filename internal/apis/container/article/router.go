@@ -28,12 +28,10 @@ type Router struct {
 
 // Routers define route endpoints
 func (r *Router) Routers(e *echo.Echo) {
-	e.GET("/collections", r.controller.GetArticleData)
-	e.POST("/collections", r.controller.UploadArticle)
-	e.PUT("/collections/img", r.controller.UpdateCollectionsImage)
+	e.GET("/news", r.controller.GetNews)
+	e.POST("/news", r.controller.UploadNews)
+	e.PUT("/news/img", r.controller.UpdateNewsImage)
 
-	e.GET("/collections/message", r.controller.GetMessage)
-	e.POST("/collections/message", r.controller.UploadMessage)
 	e.GET("/comment", r.controller.GetComment)
 	e.POST("/comment", r.controller.UploadComment)
 }

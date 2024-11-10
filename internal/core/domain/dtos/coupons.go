@@ -7,7 +7,7 @@ type CreateCoupon struct {
 	MaxUse      int    `json:"max_use" validate:"required"`
 	Discount    int    `json:"discount" validate:"required"`
 	Description string `json:"description" validate:"required"`
-	ExpiredAt   string `json:"expired_at" validate:"required"`
+	MaxDay      int    `json:"max_day" validate:"required"`
 }
 
 type Coupon struct {

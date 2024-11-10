@@ -62,24 +62,6 @@ func ParseToken(tokenString string) (userID int64, email string, err error) {
 	return -1, "", errors.New("token invalid")
 }
 
-// ParseTokenRole Return Role from JWT token
-func ParseTokenRole(tokenString string) (string, error) {
-	tokenString = RemoveBearerPrefix(tokenString)
-	token, _ := claims(tokenString)
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		role := claims["role"]
-		// _ = claims["exp"]
-		if float64(time.Now().Unix()) > claims["exp"].(float64) {
-			return "", errors.New("token has expired")
-		}
-		if role == nil {
-			return "", errors.New("role not found")
-		}
-		return role.(string), nil
-	}
-	return "", errors.New("token invalid")
-}
-
 func Authenticate(c echo.Context) (userID int64, email string, err error) {
 	authHeader := c.Request().Header.Get("Authorization")
 	// fmt.Println(authHeader)

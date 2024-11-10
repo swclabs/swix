@@ -24,19 +24,19 @@ func (s *Products) Rating(ctx context.Context, userID, productID int64, rating f
 	if err != nil {
 		return err
 	}
+
 	var (
 		star    = stars.New(tx)
 		product = products.New(tx)
 	)
-	if err := star.Save(ctx, entity.Star{
-		UserID:    userID,
-		ProductID: productID,
-	}); err != nil {
+
+	if err := star.Save(ctx, entity.Star{UserID: userID, ProductID: productID}); err != nil {
 		if err := tx.Rollback(ctx); err != nil {
 			log.Fatal(err)
 		}
 		return err
 	}
+
 	if err := product.Rating(ctx, productID, rating); err != nil {
 		if err := tx.Rollback(ctx); err != nil {
 			log.Fatal(err)
@@ -51,10 +51,12 @@ func (s *Products) UploadItemColorImage(ctx context.Context, ID int, fileHeader 
 	if fileHeader == nil {
 		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
+
 	file, err := fileHeader[0].Open()
 	if err != nil {
 		return err
 	}
+
 	resp, err := s.Blob.UploadImages(file)
 	if err == nil {
 		if err = s.Inventory.UploadColorImage(ctx, ID, resp.SecureURL); err == nil {
@@ -63,6 +65,7 @@ func (s *Products) UploadItemColorImage(ctx context.Context, ID int, fileHeader 
 			}
 		}
 	}
+	
 	if err != nil {
 		return err
 	}

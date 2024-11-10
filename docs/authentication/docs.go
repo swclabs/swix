@@ -230,7 +230,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "file",
-                        "description": "image of collections",
+                        "description": "image of user",
                         "name": "img",
                         "in": "formData",
                         "required": true

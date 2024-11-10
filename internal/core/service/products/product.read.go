@@ -23,14 +23,18 @@ func (s *Products) SearchDetails(ctx context.Context, userID int64, keyword stri
 	if err != nil {
 		return nil, swcerr.Service("keyword error", err)
 	}
+
 	var details []dtos.ProductDetail
 	for _, product := range products {
+
 		detail, err := s.Detail(ctx, userID, product.ID)
 		if err != nil {
 			return nil, err
 		}
+
 		details = append(details, *detail)
 	}
+
 	return details, nil
 }
 
@@ -40,8 +44,10 @@ func (s *Products) ProductType(ctx context.Context, types enum.Category, offset 
 	if err != nil {
 		return nil, err
 	}
+
 	var productView []dtos.ProductDTO
 	for _, p := range products {
+
 		_view := dtos.ProductDTO{
 			ID:       p.ID,
 			Price:    p.Price,
@@ -51,13 +57,16 @@ func (s *Products) ProductType(ctx context.Context, types enum.Category, offset 
 			Rating:   p.Rating,
 			Category: p.CategoryName,
 		}
+
 		var specs dtos.ProductSpecs
 		if err := json.Unmarshal([]byte(p.Specs), &specs); err != nil {
 			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 		}
+
 		_view.Specs = specs
 		productView = append(productView, _view)
 	}
+
 	return productView, nil
 }
 
@@ -67,15 +76,18 @@ func (s *Products) GetItem(ctx context.Context, inventoryID int64) (*dtos.Invent
 	if err != nil {
 		return nil, err
 	}
+
 	product, err := s.Products.GetByID(ctx, item.ProductID)
 	if err != nil {
 		return nil, err
 	}
+
 	category, _ := s.Category.GetByID(ctx, product.CategoryID)
 	var specs dtos.Specs
 	if err := json.Unmarshal([]byte(item.Specs), &specs); err != nil {
 		return nil, err
 	}
+
 	var (
 		result = dtos.Inventory{
 			ID:           item.ID,
@@ -93,6 +105,7 @@ func (s *Products) GetItem(ctx context.Context, inventoryID int64) (*dtos.Invent
 			ItemCode:     category.Name + "#" + strconv.Itoa(int(item.ID)),
 		}
 	)
+
 	return &result, nil
 
 }
@@ -103,17 +116,21 @@ func (s *Products) Detail(ctx context.Context, userID int64, productID int64) (*
 		productSpecs dtos.ProductSpecs
 		details      dtos.ProductDetail
 	)
+
 	colors, err := s.Inventory.GetColor(ctx, productID)
 	if err != nil {
 		return nil, err
 	}
+
 	product, err := s.Products.GetByID(ctx, productID)
 	if err != nil {
 		return nil, err
 	}
+	
 	if err := json.Unmarshal([]byte(product.Specs), &productSpecs); err != nil {
 		return nil, err
 	}
+
 	details.Name = product.Name
 	details.Screen = productSpecs.Screen
 	details.Display = productSpecs.Display
@@ -127,32 +144,39 @@ func (s *Products) Detail(ctx context.Context, userID int64, productID int64) (*
 		if err != nil {
 			return nil, err
 		}
+
 		if len(items) == 0 {
 			continue
 		}
+
 		detailsColor := dtos.Color{
 			Name:       color.Color,
 			ImageColor: items[0].ColorImg,
 			Product:    strings.Split(items[0].Image, ","),
 		}
+
 		for _, item := range items {
 			var spec dtos.SpecsItem
 			if err := json.Unmarshal([]byte(item.Specs), &spec); err != nil {
 				return nil, err
 			}
+
 			if userID != -1 {
 				favorite, err := s.Favorite.GetByInventoryID(ctx, item.ID, userID)
 				if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 					return nil, err
 				}
+
 				if favorite != nil && favorite.InventoryID == item.ID {
 					spec.Favorite = true
 				}
 			}
+
 			spec.Price = item.Price.String()
 			spec.InventoryID = item.ID
 			detailsColor.Specs = append(detailsColor.Specs, spec)
 		}
+
 		details.Color = append(details.Color, detailsColor)
 	}
 	return &details, nil
@@ -161,19 +185,23 @@ func (s *Products) Detail(ctx context.Context, userID int64, productID int64) (*
 // GetInvItems implements IProductService.
 func (s *Products) GetInvItems(ctx context.Context, page int, limit int) (*dtos.InventoryItems, error) {
 	var invItems dtos.InventoryItems
+
 	items, err := s.Inventory.GetLimit(ctx, limit, page)
 	if err != nil {
 		return nil, err
 	}
+
 	for _, item := range items {
 		product, err := s.Products.GetByID(ctx, item.ProductID)
 		if err != nil {
 			return nil, err
 		}
+
 		category, err := s.Category.GetByID(ctx, product.CategoryID)
 		if err != nil {
 			return nil, err
 		}
+
 		switch item.Status {
 		case "active":
 			invItems.Header.Active++
@@ -182,6 +210,7 @@ func (s *Products) GetInvItems(ctx context.Context, page int, limit int) (*dtos.
 		case "archived":
 			invItems.Header.Archive++
 		}
+
 		invItems.Header.All++
 		_item := dtos.Inventory{
 			ID:           item.ID,
@@ -199,10 +228,12 @@ func (s *Products) GetInvItems(ctx context.Context, page int, limit int) (*dtos.
 			Specs:        dtos.Specs{},
 			ItemCode:     strings.ToUpper(category.Name) + "#" + strconv.Itoa(int(item.ID)),
 		}
+
 		var specs dtos.Specs
 		if err := json.Unmarshal([]byte(item.Specs), &specs); err != nil {
 			return nil, err
 		}
+
 		_item.Specs = specs
 		invItems.Stock = append(invItems.Stock, _item)
 	}
@@ -224,12 +255,15 @@ func (s *Products) Search(ctx context.Context, keyword string) ([]dtos.ProductRe
 	if err != nil {
 		return nil, swcerr.Service("keyword error", err)
 	}
+
 	var productSchema = []dtos.ProductResponse{}
 	for _, p := range _products {
+
 		category, err := s.Category.GetByID(ctx, p.CategoryID)
 		if err != nil {
 			return nil, err
 		}
+
 		resp := dtos.ProductResponse{
 			ID:          p.ID,
 			Price:       p.Price,
@@ -240,9 +274,11 @@ func (s *Products) Search(ctx context.Context, keyword string) ([]dtos.ProductRe
 			Created:     utils.HanoiTimezone(p.Created),
 			Category:    category.Name,
 		}
+
 		if len(strings.Split(p.Image, ",")) > 0 {
 			resp.Image = strings.Split(p.Image, ",")[0]
 		}
+
 		productSchema = append(productSchema, resp)
 	}
 	return productSchema, nil
@@ -254,6 +290,7 @@ func (s *Products) GetProducts(ctx context.Context, limit int) ([]dtos.ProductRe
 	if err != nil {
 		return nil, err
 	}
+
 	var productResponse = []dtos.ProductResponse{}
 	for _, p := range products {
 		var (
@@ -268,16 +305,20 @@ func (s *Products) GetProducts(ctx context.Context, limit int) ([]dtos.ProductRe
 			}
 			types enum.Category
 		)
+
 		if len(strings.Split(p.Image, ",")) > 0 {
 			product.Image = strings.Split(p.Image, ",")[0]
 		}
+
 		category, err := s.Category.GetByID(ctx, p.CategoryID)
 		if err != nil {
 			return nil, err
 		}
+
 		if err := types.Load(category.Name); err != nil {
 			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 		}
+		
 		product.Category = category.Name
 		productResponse = append(productResponse, product)
 	}

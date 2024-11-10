@@ -75,7 +75,10 @@ var (
 	CloudinaryURL = os.Getenv("CLOUDINARY_URL")
 )
 
-var DeliveryTokenAPI = os.Getenv("DELIVERY_TOKEN_API")
+var (
+	DeliveryTokenAPI   = os.Getenv("DELIVERY_TOKEN_API")
+	DeliveryAddressAPI = os.Getenv("DELIVERY_ADDRESS_API")
+)
 
 // NumberOfWorker Number of worker
 var NumberOfWorker = 10

@@ -69,35 +69,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "delete": {
-                "description": "remove product from favorite",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "favorite"
-                ],
-                "parameters": [
-                    {
-                        "type": "number",
-                        "description": "inventory id",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
             }
         },
         "/inventories": {
@@ -701,6 +672,9 @@ const docTemplate = `{
         "dtos.Bookmark": {
             "type": "object",
             "properties": {
+                "category": {
+                    "type": "string"
+                },
                 "color": {
                     "description": "Color of product",
                     "allOf": [
@@ -726,6 +700,9 @@ const docTemplate = `{
                 },
                 "price": {
                     "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
                 },
                 "rating": {
                     "type": "number"
