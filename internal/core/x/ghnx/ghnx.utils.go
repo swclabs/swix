@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"swclabs/swipex/internal/config"
+
+	"github.com/swclabs/swipex/internal/config"
 )
 
 type pID struct {

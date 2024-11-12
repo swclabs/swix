@@ -5,12 +5,13 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/enum"
-	"swclabs/swipex/internal/core/service/products"
-	"swclabs/swipex/pkg/lib/crypto"
-	"swclabs/swipex/pkg/lib/valid"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/enum"
+	"github.com/swclabs/swipex/internal/core/service/products"
+	"github.com/swclabs/swipex/pkg/lib/crypto"
+	"github.com/swclabs/swipex/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )

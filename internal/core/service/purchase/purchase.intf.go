@@ -3,9 +3,10 @@ package purchase
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/x/ghn"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/x/ghn"
 )
 
 // IPurchase : Module for Purchasing.

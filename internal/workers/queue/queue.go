@@ -2,8 +2,8 @@
 package queue
 
 import (
-	"swclabs/swipex/internal/config"
-	"swclabs/swipex/pkg/lib/worker"
+	"github.com/swclabs/swipex/internal/config"
+	"github.com/swclabs/swipex/pkg/lib/worker"
 )
 
 var (

@@ -4,13 +4,14 @@ package classify
 import (
 	"context"
 	"log"
-	"swclabs/swipex/app"
 
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/repos/categories"
-	"swclabs/swipex/internal/core/repos/suppliers"
-	"swclabs/swipex/pkg/infra/db"
+	"github.com/swclabs/swipex/app"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/repos/categories"
+	"github.com/swclabs/swipex/internal/core/repos/suppliers"
+	"github.com/swclabs/swipex/pkg/infra/db"
 )
 
 var _ = app.Service(New)
@@ -50,7 +51,7 @@ func (c *Classify) CreateSuppliers(ctx context.Context, supplierReq dtos.Supplie
 		}
 		supplierRepo = suppliers.New(tx)
 	)
-	
+
 	if err := supplierRepo.Insert(ctx, supplier); err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
 			log.Fatal(errTx)

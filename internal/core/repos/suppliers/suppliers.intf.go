@@ -2,7 +2,8 @@ package suppliers
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
 )
 
 // ISuppliers implements all methods to access and manage supplier data in the database.

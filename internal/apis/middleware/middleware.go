@@ -4,9 +4,10 @@ package middleware
 import (
 	"net/http"
 	"os"
-	"swclabs/swipex/internal/config"
 
-	sessionUtils "swclabs/swipex/pkg/lib/session"
+	"github.com/swclabs/swipex/internal/config"
+
+	sessionUtils "github.com/swclabs/swipex/pkg/lib/session"
 
 	sentryecho "github.com/getsentry/sentry-go/echo"
 	"github.com/labstack/echo-contrib/session"

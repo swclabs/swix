@@ -4,12 +4,13 @@ package cache
 import (
 	"context"
 	"fmt"
-	"swclabs/swipex/internal/config"
 	"time"
+
+	"github.com/swclabs/swipex/internal/config"
 
 	"go.uber.org/fx"
 
-	"swclabs/swipex/pkg/lib/logger"
+	"github.com/swclabs/swipex/pkg/lib/logger"
 
 	"github.com/redis/go-redis/v9"
 )

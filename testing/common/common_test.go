@@ -3,10 +3,11 @@ package test
 import (
 	"fmt"
 	"maps"
-	"swclabs/swipex/pkg/lib/crypto"
 	"testing"
 
-	"swclabs/swipex/pkg/utils"
+	"github.com/swclabs/swipex/pkg/lib/crypto"
+
+	"github.com/swclabs/swipex/pkg/utils"
 
 	"github.com/shopspring/decimal"
 )

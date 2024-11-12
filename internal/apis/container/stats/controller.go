@@ -1,7 +1,7 @@
 package stats
 
 import (
-	"swclabs/swipex/internal/core/service/statistic"
+	"github.com/swclabs/swipex/internal/core/service/statistic"
 )
 
 var _ IController = (*Controller)(nil)

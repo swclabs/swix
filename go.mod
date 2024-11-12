@@ -1,4 +1,4 @@
-module swclabs/swipex
+module github.com/swclabs/swipex
 
 go 1.22.5
 

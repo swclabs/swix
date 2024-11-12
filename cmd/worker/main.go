@@ -7,8 +7,9 @@ package main
 
 import (
 	"log"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/workers"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/workers"
 )
 
 func main() {

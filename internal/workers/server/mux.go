@@ -1,7 +1,7 @@
 package server
 
 import (
-	"swclabs/swipex/pkg/lib/worker"
+	"github.com/swclabs/swipex/pkg/lib/worker"
 )
 
 type IMux interface {

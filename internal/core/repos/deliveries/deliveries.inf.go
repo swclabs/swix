@@ -2,7 +2,8 @@ package deliveries
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
 )
 
 // IDeliveries is an interface for Delivery.

@@ -5,8 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"swclabs/swipex/internal/config"
 	"time"
+
+	"github.com/swclabs/swipex/internal/config"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"

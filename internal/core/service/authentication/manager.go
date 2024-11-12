@@ -14,17 +14,18 @@ import (
 	"fmt"
 	"log"
 	"mime/multipart"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/model"
-	"swclabs/swipex/internal/core/repos/accounts"
-	"swclabs/swipex/internal/core/repos/addresses"
-	"swclabs/swipex/internal/core/repos/users"
-	"swclabs/swipex/pkg/infra/blob"
-	"swclabs/swipex/pkg/infra/db"
-	"swclabs/swipex/pkg/lib/crypto"
-	"swclabs/swipex/pkg/utils"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/model"
+	"github.com/swclabs/swipex/internal/core/repos/accounts"
+	"github.com/swclabs/swipex/internal/core/repos/addresses"
+	"github.com/swclabs/swipex/internal/core/repos/users"
+	"github.com/swclabs/swipex/pkg/infra/blob"
+	"github.com/swclabs/swipex/pkg/infra/db"
+	"github.com/swclabs/swipex/pkg/lib/crypto"
+	"github.com/swclabs/swipex/pkg/utils"
 
 	"github.com/jackc/pgx/v5"
 )
@@ -206,7 +207,7 @@ func (auth *Authentication) OAuth2SaveUser(ctx context.Context, req dtos.OAuth2S
 		}
 		return -1, err
 	}
-	
+
 	_, err = accountRepo.Insert(ctx, entity.Account{
 		Username: fmt.Sprintf("user#%d", userInfo.ID),
 		Password: hash,

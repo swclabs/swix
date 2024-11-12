@@ -5,12 +5,13 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/apis/container/purchase"
-	purchaseWorker "swclabs/swipex/internal/workers/container/purchase"
-	"swclabs/swipex/pkg/lib/logger"
 
-	_ "swclabs/swipex/docs/purchase"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/apis/container/purchase"
+	purchaseWorker "github.com/swclabs/swipex/internal/workers/container/purchase"
+	"github.com/swclabs/swipex/pkg/lib/logger"
+
+	_ "github.com/swclabs/swipex/docs/purchase"
 )
 
 func main() {

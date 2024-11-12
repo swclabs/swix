@@ -8,12 +8,13 @@ import (
 	"mime/multipart"
 	"net/http"
 	"strconv"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/enum"
-	"swclabs/swipex/internal/core/repos/products"
-	"swclabs/swipex/internal/core/repos/stars"
-	"swclabs/swipex/pkg/infra/db"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/enum"
+	"github.com/swclabs/swipex/internal/core/repos/products"
+	"github.com/swclabs/swipex/internal/core/repos/stars"
+	"github.com/swclabs/swipex/pkg/infra/db"
 
 	"github.com/shopspring/decimal"
 )
@@ -65,7 +66,7 @@ func (s *Products) UploadItemColorImage(ctx context.Context, ID int, fileHeader 
 			}
 		}
 	}
-	
+
 	if err != nil {
 		return err
 	}

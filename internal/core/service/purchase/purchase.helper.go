@@ -6,11 +6,12 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/repos/inventories"
-	"swclabs/swipex/internal/core/repos/orders"
-	"swclabs/swipex/pkg/utils"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/repos/inventories"
+	"github.com/swclabs/swipex/internal/core/repos/orders"
+	"github.com/swclabs/swipex/pkg/utils"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/shopspring/decimal"

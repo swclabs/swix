@@ -8,17 +8,18 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/enum"
-	"swclabs/swipex/internal/core/repos/categories"
-	"swclabs/swipex/internal/core/repos/favorite"
-	"swclabs/swipex/internal/core/repos/inventories"
-	"swclabs/swipex/internal/core/repos/products"
-	"swclabs/swipex/internal/core/repos/stars"
-	"swclabs/swipex/pkg/infra/blob"
-	"swclabs/swipex/pkg/infra/db"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/enum"
+	"github.com/swclabs/swipex/internal/core/repos/categories"
+	"github.com/swclabs/swipex/internal/core/repos/favorite"
+	"github.com/swclabs/swipex/internal/core/repos/inventories"
+	"github.com/swclabs/swipex/internal/core/repos/products"
+	"github.com/swclabs/swipex/internal/core/repos/stars"
+	"github.com/swclabs/swipex/pkg/infra/blob"
+	"github.com/swclabs/swipex/pkg/infra/db"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/shopspring/decimal"
@@ -58,7 +59,7 @@ type Products struct {
 
 // AddBookmark implements IProducts.
 func (s *Products) AddBookmark(ctx context.Context, userID int64, inventoryID int64) error {
-	
+
 	fav, err := s.Favorite.GetByInventoryID(ctx, inventoryID, userID)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return err
@@ -206,7 +207,7 @@ func (s *Products) InsertItem(ctx context.Context, product dtos.Inventory) error
 		inventory.Image = items[0].Image
 		inventory.ColorImg = items[0].ColorImg
 	}
-	
+
 	tx, err := db.NewTx(ctx)
 	if err != nil {
 		return err

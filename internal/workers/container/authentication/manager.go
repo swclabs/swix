@@ -1,9 +1,9 @@
 package authentication
 
 import (
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/workers/container/healthcheck"
-	"swclabs/swipex/internal/workers/server"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/workers/container/healthcheck"
+	"github.com/swclabs/swipex/internal/workers/server"
 )
 
 func New(base healthcheck.IRouter, router IRouter) app.IApplication {

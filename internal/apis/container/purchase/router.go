@@ -4,9 +4,9 @@
 package purchase
 
 import (
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/apis/middleware"
-	"swclabs/swipex/internal/apis/server"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/apis/middleware"
+	"github.com/swclabs/swipex/internal/apis/server"
 
 	"github.com/labstack/echo/v4"
 )

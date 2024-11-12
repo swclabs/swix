@@ -1,7 +1,7 @@
 package dtos
 
 import (
-	"swclabs/swipex/internal/core/domain/model"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 )
 
 // Cart schema request, response

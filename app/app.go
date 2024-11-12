@@ -3,10 +3,11 @@ package app
 import (
 	"context"
 	"log"
-	"swclabs/swipex/pkg/infra/blob"
-	"swclabs/swipex/pkg/infra/cache"
-	"swclabs/swipex/pkg/infra/db"
-	"swclabs/swipex/pkg/lib/logger"
+
+	"github.com/swclabs/swipex/pkg/infra/blob"
+	"github.com/swclabs/swipex/pkg/infra/cache"
+	"github.com/swclabs/swipex/pkg/infra/db"
+	"github.com/swclabs/swipex/pkg/lib/logger"
 
 	"go.uber.org/fx"
 )

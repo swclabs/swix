@@ -2,10 +2,11 @@ package main
 
 import (
 	"log"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/apis/container/article"
 
-	_ "swclabs/swipex/docs/article"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/apis/container/article"
+
+	_ "github.com/swclabs/swipex/docs/article"
 )
 
 func main() {

@@ -2,8 +2,9 @@
 package session
 
 import (
-	"swclabs/swipex/internal/config"
 	"sync"
+
+	"github.com/swclabs/swipex/internal/config"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"

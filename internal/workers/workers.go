@@ -1,11 +1,11 @@
 package workers
 
 import (
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/workers/container/authentication"
-	"swclabs/swipex/internal/workers/container/healthcheck"
-	"swclabs/swipex/internal/workers/container/purchase"
-	"swclabs/swipex/internal/workers/server"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/workers/container/authentication"
+	"github.com/swclabs/swipex/internal/workers/container/healthcheck"
+	"github.com/swclabs/swipex/internal/workers/container/purchase"
+	"github.com/swclabs/swipex/internal/workers/server"
 )
 
 func NewApp(

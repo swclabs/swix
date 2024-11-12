@@ -2,7 +2,8 @@ package categories
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
 )
 
 // ICategories defines methods to interact with category (Categories) data.

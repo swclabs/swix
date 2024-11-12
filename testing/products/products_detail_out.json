@@ -1,1 +1,38 @@
-{"level":"info","time":1730219691.8082397,"message":"Response body","body":{"name":"iPhone 12","screen":"6.1 inch","display":"Super Retina XDR display","price":"17.000.000 - 18.000.000","rating":0,"image":[""],"color":[{"name":"Black Titanium","img":"https://example.com/black-titanium.jpg","product":["https://example.com/iphone-12.jpg","https://example.com/iphone-12-2.jpg","https://example.com/iphone-12-3.jpg"],"specs":[{"favorite":false,"inventory_id":1,"ssd":"256","ram":"128","desc":"","connection":"","price":"10000"}]}]},"status":200}
+{
+    "level": "info",
+    "time": 1731337892.210974,
+    "message": "Response body",
+    "body": {
+        "name": "iPhone 12",
+        "screen": "6.1 inch",
+        "display": "Super Retina XDR display",
+        "price": "17.000.000 - 18.000.000",
+        "rating": 0,
+        "image": [
+            ""
+        ],
+        "color": [
+            {
+                "name": "Black Titanium",
+                "img": "https://example.com/black-titanium.jpg",
+                "product": [
+                    "https://example.com/iphone-12.jpg",
+                    "https://example.com/iphone-12-2.jpg",
+                    "https://example.com/iphone-12-3.jpg"
+                ],
+                "specs": [
+                    {
+                        "favorite": false,
+                        "inventory_id": 1,
+                        "ssd": "256",
+                        "ram": "128",
+                        "desc": "",
+                        "connection": "",
+                        "price": "10000"
+                    }
+                ]
+            }
+        ]
+    },
+    "status": 200
+}

@@ -3,9 +3,10 @@ package products
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/enum"
-	"swclabs/swipex/internal/core/domain/model"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/enum"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -39,8 +40,9 @@ func (p *Mock) GetByCategory(ctx context.Context, types enum.Category, offset in
 }
 
 // Search implements IProductRepository.
-func (p *Mock) Search(_ context.Context, _ string) ([]entity.Product, error) {
-	panic("unimplemented")
+func (p *Mock) Search(ctx context.Context, keyword string) ([]entity.Product, error) {
+	args := p.Called(ctx, keyword)
+	return args.Get(0).([]entity.Product), args.Error(1)
 }
 
 // Update implements IProductRepository.

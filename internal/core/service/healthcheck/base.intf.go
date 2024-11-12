@@ -2,7 +2,8 @@ package healthcheck
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/dtos"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
 )
 
 // IService : base utility methods for the service.

@@ -12,12 +12,13 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/apis/container/authentication"
-	authWorker "swclabs/swipex/internal/workers/container/authentication"
-	"swclabs/swipex/pkg/lib/logger"
 
-	_ "swclabs/swipex/docs/authentication"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/apis/container/authentication"
+	authWorker "github.com/swclabs/swipex/internal/workers/container/authentication"
+	"github.com/swclabs/swipex/pkg/lib/logger"
+
+	_ "github.com/swclabs/swipex/docs/authentication"
 )
 
 // @title Swipe Public API v0.0.1

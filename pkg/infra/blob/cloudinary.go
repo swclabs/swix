@@ -5,10 +5,11 @@ import (
 	"context"
 	"fmt"
 	"mime/multipart"
-	"swclabs/swipex/internal/config"
 	"sync"
 
-	"swclabs/swipex/pkg/lib/logger"
+	"github.com/swclabs/swipex/internal/config"
+
+	"github.com/swclabs/swipex/pkg/lib/logger"
 
 	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/cloudinary/cloudinary-go/v2/api/uploader"
