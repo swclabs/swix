@@ -159,13 +159,13 @@ CREATE TABLE "coupons_used" (
 
 CREATE TABLE "province" (
   "pid" bigserial PRIMARY KEY,
-  "id" varchar,
+  "id" varchar UNIQUE,
   "name" varchar
 );
 
 CREATE TABLE "district" (
   "pid" bigserial PRIMARY KEY,
-  "id" varchar,
+  "id" varchar UNIQUE,
   "province_id" varchar,
   "name" varchar
 );
@@ -173,6 +173,6 @@ CREATE TABLE "district" (
 CREATE TABLE "commune" (
   "pid" bigserial PRIMARY KEY,
   "id" varchar,
-  "district_id" varchar,
+  "district_id" varchar ,
   "name" varchar
 );

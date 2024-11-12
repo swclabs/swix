@@ -1,8 +1,9 @@
 package test
 
 import (
-	"swclabs/swipex/internal/core/x/mail"
 	"testing"
+
+	"github.com/swclabs/swipex/internal/core/x/mail"
 )
 
 func TestEmail(t *testing.T) {

@@ -3,10 +3,11 @@ package article
 import (
 	"net/http"
 	"strconv"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/service/article"
-	"swclabs/swipex/pkg/lib/valid"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/service/article"
+	"github.com/swclabs/swipex/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )

@@ -5,8 +5,9 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"swclabs/swipex/internal/config"
-	"swclabs/swipex/pkg/lib/logger"
+
+	"github.com/swclabs/swipex/internal/config"
+	"github.com/swclabs/swipex/pkg/lib/logger"
 
 	"github.com/hibiken/asynq"
 )

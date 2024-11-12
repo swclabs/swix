@@ -5,8 +5,9 @@ import (
 	"context"
 	"fmt"
 	"strconv"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
 )
 
 var _ IService = (*Service)(nil)

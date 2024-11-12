@@ -3,10 +3,11 @@ package mail
 
 import (
 	"context"
-	"swclabs/swipex/internal/config"
-	"swclabs/swipex/pkg/lib/mailer"
 
-	"swclabs/swipex/pkg/components"
+	"github.com/swclabs/swipex/internal/config"
+	"github.com/swclabs/swipex/pkg/lib/mailer"
+
+	"github.com/swclabs/swipex/pkg/components"
 
 	"github.com/a-h/templ"
 )

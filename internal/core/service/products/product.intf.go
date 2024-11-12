@@ -4,9 +4,10 @@ package products
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/enum"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/enum"
 )
 
 // IProducts : Module for Product interactions.

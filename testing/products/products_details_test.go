@@ -6,16 +6,17 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	productContainer "swclabs/swipex/internal/apis/container/products"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/model"
-	"swclabs/swipex/internal/core/repos/categories"
-	"swclabs/swipex/internal/core/repos/inventories"
-	productRepo "swclabs/swipex/internal/core/repos/products"
-	productService "swclabs/swipex/internal/core/service/products"
-	"swclabs/swipex/pkg/lib/logger"
 	"testing"
+
+	productContainer "github.com/swclabs/swipex/internal/apis/container/products"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/model"
+	"github.com/swclabs/swipex/internal/core/repos/categories"
+	"github.com/swclabs/swipex/internal/core/repos/inventories"
+	productRepo "github.com/swclabs/swipex/internal/core/repos/products"
+	productService "github.com/swclabs/swipex/internal/core/service/products"
+	"github.com/swclabs/swipex/pkg/lib/logger"
 
 	"github.com/labstack/echo/v4"
 	"github.com/shopspring/decimal"
@@ -39,10 +40,12 @@ func TestProductDetails(t *testing.T) {
 		}
 		controller = productContainer.NewController(&service)
 	)
+
 	specs, _ := json.Marshal(dtos.Specs{
 		SSD: "256",
 		RAM: "128",
 	})
+
 	category.On("GetByID", context.Background(), int64(1)).Return(&entity.Category{
 		ID:          int64(1),
 		Name:        "phone",
@@ -79,6 +82,7 @@ func TestProductDetails(t *testing.T) {
 		Status:     "active",
 		CategoryID: 1,
 	}, nil)
+
 	var e = echo.New()
 	e.GET("/products/details", controller.GetProductDetails)
 	req := httptest.NewRequest(http.MethodGet, "/products/details?id=1", nil)

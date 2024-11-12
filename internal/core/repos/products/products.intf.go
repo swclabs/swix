@@ -2,9 +2,10 @@ package products
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/enum"
-	"swclabs/swipex/internal/core/domain/model"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/enum"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 )
 
 // IProducts defines methods to interact with product (Products) data.

@@ -2,8 +2,9 @@ package users
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/model"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 )
 
 // IUsers Users Repository interface

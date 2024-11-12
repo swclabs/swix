@@ -5,9 +5,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/service/healthcheck"
-	"swclabs/swipex/pkg/lib/worker"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/service/healthcheck"
+	"github.com/swclabs/swipex/pkg/lib/worker"
 )
 
 var _ = app.Controller(NewHandler)

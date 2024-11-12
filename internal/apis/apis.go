@@ -1,14 +1,14 @@
 package apis
 
 import (
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/apis/container/article"
-	"swclabs/swipex/internal/apis/container/authentication"
-	"swclabs/swipex/internal/apis/container/classify"
-	"swclabs/swipex/internal/apis/container/healthcheck"
-	"swclabs/swipex/internal/apis/container/products"
-	"swclabs/swipex/internal/apis/container/purchase"
-	"swclabs/swipex/internal/apis/server"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/apis/container/article"
+	"github.com/swclabs/swipex/internal/apis/container/authentication"
+	"github.com/swclabs/swipex/internal/apis/container/classify"
+	"github.com/swclabs/swipex/internal/apis/container/healthcheck"
+	"github.com/swclabs/swipex/internal/apis/container/products"
+	"github.com/swclabs/swipex/internal/apis/container/purchase"
+	"github.com/swclabs/swipex/internal/apis/server"
 )
 
 func NewApp(

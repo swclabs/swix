@@ -3,8 +3,9 @@ package authentication
 import (
 	"context"
 	"mime/multipart"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/model"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 )
 
 // IAuthentication : Module for manager with use-cases.

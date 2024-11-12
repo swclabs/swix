@@ -3,12 +3,13 @@ package authentication
 import (
 	"fmt"
 	"net/http"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/service/authentication"
-	"swclabs/swipex/internal/core/x/oauth2"
-	"swclabs/swipex/pkg/lib/crypto"
-	"swclabs/swipex/pkg/lib/valid"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/service/authentication"
+	"github.com/swclabs/swipex/internal/core/x/oauth2"
+	"github.com/swclabs/swipex/pkg/lib/crypto"
+	"github.com/swclabs/swipex/pkg/lib/valid"
 
 	"github.com/labstack/echo/v4"
 )

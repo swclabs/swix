@@ -5,10 +5,11 @@ import (
 	"context"
 	"encoding/json"
 	"strconv"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/service/authentication"
-	"swclabs/swipex/pkg/lib/worker"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/service/authentication"
+	"github.com/swclabs/swipex/pkg/lib/worker"
 )
 
 var _ = app.Controller(NewHandler)

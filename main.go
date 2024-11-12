@@ -14,11 +14,11 @@ package main
 
 import (
 	"log"
-	"swclabs/swipex/internal/apis/container/healthcheck"
-	"swclabs/swipex/internal/apis/server"
-	service "swclabs/swipex/internal/core/service/healthcheck"
+	"github.com/swclabs/swipex/internal/apis/container/healthcheck"
+	"github.com/swclabs/swipex/internal/apis/server"
+	service "github.com/swclabs/swipex/internal/core/service/healthcheck"
 
-	_ "swclabs/swipex/docs"
+	_ "github.com/swclabs/swipex/docs"
 )
 
 // @title Swipe Public API v0.0.1

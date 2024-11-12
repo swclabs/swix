@@ -4,10 +4,11 @@ package purchase
 import (
 	"context"
 	"encoding/json"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/service/purchase"
-	"swclabs/swipex/pkg/lib/worker"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/service/purchase"
+	"github.com/swclabs/swipex/pkg/lib/worker"
 )
 
 var _ = app.Controller(NewHandler)

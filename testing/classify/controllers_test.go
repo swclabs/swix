@@ -4,11 +4,12 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
-	classifyContainer "swclabs/swipex/internal/apis/container/classify"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/repos/suppliers"
-	classifyService "swclabs/swipex/internal/core/service/classify"
 	"testing"
+
+	classifyContainer "github.com/swclabs/swipex/internal/apis/container/classify"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/repos/suppliers"
+	classifyService "github.com/swclabs/swipex/internal/core/service/classify"
 
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"

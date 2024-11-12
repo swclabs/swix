@@ -2,7 +2,8 @@ package district
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
 )
 
 type IDistrict interface {

@@ -2,7 +2,8 @@ package accounts
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
 )
 
 // IAccounts implements all methods of Account to access the database.

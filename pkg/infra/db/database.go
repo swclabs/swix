@@ -4,12 +4,13 @@ package db
 import (
 	"context"
 	"fmt"
-	"swclabs/swipex/internal/config"
 	"sync"
+
+	"github.com/swclabs/swipex/internal/config"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"swclabs/swipex/pkg/lib/logger"
+	"github.com/swclabs/swipex/pkg/lib/logger"
 
 	"go.uber.org/fx"
 )

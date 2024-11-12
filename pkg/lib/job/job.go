@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"swclabs/swipex/pkg/lib/logger"
+	"github.com/swclabs/swipex/pkg/lib/logger"
 )
 
 // Job struct

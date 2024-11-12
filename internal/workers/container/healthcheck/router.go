@@ -2,9 +2,9 @@
 package healthcheck
 
 import (
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/workers/server"
-	"swclabs/swipex/pkg/lib/worker"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/workers/server"
+	"github.com/swclabs/swipex/pkg/lib/worker"
 )
 
 var _ = app.Router(NewRouter)

@@ -4,12 +4,13 @@ package accounts
 import (
 	"context"
 	"errors"
-	"swclabs/swipex/app"
-	"swclabs/swipex/pkg/infra/cache"
 	"time"
 
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/pkg/infra/db"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/pkg/infra/cache"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/pkg/infra/db"
 )
 
 var _ = app.Repos(Init)

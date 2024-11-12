@@ -2,12 +2,13 @@ package inventories
 
 import (
 	"context"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/model"
-	"swclabs/swipex/pkg/infra/cache"
-	"swclabs/swipex/pkg/infra/db"
-	"swclabs/swipex/pkg/lib/errors"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/model"
+	"github.com/swclabs/swipex/pkg/infra/cache"
+	"github.com/swclabs/swipex/pkg/infra/db"
+	"github.com/swclabs/swipex/pkg/lib/errors"
 )
 
 var _ IInventories = (*Inventory)(nil)

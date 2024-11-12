@@ -2,7 +2,8 @@ package config
 
 import (
 	"fmt"
-	"swclabs/swipex/pkg/lib/logger"
+
+	"github.com/swclabs/swipex/pkg/lib/logger"
 )
 
 // Version of the application

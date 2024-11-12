@@ -2,8 +2,9 @@ package classify
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
 )
 
 // IClassify : Classify utility methods for the service.

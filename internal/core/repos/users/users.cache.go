@@ -2,9 +2,10 @@ package users
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/model"
-	"swclabs/swipex/pkg/infra/cache"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/model"
+	"github.com/swclabs/swipex/pkg/infra/cache"
 )
 
 type _cache struct {

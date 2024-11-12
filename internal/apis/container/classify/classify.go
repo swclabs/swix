@@ -1,9 +1,9 @@
 package classify
 
 import (
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/apis/container/healthcheck"
-	"swclabs/swipex/internal/apis/server"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/apis/container/healthcheck"
+	"github.com/swclabs/swipex/internal/apis/server"
 )
 
 func New(base healthcheck.IRouter, router IRouter) app.IApplication {

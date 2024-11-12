@@ -2,7 +2,8 @@ package addresses
 
 import (
 	"context"
-	"swclabs/swipex/internal/core/domain/entity"
+
+	"github.com/swclabs/swipex/internal/core/domain/entity"
 )
 
 // IAddress implements all methods to access the Addresses data in the database.

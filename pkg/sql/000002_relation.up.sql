@@ -34,19 +34,5 @@ ALTER TABLE "coupons_used" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id")
 ALTER TABLE "coupons_used" ADD FOREIGN KEY ("coupon_code") REFERENCES "coupons" ("code") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "coupons_used" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
-
-CREATE OR REPLACE FUNCTION update_product_rating()
-RETURNS TRIGGER AS $$
-BEGIN
-  IF OLD.rating <> -1.0 AND NEW.rating IS DISTINCT FROM OLD.rating THEN
-    NEW.rating := (OLD.rating + NEW.rating) / 2;
-  END IF;
-
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER recalculate_rating
-BEFORE UPDATE ON products
-FOR EACH ROW
-EXECUTE FUNCTION update_product_rating();
+ALTER TABLE "district" ADD FOREIGN KEY ("province_id") REFERENCES "province" ("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "commune" ADD FOREIGN KEY ("district_id") REFERENCES "district" ("id") ON DELETE CASCADE ON UPDATE CASCADE;

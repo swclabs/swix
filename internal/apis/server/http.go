@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"swclabs/swipex/internal/apis/middleware"
-	"swclabs/swipex/internal/config"
-	"swclabs/swipex/pkg/infra/sentry"
+
+	"github.com/swclabs/swipex/internal/apis/middleware"
+	"github.com/swclabs/swipex/internal/config"
+	"github.com/swclabs/swipex/pkg/infra/sentry"
 
 	"github.com/labstack/echo/v4"
 )

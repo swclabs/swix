@@ -1,7 +1,7 @@
 package healthcheck
 
 import (
-	"swclabs/swipex/pkg/components"
+	"github.com/swclabs/swipex/pkg/components"
 
 	"github.com/labstack/echo/v4"
 )

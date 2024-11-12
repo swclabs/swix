@@ -3,7 +3,8 @@ package middleware
 
 import (
 	"net/http"
-	"swclabs/swipex/pkg/lib/crypto"
+
+	"github.com/swclabs/swipex/pkg/lib/crypto"
 
 	"github.com/labstack/echo/v4"
 )

@@ -5,13 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"mime/multipart"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/repos/comments"
-	"swclabs/swipex/internal/core/repos/news"
-	"swclabs/swipex/pkg/infra/blob"
-	"swclabs/swipex/pkg/infra/db"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/repos/comments"
+	"github.com/swclabs/swipex/internal/core/repos/news"
+	"github.com/swclabs/swipex/pkg/infra/blob"
+	"github.com/swclabs/swipex/pkg/infra/db"
 )
 
 var _ = app.Service(New)
@@ -144,7 +145,7 @@ func (p *Article) GetComment(ctx context.Context, productID int64) ([]dtos.Comme
 			level = cmt.Level
 			parentID = cmt.ParentID
 		}
-		
+
 		comment = append(comment, dtos.Comment{
 			ID:      cmt.ID,
 			Level:   level,

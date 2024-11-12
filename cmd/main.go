@@ -12,12 +12,13 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/apis"
-	"swclabs/swipex/internal/workers"
-	"swclabs/swipex/pkg/lib/logger"
 
-	_ "swclabs/swipex/docs"
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/apis"
+	"github.com/swclabs/swipex/internal/workers"
+	"github.com/swclabs/swipex/pkg/lib/logger"
+
+	_ "github.com/swclabs/swipex/docs"
 )
 
 // @title Swipe Public API v0.0.1

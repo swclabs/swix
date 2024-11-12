@@ -2,10 +2,11 @@ package healthcheck
 
 import (
 	"context"
-	"swclabs/swipex/internal/config"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/workers/queue"
-	"swclabs/swipex/pkg/lib/worker"
+
+	"github.com/swclabs/swipex/internal/config"
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/workers/queue"
+	"github.com/swclabs/swipex/pkg/lib/worker"
 )
 
 var _ IService = (*Task)(nil)

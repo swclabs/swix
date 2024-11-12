@@ -6,10 +6,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"swclabs/swipex/app"
-	"swclabs/swipex/internal/config"
-	"swclabs/swipex/internal/core/domain/x/ghn"
-	"swclabs/swipex/pkg/lib/valid"
+
+	"github.com/swclabs/swipex/app"
+	"github.com/swclabs/swipex/internal/config"
+	"github.com/swclabs/swipex/internal/core/domain/x/ghn"
+	"github.com/swclabs/swipex/pkg/lib/valid"
 )
 
 type IGhnx interface {

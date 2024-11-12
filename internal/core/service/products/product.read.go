@@ -8,11 +8,12 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	"swclabs/swipex/internal/core/domain/dtos"
-	"swclabs/swipex/internal/core/domain/entity"
-	"swclabs/swipex/internal/core/domain/enum"
-	swcerr "swclabs/swipex/pkg/lib/errors"
-	"swclabs/swipex/pkg/utils"
+
+	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/enum"
+	swcerr "github.com/swclabs/swipex/pkg/lib/errors"
+	"github.com/swclabs/swipex/pkg/utils"
 
 	"github.com/jackc/pgx/v5"
 )
@@ -126,7 +127,7 @@ func (s *Products) Detail(ctx context.Context, userID int64, productID int64) (*
 	if err != nil {
 		return nil, err
 	}
-	
+
 	if err := json.Unmarshal([]byte(product.Specs), &productSpecs); err != nil {
 		return nil, err
 	}
@@ -318,7 +319,7 @@ func (s *Products) GetProducts(ctx context.Context, limit int) ([]dtos.ProductRe
 		if err := types.Load(category.Name); err != nil {
 			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
 		}
-		
+
 		product.Category = category.Name
 		productResponse = append(productResponse, product)
 	}
