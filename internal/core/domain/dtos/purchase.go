@@ -100,3 +100,8 @@ type OrderForm struct {
 	Address    OrderFormAddress   `json:"address" validate:"required"`
 	Product    []OrderFormProduct `json:"product" validate:"required"`
 }
+
+type OrderStatus struct {
+	OrderCode string `json:"order_code" validate:"required"`
+	Status    string `json:"status" validate:"required"`
+}

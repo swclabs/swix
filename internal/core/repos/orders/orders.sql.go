@@ -42,4 +42,10 @@ const (
 			) JOIN inventories ON inventories.id = inventory_id
 		) JOIN products ON products.id = product_id;
 	`
+
+	updateStatus = `
+		UPDATE orders
+		SET status = $1
+		WHERE uuid = $2;
+	`
 )

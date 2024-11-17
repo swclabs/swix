@@ -28,89 +28,85 @@ type Task struct {
 	service IPurchase
 }
 
+// UpdateOrderStatus implements IPurchase.
+func (t *Task) UpdateOrderStatus(ctx context.Context, orderCode string, status string) error {
+	return t.service.UpdateOrderStatus(ctx, orderCode, status)
+}
+
 func (t *Task) GetUsersByAdmin(ctx context.Context, limit int) ([]dtos.OrderInfo, error) {
-	//TODO implement me
-	panic("implement me")
+	return t.service.GetUsersByAdmin(ctx, limit)
 }
 
 // AddressDistrict implements IPurchase.
 func (t *Task) AddressDistrict(ctx context.Context, provinceID string) ([]entity.District, error) {
-	panic("unimplemented")
+	return t.service.AddressDistrict(ctx, provinceID)
 }
 
 // AddressProvince implements IPurchase.
 func (t *Task) AddressProvince(ctx context.Context) ([]entity.Province, error) {
-	panic("unimplemented")
+	return t.service.AddressProvince(ctx)
 }
 
 // AddressWard implements IPurchase.
 func (t *Task) AddressWard(ctx context.Context, districtID string) ([]entity.Commune, error) {
-	panic("unimplemented")
+	return t.service.AddressWard(ctx, districtID)
 }
 
 // CreateCoupon implements IPurchase.
 func (t *Task) CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (code string, err error) {
-	panic("unimplemented")
+	return t.service.CreateCoupon(ctx, coupon)
 }
 
 // GetCoupon implements IPurchase.
 func (t *Task) GetCoupon(ctx context.Context) (coupons []dtos.Coupon, err error) {
-	panic("unimplemented")
-}
-
-// UseCoupon implements IPurchase.
-func (t *Task) UseCoupon(ctx context.Context, userID int64, couponCode string) error {
-	panic("unimplemented")
+	return t.service.GetCoupon(ctx)
 }
 
 // GetOrderByCode implements IPurchase.
 func (t *Task) GetOrderByCode(ctx context.Context, orderCode string) (*dtos.OrderInfo, error) {
-	panic("unimplemented")
+	return t.service.GetOrderByCode(ctx, orderCode)
 }
 
 // CreateOrderForm implements IPurchase.
 func (t *Task) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (string, error) {
-	panic("unimplemented")
+	return t.service.CreateOrderForm(ctx, order)
 }
 
 // CreateDeliveryOrder implements IPurchase.
 func (t *Task) CreateDeliveryOrder(ctx context.Context, shopID int, order ghn.CreateOrderDTO) (*ghn.OrderDTO, error) {
-	panic("unimplemented")
+	return t.service.CreateDeliveryOrder(ctx, shopID, order)
 }
 
 // DeliveryOrderInfo implements IPurchase.
 func (t *Task) DeliveryOrderInfo(ctx context.Context, orderCode string) (*ghn.OrderInfoDTO, error) {
-	panic("unimplemented")
+	return t.service.DeliveryOrderInfo(ctx, orderCode)
 }
 
 // CreateDelivery implements IPurchase.
 func (t *Task) CreateDelivery(ctx context.Context, delivery dtos.DeliveryBody) error {
-	panic("unimplemented")
+	return t.service.CreateDelivery(ctx, delivery)
 }
 
 // CreateDeliveryAddress implements IPurchase.
 func (t *Task) CreateDeliveryAddress(ctx context.Context, addr dtos.DeliveryAddress) error {
-	panic("unimplemented")
+	return t.service.CreateDeliveryAddress(ctx, addr)
 }
 
 // GetDelivery implements IPurchase.
 func (t *Task) GetDelivery(ctx context.Context, userID int64) ([]dtos.Delivery, error) {
-	panic("unimplemented")
+	return t.service.GetDelivery(ctx, userID)
 }
 
 // GetDeliveryAddress implements IPurchase.
 func (t *Task) GetDeliveryAddress(ctx context.Context, userID int64) ([]dtos.Address, error) {
-	panic("unimplemented")
+	return t.service.GetDeliveryAddress(ctx, userID)
 }
 
 // AddToCart implements IPurchaseService.
 func (t *Task) AddToCart(ctx context.Context, cart dtos.CartInsertDTO) error {
 	return t.worker.Exec(ctx,
 		queue.CartQueue,
-		worker.NewTask(
-			"purchase.AddToCart",
-			cart,
-		),
+		worker.NewTask("purchase.AddToCart", cart),
 	)
 }
 

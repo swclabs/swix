@@ -50,6 +50,8 @@ type IPurchase interface {
 
 	GetOrderByCode(ctx context.Context, orderCode string) (*dtos.OrderInfo, error)
 
+	UpdateOrderStatus(ctx context.Context, orderCode string, status string) error
+
 	DeliveryOrderInfo(ctx context.Context, orderCode string) (*ghn.OrderInfoDTO, error)
 
 	CreateDeliveryOrder(ctx context.Context, shopID int, order ghn.CreateOrderDTO) (*ghn.OrderDTO, error)
@@ -84,7 +86,7 @@ type IPurchase interface {
 
 	AddressDistrict(ctx context.Context, provinceID string) ([]entity.District, error)
 
-	UseCoupon(ctx context.Context, userID int64, couponCode string) error
 	CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (code string, err error)
+
 	GetCoupon(ctx context.Context) (coupons []dtos.Coupon, err error)
 }

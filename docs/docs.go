@@ -1486,37 +1486,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/purchase/coupons/{code}": {
-            "get": {
-                "description": "get coupon.",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "purchase"
-                ],
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "coupons code",
-                        "name": "code",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/dtos.OK"
-                        }
-                    }
-                }
-            }
-        },
         "/purchase/orders": {
             "get": {
                 "description": "get list of orders.",
@@ -1569,6 +1538,39 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/dtos.Order"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OK"
+                        }
+                    }
+                }
+            }
+        },
+        "/purchase/orders/status": {
+            "put": {
+                "description": "update order status.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "description": "order status request",
+                        "name": "status",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OrderStatus"
                         }
                     }
                 ],
@@ -2690,6 +2692,21 @@ const docTemplate = `{
                     "$ref": "#/definitions/dtos.OrderFormCustomer"
                 },
                 "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OrderStatus": {
+            "type": "object",
+            "required": [
+                "order_code",
+                "status"
+            ],
+            "properties": {
+                "order_code": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 }
             }

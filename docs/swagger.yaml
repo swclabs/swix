@@ -539,6 +539,16 @@ definitions:
       uuid:
         type: string
     type: object
+  dtos.OrderStatus:
+    properties:
+      order_code:
+        type: string
+      status:
+        type: string
+    required:
+    - order_code
+    - status
+    type: object
   dtos.ProductDTO:
     properties:
       category:
@@ -2188,26 +2198,6 @@ paths:
             $ref: '#/definitions/dtos.OrderInfo'
       tags:
       - purchase
-  /purchase/coupons/{code}:
-    get:
-      consumes:
-      - application/json
-      description: get coupon.
-      parameters:
-      - description: coupons code
-        in: path
-        name: code
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/dtos.OK'
-      tags:
-      - purchase
   /purchase/orders:
     get:
       consumes:
@@ -2270,6 +2260,27 @@ paths:
             $ref: '#/definitions/dtos.OrderInfo'
       tags:
       - delivery
+  /purchase/orders/status:
+    put:
+      consumes:
+      - application/json
+      description: update order status.
+      parameters:
+      - description: order status request
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.OrderStatus'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OK'
+      tags:
+      - purchase
   /rating/{id}:
     put:
       consumes:

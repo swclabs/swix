@@ -37,12 +37,12 @@ func (p *Router) Routers(e *echo.Echo) {
 	e.GET("/purchase/orders", p.controllers.GetOrders, middleware.Protected)
 	e.GET("/purchase/orders/:code", p.controllers.GetOrdersByCode)
 	e.POST("/purchase/orders", p.controllers.CreateOrder, middleware.Protected)
+	e.PUT("/purchase/orders/status", p.controllers.UpdateOrderStatus)
 
 	e.GET("/purchase/admin/orders", p.controllers.GetOrdersByAdmin)
 	e.POST("/purchase/admin/orders", p.controllers.CreateOrderForm)
 
 	e.GET("/purchase/coupons", p.controllers.GetCoupon)
-	e.GET("/purchase/coupons/:code", p.controllers.UseCoupon, middleware.Protected)
 	e.POST("/purchase/coupons", p.controllers.CreateCoupon)
 
 	e.GET("/address", p.controllers.GetDeliveryAddress, middleware.Protected)

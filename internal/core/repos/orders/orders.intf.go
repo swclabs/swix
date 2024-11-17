@@ -16,4 +16,5 @@ type IOrders interface {
 	InsertProduct(ctx context.Context, product entity.ProductInOrder) error
 	GetProductByOrderID(ctx context.Context, orderID int64) ([]entity.ProductInOrder, error)
 	GetLimit(ctx context.Context, limit int) ([]entity.Order, error)
+	UpdateStatus(ctx context.Context, orderCode string, status string) error
 }

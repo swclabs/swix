@@ -32,6 +32,11 @@ type Orders struct {
 	db db.IDatabase
 }
 
+// UpdateStatus implements IOrders.
+func (orders *Orders) UpdateStatus(ctx context.Context, orderCode string, status string) error {
+	return orders.db.SafeWrite(ctx, updateStatus, status, orderCode)
+}
+
 func (orders *Orders) GetLimit(ctx context.Context, limit int) ([]entity.Order, error) {
 	rows, err := orders.db.Query(ctx, getLimit, limit)
 	if err != nil {
