@@ -84,6 +84,11 @@ type Purchase struct {
 	District  district.IDistrict
 }
 
+// UpdateOrder implements IPurchase.
+func (p *Purchase) UpdateOrderStatus(ctx context.Context, orderCode string, status string) error {
+	return p.Order.UpdateStatus(ctx, orderCode, status)
+}
+
 func (p *Purchase) GetUsersByAdmin(ctx context.Context, limit int) ([]dtos.OrderInfo, error) {
 	orderList, err := p.Order.GetLimit(ctx, limit)
 	if err != nil {

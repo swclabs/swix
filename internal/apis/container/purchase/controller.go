@@ -36,6 +36,7 @@ type IController interface {
 	GetOrders(c echo.Context) error
 	GetOrdersByCode(c echo.Context) error
 	GetOrdersByAdmin(c echo.Context) error
+	UpdateOrderStatus(c echo.Context) error
 
 	CreateDeliveryAddress(c echo.Context) error
 	GetDeliveryAddress(c echo.Context) error
@@ -51,12 +52,41 @@ type IController interface {
 
 	GetCoupon(c echo.Context) error
 	CreateCoupon(c echo.Context) error
-	UseCoupon(c echo.Context) error
 }
 
 // Controller struct implementation of IPurchase
 type Controller struct {
 	services purchase.IPurchase
+}
+
+// UpdateOrderStatus .
+// @Description update order status.
+// @Tags purchase
+// @Accept json
+// @Produce json
+// @Param status body dtos.OrderStatus true "order status request"
+// @Success 200 {object} dtos.OK
+// @Router /purchase/orders/status [PUT]
+func (p *Controller) UpdateOrderStatus(c echo.Context) error {
+	var status dtos.OrderStatus
+	if err := c.Bind(&status); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := valid.Validate(&status); err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	if err := p.services.UpdateOrderStatus(c.Request().Context(), status.OrderCode, status.Status); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.OK{
+		Msg: "your order status has been updated",
+	})
 }
 
 // GetOrdersByAdmin .
@@ -123,27 +153,6 @@ func (p *Controller) GetCoupon(c echo.Context) error {
 		})
 	}
 	return c.JSON(http.StatusOK, coupons)
-}
-
-// UseCoupon .
-// @Description get coupon.
-// @Tags purchase
-// @Accept json
-// @Produce json
-// @Param code path string true "coupons code"
-// @Success 200 {object} dtos.OK
-// @Router /purchase/coupons/{code} [GET]
-func (p *Controller) UseCoupon(c echo.Context) error {
-	code := c.Param("code")
-	userID, _, _ := crypto.Authenticate(c)
-	if err := p.services.UseCoupon(c.Request().Context(), userID, code); err != nil {
-		return c.JSON(http.StatusInternalServerError, dtos.Error{
-			Msg: err.Error(),
-		})
-	}
-	return c.JSON(http.StatusOK, dtos.OK{
-		Msg: "your coupon has been used successfully",
-	})
 }
 
 // GetOrdersByCode .

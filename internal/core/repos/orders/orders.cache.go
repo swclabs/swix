@@ -23,6 +23,11 @@ type _Cache struct {
 	orders IOrders
 }
 
+// UpdateStatus implements IOrders.
+func (c *_Cache) UpdateStatus(ctx context.Context, orderCode string, status string) error {
+	return c.orders.UpdateStatus(ctx, orderCode, status)
+}
+
 func (c *_Cache) GetLimit(ctx context.Context, limit int) ([]entity.Order, error) {
 	return c.orders.GetLimit(ctx, limit)
 }
