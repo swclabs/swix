@@ -35,7 +35,7 @@ type Products struct {
 }
 
 // Rating implements IProducts.
-func (product *Products) Rating(ctx context.Context, productID int64, rating float64) error {
+func (product *Products) Rating(ctx context.Context, productID int64, rating int) error {
 	return product.db.SafeWrite(ctx, updateRating, rating, productID)
 }
 

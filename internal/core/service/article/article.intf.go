@@ -5,6 +5,7 @@ import (
 	"mime/multipart"
 
 	"github.com/swclabs/swipex/internal/core/domain/dtos"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 )
 
 // IArticle : Module for managing article.
@@ -21,7 +22,7 @@ type IArticle interface {
 	// position contains the position of the comment to be returns.
 	// limit is the maximum number of comment to retrieve.
 	// Returns a comment and an error if any issues occur during the upload process.
-	GetComment(ctx context.Context, productID int64) ([]dtos.Comment, error)
+	GetComment(ctx context.Context, productID int64) ([]model.Comment, error)
 
 	// UploadComment uploads a new comment.
 	// ctx is the context to manage the request's lifecycle.

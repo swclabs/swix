@@ -141,7 +141,7 @@ func (p *Controller) UploadNews(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param product_id query string true "id of products"
-// @Success 200 {object} dtos.Comment
+// @Success 200 {object} []model.Comment
 // @Router /comment [GET]
 func (p *Controller) GetComment(c echo.Context) error {
 	product_id, err := strconv.Atoi(c.QueryParam("product_id"))

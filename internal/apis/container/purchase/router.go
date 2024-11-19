@@ -44,6 +44,7 @@ func (p *Router) Routers(e *echo.Echo) {
 
 	e.GET("/purchase/coupons", p.controllers.GetCoupon)
 	e.POST("/purchase/coupons", p.controllers.CreateCoupon)
+	e.DELETE("/purchase/coupons", p.controllers.DeleteCoupon)
 
 	e.GET("/address", p.controllers.GetDeliveryAddress, middleware.Protected)
 	e.POST("/address", p.controllers.CreateDeliveryAddress)

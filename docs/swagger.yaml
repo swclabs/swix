@@ -156,37 +156,21 @@ definitions:
   dtos.Comment:
     properties:
       content:
-        items:
-          type: string
-        type: array
-      dislike:
-        type: integer
-      id:
-        description: Position string   `json:"position" validate:"required"`
-        type: integer
-      level:
-        description: '0: parent, 1: child'
-        type: integer
-      like:
-        type: integer
-      parent_id:
+        type: string
+      inventory_id:
         type: integer
       product_id:
         type: integer
-      rating:
-        type: integer
+      star:
+        type: number
       user_id:
         type: integer
-      username:
-        type: string
     required:
     - content
-    - dislike
-    - id
-    - level
-    - like
-    - rating
-    - username
+    - inventory_id
+    - product_id
+    - star
+    - user_id
     type: object
   dtos.Coupon:
     properties:
@@ -1194,6 +1178,27 @@ definitions:
     - quantity
     - weight
     type: object
+  model.Comment:
+    properties:
+      color:
+        type: string
+      content:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      rating:
+        type: number
+      specs:
+        type: string
+      user_id:
+        type: integer
+    type: object
   model.Order:
     properties:
       category_id:
@@ -1521,7 +1526,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.Comment'
+            items:
+              $ref: '#/definitions/model.Comment'
+            type: array
       tags:
       - comments
     post:
@@ -2163,6 +2170,25 @@ paths:
       tags:
       - purchase
   /purchase/coupons:
+    delete:
+      consumes:
+      - application/json
+      description: delete coupon by code.
+      parameters:
+      - description: coupon code
+        in: query
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.OrderInfo'
+      tags:
+      - purchase
     get:
       consumes:
       - application/json

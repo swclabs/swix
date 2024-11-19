@@ -117,14 +117,14 @@ func (p *Controller) Rating(c echo.Context) error {
 			Msg: "Invalid 'id' query",
 		})
 	}
-	start, err := strconv.ParseFloat(c.QueryParam("star"), 64)
+	star, err := strconv.Atoi(c.QueryParam("star"))
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, dtos.Error{
 			Msg: "Invalid 'star' query parameter",
 		})
 	}
 	userID, _, _ := crypto.Authenticate(c)
-	if err := p.service.Rating(c.Request().Context(), userID, id, start); err != nil {
+	if err := p.service.Rating(c.Request().Context(), userID, id, star); err != nil {
 		return c.JSON(http.StatusInternalServerError, dtos.Error{
 			Msg: err.Error(),
 		})

@@ -52,11 +52,32 @@ type IController interface {
 
 	GetCoupon(c echo.Context) error
 	CreateCoupon(c echo.Context) error
+	DeleteCoupon(c echo.Context) error
 }
 
 // Controller struct implementation of IPurchase
 type Controller struct {
 	services purchase.IPurchase
+}
+
+// DeleteCoupon .
+// @Description delete coupon by code.
+// @Tags purchase
+// @Accept json
+// @Produce json
+// @Param code query string true "coupon code"
+// @Success 200 {object} dtos.OrderInfo
+// @Router /purchase/coupons [DELETE]
+func (p *Controller) DeleteCoupon(c echo.Context) error {
+	code := c.QueryParam("code")
+	if err := p.services.DeleteCoupon(c.Request().Context(), code); err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, dtos.OK{
+		Msg: "your coupon has been deleted successfully",
+	})
 }
 
 // UpdateOrderStatus .

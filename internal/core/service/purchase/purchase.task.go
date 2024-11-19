@@ -28,6 +28,11 @@ type Task struct {
 	service IPurchase
 }
 
+// DeleteCoupon implements IPurchase.
+func (t *Task) DeleteCoupon(ctx context.Context, code string) error {
+	return t.service.DeleteCoupon(ctx, code)
+}
+
 // UpdateOrderStatus implements IPurchase.
 func (t *Task) UpdateOrderStatus(ctx context.Context, orderCode string, status string) error {
 	return t.service.UpdateOrderStatus(ctx, orderCode, status)

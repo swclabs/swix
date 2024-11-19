@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"strconv"
@@ -20,7 +19,7 @@ import (
 )
 
 // Rating implements IProducts.
-func (s *Products) Rating(ctx context.Context, userID, productID int64, rating float64) error {
+func (s *Products) Rating(ctx context.Context, userID, productID int64, rating int) error {
 	tx, err := db.NewTx(ctx)
 	if err != nil {
 		return err
@@ -31,17 +30,13 @@ func (s *Products) Rating(ctx context.Context, userID, productID int64, rating f
 		product = products.New(tx)
 	)
 
-	if err := star.Save(ctx, entity.Star{UserID: userID, ProductID: productID}); err != nil {
-		if err := tx.Rollback(ctx); err != nil {
-			log.Fatal(err)
-		}
+	if _, err := star.Save(ctx, entity.Star{UserID: userID, ProductID: productID}); err != nil {
+		_ = tx.Rollback(ctx)
 		return err
 	}
 
 	if err := product.Rating(ctx, productID, rating); err != nil {
-		if err := tx.Rollback(ctx); err != nil {
-			log.Fatal(err)
-		}
+		_ = tx.Rollback(ctx)
 		return err
 	}
 	return tx.Commit(ctx)

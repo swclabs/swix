@@ -41,4 +41,8 @@ const (
 	getByCode = `
 		SELECT * FROM coupons WHERE code = $1;
 	`
+
+	delete = `
+		DELETE FROM coupons WHERE code = $1;
+	`
 )

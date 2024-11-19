@@ -439,7 +439,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.Comment"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Comment"
+                            }
                         }
                     }
                 }
@@ -1484,6 +1487,35 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "delete coupon by code.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "purchase"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "coupon code",
+                        "name": "code",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.OrderInfo"
+                        }
+                    }
+                }
             }
         },
         "/purchase/orders": {
@@ -2132,48 +2164,26 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "content",
-                "dislike",
-                "id",
-                "level",
-                "like",
-                "rating",
-                "username"
+                "inventory_id",
+                "product_id",
+                "star",
+                "user_id"
             ],
             "properties": {
                 "content": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
+                    "type": "string"
                 },
-                "dislike": {
-                    "type": "integer"
-                },
-                "id": {
-                    "description": "Position string   ` + "`" + `json:\"position\" validate:\"required\"` + "`" + `",
-                    "type": "integer"
-                },
-                "level": {
-                    "description": "0: parent, 1: child",
-                    "type": "integer"
-                },
-                "like": {
-                    "type": "integer"
-                },
-                "parent_id": {
+                "inventory_id": {
                     "type": "integer"
                 },
                 "product_id": {
                     "type": "integer"
                 },
-                "rating": {
-                    "type": "integer"
+                "star": {
+                    "type": "number"
                 },
                 "user_id": {
                     "type": "integer"
-                },
-                "username": {
-                    "type": "string"
                 }
             }
         },
@@ -3662,6 +3672,38 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "width": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Comment": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "first_name": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "rating": {
+                    "type": "number"
+                },
+                "specs": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "integer"
                 }
             }
