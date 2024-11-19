@@ -4,13 +4,17 @@ package article
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"mime/multipart"
 
 	"github.com/swclabs/swipex/app"
 	"github.com/swclabs/swipex/internal/core/domain/dtos"
 	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 	"github.com/swclabs/swipex/internal/core/repos/comments"
 	"github.com/swclabs/swipex/internal/core/repos/news"
+	"github.com/swclabs/swipex/internal/core/repos/products"
+	"github.com/swclabs/swipex/internal/core/repos/stars"
 	"github.com/swclabs/swipex/pkg/infra/blob"
 	"github.com/swclabs/swipex/pkg/infra/db"
 )
@@ -108,80 +112,50 @@ func (p *Article) GetNews(ctx context.Context, category string, limit int) (*dto
 	return &nnews, nil
 }
 
-// GetComment implements IArticle.
-//
-//		{
-//			"id": "11446498",
-//			"level": "0", // level of comment, [0] is parent, [1] is child
-//	     	"parent_id": "11446498", // parent id of comment
-//			"created_at": "2012-12-12T10:53:43-08:00",
-//			"username": "11446498",
-//			"user_id": "11446498",
-//			"product_id": "11446498",
-//			"content": "@Aaron Levie these tigers are cool!",
-//		  }
-func (p *Article) GetComment(ctx context.Context, productID int64) ([]dtos.Comment, error) {
-	comments, err := p.Comments.GetByProductID(ctx, productID)
-	if err != nil {
-		return nil, err
-	}
-
-	var comment = []dtos.Comment{}
-	for _, cmt := range comments {
-
-		var (
-			level    int64
-			parentID int64
-		)
-
-		if cmt.Level == 0 {
-			// Add your code here
-			level = cmt.Level
-			parentID = 0
-		}
-
-		if cmt.Level == 1 {
-			// Add your code here
-			level = cmt.Level
-			parentID = cmt.ParentID
-		}
-
-		comment = append(comment, dtos.Comment{
-			ID:      cmt.ID,
-			Level:   level,
-			Content: []string{cmt.Content},
-			// Username: cmt.Username,
-			UserID:    cmt.UserID,
-			ProductID: cmt.ProductID,
-			ParentID:  parentID,
-			Liked:     cmt.Liked,
-			Disliked:  cmt.Disliked,
-			// Add other fields here if needed
-		})
-	}
-
-	return comment, nil
+func (p *Article) GetComment(ctx context.Context, productID int64) ([]model.Comment, error) {
+	return p.Comments.GetModelByProductID(ctx, productID)
 }
 
 // UploadComment implements IArticle.
 func (p *Article) UploadComment(ctx context.Context, comment dtos.Comment) error {
-	for _, cmt := range comment.Content {
-
-		_, err := p.Comments.Insert(ctx, entity.Comment{
-			Level:     comment.Level,
-			Content:   cmt,
-			UserID:    comment.UserID,
-			ProductID: comment.ProductID,
-			ParentID:  comment.ParentID,
-			Rating:    comment.Rating,
-			Liked:     comment.Liked,
-			Disliked:  comment.Disliked,
-		})
-
-		if err != nil {
-			return err
-		}
+	tx, err := db.NewTx(ctx)
+	if err != nil {
+		return err
 	}
 
-	return nil
+	var (
+		stars    = stars.New(tx)
+		products = products.New(tx)
+		comments = comments.New(tx)
+	)
+
+	id, err := stars.Save(ctx, entity.Star{UserID: comment.UserID, ProductID: comment.ProductID})
+	if err != nil {
+		_ = tx.Rollback(ctx)
+		return err
+	}
+
+	if id == -1 {
+		_ = tx.Rollback(ctx)
+		return fmt.Errorf("you have already rated this product")
+	}
+
+	if err := products.Rating(ctx, comment.ProductID, comment.Star); err != nil {
+		_ = tx.Rollback(ctx)
+		return err
+	}
+
+	_, err = comments.Insert(ctx, entity.Comment{
+		StarID:      id,
+		Content:     comment.Content,
+		UserID:      comment.UserID,
+		ProductID:   comment.ProductID,
+		InventoryID: comment.InventoryID,
+	})
+	if err != nil {
+		_ = tx.Rollback(ctx)
+		return err
+	}
+
+	return tx.Commit(ctx)
 }

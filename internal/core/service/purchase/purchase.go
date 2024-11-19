@@ -84,6 +84,11 @@ type Purchase struct {
 	District  district.IDistrict
 }
 
+// DeleteCoupon implements IPurchase.
+func (p *Purchase) DeleteCoupon(ctx context.Context, code string) error {
+	return p.Coupon.Delete(ctx, code)
+}
+
 // UpdateOrder implements IPurchase.
 func (p *Purchase) UpdateOrderStatus(ctx context.Context, orderCode string, status string) error {
 	return p.Order.UpdateStatus(ctx, orderCode, status)

@@ -28,14 +28,12 @@ CREATE TABLE "addresses" (
 
 CREATE TABLE "comments" (
   "id" bigserial PRIMARY KEY,
-  "level" bigint NOT NULL DEFAULT('0'),
   "content" varchar NOT NULL,
   "user_id" bigint NOT NULL,
   "product_id" bigint NOT NULL,
-  "rating" int,
-  "liked" int,
-  "disliked" int,
-  "parent_id" bigint
+  "inventory_id" bigint NOT NULL,
+  "star_id" bigint NOT NULL,
+  "created" timestamp default (now() at time zone 'utc')
 );
 
 CREATE TABLE "products" (
@@ -132,8 +130,9 @@ CREATE TABLE "news" (
 
 CREATE TABLE "stars" (
   "id" bigserial PRIMARY KEY,
-  "user_id" bigint UNIQUE NOT NULL,
-  "product_id" bigint UNIQUE NOT NULL,
+  "user_id" bigint NOT NULL,
+  "product_id" bigint NOT NULL,
+  "star" int NOT NULL,
   CONSTRAINT unique_stars UNIQUE (user_id, product_id)
 );
 

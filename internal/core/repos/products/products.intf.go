@@ -61,5 +61,5 @@ type IProducts interface {
 	// offset is the number of products to skip.
 	GetByCategory(ctx context.Context, types enum.Category, offset int) ([]model.ProductXCategory, error)
 
-	Rating(ctx context.Context, productID int64, rating float64) error
+	Rating(ctx context.Context, productID int64, rating int) error
 }

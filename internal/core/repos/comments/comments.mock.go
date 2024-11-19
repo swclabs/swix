@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -18,6 +19,11 @@ func NewCommentsMock() *Mock {
 // Mock is a mock for IProductRepository.
 type Mock struct {
 	mock.Mock
+}
+
+// GetModelByProductID implements IComments.
+func (p *Mock) GetModelByProductID(ctx context.Context, ID int64) ([]model.Comment, error) {
+	panic("unimplemented")
 }
 
 // Insert implements ICommentRepository.

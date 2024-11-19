@@ -12,4 +12,5 @@ type ICoupons interface {
 	GetByCode(ctx context.Context, code string) (*entity.Coupons, error)
 	GetByUser(ctx context.Context, userID int64) ([]entity.CouponsUsed, error)
 	Use(ctx context.Context, couponInfo entity.CouponsUsed) error
+	Delete(ctx context.Context, code string) error
 }

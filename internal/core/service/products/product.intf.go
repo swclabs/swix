@@ -129,7 +129,7 @@ type IProducts interface {
 	// productID is the ID of the product to update the rating for.
 	// rating is the new rating of the product.
 	// Returns an error if any issues occur during the update process.
-	Rating(ctx context.Context, userID, productID int64, rating float64) error
+	Rating(ctx context.Context, userID, productID int64, rating int) error
 
 	AddBookmark(ctx context.Context, userID, inventoryID int64) error
 	RemoveBookmark(ctx context.Context, userID, inventoryID int64) error

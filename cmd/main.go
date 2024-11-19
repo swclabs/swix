@@ -15,6 +15,7 @@ import (
 
 	"github.com/swclabs/swipex/app"
 	"github.com/swclabs/swipex/internal/apis"
+	"github.com/swclabs/swipex/internal/cron"
 	"github.com/swclabs/swipex/internal/workers"
 	"github.com/swclabs/swipex/pkg/lib/logger"
 
@@ -27,7 +28,7 @@ import (
 // @host
 // @basePath /
 func main() {
-	cmd := flag.String("start", "server", "start server or worker")
+	cmd := flag.String("start", "server", "start server, worker or cronjob")
 	flag.Usage = func() {
 		fmt.Println("Usage: swipe [flags]")
 		flag.PrintDefaults()
@@ -40,6 +41,9 @@ func main() {
 		log.Fatal(application.Run())
 	case "server":
 		application := app.Builder(apis.NewApp)
+		log.Fatal(application.Run())
+	case "cron":
+		application := app.Builder(cron.NewApp)
 		log.Fatal(application.Run())
 	default:
 		logger.Error("unknown flag: " + *cmd)

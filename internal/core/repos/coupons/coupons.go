@@ -18,6 +18,11 @@ type Coupon struct {
 	db db.IDatabase
 }
 
+// Delete implements ICoupons.
+func (c *Coupon) Delete(ctx context.Context, code string) error {
+	return c.db.SafeWrite(ctx, delete, code)
+}
+
 // GetByCode implements ICoupons.
 func (c *Coupon) GetByCode(ctx context.Context, code string) (*entity.Coupons, error) {
 	rows, err := c.db.Query(ctx, getByCode, code)

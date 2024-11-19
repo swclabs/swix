@@ -89,4 +89,6 @@ type IPurchase interface {
 	CreateCoupon(ctx context.Context, coupon dtos.CreateCoupon) (code string, err error)
 
 	GetCoupon(ctx context.Context) (coupons []dtos.Coupon, err error)
+
+	DeleteCoupon(ctx context.Context, code string) error
 }

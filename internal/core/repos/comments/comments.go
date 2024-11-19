@@ -6,9 +6,9 @@ import (
 
 	"github.com/swclabs/swipex/app"
 	"github.com/swclabs/swipex/internal/core/domain/entity"
+	"github.com/swclabs/swipex/internal/core/domain/model"
 	"github.com/swclabs/swipex/pkg/infra/cache"
 	"github.com/swclabs/swipex/pkg/infra/db"
-	"github.com/swclabs/swipex/pkg/lib/errors"
 )
 
 var _ IComments = (*Comments)(nil)
@@ -28,65 +28,50 @@ type Comments struct {
 	db db.IDatabase
 }
 
+// GetModelByProductID implements IComments.
+func (comment *Comments) GetModelByProductID(ctx context.Context, ID int64) ([]model.Comment, error) {
+	rows, err := comment.db.Query(ctx, getModelByProductID, ID)
+	if err != nil {
+		return nil, err
+	}
+	result, err := db.CollectRows[model.Comment](rows)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+// GetByProductID implements IComments.
+func (comment *Comments) GetByProductID(ctx context.Context, ID int64) ([]entity.Comment, error) {
+	rows, err := comment.db.Query(ctx, getByProductID, ID)
+	if err != nil {
+		return nil, err
+	}
+	result, err := db.CollectRows[entity.Comment](rows)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
 // Insert implements ICommentRepository.
 func (comment *Comments) Insert(ctx context.Context, cmt entity.Comment) (int64, error) {
-	id, err := comment.db.SafeWriteReturn(ctx, insertIntoComments,
-		cmt.Level,
-		cmt.Content,
-		cmt.UserID,
-		cmt.ProductID,
-		cmt.ParentID,
-	)
-
-	if err != nil {
-		return -1, errors.Repository("write data", err)
-	}
-	return id, nil
+	return comment.db.SafeWriteReturn(ctx, insert, cmt.Content, cmt.UserID, cmt.ProductID, cmt.InventoryID, cmt.StarID)
 }
 
 // GetByID implements ICommentRepository.
 func (comment *Comments) GetByID(ctx context.Context, ID int64) (*entity.Comment, error) {
-	row, err := comment.db.Query(ctx, selectByID, ID)
-
-	if err != nil {
-		return nil, errors.Repository("query", err)
-	}
-
-	_comment, err := db.CollectRow[entity.Comment](row)
+	row, err := comment.db.Query(ctx, getByID, ID)
 	if err != nil {
 		return nil, err
 	}
-	return &_comment, nil
-}
-
-// Update implements ICommentRepository.
-func (comment *Comments) Update(ctx context.Context, cmt entity.Comment) error {
-	return comment.db.SafeWrite(ctx, updateComments,
-		cmt.ID,
-		cmt.Content,
-		cmt.Level,
-		cmt.ProductID,
-		cmt.UserID,
-	)
-}
-
-// GetByProductID implements ICommentRepository.
-func (comment *Comments) GetByProductID(ctx context.Context, productID int64) ([]entity.Comment, error) {
-	rows, err := comment.db.Query(ctx, selectCommentsByProductID, productID)
+	result, err := db.CollectRow[entity.Comment](row)
 	if err != nil {
 		return nil, err
-		// return nil, errors.Repository("500", err)
 	}
-	comments, err := db.CollectRows[entity.Comment](rows)
-	if err != nil {
-		// return nil, errors.Repository("500", err)
-		return nil, err
-	}
-	return comments, nil
+	return &result, nil
 }
 
 func (comment *Comments) DeleteByID(ctx context.Context, ID int64) error {
-	return errors.Repository("safely write data",
-		comment.db.SafeWrite(ctx, deleteByID, ID),
-	)
+	return comment.db.SafeWrite(ctx, deleteByID, ID)
 }

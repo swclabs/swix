@@ -24,7 +24,7 @@ type Mock struct {
 }
 
 // Rating implements IProducts.
-func (p *Mock) Rating(ctx context.Context, productID int64, rating float64) error {
+func (p *Mock) Rating(ctx context.Context, productID int64, rating int) error {
 	panic("unimplemented")
 }
 

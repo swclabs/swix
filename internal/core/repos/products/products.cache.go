@@ -24,7 +24,7 @@ type _cache struct {
 }
 
 // Rating implements IProducts.
-func (c *_cache) Rating(ctx context.Context, productID int64, rating float64) error {
+func (c *_cache) Rating(ctx context.Context, productID int64, rating int) error {
 	return c.products.Rating(ctx, productID, rating)
 }
 

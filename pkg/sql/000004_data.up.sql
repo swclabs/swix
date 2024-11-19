@@ -197,19 +197,6 @@ INSERT INTO public.news (id, created, "category", header, body) VALUES (6, '2024
 
 SELECT pg_catalog.setval('public.news_id_seq', 6, true);
 
---
--- TOC entry 3476 (class 0 OID 21995)
--- Dependencies: 225
--- Data for Name: comments; Type: TABLE DATA; Schema: public; Owner: admin
---
-
-INSERT INTO public.comments (id, level, content, user_id, product_id, rating, liked, disliked, parent_id) VALUES (1, 0, 'This is a great product', 1, 1, 5, 0, 0, 0);
-INSERT INTO public.comments (id, level, content, user_id, product_id, rating, liked, disliked, parent_id) VALUES (2, 0, 'This is a great product', 1, 1, 5, 0, 0, 0);
-INSERT INTO public.comments (id, level, content, user_id, product_id, rating, liked, disliked, parent_id) VALUES (3, 0, 'This is a great product', 1, 2, 5, 0, 0, 0);
-INSERT INTO public.comments (id, level, content, user_id, product_id, rating, liked, disliked, parent_id) VALUES (4, 0, 'This is a great product', 1, 3, 5, 0, 0, 0);
-INSERT INTO public.comments (id, level, content, user_id, product_id, rating, liked, disliked, parent_id) VALUES (5, 0, 'This is a great product', 1, 4, 5, 0, 0, 0);
-INSERT INTO public.comments (id, level, content, user_id, product_id, rating, liked, disliked, parent_id) VALUES (6, 0, 'This is a great product', 1, 5, 5, 0, 0, 0);
-
 
 --
 -- TOC entry 3490 (class 0 OID 22061)
@@ -297,14 +284,6 @@ SELECT pg_catalog.setval('public.carts_id_seq', 2, true);
 
 SELECT pg_catalog.setval('public.categories_id_seq', 8, true);
 
-
---
--- TOC entry 3507 (class 0 OID 0)
--- Dependencies: 224
--- Name: comments_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
---
-
-SELECT pg_catalog.setval('public.comments_id_seq', 6, true);
 
 
 --
