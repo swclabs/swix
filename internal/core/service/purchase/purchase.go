@@ -146,8 +146,9 @@ func (p *Purchase) GetCoupon(ctx context.Context) (coupons []dtos.Coupon, err er
 				Code:        coupon.Code,
 				Discount:    coupon.Discount,
 				ID:          coupon.ID,
-				ExpiredAt:   coupon.ExpiredAt,
+				ExpiredAt:   utils.HanoiTimezone(coupon.ExpiredAt),
 				Description: coupon.Description,
+				Status:      coupon.Status,
 			})
 		}
 	}

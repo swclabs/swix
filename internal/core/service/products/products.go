@@ -58,23 +58,23 @@ type Products struct {
 }
 
 // AddBookmark implements IProducts.
-func (s *Products) AddBookmark(ctx context.Context, userID int64, inventoryID int64) error {
+func (p *Products) AddBookmark(ctx context.Context, userID int64, inventoryID int64) error {
 
-	fav, err := s.Favorite.GetByInventoryID(ctx, inventoryID, userID)
+	fav, err := p.Favorite.GetByInventoryID(ctx, inventoryID, userID)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return err
 	}
 
 	if errors.Is(err, pgx.ErrNoRows) {
-		return s.Favorite.Save(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
+		return p.Favorite.Save(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
 	}
-	return s.Favorite.Delete(ctx, entity.Favorite{UserID: fav.UserID, InventoryID: fav.InventoryID})
+	return p.Favorite.Delete(ctx, entity.Favorite{UserID: fav.UserID, InventoryID: fav.InventoryID})
 }
 
 // GetBookmarks implements IProducts.
-func (s *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookmark, error) {
+func (p *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookmark, error) {
 
-	favories, err := s.Favorite.GetByUserID(ctx, userID)
+	favories, err := p.Favorite.GetByUserID(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -82,17 +82,17 @@ func (s *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookm
 	var bookmarks = []dtos.Bookmark{}
 	for _, fav := range favories {
 
-		inv, err := s.Inventory.GetByID(ctx, fav.InventoryID)
+		inv, err := p.Inventory.GetByID(ctx, fav.InventoryID)
 		if err != nil {
 			return nil, err
 		}
 
-		prod, err := s.Products.GetByID(ctx, inv.ProductID)
+		prod, err := p.Products.GetByID(ctx, inv.ProductID)
 		if err != nil {
 			return nil, err
 		}
 
-		category, err := s.Category.GetByID(ctx, prod.CategoryID)
+		category, err := p.Category.GetByID(ctx, prod.CategoryID)
 		if err != nil {
 			return nil, err
 		}
@@ -144,13 +144,13 @@ func (s *Products) GetBookmarks(ctx context.Context, userID int64) ([]dtos.Bookm
 }
 
 // RemoveBookmark implements IProducts.
-func (s *Products) RemoveBookmark(ctx context.Context, userID int64, inventoryID int64) error {
-	return s.Favorite.Delete(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
+func (p *Products) RemoveBookmark(ctx context.Context, userID int64, inventoryID int64) error {
+	return p.Favorite.Delete(ctx, entity.Favorite{UserID: userID, InventoryID: inventoryID})
 }
 
 // CreateProduct implements IProductService.
-func (s *Products) CreateProduct(ctx context.Context, products dtos.Product) (int64, error) {
-	_category, err := s.Category.GetByID(ctx, products.CategoryID)
+func (p *Products) CreateProduct(ctx context.Context, products dtos.Product) (int64, error) {
+	_category, err := p.Category.GetByID(ctx, products.CategoryID)
 	if err != nil {
 		return -1, fmt.Errorf("category not found %v", err)
 	}
@@ -179,11 +179,11 @@ func (s *Products) CreateProduct(ctx context.Context, products dtos.Product) (in
 		prd.Specs = string(specsByte)
 	}
 
-	return s.Products.Insert(ctx, prd)
+	return p.Products.Insert(ctx, prd)
 }
 
 // InsertItem implements IProductService.
-func (s *Products) InsertItem(ctx context.Context, product dtos.Inventory) error {
+func (p *Products) InsertItem(ctx context.Context, product dtos.Inventory) error {
 	var (
 		price, _  = decimal.NewFromString(product.Price)
 		avai, _   = strconv.Atoi(product.Available)
@@ -198,7 +198,7 @@ func (s *Products) InsertItem(ctx context.Context, product dtos.Inventory) error
 		}
 	)
 
-	items, err := s.Inventory.GetByColor(ctx, product.ProductID, product.Color)
+	items, err := p.Inventory.GetByColor(ctx, product.ProductID, product.Color)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return err
 	}

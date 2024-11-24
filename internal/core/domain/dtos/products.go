@@ -4,7 +4,7 @@ package dtos
 type ProductRequest struct {
 	Specs       ProductSpecs `json:"specs"`
 	Price       string       `json:"price" validate:"required"`
-	Description string       `json:"description" validate:"required"`
+	Description string       `json:"description"`
 	Name        string       `json:"name" validate:"required"`
 	SupplierID  int64        `json:"supplier_id" validate:"number,required"`
 	CategoryID  int64        `json:"category_id" validate:"number,required"`
