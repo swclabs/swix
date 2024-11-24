@@ -18,6 +18,7 @@ type IProducts interface {
 	// limit is the maximum number of products to retrieve.
 	// Returns a slice of ProductResponse objects and an error if any issues occur during the retrieval process.
 	GetProducts(ctx context.Context, limit int) ([]dtos.ProductResponse, error)
+	GetProductInfo(ctx context.Context, productID int64) (*dtos.ProductResponse, error)
 
 	// UploadProductImage uploads images for a product.
 	// ctx is the context to manage the request's lifecycle.

@@ -33,6 +33,7 @@ type IController interface {
 	SearchDetails(c echo.Context) error
 
 	GetProductLimit(c echo.Context) error
+	GetProductInfo(c echo.Context) error
 	UploadProductImage(c echo.Context) error
 	UploadProductShopImage(c echo.Context) error
 	CreateProduct(c echo.Context) error
@@ -56,6 +57,30 @@ type IController interface {
 // Controller struct implementation of IProducts
 type Controller struct {
 	service products.IProducts
+}
+
+// GetProductInfo .
+// @Description get product information
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param id query int true "products id"
+// @Success 200 {object} dtos.ProductResponse
+// @Router /products/info [GET]
+func (p *Controller) GetProductInfo(c echo.Context) error {
+	ID, err := strconv.Atoi(c.QueryParam("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, dtos.Error{
+			Msg: "Invalid 'id' query parameter",
+		})
+	}
+	product, err := p.service.GetProductInfo(c.Request().Context(), int64(ID))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, dtos.Error{
+			Msg: err.Error(),
+		})
+	}
+	return c.JSON(http.StatusOK, product)
 }
 
 // AddBookmark .
@@ -179,7 +204,7 @@ func (p *Controller) UploadInvColorImage(c echo.Context) error {
 // @Param img formData file true "image of product"
 // @Success 200 {object} dtos.OK
 // @Failure 400 {object} dtos.Error
-// @Router /products/img/shop [PUT]
+// @Router /products/images [PUT]
 func (p *Controller) UploadProductShopImage(c echo.Context) error {
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -605,7 +630,7 @@ func (p *Controller) DeleteProduct(c echo.Context) error {
 // @Param img formData file true "image of product"
 // @Success 200 {object} dtos.OK
 // @Failure 400 {object} dtos.Error
-// @Router /products/img [PUT]
+// @Router /products/thumbnail [PUT]
 func (p *Controller) UploadProductImage(c echo.Context) error {
 	form, err := c.MultipartForm()
 	if err != nil {

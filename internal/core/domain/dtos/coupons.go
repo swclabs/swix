@@ -1,7 +1,5 @@
 package dtos
 
-import "time"
-
 type CreateCoupon struct {
 	Status      string `json:"status" validate:"required"`
 	MaxUse      int    `json:"max_use" validate:"required"`
@@ -11,9 +9,10 @@ type CreateCoupon struct {
 }
 
 type Coupon struct {
-	ID          int64     `json:"id"`
-	Code        string    `json:"code"`
-	Discount    int       `json:"discount"`
-	ExpiredAt   time.Time `json:"expired_at"`
-	Description string    `json:"description"`
+	ID          int64  `json:"id"`
+	Code        string `json:"code"`
+	Discount    int    `json:"discount"`
+	ExpiredAt   string `json:"expired_at"`
+	Description string `json:"description"`
+	Status      string `json:"status"`
 }

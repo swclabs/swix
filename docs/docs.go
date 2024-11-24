@@ -1162,7 +1162,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/img": {
+        "/products/images": {
             "put": {
                 "description": "insert new product image",
                 "consumes": [
@@ -1206,7 +1206,38 @@ const docTemplate = `{
                 }
             }
         },
-        "/products/img/shop": {
+        "/products/info": {
+            "get": {
+                "description": "get product information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "products id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dtos.ProductResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/thumbnail": {
             "put": {
                 "description": "insert new product image",
                 "consumes": [
@@ -2180,7 +2211,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "star": {
-                    "type": "number"
+                    "type": "integer"
                 },
                 "user_id": {
                     "type": "integer"
@@ -3685,6 +3716,9 @@ const docTemplate = `{
                 "content": {
                     "type": "string"
                 },
+                "created": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -3695,6 +3729,9 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "last_name": {
+                    "type": "string"
+                },
+                "product_name": {
                     "type": "string"
                 },
                 "rating": {

@@ -19,7 +19,7 @@ import (
 )
 
 // Rating implements IProducts.
-func (s *Products) Rating(ctx context.Context, userID, productID int64, rating int) error {
+func (p *Products) Rating(ctx context.Context, userID, productID int64, rating int) error {
 	tx, err := db.NewTx(ctx)
 	if err != nil {
 		return err
@@ -43,7 +43,7 @@ func (s *Products) Rating(ctx context.Context, userID, productID int64, rating i
 }
 
 // UploadItemColorImage implements IProducts.
-func (s *Products) UploadItemColorImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
+func (p *Products) UploadItemColorImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
 		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
@@ -53,9 +53,9 @@ func (s *Products) UploadItemColorImage(ctx context.Context, ID int, fileHeader 
 		return err
 	}
 
-	resp, err := s.Blob.UploadImages(file)
+	resp, err := p.Blob.UploadImages(file)
 	if err == nil {
-		if err = s.Inventory.UploadColorImage(ctx, ID, resp.SecureURL); err == nil {
+		if err = p.Inventory.UploadColorImage(ctx, ID, resp.SecureURL); err == nil {
 			if err = file.Close(); err != nil {
 				return err
 			}
@@ -69,7 +69,7 @@ func (s *Products) UploadItemColorImage(ctx context.Context, ID int, fileHeader 
 }
 
 // UploadProductShopImage implements IProducts.
-func (s *Products) UploadProductShopImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
+func (p *Products) UploadProductShopImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
 		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
@@ -78,11 +78,11 @@ func (s *Products) UploadProductShopImage(ctx context.Context, ID int, fileHeade
 		if err != nil {
 			return err
 		}
-		resp, err := s.Blob.UploadImages(file)
+		resp, err := p.Blob.UploadImages(file)
 		if err != nil {
 			return err
 		}
-		if err := s.Products.UploadShopImage(ctx, resp.SecureURL, ID); err != nil {
+		if err := p.Products.UploadShopImage(ctx, resp.SecureURL, ID); err != nil {
 			return err
 		}
 		if err := file.Close(); err != nil {
@@ -93,7 +93,7 @@ func (s *Products) UploadProductShopImage(ctx context.Context, ID int, fileHeade
 }
 
 // UpdateItem implements IProductService.
-func (s *Products) UpdateItem(ctx context.Context, inventory dtos.InvUpdate) error {
+func (p *Products) UpdateItem(ctx context.Context, inventory dtos.InvUpdate) error {
 	pid, err := strconv.Atoi(inventory.ProductID)
 	if err != nil {
 		pid = -1
@@ -107,7 +107,7 @@ func (s *Products) UpdateItem(ctx context.Context, inventory dtos.InvUpdate) err
 		avai = -1
 	}
 	invID, _ := strconv.ParseInt(inventory.ID, 10, 64)
-	return s.Inventory.Update(ctx, entity.Inventory{
+	return p.Inventory.Update(ctx, entity.Inventory{
 		Price:        price,
 		ID:           invID,
 		Available:    avai,
@@ -118,7 +118,7 @@ func (s *Products) UpdateItem(ctx context.Context, inventory dtos.InvUpdate) err
 }
 
 // UploadItemImage implements IProductService.
-func (s *Products) UploadItemImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
+func (p *Products) UploadItemImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
 		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
@@ -127,9 +127,9 @@ func (s *Products) UploadItemImage(ctx context.Context, ID int, fileHeader []*mu
 		if err != nil {
 			return err
 		}
-		resp, err := s.Blob.UploadImages(file)
+		resp, err := p.Blob.UploadImages(file)
 		if err == nil {
-			if err = s.Inventory.UploadImage(ctx, ID, resp.SecureURL); err == nil {
+			if err = p.Inventory.UploadImage(ctx, ID, resp.SecureURL); err == nil {
 				if err = file.Close(); err != nil {
 					return err
 				}
@@ -144,9 +144,9 @@ func (s *Products) UploadItemImage(ctx context.Context, ID int, fileHeader []*mu
 }
 
 // UpdateProductInfo implements IProductService.
-func (s *Products) UpdateProductInfo(ctx context.Context, product dtos.UpdateProductInfo) error {
+func (p *Products) UpdateProductInfo(ctx context.Context, product dtos.UpdateProductInfo) error {
 	if product.CategoryID != 0 {
-		_category, err := s.Category.GetByID(ctx, product.CategoryID)
+		_category, err := p.Category.GetByID(ctx, product.CategoryID)
 		if err != nil {
 			return fmt.Errorf("category not found %v", err)
 		}
@@ -173,12 +173,12 @@ func (s *Products) UpdateProductInfo(ctx context.Context, product dtos.UpdatePro
 		Status:      product.Status,
 		Specs:       sspec,
 	}
-	return s.Products.Update(ctx, _product)
+	return p.Products.Update(ctx, _product)
 
 }
 
 // UploadProductImage implements IProductService.
-func (s *Products) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
+func (p *Products) UploadProductImage(ctx context.Context, ID int, fileHeader []*multipart.FileHeader) error {
 	if fileHeader == nil {
 		return fmt.Errorf("[code %d] missing file", http.StatusBadRequest)
 	}
@@ -187,11 +187,11 @@ func (s *Products) UploadProductImage(ctx context.Context, ID int, fileHeader []
 		if err != nil {
 			return err
 		}
-		resp, err := s.Blob.UploadImages(file)
+		resp, err := p.Blob.UploadImages(file)
 		if err != nil {
 			return err
 		}
-		if err := s.Products.UploadNewImage(ctx, resp.SecureURL, ID); err != nil {
+		if err := p.Products.UploadNewImage(ctx, resp.SecureURL, ID); err != nil {
 			return err
 		}
 		if err := file.Close(); err != nil {

@@ -162,7 +162,7 @@ definitions:
       product_id:
         type: integer
       star:
-        type: number
+        type: integer
       user_id:
         type: integer
     required:
@@ -1184,6 +1184,8 @@ definitions:
         type: string
       content:
         type: string
+      created:
+        type: string
       email:
         type: string
       first_name:
@@ -1191,6 +1193,8 @@ definitions:
       id:
         type: integer
       last_name:
+        type: string
+      product_name:
         type: string
       rating:
         type: number
@@ -2015,7 +2019,7 @@ paths:
             $ref: '#/definitions/dtos.ProductDetail'
       tags:
       - products
-  /products/img:
+  /products/images:
     put:
       consumes:
       - multipart/form-data
@@ -2044,7 +2048,27 @@ paths:
             $ref: '#/definitions/dtos.Error'
       tags:
       - products
-  /products/img/shop:
+  /products/info:
+    get:
+      consumes:
+      - application/json
+      description: get product information
+      parameters:
+      - description: products id
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dtos.ProductResponse'
+      tags:
+      - products
+  /products/thumbnail:
     put:
       consumes:
       - multipart/form-data
