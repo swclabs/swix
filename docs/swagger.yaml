@@ -184,6 +184,8 @@ definitions:
         type: string
       id:
         type: integer
+      status:
+        type: string
     type: object
   dtos.CreateCoupon:
     properties:
@@ -596,7 +598,6 @@ definitions:
         type: integer
     required:
     - category_id
-    - description
     - name
     - price
     - supplier_id
@@ -1776,6 +1777,11 @@ paths:
       - multipart/form-data
       description: update inventory image
       parameters:
+      - description: inventory id
+        in: query
+        name: id
+        required: true
+        type: integer
       - description: stock image
         in: formData
         name: image
@@ -1796,6 +1802,11 @@ paths:
       - multipart/form-data
       description: update inventory image
       parameters:
+      - description: inventory id
+        in: query
+        name: id
+        required: true
+        type: integer
       - description: stock image
         in: formData
         name: image

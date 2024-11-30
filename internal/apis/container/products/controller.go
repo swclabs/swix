@@ -162,6 +162,7 @@ func (p *Controller) Rating(c echo.Context) error {
 // @Tags inventories
 // @Accept multipart/form-data
 // @Produce json
+// @Param id query int true "inventory id"
 // @Param image formData file true "stock image"
 // @Success 200 {object} dtos.OK
 // @Router /inventories/image/color [PUT]
@@ -384,6 +385,7 @@ func (p *Controller) UpdateInv(c echo.Context) error {
 // @Tags inventories
 // @Accept multipart/form-data
 // @Produce json
+// @Param id query int true "inventory id"
 // @Param image formData file true "stock image"
 // @Success 200 {object} dtos.OK
 // @Router /inventories/image [PUT]
@@ -745,7 +747,8 @@ func (p *Controller) InsertInv(c echo.Context) error {
 		Image:        req.Image,
 		Specs:        req.Specs,
 	}
-	if err := p.service.InsertItem(c.Request().Context(), inv); err != nil {
+	inventoryID, err := p.service.InsertItem(c.Request().Context(), inv)
+	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
 				Msg: err.Error(),
@@ -755,7 +758,8 @@ func (p *Controller) InsertInv(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, dtos.OK{
+	return c.JSON(http.StatusCreated, dtos.ObjectID{
 		Msg: "add product to inventories created successfully",
+		ID:  inventoryID,
 	})
 }

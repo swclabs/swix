@@ -183,7 +183,7 @@ func (p *Products) CreateProduct(ctx context.Context, products dtos.Product) (in
 }
 
 // InsertItem implements IProductService.
-func (p *Products) InsertItem(ctx context.Context, product dtos.Inventory) error {
+func (p *Products) InsertItem(ctx context.Context, product dtos.Inventory) (int64, error) {
 	var (
 		price, _  = decimal.NewFromString(product.Price)
 		avai, _   = strconv.Atoi(product.Available)
@@ -200,7 +200,7 @@ func (p *Products) InsertItem(ctx context.Context, product dtos.Inventory) error
 
 	items, err := p.Inventory.GetByColor(ctx, product.ProductID, product.Color)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
-		return err
+		return -1, err
 	}
 
 	if len(items) > 0 {
@@ -210,19 +210,19 @@ func (p *Products) InsertItem(ctx context.Context, product dtos.Inventory) error
 
 	tx, err := db.NewTx(ctx)
 	if err != nil {
-		return err
+		return -1, err
 	}
 
 	var invRepo = inventories.New(tx)
 	specs, _ := json.Marshal(product.Specs)
 	inventory.Specs = string(specs)
 
-	_, err = invRepo.InsertProduct(ctx, inventory)
+	invID, err := invRepo.InsertProduct(ctx, inventory)
 	if err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
-			return errTx
+			return -1, errTx
 		}
-		return err
+		return -1, err
 	}
-	return tx.Commit(ctx)
+	return invID, tx.Commit(ctx)
 }

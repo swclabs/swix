@@ -819,6 +819,13 @@
                 ],
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
                         "type": "file",
                         "description": "stock image",
                         "name": "image",
@@ -849,6 +856,13 @@
                     "inventories"
                 ],
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
                     {
                         "type": "file",
                         "description": "stock image",
@@ -2228,6 +2242,9 @@
                 },
                 "id": {
                     "type": "integer"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         },
@@ -2815,7 +2832,6 @@
             "type": "object",
             "required": [
                 "category_id",
-                "description",
                 "name",
                 "price",
                 "supplier_id"

@@ -826,6 +826,13 @@ const docTemplate = `{
                 ],
                 "parameters": [
                     {
+                        "type": "integer",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
                         "type": "file",
                         "description": "stock image",
                         "name": "image",
@@ -856,6 +863,13 @@ const docTemplate = `{
                     "inventories"
                 ],
                 "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "inventory id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
                     {
                         "type": "file",
                         "description": "stock image",
@@ -2235,6 +2249,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "status": {
+                    "type": "string"
                 }
             }
         },
@@ -2822,7 +2839,6 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "category_id",
-                "description",
                 "name",
                 "price",
                 "supplier_id"

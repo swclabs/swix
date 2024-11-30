@@ -44,7 +44,7 @@ type IProducts interface {
 	// ctx is the context to manage the request's lifecycle.
 	// product contains the inventories product details to be added.
 	// Returns an error if any issues occur during the insertion process.
-	InsertItem(ctx context.Context, product dtos.Inventory) error
+	InsertItem(ctx context.Context, product dtos.Inventory) (int64, error)
 
 	// DelProduct deletes a product from the database.
 	// ctx is the context to manage the request's lifecycle.

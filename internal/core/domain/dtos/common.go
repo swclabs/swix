@@ -23,6 +23,11 @@ type OK struct {
 	Msg string `json:"msg"`
 }
 
+type ObjectID struct {
+	Msg string `json:"msg"`
+	ID  int64  `json:"id"`
+}
+
 // Slices schema for response
 type Slices[T any] struct {
 	Body []T `json:"body"`
