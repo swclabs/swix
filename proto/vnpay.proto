@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package payment;
+
+option go_package = "/payment";
+
+// Message chứa thông tin đầu vào của yêu cầu thanh toán
+message PaymentRequest {
+    string order_type = 1;     // Loại đơn hàng
+    string order_id = 2;       // ID đơn hàng
+    int64 amount = 3;          // Số tiền (VND)
+    string order_desc = 4;     // Mô tả đơn hàng
+    string bank_code = 5;      // Mã ngân hàng
+    string language = 6;       // Ngôn ngữ (vd: "vn" hoặc "en")
+    string ip_address = 7;     // Địa chỉ IP của client
+}
+
+// Message chứa thông tin phản hồi từ dịch vụ thanh toán
+message PaymentResponse {
+    string payment_url = 1;    // URL thanh toán được xây dựng
+    string message = 2;        // Thông báo kết quả
+    bool success = 3;          // Trạng thái thành công hay thất bại
+}
+
+// Message chứa thông tin đầu vào của Payment Return
+message PaymentReturnRequest {
+    string vnp_TmnCode = 1;              // Mã website của merchant trên hệ thống của VNPAY
+    uint64 vnp_Amount = 2;               // Số tiền thanh toán (nhân thêm 100 lần)
+    string vnp_BankCode = 3;             // Mã Ngân hàng thanh toán
+    string vnp_BankTranNo = 4;           // Mã giao dịch tại Ngân hàng
+    string vnp_CardType = 5;             // Loại tài khoản/thẻ khách hàng sử dụng: ATM, QRCODE
+    string vnp_PayDate = 6;              // Thời gian thanh toán (yyyyMMddHHmmss)
+    string vnp_OrderInfo = 7;            // Thông tin mô tả nội dung thanh toán (không dấu)
+    uint64 vnp_TransactionNo = 8;        // Mã giao dịch ghi nhận tại hệ thống VNPAY
+    string vnp_ResponseCode = 9;         // Mã phản hồi kết quả thanh toán
+    string vnp_TransactionStatus = 10;   // Tình trạng giao dịch tại VNPAY
+    string vnp_TxnRef = 11;              // Mã tham chiếu giao dịch (giống mã gửi sang VNPAY)
+    string vnp_SecureHashType = 12;      // Loại mã băm sử dụng: SHA256, HmacSHA512
+    string vnp_SecureHash = 13;          // Giá trị mã băm để xác thực giao dịch
+}
+
+// Message phản hồi cho Payment Return
+message PaymentReturnResponse {
+    string result = 1;            // Kết quả ("Thành công" hoặc "Lỗi")
+    string message = 2;           // Thông báo (vd: "Sai checksum")
+    string order_id = 3;          // ID đơn hàng
+    int64 amount = 4;             // Số tiền
+    string order_desc = 5;        // Mô tả đơn hàng
+    string vnp_TransactionNo = 6; // Mã giao dịch VNPAY
+    string vnp_ResponseCode = 7;  // Mã phản hồi VNPAY
+    bool success = 8;             // Trạng thái thành công hay thất bại
+}
+
+message StatusRequest {
+
+}
+
+message StatusResponse {
+    string message = 1;           // Thông báo
+    bool success = 2;             // Trạng thái thành công hay thất bại
+}
+
+// Định nghĩa dịch vụ PaymentService
+service VNPay {
+    rpc CheckStatus(StatusRequest) returns (StatusResponse);
+    rpc ProcessPayment (PaymentRequest) returns (PaymentResponse);
+    rpc ProcessPaymentReturn (PaymentReturnRequest) returns (PaymentReturnResponse);
+
+}

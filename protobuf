@@ -1,0 +1,6 @@
+#!/bin/bash
+
+protoc -I. \
+  --go_out=pkg/gen \
+  --go-grpc_out=pkg/gen \
+  proto/*.proto
