@@ -224,9 +224,9 @@ INSERT INTO public.deliveries (id, user_id, address_id, sent_date, status, metho
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.orders (id, uuid, "time", user_id, delivery_id, total_amount, status) VALUES (1, 'Q9DVXAG7O1JY3WDJ', '2024-10-21 03:28:37.479607', 2, 2, 28999000.0000, 'active');
-INSERT INTO public.orders (id, uuid, "time", user_id, delivery_id, total_amount, status) VALUES (2, 'JBI81XHSWAUSY4MB', '2024-10-21 03:42:07.284393', 2, 4, 43999000.0000, 'active');
-INSERT INTO public.orders (id, uuid, "time", user_id, delivery_id, total_amount, status) VALUES (3, 'Y8KTLRT64A2HXT0R', '2024-10-21 05:43:30.685709', 2, 13, 87998000.0000, 'active');
+INSERT INTO public.orders (id, uuid, "time", user_id, delivery_id, total_amount, status, payment_method) VALUES (1, 'Q9DVXAG7O1JY3WDJ', '2024-10-21 03:28:37.479607', 2, 2, 28999000.0000, 'active', 'COD');
+INSERT INTO public.orders (id, uuid, "time", user_id, delivery_id, total_amount, status, payment_method) VALUES (2, 'JBI81XHSWAUSY4MB', '2024-10-21 03:42:07.284393', 2, 4, 43999000.0000, 'active', 'COD');
+INSERT INTO public.orders (id, uuid, "time", user_id, delivery_id, total_amount, status, payment_method) VALUES (3, 'Y8KTLRT64A2HXT0R', '2024-10-21 05:43:30.685709', 2, 13, 87998000.0000, 'active', 'COD');
 
 
 --

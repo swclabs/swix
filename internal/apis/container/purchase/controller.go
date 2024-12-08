@@ -460,7 +460,7 @@ func (p *Controller) GetOrders(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param login body dtos.Order true "order insert request"
-// @Success 200 {object} dtos.OK
+// @Success 200 {object} dtos.OrderResponse
 // @Router /purchase/orders [POST]
 func (p *Controller) CreateOrder(c echo.Context) error {
 	var orderReq dtos.Order
@@ -480,7 +480,7 @@ func (p *Controller) CreateOrder(c echo.Context) error {
 			Msg: "email must be the same as the login user",
 		})
 	}
-	msg, err := p.services.CreateOrders(c.Request().Context(), userID, orderReq)
+	code, err := p.services.CreateOrders(c.Request().Context(), userID, orderReq)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {
 			return c.JSON(http.StatusBadRequest, dtos.Error{
@@ -491,8 +491,8 @@ func (p *Controller) CreateOrder(c echo.Context) error {
 			Msg: err.Error(),
 		})
 	}
-	return c.JSON(http.StatusCreated, dtos.OK{
-		Msg: fmt.Sprintf("your order %s has been created successfully", msg),
+	return c.JSON(http.StatusCreated, dtos.OrderResponse{
+		OrderCode: code,
 	})
 }
 

@@ -10,6 +10,7 @@ class VNPayServicer(vnpay_pb2_grpc.VNPayServicer):
         return vnpay_pb2.StatusResponse(success=True, message="Order is processing")
     
     def ProcessPayment(self, request: vnpay_pb2.PaymentRequest, context):
+        print(settings.VNPAY_TMN_CODE)
         vnp = vnpay()
         vnp.requestData['vnp_Version'] = '2.1.0'
         vnp.requestData['vnp_Command'] = 'pay'
@@ -31,6 +32,7 @@ class VNPayServicer(vnpay_pb2_grpc.VNPayServicer):
         vnp.requestData['vnp_ReturnUrl'] = settings.VNPAY_RETURN_URL
         try:
             payment_url = vnp.get_payment_url(settings.VNPAY_PAYMENT_URL, settings.VNPAY_HASH_SECRET_KEY)
+            print('payment url: ',payment_url)
             return vnpay_pb2.PaymentResponse(payment_url=payment_url, message='Success', success=True)
         except Exception as e:
             return vnpay_pb2.PaymentResponse(payment_url='', message=str(e), success=False)

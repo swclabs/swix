@@ -200,9 +200,10 @@ func (p *Purchase) GetOrderByCode(ctx context.Context, orderCode string) (*dtos.
 		}
 
 		return &dtos.OrderInfo{
-			Items:     items,
-			UUID:      order.UUID,
-			CreatedAt: utils.HanoiTimezone(order.Time),
+			Items:         items,
+			UUID:          order.UUID,
+			PaymentMethod: order.PaymentMethod,
+			CreatedAt:     utils.HanoiTimezone(order.Time),
 			User: dtos.OrderFormCustomer{
 				Email:     user.Email,
 				FirstName: user.FirstName,
@@ -313,11 +314,12 @@ func (p *Purchase) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (s
 	uuid := p.genUUID(ctx, orderRepo)
 
 	orderID, err := orderRepo.Create(ctx, entity.Order{
-		UUID:        uuid,
-		DeliveryID:  deliveryID,
-		UserID:      user.ID,
-		Status:      "pending",
-		TotalAmount: totalAmount,
+		UUID:          uuid,
+		DeliveryID:    deliveryID,
+		UserID:        user.ID,
+		Status:        "pending",
+		TotalAmount:   totalAmount,
+		PaymentMethod: order.PaymentMethod,
 	})
 	if err != nil {
 		if errTx := tx.Rollback(ctx); errTx != nil {
@@ -332,7 +334,7 @@ func (p *Purchase) CreateOrderForm(ctx context.Context, order dtos.OrderForm) (s
 		}
 		return "", err
 	}
-	return "", tx.Commit(ctx)
+	return uuid, tx.Commit(ctx)
 }
 
 // CreateDeliveryOrder implements IPurchase.

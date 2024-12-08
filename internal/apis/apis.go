@@ -6,6 +6,7 @@ import (
 	"github.com/swclabs/swipex/internal/apis/container/authentication"
 	"github.com/swclabs/swipex/internal/apis/container/classify"
 	"github.com/swclabs/swipex/internal/apis/container/healthcheck"
+	"github.com/swclabs/swipex/internal/apis/container/payment"
 	"github.com/swclabs/swipex/internal/apis/container/products"
 	"github.com/swclabs/swipex/internal/apis/container/purchase"
 	"github.com/swclabs/swipex/internal/apis/server"
@@ -18,6 +19,7 @@ func NewApp(
 	classify classify.IRouter,
 	auth authentication.IRouter,
 	products products.IRouter,
+	payment payment.IRouter,
 ) app.IApplication {
 	mux := server.NewServeMux()
 	mux.Handle(base)
@@ -26,5 +28,6 @@ func NewApp(
 	mux.Handle(classify)
 	mux.Handle(auth)
 	mux.Handle(products)
+	mux.Handle(payment)
 	return server.New(mux)
 }
