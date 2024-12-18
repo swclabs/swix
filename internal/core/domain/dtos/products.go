@@ -13,25 +13,26 @@ type ProductRequest struct {
 
 // Product request, response
 type Product struct {
-	Specs       interface{} `json:"specs"`
-	Price       string      `json:"price" validate:"required"`
-	Description string      `json:"description" validate:"required"`
-	Name        string      `json:"name" validate:"required"`
-	SupplierID  int64       `json:"supplier_id" validate:"number,required"`
-	CategoryID  int64       `json:"category_id" validate:"number,required"`
-	Status      string      `json:"status"`
+	Specs       ProductSpecs `json:"specs"`
+	Price       string       `json:"price" validate:"required"`
+	Description string       `json:"description" validate:"required"`
+	Name        string       `json:"name" validate:"required"`
+	SupplierID  int64        `json:"supplier_id" validate:"number,required"`
+	CategoryID  int64        `json:"category_id" validate:"number,required"`
+	Status      string       `json:"status"`
 }
 
 // ProductResponse request, response
 type ProductResponse struct {
-	ID          int64  `json:"id"`
-	Image       string `json:"image"`
-	Price       string `json:"price"`
-	Description string `json:"description"`
-	Name        string `json:"name"`
-	Status      string `json:"status"`
-	Created     string `json:"created"`
-	Category    string `json:"category"`
+	ID          int64        `json:"id"`
+	Image       string       `json:"image"`
+	Price       string       `json:"price"`
+	Description string       `json:"description"`
+	Name        string       `json:"name"`
+	Status      string       `json:"status"`
+	Created     string       `json:"created"`
+	Category    string       `json:"category"`
+	Specs       ProductSpecs `json:"specs"`
 }
 
 // UpdateProductInfo request, response

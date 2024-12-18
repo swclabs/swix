@@ -687,15 +687,8 @@ func (p *Controller) CreateProduct(c echo.Context) error {
 		})
 	}
 	// call services
-	product := dtos.Product{
-		Specs:       productReq.Specs,
-		Price:       productReq.Price,
-		Description: productReq.Description,
-		Name:        productReq.Name,
-		SupplierID:  productReq.SupplierID,
-		CategoryID:  productReq.CategoryID,
-		Status:      productReq.Status,
-	}
+	product := dtos.Product(productReq)
+	fmt.Print(product.Specs)
 	ID, err := p.service.CreateProduct(c.Request().Context(), product)
 	if err != nil {
 		if strings.Contains(err.Error(), fmt.Sprintf("[code %d]", http.StatusBadRequest)) {

@@ -41,7 +41,6 @@ func (p *Products) GetProductInfo(ctx context.Context, productID int64) (*dtos.P
 		Category:    category.Name,
 	}
 
-
 	if len(strings.Split(product.Image, ",")) > 0 {
 		resp.Image = strings.Split(product.Image, ",")[0]
 	}
@@ -325,6 +324,10 @@ func (p *Products) GetProducts(ctx context.Context, limit int) ([]dtos.ProductRe
 
 	var productResponse = []dtos.ProductResponse{}
 	for _, _product := range products {
+		var specs dtos.ProductSpecs
+		if err := json.Unmarshal([]byte(_product.Specs), &specs); err != nil {
+			return nil, fmt.Errorf("[code %d] %v", http.StatusBadRequest, err)
+		}
 		var (
 			product = dtos.ProductResponse{
 				ID:          _product.ID,
@@ -334,6 +337,7 @@ func (p *Products) GetProducts(ctx context.Context, limit int) ([]dtos.ProductRe
 				Status:      _product.Status,
 				Created:     utils.HanoiTimezone(_product.Created),
 				Image:       "",
+				Specs:       specs,
 			}
 			types enum.Category
 		)
