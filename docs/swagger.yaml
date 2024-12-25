@@ -420,6 +420,8 @@ definitions:
         $ref: '#/definitions/dtos.OrderFormCustomer'
       delivery:
         $ref: '#/definitions/dtos.OrderFormDelivery'
+      payment_method:
+        type: string
       product:
         items:
           $ref: '#/definitions/dtos.OrderFormProduct'
@@ -428,6 +430,7 @@ definitions:
     - address
     - customer
     - delivery
+    - payment_method
     - product
     type: object
   dtos.OrderForm:
@@ -440,6 +443,8 @@ definitions:
         $ref: '#/definitions/dtos.OrderFormCustomer'
       delivery:
         $ref: '#/definitions/dtos.OrderFormDelivery'
+      payment_method:
+        type: string
       product:
         items:
           $ref: '#/definitions/dtos.OrderFormProduct'
@@ -448,6 +453,7 @@ definitions:
     - address
     - customer
     - delivery
+    - payment_method
     - product
     type: object
   dtos.OrderFormAddress:
@@ -516,6 +522,8 @@ definitions:
         items:
           $ref: '#/definitions/model.Order'
         type: array
+      payment_method:
+        type: string
       time:
         type: string
       total_amount:
@@ -523,6 +531,11 @@ definitions:
       user:
         $ref: '#/definitions/dtos.OrderFormCustomer'
       uuid:
+        type: string
+    type: object
+  dtos.OrderResponse:
+    properties:
+      order_code:
         type: string
     type: object
   dtos.OrderStatus:
@@ -1251,6 +1264,51 @@ definitions:
     - role
     - username
     type: object
+  payment.PaymentRequest:
+    properties:
+      amount:
+        description: Số tiền (VND)
+        type: integer
+      bank_code:
+        description: Mã ngân hàng
+        type: string
+      ip_address:
+        description: Địa chỉ IP của client
+        type: string
+      language:
+        description: 'Ngôn ngữ (vd: "vn" hoặc "en")'
+        type: string
+      order_desc:
+        description: Mô tả đơn hàng
+        type: string
+      order_id:
+        description: ID đơn hàng
+        type: string
+      order_type:
+        description: Loại đơn hàng
+        type: string
+    type: object
+  payment.PaymentResponse:
+    properties:
+      message:
+        description: Thông báo kết quả
+        type: string
+      payment_url:
+        description: URL thanh toán được xây dựng
+        type: string
+      success:
+        description: Trạng thái thành công hay thất bại
+        type: boolean
+    type: object
+  payment.StatusResponse:
+    properties:
+      message:
+        description: Thông báo
+        type: string
+      success:
+        description: Trạng thái thành công hay thất bại
+        type: boolean
+    type: object
 info:
   contact: {}
   description: This is a documentation for the Swipe API
@@ -1909,6 +1967,41 @@ paths:
           description: OK
       tags:
       - authentication
+  /payment:
+    post:
+      consumes:
+      - application/json
+      description: check payment service status
+      parameters:
+      - description: payment request
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/payment.PaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payment.PaymentResponse'
+      tags:
+      - payment
+  /payment/status:
+    get:
+      consumes:
+      - application/json
+      description: check payment service status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/payment.StatusResponse'
+      tags:
+      - payment
   /products:
     delete:
       consumes:
@@ -2298,7 +2391,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dtos.OK'
+            $ref: '#/definitions/dtos.OrderResponse'
       tags:
       - purchase
   /purchase/orders/{code}:

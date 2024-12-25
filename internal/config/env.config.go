@@ -82,3 +82,5 @@ var (
 
 // NumberOfWorker Number of worker
 var NumberOfWorker = 10
+
+var PaymentService = os.Getenv("PAYMENT_SERVICE")

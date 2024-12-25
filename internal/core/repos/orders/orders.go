@@ -87,7 +87,7 @@ func (orders *Orders) InsertProduct(ctx context.Context, product entity.ProductI
 // Create implements IOrdersRepository.
 func (orders *Orders) Create(ctx context.Context, order entity.Order) (int64, error) {
 	return orders.db.SafeWriteReturn(ctx, insertOrder,
-		order.UUID, order.UserID, "active", order.TotalAmount.String(), order.DeliveryID,
+		order.UUID, order.UserID, "active", order.TotalAmount.String(), order.DeliveryID, order.PaymentMethod,
 	)
 }
 

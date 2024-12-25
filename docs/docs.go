@@ -1023,6 +1023,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/payment": {
+            "post": {
+                "description": "check payment service status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payment"
+                ],
+                "parameters": [
+                    {
+                        "description": "payment request",
+                        "name": "payment",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/payment.PaymentRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/payment.PaymentResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/status": {
+            "get": {
+                "description": "check payment service status",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "payment"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/payment.StatusResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/products": {
             "get": {
                 "description": "get product information",
@@ -1622,7 +1677,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dtos.OK"
+                            "$ref": "#/definitions/dtos.OrderResponse"
                         }
                     }
                 }
@@ -2591,6 +2646,7 @@ const docTemplate = `{
                 "address",
                 "customer",
                 "delivery",
+                "payment_method",
                 "product"
             ],
             "properties": {
@@ -2605,6 +2661,9 @@ const docTemplate = `{
                 },
                 "delivery": {
                     "$ref": "#/definitions/dtos.OrderFormDelivery"
+                },
+                "payment_method": {
+                    "type": "string"
                 },
                 "product": {
                     "type": "array",
@@ -2620,6 +2679,7 @@ const docTemplate = `{
                 "address",
                 "customer",
                 "delivery",
+                "payment_method",
                 "product"
             ],
             "properties": {
@@ -2634,6 +2694,9 @@ const docTemplate = `{
                 },
                 "delivery": {
                     "$ref": "#/definitions/dtos.OrderFormDelivery"
+                },
+                "payment_method": {
+                    "type": "string"
                 },
                 "product": {
                     "type": "array",
@@ -2740,6 +2803,9 @@ const docTemplate = `{
                         "$ref": "#/definitions/model.Order"
                     }
                 },
+                "payment_method": {
+                    "type": "string"
+                },
                 "time": {
                     "type": "string"
                 },
@@ -2750,6 +2816,14 @@ const docTemplate = `{
                     "$ref": "#/definitions/dtos.OrderFormCustomer"
                 },
                 "uuid": {
+                    "type": "string"
+                }
+            }
+        },
+        "dtos.OrderResponse": {
+            "type": "object",
+            "properties": {
+                "order_code": {
                     "type": "string"
                 }
             }
@@ -3826,6 +3900,69 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "payment.PaymentRequest": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "Số tiền (VND)",
+                    "type": "integer"
+                },
+                "bank_code": {
+                    "description": "Mã ngân hàng",
+                    "type": "string"
+                },
+                "ip_address": {
+                    "description": "Địa chỉ IP của client",
+                    "type": "string"
+                },
+                "language": {
+                    "description": "Ngôn ngữ (vd: \"vn\" hoặc \"en\")",
+                    "type": "string"
+                },
+                "order_desc": {
+                    "description": "Mô tả đơn hàng",
+                    "type": "string"
+                },
+                "order_id": {
+                    "description": "ID đơn hàng",
+                    "type": "string"
+                },
+                "order_type": {
+                    "description": "Loại đơn hàng",
+                    "type": "string"
+                }
+            }
+        },
+        "payment.PaymentResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description": "Thông báo kết quả",
+                    "type": "string"
+                },
+                "payment_url": {
+                    "description": "URL thanh toán được xây dựng",
+                    "type": "string"
+                },
+                "success": {
+                    "description": "Trạng thái thành công hay thất bại",
+                    "type": "boolean"
+                }
+            }
+        },
+        "payment.StatusResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description": "Thông báo",
+                    "type": "string"
+                },
+                "success": {
+                    "description": "Trạng thái thành công hay thất bại",
+                    "type": "boolean"
                 }
             }
         }

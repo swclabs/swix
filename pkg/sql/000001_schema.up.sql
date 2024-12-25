@@ -78,7 +78,8 @@ CREATE TABLE "orders" (
   "user_id" bigint NOT NULL,
   "delivery_id" bigint NOT NULL,
   "total_amount" NUMERIC(19, 4) NOT NULL,
-  "status" varchar NOT NULL
+  "status" varchar NOT NULL,
+  "payment_method" varchar NOT NULL
 );
 
 CREATE TABLE "product_in_order" (

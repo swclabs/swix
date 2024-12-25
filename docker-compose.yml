@@ -11,6 +11,7 @@ services:
       - DB_HOST=postgres
       - REDIS_HOST=redis
       - HOST=0.0.0.0
+      - PAYMENT_SERVICE=payment:8001
     networks:
       - swipe_bridge
     ports:
@@ -22,25 +23,43 @@ services:
       - 8.8.8.8 # Google DNS
       - 8.8.4.4 # Google DNS (backup)
 
-  worker:
+  # worker:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - .env
+  #   restart: always
+  #   networks:
+  #     - swipe_bridge
+  #   command: "swipe --start=worker"
+  #   environment:
+  #     - DB_HOST=postgres
+  #     - REDIS_HOST=redis
+  #   depends_on:
+  #     - redis
+  #     - postgres
+  #   dns: 
+  #     - 8.8.8.8 # Google DNS
+  #     - 8.8.4.4 # Google DNS (backup)
+
+  payment:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: x/vnpay/Dockerfile
     env_file:
       - .env
     restart: always
     networks:
       - swipe_bridge
-    command: "swipe --start=worker"
     environment:
       - DB_HOST=postgres
       - REDIS_HOST=redis
+    ports:
+      - 8001:8001
     depends_on:
       - redis
       - postgres
-    dns: 
-      - 8.8.8.8 # Google DNS
-      - 8.8.4.4 # Google DNS (backup)
 
   redis:
     image: redis

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
 	"strconv"
 	"strings"
 
@@ -170,14 +169,8 @@ func (p *Products) CreateProduct(ctx context.Context, products dtos.Product) (in
 		Specs:       "{}",
 	}
 
-	if products.Specs != nil {
-		var specs, ok = products.Specs.(dtos.ProductSpecs)
-		if !ok {
-			return -1, fmt.Errorf("[code: %d] invalid specifications", http.StatusBadRequest)
-		}
-		specsByte, _ := json.Marshal(specs)
-		prd.Specs = string(specsByte)
-	}
+	specsByte, _ := json.Marshal(products.Specs)
+	prd.Specs = string(specsByte)
 
 	return p.Products.Insert(ctx, prd)
 }

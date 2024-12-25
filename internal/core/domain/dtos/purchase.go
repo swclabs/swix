@@ -51,21 +51,23 @@ type ProductOrderSchema struct {
 }
 
 type OrderInfo struct {
-	UUID        string            `json:"uuid"`
-	CreatedAt   string            `json:"time"`
-	User        OrderFormCustomer `json:"user"`
-	Delivery    OrderFormDelivery `json:"delivery"`
-	Address     OrderFormAddress  `json:"address"`
-	TotalAmount string            `json:"total_amount"`
-	Items       []model.Order     `json:"items"`
+	UUID          string            `json:"uuid"`
+	CreatedAt     string            `json:"time"`
+	PaymentMethod string            `json:"payment_method"`
+	User          OrderFormCustomer `json:"user"`
+	Delivery      OrderFormDelivery `json:"delivery"`
+	Address       OrderFormAddress  `json:"address"`
+	TotalAmount   string            `json:"total_amount"`
+	Items         []model.Order     `json:"items"`
 }
 
 type Order struct {
-	CouponCode string             `json:"coupon_code"`
-	Customer   OrderFormCustomer  `json:"customer" validate:"required"`
-	Delivery   OrderFormDelivery  `json:"delivery" validate:"required"`
-	Address    OrderFormAddress   `json:"address" validate:"required"`
-	Product    []OrderFormProduct `json:"product" validate:"required"`
+	CouponCode    string             `json:"coupon_code"`
+	PaymentMethod string             `json:"payment_method" validate:"required"`
+	Customer      OrderFormCustomer  `json:"customer" validate:"required"`
+	Delivery      OrderFormDelivery  `json:"delivery" validate:"required"`
+	Address       OrderFormAddress   `json:"address" validate:"required"`
+	Product       []OrderFormProduct `json:"product" validate:"required"`
 }
 
 type OrderFormAddress struct {
@@ -94,14 +96,19 @@ type OrderFormCustomer struct {
 	Phone     string `json:"phone" validate:"required,number"`
 }
 type OrderForm struct {
-	CouponCode string             `json:"coupon_code"`
-	Customer   OrderFormCustomer  `json:"customer" validate:"required"`
-	Delivery   OrderFormDelivery  `json:"delivery" validate:"required"`
-	Address    OrderFormAddress   `json:"address" validate:"required"`
-	Product    []OrderFormProduct `json:"product" validate:"required"`
+	CouponCode    string             `json:"coupon_code"`
+	PaymentMethod string             `json:"payment_method" validate:"required"`
+	Customer      OrderFormCustomer  `json:"customer" validate:"required"`
+	Delivery      OrderFormDelivery  `json:"delivery" validate:"required"`
+	Address       OrderFormAddress   `json:"address" validate:"required"`
+	Product       []OrderFormProduct `json:"product" validate:"required"`
 }
 
 type OrderStatus struct {
 	OrderCode string `json:"order_code" validate:"required"`
 	Status    string `json:"status" validate:"required"`
+}
+
+type OrderResponse struct {
+	OrderCode string `json:"order_code"`
 }

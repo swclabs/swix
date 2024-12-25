@@ -2,8 +2,8 @@ package orders
 
 const (
 	insertOrder = `
-		INSERT INTO orders (uuid, user_id, status, total_amount, delivery_id)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO orders (uuid, user_id, status, total_amount, delivery_id, payment_method)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		RETURNING id;
 	`
 
