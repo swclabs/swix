@@ -106,7 +106,7 @@ jobs:
         run: go test -v ./testing/article
 
   build-docker:
-    needs: [test-common, test-classify, test-products]
+    needs: [test-common, test-classify, test-products, test-article]
     name: build docker image
     runs-on: ubuntu-latest
 
